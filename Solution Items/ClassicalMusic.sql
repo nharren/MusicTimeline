@@ -1449,10 +1449,10 @@ VALUES ('70','5','69');
 
 
 INSERT INTO "Composer" ("ID","Name","Dates","IsPopular")
-VALUES ('','','','1');
+VALUES ('70','Rachmaninoff, Sergei','1873-04-01/1943-03-28','1');
 
 INSERT INTO "ComposerEra" ("ID", "EraID", "ComposerID")
-VALUES ('','','');
+VALUES ('71','5','70');
 
 
 
