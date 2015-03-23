@@ -1,0 +1,309 @@
+﻿<Page xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:local="clr-namespace:NathanHarrenstein.ComposerTimeline"
+      xmlns:controls="clr-namespace:NathanHarrenstein.Controls;assembly=Framework"
+      x:Class="NathanHarrenstein.ComposerTimeline.ComposerPage"
+      mc:Ignorable="d"
+      d:DesignHeight="300"
+      d:DesignWidth="300"
+      Background="#FF121314"
+      Foreground="#FFDFE0E6"
+      FontFamily="Cambria"
+      UseLayoutRounding="True"
+      Title="ComposerPage">
+    <!-- Root -->
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="120" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <!-- Header -->
+        <!-- See: "file:///C:\Users\Nathan\SkyDrive\Programming\ComposerTimeline\Diagrams\Composer Page Header Diagram.png" -->
+        <StackPanel Orientation="Horizontal">
+            <Grid Width="120"
+                  Height="120">
+                <Button Click="BackButton_Click"
+                        Cursor="Hand"
+                        VerticalAlignment="Center"
+                        HorizontalAlignment="Center"
+                        FontFamily="Segoe UI Symbol"
+                        Foreground="#FFDFE0E6"
+                        FontSize="43"
+                        Content="&#xE2A4;"
+                        Margin="0,-3,0,0">
+                    <Button.Template>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <Grid Margin="{TemplateBinding Margin}">
+                                <ContentPresenter />
+                            </Grid>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+            </Grid>
+            <!--  Header Text  -->
+            <TextBlock FontSize="38"
+                       Margin="0,-1,0,0"
+                       VerticalAlignment="Center"
+                       Text="{Binding HeaderText, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ComposerPage}}}" />
+            <!--  Flag  -->
+            <Grid Width="120"
+                  Height="120">
+                <Image Source="{Binding Flag.Image, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ComposerPage}}}"
+                       Width="32"
+                       Height="32"
+                       VerticalAlignment="Center"
+                       HorizontalAlignment="Center"
+                       ToolTip="{Binding Flag.Nationality, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ComposerPage}}}" />
+            </Grid>
+        </StackPanel>
+        <!--  Body  -->
+        <ScrollViewer Grid.Row="1">
+            <ScrollViewer.Resources>
+                <Style TargetType="ScrollBar">
+                    <Style.Triggers>
+                        <EventTrigger RoutedEvent="MouseEnter">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimation Duration="0:0:0.25"
+                                                     From="0.15"
+                                                     Storyboard.TargetProperty="Opacity"
+                                                     To="1" />
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                        <EventTrigger RoutedEvent="MouseLeave">
+                            <BeginStoryboard>
+                                <Storyboard>
+                                    <DoubleAnimation Duration="0:0:0.25"
+                                                     From="1"
+                                                     Storyboard.TargetProperty="Opacity"
+                                                     To="0.15" />
+                                </Storyboard>
+                            </BeginStoryboard>
+                        </EventTrigger>
+                    </Style.Triggers>
+                    <Setter Property="Opacity"
+                            Value="0.15" />
+                </Style>
+            </ScrollViewer.Resources>
+            <Grid Margin="30,5,30,30">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*" />
+                    <ColumnDefinition Width="3*" />
+                    <ColumnDefinition Width="2*" />
+                </Grid.ColumnDefinitions>
+                <!--  Left Column  -->
+                <StackPanel Grid.Column="0">
+                    <!--  Images  -->
+                    <ListBox HorizontalAlignment="Center"
+                             VerticalAlignment="Top"
+                             ItemsSource="{Binding ComposerImages, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ComposerPage}}}"
+                             SelectedIndex="0">
+                        <ListBox.Template>
+                            <ControlTemplate>
+                                <Grid>
+                                    <Image Name="selectedImage"
+                                           Source="{Binding SelectedItem, RelativeSource={RelativeSource AncestorType=ListBox}}" />
+                                    <Border Grid.Row="1"
+                                            MinWidth="{Binding ActualWidth, ElementName=selectedImage}"
+                                            MinHeight="30"
+                                            HorizontalAlignment="Center"
+                                            VerticalAlignment="Bottom"
+                                            BorderThickness="0">
+                                        <controls:PanningScrollViewer>
+                                            <ItemsPresenter />
+                                        </controls:PanningScrollViewer>
+                                    </Border>
+                                </Grid>
+                            </ControlTemplate>
+                        </ListBox.Template>
+                        <ListBox.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Orientation="Horizontal" />
+                            </ItemsPanelTemplate>
+                        </ListBox.ItemsPanel>
+                        <ListBox.ItemContainerStyle>
+                            <Style TargetType="ListBoxItem">
+                                <Setter Property="Margin"
+                                        Value="0,0,5,0" />
+                                <Setter Property="Padding"
+                                        Value="0" />
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Image Height="30"
+                                       MaxWidth="30"
+                                       Cursor="Hand"
+                                       Source="{Binding}" />
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                    <!--  Details  -->
+                    <StackPanel Margin="15,0,0,0">
+                        <!--  Born  -->
+                        <TextBlock Margin="0,15,0,5"
+                                   FontSize="16"
+                                   FontWeight="Bold"
+                                   Text="Born" />
+                        <TextBlock FontSize="14"
+                                   Text="{Binding Born, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ComposerPage}}}" />
+                        <!--  Died  -->
+                        <TextBlock Margin="0,15,0,5"
+                                   FontSize="16"
+                                   FontWeight="Bold"
+                                   Text="Died" />
+                        <TextBlock FontSize="14"
+                                   Text="{Binding Died, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ComposerPage}}}" />
+                        <!--  Influences  -->
+                        <TextBlock Margin="0,15,0,3"
+                                   FontSize="16"
+                                   FontWeight="Bold"
+                                   Text="Influences"
+                                   Visibility="{Binding HasInfluences, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ComposerPage}}}" />
+                        <ItemsControl ItemsSource="{Binding Influences, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ComposerPage}}}"
+                                      Visibility="{Binding HasInfluences, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ComposerPage}}}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Button Margin="0,0,0,2"
+                                            Foreground="White"
+                                            FontSize="14"
+                                            Command="{Binding Click}"
+                                            Content="{Binding Name}">
+                                        <!-- Are IsEnabled and Cursor Necessary? -->
+                                        <Button.Style>
+                                            <Style TargetType="Button">
+                                                <Style.Triggers>
+                                                    <Trigger Property="IsEnabled"
+                                                             Value="False">
+                                                        <Setter Property="Cursor"
+                                                                Value="Arrow" />
+                                                        <Setter Property="TextBlock.Foreground"
+                                                                Value="#FF999999" />
+                                                    </Trigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Button.Style>
+                                        <Button.Template>
+                                            <ControlTemplate TargetType="{x:Type Button}">
+                                                <Grid>
+                                                    <ContentPresenter />
+                                                </Grid>
+                                            </ControlTemplate>
+                                        </Button.Template>
+                                    </Button>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                        <!--  Influenced  -->
+                        <TextBlock Margin="0,15,0,3"
+                                   FontSize="16"
+                                   FontWeight="Bold"
+                                   Text="Influenced"
+                                   Visibility="{Binding HasInfluenced, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ComposerPage}}}" />
+                        <ItemsControl ItemsSource="{Binding Influenced, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ComposerPage}}}"
+                                      Visibility="{Binding HasInfluenced, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ComposerPage}}}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Button Margin="0,0,0,2"
+                                            FontSize="14"
+                                            Command="{Binding Click}"
+                                            Content="{Binding Name}">
+                                        <Button.Style>
+                                            <Style TargetType="Button">
+                                                <Style.Triggers>
+                                                    <Trigger Property="IsEnabled"
+                                                             Value="False">
+                                                        <Setter Property="Cursor"
+                                                                Value="Arrow" />
+                                                        <Setter Property="TextBlock.Foreground"
+                                                                Value="#FF999999" />
+                                                    </Trigger>
+                                                </Style.Triggers>
+                                            </Style>
+                                        </Button.Style>
+                                        <Button.Template>
+                                            <ControlTemplate TargetType="{x:Type Button}">
+                                                <Grid>
+                                                    <ContentPresenter />
+                                                </Grid>
+                                            </ControlTemplate>
+                                        </Button.Template>
+                                    </Button>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                        <!--  Links  -->
+                        <TextBlock Margin="0,15,0,5"
+                                   FontSize="16"
+                                   FontWeight="Bold"
+                                   Text="Links"
+                                   Visibility="{Binding LinksVisibility, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ComposerPage}}}" />
+                        <ItemsControl MinWidth="16"
+                                      MinHeight="16"
+                                      ItemsSource="{Binding Links, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ComposerPage}}}"
+                                      Visibility="{Binding LinksVisibility, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ComposerPage}}}">
+                            <ItemsControl.ItemTemplate>
+                                <DataTemplate>
+                                    <Button Command="{Binding Click}">
+                                        <Button.Template>
+                                            <ControlTemplate>
+                                                <Grid>
+                                                    <Image Width="16"
+                                                           Height="16"
+                                                           Margin="0,0,10,0"
+                                                           Cursor="Hand"
+                                                           SnapsToDevicePixels="True"
+                                                           Source="{Binding Icon}"
+                                                           ToolTip="{Binding Label}"
+                                                           UseLayoutRounding="True" />
+                                                </Grid>
+                                            </ControlTemplate>
+                                        </Button.Template>
+                                    </Button>
+                                </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                            <ItemsControl.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel Orientation="Horizontal" />
+                                </ItemsPanelTemplate>
+                            </ItemsControl.ItemsPanel>
+                        </ItemsControl>
+                    </StackPanel>
+                </StackPanel>
+                <!--  Center Column  -->
+                <StackPanel Grid.Column="1"
+                            Margin="30,0,30,0">
+                    <!--  Biography  -->
+                    <TextBlock Margin="0,0,0,8"
+                               FontSize="18"
+                               FontWeight="Bold"
+                               Text="Biography" />
+                    <TextBlock FontSize="16"
+                               Text="{Binding Biography, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ComposerPage}}}"
+                               TextWrapping="Wrap" />
+                </StackPanel>
+                <!--  Right Column  -->
+                <Grid Grid.Column="2">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <!--  Compositions  -->
+                    <TextBlock Margin="0,0,0,4"
+                               FontSize="18"
+                               FontWeight="Bold"
+                               Text="Compositions" />
+                    <controls:TreeView Grid.Row="1"
+                                       Foreground="#FFDFE0E6"
+                                       FontWeight="SemiBold"
+                                       FontFamily="Cambria"
+                                       FontSize="14"
+                                       Children="{Binding TreeViewItems, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type local:ComposerPage}}}" />
+                </Grid>
+            </Grid>
+        </ScrollViewer>
+    </Grid>
+</Page>

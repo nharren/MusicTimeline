@@ -1,0 +1,30 @@
+1. Finish writing default sql script.
+2. Create a project for the database in ComposerTimeline, and use the Entity Framework Code-First to generate entities from ``ClassicalMusic.db''.
+
+Status: Not Started.
+
+\section*{Step 4: Create schematics for existing ComposerTimeline code as well as the DataEntryPage, and refine where possible.}
+
+Status: Not Started.
+
+\section*{Step 5: Create controls used by the DataEntryPage.}
+
+Status: Not Started.
+
+\section*{Step 6: Create DataEntryPage.}
+
+Status: Not Started.
+
+\section*{Step 7: Incorporate FLAC tag loading and saving using FlacBox.}
+
+Status: Not Started.
+
+\section*{Step 8: Tie loose ends and ready for deployment.}
+
+Status: Not Started.
+
+\section*{Step 9: Test.}
+
+Status: Not Started.
+
+\section*{Step 10: Release Version 1.}

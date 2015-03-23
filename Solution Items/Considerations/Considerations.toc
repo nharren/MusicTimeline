@@ -1,0 +1,35 @@
+\contentsline {chapter}{\numberline {1}Introduction}{3}{chapter.1}
+\contentsline {chapter}{\numberline {2}Platform Considerations}{4}{chapter.2}
+\contentsline {section}{\numberline {2.1}There are many different ways of storing data.}{4}{section.2.1}
+\contentsline {section}{\numberline {2.2}There are many suitable programming languages.}{4}{section.2.2}
+\contentsline {section}{\numberline {2.3}Applications can be built for the internet or an operating system.}{4}{section.2.3}
+\contentsline {chapter}{\numberline {3}Data Considerations}{5}{chapter.3}
+\contentsline {section}{\numberline {3.1}Catalog numbers can be assigned to either composition collections or compositions.}{5}{section.3.1}
+\contentsline {section}{\numberline {3.2}Composition numbers from different catalogs can be assigned to the same composition or composition collection.}{5}{section.3.2}
+\contentsline {section}{\numberline {3.3}Opus numbers and catalog numbers are different types of data.}{6}{section.3.3}
+\contentsline {section}{\numberline {3.4}Beethoven has a catalog of works without opus numbers.}{6}{section.3.4}
+\contentsline {section}{\numberline {3.5}A composition or composition collection can be revised.}{6}{section.3.5}
+\contentsline {section}{\numberline {3.6}A composition or composition collection might have been arranged for another instrument by one or multiple arrangers.}{7}{section.3.6}
+\contentsline {section}{\numberline {3.7}A composition or composition collection might have multiple composers.}{7}{section.3.7}
+\contentsline {section}{\numberline {3.8}There is much more real world data on classical music than is necessary or practical for the purposes of this application.}{7}{section.3.8}
+\contentsline {section}{\numberline {3.9}A composer name might be used ``firstname lastname'' for display or ``lastname, firstname'' for sorting.}{8}{section.3.9}
+\contentsline {section}{\numberline {3.10}A composer can have multiple given names or surnames.}{8}{section.3.10}
+\contentsline {section}{\numberline {3.11}A composer can have no surnames.}{8}{section.3.11}
+\contentsline {section}{\numberline {3.12}A composer might be traditionally referred to by their firstname and lastname; their firstname, middlename, and last name; or their middlename and lastname. }{9}{section.3.12}
+\contentsline {section}{\numberline {3.13}A composition collection name or composition name can be generated from data or input entirely by the user.}{9}{section.3.13}
+\contentsline {section}{\numberline {3.14}The order of compositions within a composition collection can be identified by the catalog number.}{9}{section.3.14}
+\contentsline {section}{\numberline {3.15}A key is used in a composition title to distinguish it from another work by the same name.}{9}{section.3.15}
+\contentsline {section}{\numberline {3.16}A flag path can be stored in the database or hard-coded into a switch statement.}{10}{section.3.16}
+\contentsline {section}{\numberline {3.17}A composer can be considered part of multiple eras.}{10}{section.3.17}
+\contentsline {section}{\numberline {3.18}A composer can have multiple nationalities.}{10}{section.3.18}
+\contentsline {section}{\numberline {3.19}A date might be unknown, approximate, or within a range of dates.}{10}{section.3.19}
+\contentsline {section}{\numberline {3.20}Ranges of dates can be stored in one column or in multiple columns, one for each end of the range.}{10}{section.3.20}
+\contentsline {chapter}{\numberline {4}Programming Considerations}{11}{chapter.4}
+\contentsline {chapter}{\numberline {5}User Interface Considerations}{12}{chapter.5}
+\contentsline {section}{\numberline {5.1}Catalog numbers can be assigned to either composition collections or compositions.}{12}{section.5.1}
+\contentsline {section}{\numberline {5.2}Composition numbers from different catalogs can be assigned to the same composition or composition collection.}{13}{section.5.2}
+\contentsline {section}{\numberline {5.3}A composition or composition collection might have multiple composers.}{13}{section.5.3}
+\contentsline {chapter}{\numberline {6}Validation Considerations}{14}{chapter.6}
+\contentsline {section}{\numberline {6.1}A composition or composition collection can be incomplete or unfinished.}{14}{section.6.1}
+\contentsline {section}{\numberline {6.2}A composer can have no death date or location.}{14}{section.6.2}
+\contentsline {section}{\numberline {6.3}A user can enter in multiple composers at once.}{14}{section.6.3}

@@ -1,0 +1,11 @@
+1. Music Management Page
+2. Search / Advanced Search
+3. Audio Highlights on Composer Page
+4. Filters Menu with Timeline Views for Instruments, Major Events (Wars, Kings/Queens, Diseases?), Genres/Styles, Stylistic Movements
+5. Data Validator.
+
+
+Other:
+Build flac decoding library from scratch.
+Recycle ComposerControls if they were in view during the last render cycle.
+Improving Performance

@@ -1,0 +1,9 @@
+1. Prefer properties to fields.
+2. One line for each initialization or property setting.
+3. For any technical or complicated code, include a diagram.
+4. A project encapsulates code which is independent of the other projects, and can therefore be re-used in other applications.
+5. If it's not simple, it's not right.
+6. Group similar lines of code together and separate disimilar code with a line. (initializing, property setting, method calling, etc.).
+7. One statement per line.
+8. No extension methods / code reducers.
+9. No method chaining, including LINQ methods.
