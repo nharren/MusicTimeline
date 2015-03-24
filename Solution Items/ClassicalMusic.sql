@@ -1457,39 +1457,231 @@ VALUES ('71','5','70');
 
 
 INSERT INTO "Composer" ("ID","Name","Dates","IsPopular")
-VALUES ('','','','1');
+VALUES ('71','Rameau, Jean-Philippe','1683-09-25/1764-09-12','1');
 
 INSERT INTO "ComposerEra" ("ID", "EraID", "ComposerID")
-VALUES ('','','');
+VALUES ('72','2','71');
 
 
 
 INSERT INTO "Composer" ("ID","Name","Dates","IsPopular")
-VALUES ('','','','1');
+VALUES ('72','Rautavaara, Einojuhani','1928-10-09/open','1');
 
 INSERT INTO "ComposerEra" ("ID", "EraID", "ComposerID")
-VALUES ('','','');
+VALUES ('73','5','72');
 
 
 
 INSERT INTO "Composer" ("ID","Name","Dates","IsPopular")
-VALUES ('','','','1');
+VALUES ('73','Ravel, Maurice','1875-03-07/1937-12-28','1');
 
 INSERT INTO "ComposerEra" ("ID", "EraID", "ComposerID")
-VALUES ('','','');
+VALUES ('74','5','73');
 
 
 
 INSERT INTO "Composer" ("ID","Name","Dates","IsPopular")
-VALUES ('','','','1');
+VALUES ('74','Respighi, Ottorino','1879-07-09/1936-04-18','1');
 
 INSERT INTO "ComposerEra" ("ID", "EraID", "ComposerID")
-VALUES ('','','');
+VALUES ('75','5','74');
 
 
 
 INSERT INTO "Composer" ("ID","Name","Dates","IsPopular")
-VALUES ('','','','1');
+VALUES ('75','Rimsky-Korsakov, Nikolai','1844-03-18/1908-06-21','1');
 
 INSERT INTO "ComposerEra" ("ID", "EraID", "ComposerID")
-VALUES ('','','');
+VALUES ('76','4','75');
+
+
+
+INSERT INTO "Composer" ("ID","Name","Dates","IsPopular")
+VALUES ('76','Rodrigo, Joaquín','1901-11-22/1999-07-06','1');
+
+INSERT INTO "ComposerEra" ("ID", "EraID", "ComposerID")
+VALUES ('77','5','76');
+
+
+
+INSERT INTO "Composer" ("ID","Name","Dates","IsPopular")
+VALUES ('77','Rossini, Gioachino','1792-02-29/1868-11-13','1');
+
+INSERT INTO "ComposerEra" ("ID", "EraID", "ComposerID")
+VALUES ('78','4','77');
+
+
+
+INSERT INTO "Composer" ("ID","Name","Dates","IsPopular")
+VALUES ('78','Saint-Saëns, Camille','1835-10-09/1921-12-16','1');
+
+INSERT INTO "ComposerEra" ("ID", "EraID", "ComposerID")
+VALUES ('79','4','78');
+
+
+
+INSERT INTO "Composer" ("ID","Name","Dates","IsPopular")
+VALUES ('79','Sarasate, Pablo de','1844-03-10/1908-09-20','1');
+
+INSERT INTO "ComposerEra" ("ID", "EraID", "ComposerID")
+VALUES ('80','4','79');
+
+
+
+INSERT INTO "Composer" ("ID","Name","Dates","IsPopular")
+VALUES ('80','Satie, Erik','1866-05-17/1925-07-01','1');
+
+INSERT INTO "ComposerEra" ("ID", "EraID", "ComposerID")
+VALUES ('81','5','80');
+
+
+
+INSERT INTO "Composer" ("ID","Name","Dates","IsPopular")
+VALUES ('81','Scarlatti, Domenico','1685-10-26/1757-07-23','1');
+
+INSERT INTO "ComposerEra" ("ID", "EraID", "ComposerID")
+VALUES ('82','2','81');
+
+
+
+INSERT INTO "Composer" ("ID","Name","Dates","IsPopular")
+VALUES ('82','Schubert, Franz','1797-01-31','1');
+
+INSERT INTO "ComposerEra" ("ID", "EraID", "ComposerID")
+VALUES ('83','4','82');
+
+
+
+INSERT INTO "Composer" ("ID","Name","Dates","IsPopular")
+VALUES ('83','Schumann, Robert','1810-06-08/1856-07-29','1');
+
+INSERT INTO "ComposerEra" ("ID", "EraID", "ComposerID")
+VALUES ('84','4','83');
+
+
+
+INSERT INTO "Composer" ("ID","Name","Dates","IsPopular")
+VALUES ('84','Scriabin, Alexander','1872-01-06/1915-04-27','1');
+
+INSERT INTO "ComposerEra" ("ID", "EraID", "ComposerID")
+VALUES ('85','5','84');
+
+
+
+INSERT INTO "Composer" ("ID","Name","Dates","IsPopular")
+VALUES ('85','Shostakovich, Dmitri','1906-09-25','1');
+
+INSERT INTO "ComposerEra" ("ID", "EraID", "ComposerID")
+VALUES ('86','5','85');
+
+
+
+INSERT INTO "Composer" ("ID","Name","Dates","IsPopular")
+VALUES ('86','Sibelius, Jean','1865-12-08/1957-09-20','1');
+
+INSERT INTO "ComposerEra" ("ID", "EraID", "ComposerID")
+VALUES ('87','5','86');
+
+
+
+INSERT INTO "Composer" ("ID","Name","Dates","IsPopular")
+VALUES ('87','Smetana, Bedřich','1824-03-02/1884-05-12','1');
+
+INSERT INTO "ComposerEra" ("ID", "EraID", "ComposerID")
+VALUES ('88','4','87');
+
+
+
+INSERT INTO "Composer" ("ID","Name","Dates","IsPopular")
+VALUES ('88','Strauss II, Johann','1825-10-25/1899-06-03','1');
+
+INSERT INTO "ComposerEra" ("ID", "EraID", "ComposerID")
+VALUES ('89','4','88');
+
+
+
+INSERT INTO "Composer" ("ID","Name","Dates","IsPopular")
+VALUES ('89','Strauss, Richard','1864-06-11/1949-09-08','1');
+
+INSERT INTO "ComposerEra" ("ID", "EraID", "ComposerID")
+VALUES ('90','5','89');
+
+
+
+INSERT INTO "Composer" ("ID","Name","Dates","IsPopular")
+VALUES ('90','Stravinsky, Igor','1882-06-17/1971-04-06','1');
+
+INSERT INTO "ComposerEra" ("ID", "EraID", "ComposerID")
+VALUES ('91','5','90');
+
+
+
+INSERT INTO "Composer" ("ID","Name","Dates","IsPopular")
+VALUES ('91','Tchaikovsky, Pyotr Illyich','[1840-04-25,1840-05-07]/[1893-10-25,1893-11-6]','1');
+
+INSERT INTO "ComposerEra" ("ID", "EraID", "ComposerID")
+VALUES ('92','4','91');
+
+
+
+INSERT INTO "Composer" ("ID","Name","Dates","IsPopular")
+VALUES ('92','Telemann, Georg Philipp','1681-03-14/1767-06-25','1');
+
+INSERT INTO "ComposerEra" ("ID", "EraID", "ComposerID")
+VALUES ('93','2','92');
+
+
+
+INSERT INTO "Composer" ("ID","Name","Dates","IsPopular")
+VALUES ('93','Vaughan Williams, Ralph','1872-10-12/1958-08-26','1');
+
+INSERT INTO "ComposerEra" ("ID", "EraID", "ComposerID")
+VALUES ('94','5','93');
+
+
+
+INSERT INTO "Composer" ("ID","Name","Dates","IsPopular")
+VALUES ('94','Verdi, Giuseppe','[1813-10-09,1813-10-10]/1901-01-27','1');
+
+INSERT INTO "ComposerEra" ("ID", "EraID", "ComposerID")
+VALUES ('95','4','94');
+
+
+
+INSERT INTO "Composer" ("ID","Name","Dates","IsPopular")
+VALUES ('95','Villa-Lobos, Heitor','1887-03-05','1');
+
+INSERT INTO "ComposerEra" ("ID", "EraID", "ComposerID")
+VALUES ('96','5','95');
+
+
+
+INSERT INTO "Composer" ("ID","Name","Dates","IsPopular")
+VALUES ('96','Vivaldi, Antonio','1678-03-04/1741-07-28','1');
+
+INSERT INTO "ComposerEra" ("ID", "EraID", "ComposerID")
+VALUES ('97','2','96');
+
+
+
+INSERT INTO "Composer" ("ID","Name","Dates","IsPopular")
+VALUES ('97','Wagner, Richard','1813-05-22/1883-02-13','1');
+
+INSERT INTO "ComposerEra" ("ID", "EraID", "ComposerID")
+VALUES ('98','4','97');
+
+
+
+INSERT INTO "Composer" ("ID","Name","Dates","IsPopular")
+VALUES ('98','Walton, William','1902-03-29/1983-03-08','1');
+
+INSERT INTO "ComposerEra" ("ID", "EraID", "ComposerID")
+VALUES ('99','5','98');
+
+
+
+INSERT INTO "Composer" ("ID","Name","Dates","IsPopular")
+VALUES ('99','Weber, Carl Maria von','[1786-11-18,1786-11-19]/1826-06-05','1');
+
+INSERT INTO "ComposerEra" ("ID", "EraID", "ComposerID")
+VALUES ('100','4','99');
