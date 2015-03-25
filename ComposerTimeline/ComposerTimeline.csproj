@@ -173,10 +173,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ComposerTimeline.Database\ComposerTimeline.Database.csproj">
-      <Project>{c82fde96-b81b-4f99-92ae-a46904138676}</Project>
-      <Name>ComposerTimeline.Database</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Framework\Framework.csproj">
       <Project>{42f625df-600b-48e6-b1cc-81925caf6bb2}</Project>
       <Name>Framework</Name>

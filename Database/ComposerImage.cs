@@ -1,0 +1,25 @@
+namespace Database
+{
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
+    using System.Data.Entity.Spatial;
+
+    [Table("classical_music.composer_image")]
+    public partial class ComposerImage
+    {
+        [Column("id", TypeName = "usmallint")]
+        public int ID { get; set; }
+
+        [Required]
+        [StringLength(255)]
+        [Column("path")]
+        public string Path { get; set; }
+
+        [Column("composer_id", TypeName = "usmallint")]
+        public int ComposerID { get; set; }
+
+        public virtual Composer composer { get; set; }
+    }
+}
