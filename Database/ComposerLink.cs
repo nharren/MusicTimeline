@@ -6,7 +6,7 @@ namespace Database
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    [Table("classical_music.composer_link")]
+    [Table("music.composer_link")]
     public partial class ComposerLink
     {
         [Column("id", TypeName = "usmallint")]

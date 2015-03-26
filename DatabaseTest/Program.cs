@@ -13,7 +13,7 @@ namespace DatabaseTest
         {
             var provider = new DataProvider();
 
-            foreach (var composer in provider.Composers)
+            foreach (var composer in provider.Composers.ToList())
             {
                 Console.Write(composer.ID + " ");
                 Console.Write(composer.Name + " ");

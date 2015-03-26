@@ -7,7 +7,7 @@ namespace Database
     using System.Data.Entity.Spatial;
     using System.Diagnostics.CodeAnalysis;
 
-    [Table("classical_music.composer")]
+    [Table("music.composer")]
     public partial class Composer
     {
         [SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -16,11 +16,12 @@ namespace Database
             ComposerImages = new HashSet<ComposerImage>();
             ComposerLinks = new HashSet<ComposerLink>();
             CompositionCatalogs = new HashSet<CompositionCatalog>();
-            CompositionCollections = new HashSet<CompositionCollection>();
-            Compositions = new HashSet<Composition>();
             Eras = new HashSet<Era>();
             Influences = new HashSet<Composer>();
-            Composers = new HashSet<Composer>();
+            Influenced = new HashSet<Composer>();
+            Nationalities = new HashSet<Nationality>();
+            CompositionCollections = new HashSet<CompositionCollection>();
+            Compositions = new HashSet<Composition>();
         }
 
         [Column("id", TypeName = "usmallint")]
@@ -42,9 +43,6 @@ namespace Database
         [Column("death_location_id", TypeName = "umediumint")]
         public int? DeathLocationID { get; set; }
 
-        [Column("nationality_id", TypeName = "usmallint")]
-        public int? NationalityID { get; set; }
-
         [Column("biography", TypeName = "text")]
         [StringLength(65535)]
         public string Biography { get; set; }
@@ -56,8 +54,6 @@ namespace Database
 
         public virtual Location DeathLocation { get; set; }
 
-        public virtual Nationality Nationality { get; set; }
-
         [SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ComposerImage> ComposerImages { get; set; }
 
@@ -68,18 +64,21 @@ namespace Database
         public virtual ICollection<CompositionCatalog> CompositionCatalogs { get; set; }
 
         [SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CompositionCollection> CompositionCollections { get; set; }
-
-        [SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Composition> Compositions { get; set; }
-
-        [SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Era> Eras { get; set; }
 
         [SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Composer> Influences { get; set; }
 
         [SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Composer> Composers { get; set; }
+        public virtual ICollection<Composer> Influenced { get; set; }
+
+        [SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Nationality> Nationalities { get; set; }
+
+        [SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CompositionCollection> CompositionCollections { get; set; }
+
+        [SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Composition> Compositions { get; set; }
     }
 }

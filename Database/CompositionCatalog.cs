@@ -7,14 +7,13 @@ namespace Database
     using System.Data.Entity.Spatial;
     using System.Diagnostics.CodeAnalysis;
 
-    [Table("classical_music.composition_catalog")]
+    [Table("music.composition_catalog")]
     public partial class CompositionCatalog
     {
         [SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public CompositionCatalog()
         {
-            CompositionCatalogNumber = new HashSet<CompositionCatalogNumber>();
-            CompositionCollectionCatalogNumber = new HashSet<CompositionCollectionCatalogNumber>();
+            CatalogNumber = new HashSet<CatalogNumber>();
         }
 
         [Column("id", TypeName = "usmallint")]
@@ -28,12 +27,9 @@ namespace Database
         [Column("composer_id", TypeName = "usmallint")]
         public int ComposerID { get; set; }
 
+        [SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CatalogNumber> CatalogNumber { get; set; }
+
         public virtual Composer Composer { get; set; }
-
-        [SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CompositionCatalogNumber> CompositionCatalogNumber { get; set; }
-
-        [SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CompositionCollectionCatalogNumber> CompositionCollectionCatalogNumber { get; set; }
     }
 }

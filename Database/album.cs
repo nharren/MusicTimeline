@@ -7,15 +7,13 @@ namespace Database
     using System.Data.Entity.Spatial;
     using System.Diagnostics.CodeAnalysis;
 
-    [Table("classical_music.album")]
+    [Table("music.album")]
     public partial class Album
     {
         [SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Album()
         {
-            CompositionCollectionRecordings = new HashSet<CompositionCollectionRecording>();
-            CompositionRecordings = new HashSet<CompositionRecording>();
-            MovementRecordings = new HashSet<MovementRecording>();
+            Recordings = new HashSet<Recording>();
         }
 
         [Column("id", TypeName = "usmallint")]
@@ -27,12 +25,6 @@ namespace Database
         public string Name { get; set; }
 
         [SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CompositionCollectionRecording> CompositionCollectionRecordings { get; set; }
-
-        [SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CompositionRecording> CompositionRecordings { get; set; }
-
-        [SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<MovementRecording> MovementRecordings { get; set; }
+        public virtual ICollection<Recording> Recordings { get; set; }
     }
 }

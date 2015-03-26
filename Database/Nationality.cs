@@ -7,7 +7,7 @@ namespace Database
     using System.Data.Entity.Spatial;
     using System.Diagnostics.CodeAnalysis;
 
-    [Table("classical_music.nationality")]
+    [Table("music.nationality")]
     public partial class Nationality
     {
         [SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]

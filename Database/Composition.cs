@@ -7,18 +7,19 @@ namespace Database
     using System.Data.Entity.Spatial;
     using System.Diagnostics.CodeAnalysis;
 
-    [Table("classical_music.composition")]
+    [Table("music.composition")]
     public partial class Composition
     {
         [SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Composition()
         {
-            CompositionCatalogNumber = new HashSet<CompositionCatalogNumber>();
-            CompositionRecording = new HashSet<CompositionRecording>();
+            CatalogNumbers = new HashSet<CatalogNumber>();
             Movements = new HashSet<Movement>();
+            Recordings = new HashSet<Recording>();
+            Composers = new HashSet<Composer>();
         }
 
-        [Column("ID", TypeName = "umediumint")]
+        [Column("id", TypeName = "umediumint")]
         public int ID { get; set; }
 
         [Required]
@@ -38,23 +39,21 @@ namespace Database
         [Column("is_popular")]
         public bool IsPopular { get; set; }
 
-        [Column("composer_id", TypeName = "usmallint")]
-        public int ComposerId { get; set; }
-
         [Column("composition_collection_id", TypeName = "usmallint")]
         public int CompositionCollectionID { get; set; }
 
-        public virtual Composer Composer { get; set; }
-
         [SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CompositionCatalogNumber> CompositionCatalogNumber { get; set; }
+        public virtual ICollection<CatalogNumber> CatalogNumbers { get; set; }
 
-        public virtual CompositionCollection CompositionCollection { get; set; }
-
-        [SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CompositionRecording> CompositionRecording { get; set; }
+        public virtual CompositionCollection CompositionCollections { get; set; }
 
         [SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Movement> Movements { get; set; }
+
+        [SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Recording> Recordings { get; set; }
+
+        [SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Composer> Composers { get; set; }
     }
 }

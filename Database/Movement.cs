@@ -7,13 +7,13 @@ namespace Database
     using System.Data.Entity.Spatial;
     using System.Diagnostics.CodeAnalysis;
 
-    [Table("classical_music.movement")]
+    [Table("music.movement")]
     public partial class Movement
     {
         [SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Movement()
         {
-            MovementRecordings = new HashSet<MovementRecording>();
+            Recordings = new HashSet<Recording>();
         }
 
         [Column("id", TypeName = "umediumint")]
@@ -36,6 +36,6 @@ namespace Database
         public virtual Composition Composition { get; set; }
 
         [SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<MovementRecording> MovementRecordings { get; set; }
+        public virtual ICollection<Recording> Recordings { get; set; }
     }
 }

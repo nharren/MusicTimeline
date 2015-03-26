@@ -7,7 +7,7 @@ namespace Database
     using System.Data.Entity.Spatial;
     using System.Diagnostics.CodeAnalysis;
 
-    [Table("classical_music.era")]
+    [Table("music.era")]
     public partial class Era
     {
         [SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
@@ -16,7 +16,6 @@ namespace Database
             Composers = new HashSet<Composer>();
         }
 
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Column("id")]
         public byte ID { get; set; }
 

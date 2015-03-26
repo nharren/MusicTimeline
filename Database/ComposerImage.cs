@@ -6,7 +6,7 @@ namespace Database
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    [Table("classical_music.composer_image")]
+    [Table("music.composer_image")]
     public partial class ComposerImage
     {
         [Column("id", TypeName = "usmallint")]
@@ -20,6 +20,6 @@ namespace Database
         [Column("composer_id", TypeName = "usmallint")]
         public int ComposerID { get; set; }
 
-        public virtual Composer composer { get; set; }
+        public virtual Composer Composer { get; set; }
     }
 }

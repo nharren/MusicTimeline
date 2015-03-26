@@ -57,28 +57,29 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Album.cs" />
+    <Compile Include="CatalogNumber.cs" />
     <Compile Include="Composer.cs" />
     <Compile Include="ComposerImage.cs" />
     <Compile Include="ComposerLink.cs" />
     <Compile Include="Composition.cs" />
     <Compile Include="CompositionCatalog.cs" />
-    <Compile Include="CompositionCatalogNumber.cs" />
     <Compile Include="CompositionCollection.cs" />
-    <Compile Include="CompositionCollectionCatalogNumber.cs" />
-    <Compile Include="CompositionCollectionRecording.cs" />
-    <Compile Include="CompositionRecording.cs" />
     <Compile Include="DataProvider.cs" />
     <Compile Include="Era.cs" />
     <Compile Include="Location.cs" />
     <Compile Include="Movement.cs" />
-    <Compile Include="MovementRecording.cs" />
     <Compile Include="Nationality.cs" />
     <Compile Include="Performer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Recording.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="SQL Scripts\music.sql" />
+    <Content Include="SQL Scripts\music_default_values.sql" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -7,22 +7,17 @@ namespace Database
     using System.Data.Entity.Spatial;
     using System.Diagnostics.CodeAnalysis;
 
-    [Table("classical_music.movement_recording")]
-    public partial class MovementRecording
+    [Table("music.recording")]
+    public partial class Recording
     {
         [SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public MovementRecording()
+        public Recording()
         {
             Performers = new HashSet<Performer>();
         }
 
         [Column("id", TypeName = "umediumint")]
         public int ID { get; set; }
-
-        [Required]
-        [StringLength(255)]
-        [Column("path")]
-        public string Path { get; set; }
 
         [Required]
         [StringLength(50)]
@@ -38,10 +33,20 @@ namespace Database
         [Column("track_number")]
         public byte? TrackNumber { get; set; }
 
+        [Column("composition_collection_id", TypeName = "usmallint")]
+        public int CompositionCollectionID { get; set; }
+
+        [Column("composition_id", TypeName = "umediumint")]
+        public int CompositionID { get; set; }
+
         [Column("movement_id", TypeName = "umediumint")]
         public int MovementID { get; set; }
 
         public virtual Album Album { get; set; }
+
+        public virtual Composition Composition { get; set; }
+
+        public virtual CompositionCollection CompositionCollection { get; set; }
 
         public virtual Location Location { get; set; }
 
