@@ -44,8 +44,12 @@
     <Reference Include="EntityFramework.SqlServer">
       <HintPath>..\packages\EntityFramework.6.1.2\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
+    <Reference Include="ExtendedDateTimeFormat">
+      <HintPath>..\..\..\..\Documents\GitHub\ExtendedDateTimeFormat\ExtendedDateTimeFormat\bin\Debug\ExtendedDateTimeFormat.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Data.SQLite, Version=1.0.96.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -77,74 +81,74 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="UI\AddFilePage.xaml.cs">
-      <DependentUpon>AddFilePage.xaml</DependentUpon>
+    <Compile Include="User Interface\Pages\InputPage\InputPage.xaml.cs">
+      <DependentUpon>InputPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UI\Initializers\ComposerPageInitializer.cs" />
-    <Compile Include="UI\Initializers\ComposerTimelinePageInitializer.cs" />
-    <Compile Include="UI\ComposerTimelinePage.xaml.cs">
-      <DependentUpon>ComposerTimelinePage.xaml</DependentUpon>
+    <Compile Include="User Interface\Initializers\ComposerPageInitializer.cs" />
+    <Compile Include="User Interface\Initializers\ComposerTimelinePageInitializer.cs" />
+    <Compile Include="User Interface\Pages\TimelinePage.xaml.cs">
+      <DependentUpon>TimelinePage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UI\CompositionGroupTreeViewItem.cs" />
-    <Compile Include="UI\CompositionTreeViewItem.cs" />
-    <Compile Include="UI\Data\VisibleComposerControlData.cs" />
-    <Compile Include="UI\Data\FlagData.cs" />
-    <Compile Include="UI\FileDataForm.xaml.cs">
-      <DependentUpon>FileDataForm.xaml</DependentUpon>
+    <Compile Include="User Interface\Controls\CompositionCollectionTreeViewItem.cs" />
+    <Compile Include="User Interface\Controls\CompositionTreeViewItem.cs" />
+    <Compile Include="User Interface\Data\VisibleComposerControlData.cs" />
+    <Compile Include="User Interface\Data\Flag.cs" />
+    <Compile Include="User Interface\Pages\InputPage\Sections\RecordingSection.xaml.cs">
+      <DependentUpon>RecordingSection.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UI\Initializers\MainWindowInitializer.cs" />
-    <Compile Include="UI\MainWindow.xaml.cs">
+    <Compile Include="User Interface\Initializers\MainWindowInitializer.cs" />
+    <Compile Include="User Interface\Windows\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UI\MovementTreeViewItem.cs" />
-    <Compile Include="UI\Providers\ComposerControlProvider.cs" />
-    <Compile Include="UI\Data\Providers\InfluenceDataProvider.cs" />
-    <Compile Include="UI\Data\Providers\LinkDataProvider.cs" />
-    <Compile Include="UI\Data\InfluenceData.cs" />
-    <Compile Include="UI\Data\Providers\FlagDataProvider.cs" />
-    <Compile Include="UI\ComposerPage.xaml.cs">
+    <Compile Include="User Interface\Controls\MovementTreeViewItem.cs" />
+    <Compile Include="User Interface\Providers\ComposerControlProvider.cs" />
+    <Compile Include="User Interface\Data\Providers\InfluenceDataProvider.cs" />
+    <Compile Include="User Interface\Data\Providers\LinkDataProvider.cs" />
+    <Compile Include="User Interface\Data\InfluenceData.cs" />
+    <Compile Include="User Interface\Data\Providers\FlagProvider.cs" />
+    <Compile Include="User Interface\Pages\ComposerPage.xaml.cs">
       <DependentUpon>ComposerPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UI\Data\LinkData.cs" />
-    <Compile Include="UI\ComposerTimeline.cs" />
-    <Compile Include="UI\Providers\CompositionGroupTreeViewItemProvider.cs" />
-    <Compile Include="UI\Providers\CompositionTreeViewItemProvider.cs" />
-    <Compile Include="UI\Providers\MovementTreeViewItemProvider.cs" />
-    <Compile Include="UI\Initializers\ComposerTimelineInitializer.cs" />
+    <Compile Include="User Interface\Data\LinkData.cs" />
+    <Compile Include="User Interface\Controls\ComposerTimeline.cs" />
+    <Compile Include="User Interface\Providers\CompositionCollectionTreeViewItemProvider.cs" />
+    <Compile Include="User Interface\Providers\CompositionTreeViewItemProvider.cs" />
+    <Compile Include="User Interface\Providers\MovementTreeViewItemProvider.cs" />
+    <Compile Include="User Interface\Initializers\ComposerTimelineInitializer.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="UI\ComposerControl.cs" />
+    <Compile Include="User Interface\Controls\ComposerControl.cs" />
     <Compile Include="Data\ComposerEvent.cs" />
-    <Compile Include="UI\TreeViewItemBase.cs" />
+    <Compile Include="User Interface\Controls\TreeViewItemBase.cs" />
     <Page Include="Themes\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="UI\AddFilePage.xaml">
+    <Page Include="User Interface\Pages\InputPage\InputPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UI\ComposerPage.xaml">
+    <Page Include="User Interface\Pages\ComposerPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UI\ComposerTimelinePage.xaml">
+    <Page Include="User Interface\Pages\TimelinePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UI\FileDataForm.xaml">
+    <Page Include="User Interface\Pages\InputPage\Sections\RecordingSection.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UI\MainWindow.xaml">
+    <Page Include="User Interface\Windows\MainWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="UI\ComposerControlPanel.cs" />
+    <Compile Include="User Interface\Controls\ComposerControlPanel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -173,6 +177,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Database\Database.csproj">
+      <Project>{0151a74e-334f-4e5f-95f7-eeff670ca036}</Project>
+      <Name>Database</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Framework\Framework.csproj">
       <Project>{42f625df-600b-48e6-b1cc-81925caf6bb2}</Project>
       <Name>Framework</Name>
@@ -183,1455 +191,1455 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="UI\Resources\Favicons\Default.ico">
+    <None Include="User Interface\Resources\Favicons\Default.ico">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Composer Images\Unknown.jpg">
+    <None Include="User Interface\Resources\Composers\Unknown.jpg">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <Resource Include="UI\Resources\Star.png" />
+    <Resource Include="User Interface\Resources\Star.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="UI\Resources\Flags\16\Afghan.png">
+    <None Include="User Interface\Resources\Flags\16\Afghan.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Albanian.png">
+    <None Include="User Interface\Resources\Flags\16\Albanian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Algerian.png">
+    <None Include="User Interface\Resources\Flags\16\Algerian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\American Samoan.png">
+    <None Include="User Interface\Resources\Flags\16\American Samoan.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Andorran.png">
+    <None Include="User Interface\Resources\Flags\16\Andorran.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Angolan.png">
+    <None Include="User Interface\Resources\Flags\16\Angolan.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Anguillian.png">
+    <None Include="User Interface\Resources\Flags\16\Anguillian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Argentine.png">
+    <None Include="User Interface\Resources\Flags\16\Argentine.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Armenian.png">
+    <None Include="User Interface\Resources\Flags\16\Armenian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Aruban.png">
+    <None Include="User Interface\Resources\Flags\16\Aruban.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Australian.png">
+    <None Include="User Interface\Resources\Flags\16\Australian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Austrian.png">
+    <None Include="User Interface\Resources\Flags\16\Austrian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Azerbaijani.png">
+    <None Include="User Interface\Resources\Flags\16\Azerbaijani.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Bahamian.png">
+    <None Include="User Interface\Resources\Flags\16\Bahamian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Bahraini.png">
+    <None Include="User Interface\Resources\Flags\16\Bahraini.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Bangladeshi.png">
+    <None Include="User Interface\Resources\Flags\16\Bangladeshi.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Barbadian.png">
+    <None Include="User Interface\Resources\Flags\16\Barbadian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Belarusian.png">
+    <None Include="User Interface\Resources\Flags\16\Belarusian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Belgian.png">
+    <None Include="User Interface\Resources\Flags\16\Belgian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Belizean.png">
+    <None Include="User Interface\Resources\Flags\16\Belizean.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Beninese.png">
+    <None Include="User Interface\Resources\Flags\16\Beninese.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Bermudian.png">
+    <None Include="User Interface\Resources\Flags\16\Bermudian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Bhutanese.png">
+    <None Include="User Interface\Resources\Flags\16\Bhutanese.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Bolivian.png">
+    <None Include="User Interface\Resources\Flags\16\Bolivian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Motswana.png">
+    <None Include="User Interface\Resources\Flags\16\Motswana.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Brazilian.png">
+    <None Include="User Interface\Resources\Flags\16\Brazilian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\British Virgin Islander.png">
+    <None Include="User Interface\Resources\Flags\16\British Virgin Islander.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Bruneian.png">
+    <None Include="User Interface\Resources\Flags\16\Bruneian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Bulgarian.png">
+    <None Include="User Interface\Resources\Flags\16\Bulgarian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Burkinabe.png">
+    <None Include="User Interface\Resources\Flags\16\Burkinabe.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Burundian.png">
+    <None Include="User Interface\Resources\Flags\16\Burundian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Cambodian.png">
+    <None Include="User Interface\Resources\Flags\16\Cambodian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Cameroonian.png">
+    <None Include="User Interface\Resources\Flags\16\Cameroonian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Canadian.png">
+    <None Include="User Interface\Resources\Flags\16\Canadian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Cabo Verdean.png">
+    <None Include="User Interface\Resources\Flags\16\Cabo Verdean.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Caymanian.png">
+    <None Include="User Interface\Resources\Flags\16\Caymanian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Central African.png">
+    <None Include="User Interface\Resources\Flags\16\Central African.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Chadian.png">
+    <None Include="User Interface\Resources\Flags\16\Chadian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Chilean.png">
+    <None Include="User Interface\Resources\Flags\16\Chilean.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Chinese.png">
+    <None Include="User Interface\Resources\Flags\16\Chinese.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Christmas Island.png">
+    <None Include="User Interface\Resources\Flags\16\Christmas Island.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Cocos Islander.png">
+    <None Include="User Interface\Resources\Flags\16\Cocos Islander.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Colombian.png">
+    <None Include="User Interface\Resources\Flags\16\Colombian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Comoran.png">
+    <None Include="User Interface\Resources\Flags\16\Comoran.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Cook Islander.png">
+    <None Include="User Interface\Resources\Flags\16\Cook Islander.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Costa Rican.png">
+    <None Include="User Interface\Resources\Flags\16\Costa Rican.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Ivorian.png">
+    <None Include="User Interface\Resources\Flags\16\Ivorian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Croatian.png">
+    <None Include="User Interface\Resources\Flags\16\Croatian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Cuban.png">
+    <None Include="User Interface\Resources\Flags\16\Cuban.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Curacaoan.png">
+    <None Include="User Interface\Resources\Flags\16\Curacaoan.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Cypriot.png">
+    <None Include="User Interface\Resources\Flags\16\Cypriot.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Czech.png">
+    <None Include="User Interface\Resources\Flags\16\Czech.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Congolese %28Democratic Republic of the Congo%29.png">
+    <None Include="User Interface\Resources\Flags\16\Congolese %28Democratic Republic of the Congo%29.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Danish.png">
+    <None Include="User Interface\Resources\Flags\16\Danish.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Djiboutian.png">
+    <None Include="User Interface\Resources\Flags\16\Djiboutian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Dominican %28Dominica%29.png">
+    <None Include="User Interface\Resources\Flags\16\Dominican %28Dominica%29.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Dominican %28Dominican Republic%29.png">
+    <None Include="User Interface\Resources\Flags\16\Dominican %28Dominican Republic%29.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Timorese.png">
+    <None Include="User Interface\Resources\Flags\16\Timorese.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Ecuadorian.png">
+    <None Include="User Interface\Resources\Flags\16\Ecuadorian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Egyptian.png">
+    <None Include="User Interface\Resources\Flags\16\Egyptian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Salvadoran.png">
+    <None Include="User Interface\Resources\Flags\16\Salvadoran.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\English.png">
+    <None Include="User Interface\Resources\Flags\16\English.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Equatorial Guinean.png">
+    <None Include="User Interface\Resources\Flags\16\Equatorial Guinean.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Eritrean.png">
+    <None Include="User Interface\Resources\Flags\16\Eritrean.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Estonian.png">
+    <None Include="User Interface\Resources\Flags\16\Estonian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Ethiopian.png">
+    <None Include="User Interface\Resources\Flags\16\Ethiopian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Falkland Island.png">
+    <None Include="User Interface\Resources\Flags\16\Falkland Island.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Faroese.png">
+    <None Include="User Interface\Resources\Flags\16\Faroese.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Fijian.png">
+    <None Include="User Interface\Resources\Flags\16\Fijian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Finnish.png">
+    <None Include="User Interface\Resources\Flags\16\Finnish.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\French.png">
+    <None Include="User Interface\Resources\Flags\16\French.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\French Polynesian.png">
+    <None Include="User Interface\Resources\Flags\16\French Polynesian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Gabonese.png">
+    <None Include="User Interface\Resources\Flags\16\Gabonese.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Gambian.png">
+    <None Include="User Interface\Resources\Flags\16\Gambian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Georgian.png">
+    <None Include="User Interface\Resources\Flags\16\Georgian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\German.png">
+    <None Include="User Interface\Resources\Flags\16\German.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Ghanaian.png">
+    <None Include="User Interface\Resources\Flags\16\Ghanaian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Gibraltarian.png">
+    <None Include="User Interface\Resources\Flags\16\Gibraltarian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Greek.png">
+    <None Include="User Interface\Resources\Flags\16\Greek.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Greenlandic.png">
+    <None Include="User Interface\Resources\Flags\16\Greenlandic.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Grenadian.png">
+    <None Include="User Interface\Resources\Flags\16\Grenadian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Guamanian.png">
+    <None Include="User Interface\Resources\Flags\16\Guamanian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Guatemalan.png">
+    <None Include="User Interface\Resources\Flags\16\Guatemalan.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Channel Islander %28Guernsey%29.png">
+    <None Include="User Interface\Resources\Flags\16\Channel Islander %28Guernsey%29.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Bissau-Guinean.png">
+    <None Include="User Interface\Resources\Flags\16\Bissau-Guinean.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Guinean.png">
+    <None Include="User Interface\Resources\Flags\16\Guinean.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Guyanese.png">
+    <None Include="User Interface\Resources\Flags\16\Guyanese.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Haitian.png">
+    <None Include="User Interface\Resources\Flags\16\Haitian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Honduran.png">
+    <None Include="User Interface\Resources\Flags\16\Honduran.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Chinese %28Hong Kong%29.png">
+    <None Include="User Interface\Resources\Flags\16\Chinese %28Hong Kong%29.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Hungarian.png">
+    <None Include="User Interface\Resources\Flags\16\Hungarian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Icelandic.png">
+    <None Include="User Interface\Resources\Flags\16\Icelandic.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Indian.png">
+    <None Include="User Interface\Resources\Flags\16\Indian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Indonesian.png">
+    <None Include="User Interface\Resources\Flags\16\Indonesian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Iranian.png">
+    <None Include="User Interface\Resources\Flags\16\Iranian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Iraqi.png">
+    <None Include="User Interface\Resources\Flags\16\Iraqi.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Irish.png">
+    <None Include="User Interface\Resources\Flags\16\Irish.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Manx.png">
+    <None Include="User Interface\Resources\Flags\16\Manx.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Israeli.png">
+    <None Include="User Interface\Resources\Flags\16\Israeli.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Italian.png">
+    <None Include="User Interface\Resources\Flags\16\Italian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Jamaican.png">
+    <None Include="User Interface\Resources\Flags\16\Jamaican.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Japanese.png">
+    <None Include="User Interface\Resources\Flags\16\Japanese.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Channel Islander %28Jersey%29.png">
+    <None Include="User Interface\Resources\Flags\16\Channel Islander %28Jersey%29.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Jordanian.png">
+    <None Include="User Interface\Resources\Flags\16\Jordanian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Kazakhstani.png">
+    <None Include="User Interface\Resources\Flags\16\Kazakhstani.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Kenyan.png">
+    <None Include="User Interface\Resources\Flags\16\Kenyan.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\I-Kiribati.png">
+    <None Include="User Interface\Resources\Flags\16\I-Kiribati.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Kosovan.png">
+    <None Include="User Interface\Resources\Flags\16\Kosovan.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Kuwaiti.png">
+    <None Include="User Interface\Resources\Flags\16\Kuwaiti.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Kyrgyzstani.png">
+    <None Include="User Interface\Resources\Flags\16\Kyrgyzstani.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Lao.png">
+    <None Include="User Interface\Resources\Flags\16\Lao.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Latvian.png">
+    <None Include="User Interface\Resources\Flags\16\Latvian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Lebanese.png">
+    <None Include="User Interface\Resources\Flags\16\Lebanese.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Basotho.png">
+    <None Include="User Interface\Resources\Flags\16\Basotho.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Liberian.png">
+    <None Include="User Interface\Resources\Flags\16\Liberian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Libyan.png">
+    <None Include="User Interface\Resources\Flags\16\Libyan.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Liechtenstein.png">
+    <None Include="User Interface\Resources\Flags\16\Liechtenstein.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Lithuanian.png">
+    <None Include="User Interface\Resources\Flags\16\Lithuanian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Luxembourg.png">
+    <None Include="User Interface\Resources\Flags\16\Luxembourg.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Chinese %28Macau%29.png">
+    <None Include="User Interface\Resources\Flags\16\Chinese %28Macau%29.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Macedonian.png">
+    <None Include="User Interface\Resources\Flags\16\Macedonian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Malagasy.png">
+    <None Include="User Interface\Resources\Flags\16\Malagasy.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Malawian.png">
+    <None Include="User Interface\Resources\Flags\16\Malawian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Malaysian.png">
+    <None Include="User Interface\Resources\Flags\16\Malaysian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Maldivian.png">
+    <None Include="User Interface\Resources\Flags\16\Maldivian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Malian.png">
+    <None Include="User Interface\Resources\Flags\16\Malian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Maltese.png">
+    <None Include="User Interface\Resources\Flags\16\Maltese.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Marshallese.png">
+    <None Include="User Interface\Resources\Flags\16\Marshallese.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Mauritanian.png">
+    <None Include="User Interface\Resources\Flags\16\Mauritanian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Mauritian.png">
+    <None Include="User Interface\Resources\Flags\16\Mauritian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Mexican.png">
+    <None Include="User Interface\Resources\Flags\16\Mexican.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Micronesian.png">
+    <None Include="User Interface\Resources\Flags\16\Micronesian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Moldovan.png">
+    <None Include="User Interface\Resources\Flags\16\Moldovan.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Monegasque.png">
+    <None Include="User Interface\Resources\Flags\16\Monegasque.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Mongolian.png">
+    <None Include="User Interface\Resources\Flags\16\Mongolian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Montenegrin.png">
+    <None Include="User Interface\Resources\Flags\16\Montenegrin.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Montserratian.png">
+    <None Include="User Interface\Resources\Flags\16\Montserratian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Moroccan.png">
+    <None Include="User Interface\Resources\Flags\16\Moroccan.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Mozambican.png">
+    <None Include="User Interface\Resources\Flags\16\Mozambican.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Burmese.png">
+    <None Include="User Interface\Resources\Flags\16\Burmese.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Namibian.png">
+    <None Include="User Interface\Resources\Flags\16\Namibian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Nauruan.png">
+    <None Include="User Interface\Resources\Flags\16\Nauruan.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Nepali.png">
+    <None Include="User Interface\Resources\Flags\16\Nepali.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Dutch.png">
+    <None Include="User Interface\Resources\Flags\16\Dutch.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\New Caledonian.png">
+    <None Include="User Interface\Resources\Flags\16\New Caledonian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\New Zealand.png">
+    <None Include="User Interface\Resources\Flags\16\New Zealand.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Nicaraguan.png">
+    <None Include="User Interface\Resources\Flags\16\Nicaraguan.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Nigerian %28Niger%29.png">
+    <None Include="User Interface\Resources\Flags\16\Nigerian %28Niger%29.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Nigerian %28Nigeria%29.png">
+    <None Include="User Interface\Resources\Flags\16\Nigerian %28Nigeria%29.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Niuean.png">
+    <None Include="User Interface\Resources\Flags\16\Niuean.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Norfolk Islander.png">
+    <None Include="User Interface\Resources\Flags\16\Norfolk Islander.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\North Korean.png">
+    <None Include="User Interface\Resources\Flags\16\North Korean.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Norwegian.png">
+    <None Include="User Interface\Resources\Flags\16\Norwegian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Omani.png">
+    <None Include="User Interface\Resources\Flags\16\Omani.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Pakistani.png">
+    <None Include="User Interface\Resources\Flags\16\Pakistani.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Palauan.png">
+    <None Include="User Interface\Resources\Flags\16\Palauan.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Palestinian.png">
+    <None Include="User Interface\Resources\Flags\16\Palestinian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Panamanian.png">
+    <None Include="User Interface\Resources\Flags\16\Panamanian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Papua New Guinean.png">
+    <None Include="User Interface\Resources\Flags\16\Papua New Guinean.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Paraguayan.png">
+    <None Include="User Interface\Resources\Flags\16\Paraguayan.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Peruvian.png">
+    <None Include="User Interface\Resources\Flags\16\Peruvian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Philippine.png">
+    <None Include="User Interface\Resources\Flags\16\Philippine.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Pitcairn Islander.png">
+    <None Include="User Interface\Resources\Flags\16\Pitcairn Islander.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Polish.png">
+    <None Include="User Interface\Resources\Flags\16\Polish.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Portuguese.png">
+    <None Include="User Interface\Resources\Flags\16\Portuguese.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Puerto Rican.png">
+    <None Include="User Interface\Resources\Flags\16\Puerto Rican.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Qatari.png">
+    <None Include="User Interface\Resources\Flags\16\Qatari.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Congolese %28Republic of the Congo%29.png">
+    <None Include="User Interface\Resources\Flags\16\Congolese %28Republic of the Congo%29.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Romanian.png">
+    <None Include="User Interface\Resources\Flags\16\Romanian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Russian.png">
+    <None Include="User Interface\Resources\Flags\16\Russian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Rwandan.png">
+    <None Include="User Interface\Resources\Flags\16\Rwandan.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Saint Helenian.png">
+    <None Include="User Interface\Resources\Flags\16\Saint Helenian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Kittitian.png">
+    <None Include="User Interface\Resources\Flags\16\Kittitian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Saint Lucian.png">
+    <None Include="User Interface\Resources\Flags\16\Saint Lucian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Saint Vincentian.png">
+    <None Include="User Interface\Resources\Flags\16\Saint Vincentian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Samoan.png">
+    <None Include="User Interface\Resources\Flags\16\Samoan.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Sammarinese.png">
+    <None Include="User Interface\Resources\Flags\16\Sammarinese.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Sao Tomean.png">
+    <None Include="User Interface\Resources\Flags\16\Sao Tomean.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Saudi.png">
+    <None Include="User Interface\Resources\Flags\16\Saudi.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Scottish.png">
+    <None Include="User Interface\Resources\Flags\16\Scottish.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Senegalese.png">
+    <None Include="User Interface\Resources\Flags\16\Senegalese.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Serbian.png">
+    <None Include="User Interface\Resources\Flags\16\Serbian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Seychellois.png">
+    <None Include="User Interface\Resources\Flags\16\Seychellois.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Sierra Leonean.png">
+    <None Include="User Interface\Resources\Flags\16\Sierra Leonean.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Singapore.png">
+    <None Include="User Interface\Resources\Flags\16\Singapore.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Slovak.png">
+    <None Include="User Interface\Resources\Flags\16\Slovak.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Slovenian.png">
+    <None Include="User Interface\Resources\Flags\16\Slovenian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Solomon Islander.png">
+    <None Include="User Interface\Resources\Flags\16\Solomon Islander.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Somali.png">
+    <None Include="User Interface\Resources\Flags\16\Somali.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\South African.png">
+    <None Include="User Interface\Resources\Flags\16\South African.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\South Korean.png">
+    <None Include="User Interface\Resources\Flags\16\South Korean.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\South Sudanese.png">
+    <None Include="User Interface\Resources\Flags\16\South Sudanese.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Spanish.png">
+    <None Include="User Interface\Resources\Flags\16\Spanish.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Sri Lankan.png">
+    <None Include="User Interface\Resources\Flags\16\Sri Lankan.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Sudanese.png">
+    <None Include="User Interface\Resources\Flags\16\Sudanese.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Surinamese.png">
+    <None Include="User Interface\Resources\Flags\16\Surinamese.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Swazi.png">
+    <None Include="User Interface\Resources\Flags\16\Swazi.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Swedish.png">
+    <None Include="User Interface\Resources\Flags\16\Swedish.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Swiss.png">
+    <None Include="User Interface\Resources\Flags\16\Swiss.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Syrian.png">
+    <None Include="User Interface\Resources\Flags\16\Syrian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Taiwan.png">
+    <None Include="User Interface\Resources\Flags\16\Taiwan.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Tajikistani.png">
+    <None Include="User Interface\Resources\Flags\16\Tajikistani.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Tanzanian.png">
+    <None Include="User Interface\Resources\Flags\16\Tanzanian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Thai.png">
+    <None Include="User Interface\Resources\Flags\16\Thai.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Togolese.png">
+    <None Include="User Interface\Resources\Flags\16\Togolese.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Tokelauan.png">
+    <None Include="User Interface\Resources\Flags\16\Tokelauan.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Tongan.png">
+    <None Include="User Interface\Resources\Flags\16\Tongan.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Tobagonian.png">
+    <None Include="User Interface\Resources\Flags\16\Tobagonian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Tunisian.png">
+    <None Include="User Interface\Resources\Flags\16\Tunisian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Turkish.png">
+    <None Include="User Interface\Resources\Flags\16\Turkish.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Turkmen.png">
+    <None Include="User Interface\Resources\Flags\16\Turkmen.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Tuvaluan.png">
+    <None Include="User Interface\Resources\Flags\16\Tuvaluan.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Ugandan.png">
+    <None Include="User Interface\Resources\Flags\16\Ugandan.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Ukrainian.png">
+    <None Include="User Interface\Resources\Flags\16\Ukrainian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Emirati.png">
+    <None Include="User Interface\Resources\Flags\16\Emirati.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\British.png">
+    <None Include="User Interface\Resources\Flags\16\British.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\American.png">
+    <None Include="User Interface\Resources\Flags\16\American.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Unknown.png">
+    <None Include="User Interface\Resources\Flags\16\Unknown.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Uruguayan.png">
+    <None Include="User Interface\Resources\Flags\16\Uruguayan.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Virgin Islander.png">
+    <None Include="User Interface\Resources\Flags\16\Virgin Islander.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Uzbekistani.png">
+    <None Include="User Interface\Resources\Flags\16\Uzbekistani.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Ni-Vanuatu.png">
+    <None Include="User Interface\Resources\Flags\16\Ni-Vanuatu.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Venezuelan.png">
+    <None Include="User Interface\Resources\Flags\16\Venezuelan.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Vietnamese.png">
+    <None Include="User Interface\Resources\Flags\16\Vietnamese.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Welsh.png">
+    <None Include="User Interface\Resources\Flags\16\Welsh.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Wallisian.png">
+    <None Include="User Interface\Resources\Flags\16\Wallisian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Sahrawi.png">
+    <None Include="User Interface\Resources\Flags\16\Sahrawi.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Yemeni.png">
+    <None Include="User Interface\Resources\Flags\16\Yemeni.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Zambian.png">
+    <None Include="User Interface\Resources\Flags\16\Zambian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\16\Zimbabwean.png">
+    <None Include="User Interface\Resources\Flags\16\Zimbabwean.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Afghan.png">
+    <None Include="User Interface\Resources\Flags\32\Afghan.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Albanian.png">
+    <None Include="User Interface\Resources\Flags\32\Albanian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Algerian.png">
+    <None Include="User Interface\Resources\Flags\32\Algerian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\American Samoan.png">
+    <None Include="User Interface\Resources\Flags\32\American Samoan.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Andorran.png">
+    <None Include="User Interface\Resources\Flags\32\Andorran.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Angolan.png">
+    <None Include="User Interface\Resources\Flags\32\Angolan.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Anguillian.png">
+    <None Include="User Interface\Resources\Flags\32\Anguillian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Argentine.png">
+    <None Include="User Interface\Resources\Flags\32\Argentine.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Armenian.png">
+    <None Include="User Interface\Resources\Flags\32\Armenian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Aruban.png">
+    <None Include="User Interface\Resources\Flags\32\Aruban.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Australian.png">
+    <None Include="User Interface\Resources\Flags\32\Australian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Austrian.png">
+    <None Include="User Interface\Resources\Flags\32\Austrian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Azerbaijani.png">
+    <None Include="User Interface\Resources\Flags\32\Azerbaijani.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Bahamian.png">
+    <None Include="User Interface\Resources\Flags\32\Bahamian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Bahraini.png">
+    <None Include="User Interface\Resources\Flags\32\Bahraini.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Bangladeshi.png">
+    <None Include="User Interface\Resources\Flags\32\Bangladeshi.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Barbadian.png">
+    <None Include="User Interface\Resources\Flags\32\Barbadian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Belarusian.png">
+    <None Include="User Interface\Resources\Flags\32\Belarusian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Belgian.png">
+    <None Include="User Interface\Resources\Flags\32\Belgian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Belizean.png">
+    <None Include="User Interface\Resources\Flags\32\Belizean.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Beninese.png">
+    <None Include="User Interface\Resources\Flags\32\Beninese.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Bermudian.png">
+    <None Include="User Interface\Resources\Flags\32\Bermudian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Bhutanese.png">
+    <None Include="User Interface\Resources\Flags\32\Bhutanese.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Bolivian.png">
+    <None Include="User Interface\Resources\Flags\32\Bolivian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Brazilian.png">
+    <None Include="User Interface\Resources\Flags\32\Brazilian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\British Virgin Islander.png">
+    <None Include="User Interface\Resources\Flags\32\British Virgin Islander.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Bruneian.png">
+    <None Include="User Interface\Resources\Flags\32\Bruneian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Bulgarian.png">
+    <None Include="User Interface\Resources\Flags\32\Bulgarian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Burkinabe.png">
+    <None Include="User Interface\Resources\Flags\32\Burkinabe.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Burundian.png">
+    <None Include="User Interface\Resources\Flags\32\Burundian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Cambodian.png">
+    <None Include="User Interface\Resources\Flags\32\Cambodian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Cameroonian.png">
+    <None Include="User Interface\Resources\Flags\32\Cameroonian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Canadian.png">
+    <None Include="User Interface\Resources\Flags\32\Canadian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Cabo Verdean.png">
+    <None Include="User Interface\Resources\Flags\32\Cabo Verdean.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Caymanian.png">
+    <None Include="User Interface\Resources\Flags\32\Caymanian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Central African.png">
+    <None Include="User Interface\Resources\Flags\32\Central African.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Chadian.png">
+    <None Include="User Interface\Resources\Flags\32\Chadian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Chilean.png">
+    <None Include="User Interface\Resources\Flags\32\Chilean.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Chinese.png">
+    <None Include="User Interface\Resources\Flags\32\Chinese.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Christmas Island.png">
+    <None Include="User Interface\Resources\Flags\32\Christmas Island.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Cocos Islander.png">
+    <None Include="User Interface\Resources\Flags\32\Cocos Islander.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Colombian.png">
+    <None Include="User Interface\Resources\Flags\32\Colombian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Comoran.png">
+    <None Include="User Interface\Resources\Flags\32\Comoran.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Cook Islander.png">
+    <None Include="User Interface\Resources\Flags\32\Cook Islander.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Costa Rican.png">
+    <None Include="User Interface\Resources\Flags\32\Costa Rican.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Ivorian.png">
+    <None Include="User Interface\Resources\Flags\32\Ivorian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Croatian.png">
+    <None Include="User Interface\Resources\Flags\32\Croatian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Cuban.png">
+    <None Include="User Interface\Resources\Flags\32\Cuban.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Curacaoan.png">
+    <None Include="User Interface\Resources\Flags\32\Curacaoan.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Cypriot.png">
+    <None Include="User Interface\Resources\Flags\32\Cypriot.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Czech.png">
+    <None Include="User Interface\Resources\Flags\32\Czech.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Congolese %28Democratic Republic of the Congo%29.png">
+    <None Include="User Interface\Resources\Flags\32\Congolese %28Democratic Republic of the Congo%29.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Danish.png">
+    <None Include="User Interface\Resources\Flags\32\Danish.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Djiboutian.png">
+    <None Include="User Interface\Resources\Flags\32\Djiboutian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Dominican %28Dominica%29.png">
+    <None Include="User Interface\Resources\Flags\32\Dominican %28Dominica%29.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Dominican %28Dominican Republic%29.png">
+    <None Include="User Interface\Resources\Flags\32\Dominican %28Dominican Republic%29.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Timorese.png">
+    <None Include="User Interface\Resources\Flags\32\Timorese.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Ecuadorian.png">
+    <None Include="User Interface\Resources\Flags\32\Ecuadorian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Egyptian.png">
+    <None Include="User Interface\Resources\Flags\32\Egyptian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Salvadoran.png">
+    <None Include="User Interface\Resources\Flags\32\Salvadoran.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\English.png">
+    <None Include="User Interface\Resources\Flags\32\English.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Equatorial Guinean.png">
+    <None Include="User Interface\Resources\Flags\32\Equatorial Guinean.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Eritrean.png">
+    <None Include="User Interface\Resources\Flags\32\Eritrean.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Estonian.png">
+    <None Include="User Interface\Resources\Flags\32\Estonian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Ethiopian.png">
+    <None Include="User Interface\Resources\Flags\32\Ethiopian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Falkland Island.png">
+    <None Include="User Interface\Resources\Flags\32\Falkland Island.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Faroese.png">
+    <None Include="User Interface\Resources\Flags\32\Faroese.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Fijian.png">
+    <None Include="User Interface\Resources\Flags\32\Fijian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Finnish.png">
+    <None Include="User Interface\Resources\Flags\32\Finnish.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\French.png">
+    <None Include="User Interface\Resources\Flags\32\French.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\French Polynesian.png">
+    <None Include="User Interface\Resources\Flags\32\French Polynesian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Gabonese.png">
+    <None Include="User Interface\Resources\Flags\32\Gabonese.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Gambian.png">
+    <None Include="User Interface\Resources\Flags\32\Gambian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Georgian.png">
+    <None Include="User Interface\Resources\Flags\32\Georgian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\German.png">
+    <None Include="User Interface\Resources\Flags\32\German.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Ghanaian.png">
+    <None Include="User Interface\Resources\Flags\32\Ghanaian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Gibraltarian.png">
+    <None Include="User Interface\Resources\Flags\32\Gibraltarian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Greek.png">
+    <None Include="User Interface\Resources\Flags\32\Greek.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Greenlandic.png">
+    <None Include="User Interface\Resources\Flags\32\Greenlandic.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Grenadian.png">
+    <None Include="User Interface\Resources\Flags\32\Grenadian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Guamanian.png">
+    <None Include="User Interface\Resources\Flags\32\Guamanian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Guatemalan.png">
+    <None Include="User Interface\Resources\Flags\32\Guatemalan.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Channel Islander %28Guernsey%29.png">
+    <None Include="User Interface\Resources\Flags\32\Channel Islander %28Guernsey%29.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Bissau-Guinean.png">
+    <None Include="User Interface\Resources\Flags\32\Bissau-Guinean.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Guinean.png">
+    <None Include="User Interface\Resources\Flags\32\Guinean.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Guyanese.png">
+    <None Include="User Interface\Resources\Flags\32\Guyanese.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Haitian.png">
+    <None Include="User Interface\Resources\Flags\32\Haitian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Honduran.png">
+    <None Include="User Interface\Resources\Flags\32\Honduran.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Chinese %28Hong Kong%29.png">
+    <None Include="User Interface\Resources\Flags\32\Chinese %28Hong Kong%29.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Hungarian.png">
+    <None Include="User Interface\Resources\Flags\32\Hungarian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Icelandic.png">
+    <None Include="User Interface\Resources\Flags\32\Icelandic.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Indian.png">
+    <None Include="User Interface\Resources\Flags\32\Indian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Indonesian.png">
+    <None Include="User Interface\Resources\Flags\32\Indonesian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Iranian.png">
+    <None Include="User Interface\Resources\Flags\32\Iranian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Iraqi.png">
+    <None Include="User Interface\Resources\Flags\32\Iraqi.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Irish.png">
+    <None Include="User Interface\Resources\Flags\32\Irish.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Manx.png">
+    <None Include="User Interface\Resources\Flags\32\Manx.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Israeli.png">
+    <None Include="User Interface\Resources\Flags\32\Israeli.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Italian.png">
+    <None Include="User Interface\Resources\Flags\32\Italian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Jamaican.png">
+    <None Include="User Interface\Resources\Flags\32\Jamaican.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Japanese.png">
+    <None Include="User Interface\Resources\Flags\32\Japanese.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Channel Islander %28Jersey%29.png">
+    <None Include="User Interface\Resources\Flags\32\Channel Islander %28Jersey%29.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Jordanian.png">
+    <None Include="User Interface\Resources\Flags\32\Jordanian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Kazakhstani.png">
+    <None Include="User Interface\Resources\Flags\32\Kazakhstani.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Kenyan.png">
+    <None Include="User Interface\Resources\Flags\32\Kenyan.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\I-Kiribati.png">
+    <None Include="User Interface\Resources\Flags\32\I-Kiribati.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Kosovan.png">
+    <None Include="User Interface\Resources\Flags\32\Kosovan.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Kuwaiti.png">
+    <None Include="User Interface\Resources\Flags\32\Kuwaiti.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Kyrgyzstani.png">
+    <None Include="User Interface\Resources\Flags\32\Kyrgyzstani.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Lao.png">
+    <None Include="User Interface\Resources\Flags\32\Lao.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Latvian.png">
+    <None Include="User Interface\Resources\Flags\32\Latvian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Lebanese.png">
+    <None Include="User Interface\Resources\Flags\32\Lebanese.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Basotho.png">
+    <None Include="User Interface\Resources\Flags\32\Basotho.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Liberian.png">
+    <None Include="User Interface\Resources\Flags\32\Liberian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Libyan.png">
+    <None Include="User Interface\Resources\Flags\32\Libyan.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Liechtenstein.png">
+    <None Include="User Interface\Resources\Flags\32\Liechtenstein.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Lithuanian.png">
+    <None Include="User Interface\Resources\Flags\32\Lithuanian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Luxembourg.png">
+    <None Include="User Interface\Resources\Flags\32\Luxembourg.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Chinese %28Macau%29.png">
+    <None Include="User Interface\Resources\Flags\32\Chinese %28Macau%29.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Macedonian.png">
+    <None Include="User Interface\Resources\Flags\32\Macedonian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Malagasy.png">
+    <None Include="User Interface\Resources\Flags\32\Malagasy.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Malawian.png">
+    <None Include="User Interface\Resources\Flags\32\Malawian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Malaysian.png">
+    <None Include="User Interface\Resources\Flags\32\Malaysian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Maldivian.png">
+    <None Include="User Interface\Resources\Flags\32\Maldivian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Malian.png">
+    <None Include="User Interface\Resources\Flags\32\Malian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Maltese.png">
+    <None Include="User Interface\Resources\Flags\32\Maltese.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Marshallese.png">
+    <None Include="User Interface\Resources\Flags\32\Marshallese.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Mauritanian.png">
+    <None Include="User Interface\Resources\Flags\32\Mauritanian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Mauritian.png">
+    <None Include="User Interface\Resources\Flags\32\Mauritian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Mexican.png">
+    <None Include="User Interface\Resources\Flags\32\Mexican.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Micronesian.png">
+    <None Include="User Interface\Resources\Flags\32\Micronesian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Moldovan.png">
+    <None Include="User Interface\Resources\Flags\32\Moldovan.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Monegasque.png">
+    <None Include="User Interface\Resources\Flags\32\Monegasque.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Mongolian.png">
+    <None Include="User Interface\Resources\Flags\32\Mongolian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Montenegrin.png">
+    <None Include="User Interface\Resources\Flags\32\Montenegrin.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Montserratian.png">
+    <None Include="User Interface\Resources\Flags\32\Montserratian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Moroccan.png">
+    <None Include="User Interface\Resources\Flags\32\Moroccan.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Mozambican.png">
+    <None Include="User Interface\Resources\Flags\32\Mozambican.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Burmese.png">
+    <None Include="User Interface\Resources\Flags\32\Burmese.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Namibian.png">
+    <None Include="User Interface\Resources\Flags\32\Namibian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Nauruan.png">
+    <None Include="User Interface\Resources\Flags\32\Nauruan.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Nepali.png">
+    <None Include="User Interface\Resources\Flags\32\Nepali.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Dutch.png">
+    <None Include="User Interface\Resources\Flags\32\Dutch.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\New Caledonian.png">
+    <None Include="User Interface\Resources\Flags\32\New Caledonian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\New Zealand.png">
+    <None Include="User Interface\Resources\Flags\32\New Zealand.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Nicaraguan.png">
+    <None Include="User Interface\Resources\Flags\32\Nicaraguan.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Nigerian %28Niger%29.png">
+    <None Include="User Interface\Resources\Flags\32\Nigerian %28Niger%29.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Nigerian %28Nigeria%29.png">
+    <None Include="User Interface\Resources\Flags\32\Nigerian %28Nigeria%29.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Niuean.png">
+    <None Include="User Interface\Resources\Flags\32\Niuean.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Norfolk Islander.png">
+    <None Include="User Interface\Resources\Flags\32\Norfolk Islander.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\North Korean.png">
+    <None Include="User Interface\Resources\Flags\32\North Korean.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Norwegian.png">
+    <None Include="User Interface\Resources\Flags\32\Norwegian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Omani.png">
+    <None Include="User Interface\Resources\Flags\32\Omani.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Pakistani.png">
+    <None Include="User Interface\Resources\Flags\32\Pakistani.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Palauan.png">
+    <None Include="User Interface\Resources\Flags\32\Palauan.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Palestinian.png">
+    <None Include="User Interface\Resources\Flags\32\Palestinian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Panamanian.png">
+    <None Include="User Interface\Resources\Flags\32\Panamanian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Papua New Guinean.png">
+    <None Include="User Interface\Resources\Flags\32\Papua New Guinean.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Paraguayan.png">
+    <None Include="User Interface\Resources\Flags\32\Paraguayan.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Peruvian.png">
+    <None Include="User Interface\Resources\Flags\32\Peruvian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Philippine.png">
+    <None Include="User Interface\Resources\Flags\32\Philippine.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Pitcairn Islander.png">
+    <None Include="User Interface\Resources\Flags\32\Pitcairn Islander.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Polish.png">
+    <None Include="User Interface\Resources\Flags\32\Polish.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Portuguese.png">
+    <None Include="User Interface\Resources\Flags\32\Portuguese.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Puerto Rican.png">
+    <None Include="User Interface\Resources\Flags\32\Puerto Rican.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Qatari.png">
+    <None Include="User Interface\Resources\Flags\32\Qatari.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Congolese %28Republic of the Congo%29.png">
+    <None Include="User Interface\Resources\Flags\32\Congolese %28Republic of the Congo%29.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Romanian.png">
+    <None Include="User Interface\Resources\Flags\32\Romanian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Russian.png">
+    <None Include="User Interface\Resources\Flags\32\Russian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Rwandan.png">
+    <None Include="User Interface\Resources\Flags\32\Rwandan.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Saint Helenian.png">
+    <None Include="User Interface\Resources\Flags\32\Saint Helenian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Kittitian.png">
+    <None Include="User Interface\Resources\Flags\32\Kittitian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Saint Lucian.png">
+    <None Include="User Interface\Resources\Flags\32\Saint Lucian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Saint Vincentian.png">
+    <None Include="User Interface\Resources\Flags\32\Saint Vincentian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Samoan.png">
+    <None Include="User Interface\Resources\Flags\32\Samoan.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Sammarinese.png">
+    <None Include="User Interface\Resources\Flags\32\Sammarinese.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Sao Tomean.png">
+    <None Include="User Interface\Resources\Flags\32\Sao Tomean.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Saudi.png">
+    <None Include="User Interface\Resources\Flags\32\Saudi.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Scottish.png">
+    <None Include="User Interface\Resources\Flags\32\Scottish.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Senegalese.png">
+    <None Include="User Interface\Resources\Flags\32\Senegalese.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Serbian.png">
+    <None Include="User Interface\Resources\Flags\32\Serbian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Seychellois.png">
+    <None Include="User Interface\Resources\Flags\32\Seychellois.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Sierra Leonean.png">
+    <None Include="User Interface\Resources\Flags\32\Sierra Leonean.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Singapore.png">
+    <None Include="User Interface\Resources\Flags\32\Singapore.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Slovak.png">
+    <None Include="User Interface\Resources\Flags\32\Slovak.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Slovenian.png">
+    <None Include="User Interface\Resources\Flags\32\Slovenian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Solomon Islander.png">
+    <None Include="User Interface\Resources\Flags\32\Solomon Islander.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Somali.png">
+    <None Include="User Interface\Resources\Flags\32\Somali.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\South African.png">
+    <None Include="User Interface\Resources\Flags\32\South African.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\South Korean.png">
+    <None Include="User Interface\Resources\Flags\32\South Korean.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\South Sudanese.png">
+    <None Include="User Interface\Resources\Flags\32\South Sudanese.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Spanish.png">
+    <None Include="User Interface\Resources\Flags\32\Spanish.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Sri Lankan.png">
+    <None Include="User Interface\Resources\Flags\32\Sri Lankan.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Sudanese.png">
+    <None Include="User Interface\Resources\Flags\32\Sudanese.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Surinamese.png">
+    <None Include="User Interface\Resources\Flags\32\Surinamese.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Swazi.png">
+    <None Include="User Interface\Resources\Flags\32\Swazi.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Swedish.png">
+    <None Include="User Interface\Resources\Flags\32\Swedish.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Swiss.png">
+    <None Include="User Interface\Resources\Flags\32\Swiss.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Syrian.png">
+    <None Include="User Interface\Resources\Flags\32\Syrian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Taiwan.png">
+    <None Include="User Interface\Resources\Flags\32\Taiwan.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Tajikistani.png">
+    <None Include="User Interface\Resources\Flags\32\Tajikistani.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Tanzanian.png">
+    <None Include="User Interface\Resources\Flags\32\Tanzanian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Thai.png">
+    <None Include="User Interface\Resources\Flags\32\Thai.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Togolese.png">
+    <None Include="User Interface\Resources\Flags\32\Togolese.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Tokelauan.png">
+    <None Include="User Interface\Resources\Flags\32\Tokelauan.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Tongan.png">
+    <None Include="User Interface\Resources\Flags\32\Tongan.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Trinidadian.png">
+    <None Include="User Interface\Resources\Flags\32\Trinidadian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Tunisian.png">
+    <None Include="User Interface\Resources\Flags\32\Tunisian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Turkish.png">
+    <None Include="User Interface\Resources\Flags\32\Turkish.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Turkmen.png">
+    <None Include="User Interface\Resources\Flags\32\Turkmen.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Tuvaluan.png">
+    <None Include="User Interface\Resources\Flags\32\Tuvaluan.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Ugandan.png">
+    <None Include="User Interface\Resources\Flags\32\Ugandan.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Ukrainian.png">
+    <None Include="User Interface\Resources\Flags\32\Ukrainian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Emirati.png">
+    <None Include="User Interface\Resources\Flags\32\Emirati.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\British.png">
+    <None Include="User Interface\Resources\Flags\32\British.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\American.png">
+    <None Include="User Interface\Resources\Flags\32\American.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Unknown.png">
+    <None Include="User Interface\Resources\Flags\32\Unknown.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Uruguayan.png">
+    <None Include="User Interface\Resources\Flags\32\Uruguayan.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Virgin Islander.png">
+    <None Include="User Interface\Resources\Flags\32\Virgin Islander.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Uzbekistani.png">
+    <None Include="User Interface\Resources\Flags\32\Uzbekistani.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Ni-Vanuatu.png">
+    <None Include="User Interface\Resources\Flags\32\Ni-Vanuatu.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Venezuelan.png">
+    <None Include="User Interface\Resources\Flags\32\Venezuelan.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Vietnamese.png">
+    <None Include="User Interface\Resources\Flags\32\Vietnamese.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Welsh.png">
+    <None Include="User Interface\Resources\Flags\32\Welsh.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Wallisian.png">
+    <None Include="User Interface\Resources\Flags\32\Wallisian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Sahrawi.png">
+    <None Include="User Interface\Resources\Flags\32\Sahrawi.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Yemeni.png">
+    <None Include="User Interface\Resources\Flags\32\Yemeni.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Zambian.png">
+    <None Include="User Interface\Resources\Flags\32\Zambian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Zimbabwean.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="UI\Resources\Flags\16\Antiguan.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="UI\Resources\Flags\16\Barbudan.png">
+    <None Include="User Interface\Resources\Flags\32\Zimbabwean.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="UI\Resources\Flags\32\Antiguan.png">
+    <None Include="User Interface\Resources\Flags\16\Antiguan.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Barbudan.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="UI\Resources\Flags\16\Bosnian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="UI\Resources\Flags\16\Herzegovinian.png">
+    <None Include="User Interface\Resources\Flags\16\Barbudan.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="UI\Resources\Flags\32\Bosnian.png">
+    <None Include="User Interface\Resources\Flags\32\Antiguan.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
-    <None Include="UI\Resources\Flags\32\Herzegovinian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="UI\Resources\Flags\32\Motswana.png">
+    <None Include="User Interface\Resources\Flags\32\Barbudan.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="UI\Resources\Flags\32\Nevisian.png">
+    <None Include="User Interface\Resources\Flags\16\Bosnian.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="User Interface\Resources\Flags\16\Herzegovinian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="UI\Resources\Flags\32\Tobagonian.png">
+    <None Include="User Interface\Resources\Flags\32\Bosnian.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="User Interface\Resources\Flags\32\Herzegovinian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="UI\Resources\Flags\16\Nevisian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="UI\Resources\Flags\16\Trinidadian.png">
+    <None Include="User Interface\Resources\Flags\32\Motswana.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="UI\Resources\Flags\16\Futunan.png">
+    <None Include="User Interface\Resources\Flags\32\Nevisian.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="UI\Resources\Flags\32\Futunan.png" />
+    <None Include="User Interface\Resources\Flags\32\Tobagonian.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="User Interface\Resources\Flags\16\Nevisian.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Include="User Interface\Resources\Flags\16\Trinidadian.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="User Interface\Resources\Flags\16\Futunan.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="User Interface\Resources\Flags\32\Futunan.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\System.Data.SQLite.Core.1.0.96.0\build\net451\System.Data.SQLite.Core.targets" Condition="Exists('..\packages\System.Data.SQLite.Core.1.0.96.0\build\net451\System.Data.SQLite.Core.targets')" />

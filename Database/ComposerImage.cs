@@ -12,10 +12,9 @@ namespace Database
         [Column("id", TypeName = "usmallint")]
         public int ID { get; set; }
 
+        [Column("image", TypeName = "mediumblob")]
         [Required]
-        [StringLength(255)]
-        [Column("path")]
-        public string Path { get; set; }
+        public byte[] Image { get; set; }
 
         [Column("composer_id", TypeName = "usmallint")]
         public int ComposerID { get; set; }

@@ -2,11 +2,8 @@
 <SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="NathanHarrenstein.ComposerTimeline.Properties" GeneratedClassName="Settings">
   <Profiles />
   <Settings>
-    <Setting Name="ComposerTimelineStart" Type="System.Int32" Scope="Application">
-      <Value Profile="(Default)">1000</Value>
-    </Setting>
-    <Setting Name="ComposerTimelineEnd" Type="System.Int32" Scope="Application">
-      <Value Profile="(Default)">2015</Value>
+    <Setting Name="AudioDirectory" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
     </Setting>
   </Settings>
 </SettingsFile>

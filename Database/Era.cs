@@ -27,7 +27,7 @@ namespace Database
         [Required]
         [StringLength(9)]
         [Column("dates")]
-        public string Dates { get; set; }
+        public string DatesString { get; set; }
 
         [SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Composer> Composers { get; set; }

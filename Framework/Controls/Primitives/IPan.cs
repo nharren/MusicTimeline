@@ -4,7 +4,7 @@ namespace NathanHarrenstein.Controls
 {
     public interface IPan
     {
-        Vector CanPan(Vector delta);
+        Vector ValidatePanVector(Vector delta);
 
         void Pan(Vector delta);
     }

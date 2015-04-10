@@ -2,9 +2,9 @@
 
 namespace NathanHarrenstein.Converters
 {
-    public class NameConverter
+    public static class NameConverter
     {
-        public string ToLastNameFirstName(string name)
+        public static string ToLastFirst(string name)
         {
             var delimiters = new string[] { " " };
 
@@ -25,7 +25,7 @@ namespace NathanHarrenstein.Converters
             }
         }
 
-        public string ToFirstNameLastName(string name)
+        public static string ToFirstLast(string name)
         {
             var delimiters = new string[] { ", " };
 

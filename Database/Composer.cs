@@ -35,7 +35,7 @@ namespace Database
         [Required]
         [StringLength(50)]
         [Column("dates")]
-        public string Dates { get; set; }
+        public string DatesString { get; set; }
 
         [Column("birth_location_id", TypeName = "umediumint")]
         public int? BirthLocationID { get; set; }

@@ -1,9 +1,5 @@
 Release 1
 
------ Database ------
-- Create validators and validation attributes for EDTF         
-
-
 -----ComposerTimeline------
 - Tie database into ComposerTimeline.
 - Draw object and relationship diagram for Timeline and ComposerTimeline.

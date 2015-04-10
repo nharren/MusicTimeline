@@ -6,12 +6,13 @@
                     xmlns:t="clr-namespace:NathanHarrenstein.Timeline;assembly=Timeline"
                     xmlns:ui="clr-namespace:NathanHarrenstein.ComposerTimeline.UI"
                     xmlns:fw="clr-namespace:NathanHarrenstein.Controls;assembly=Framework">
+    
     <Color x:Key="MedievalColor">#FFAFAFAF</Color>
     <Color x:Key="RenaissanceColor">#FFB57EDC</Color>
     <Color x:Key="BaroqueColor">#FFD0514B</Color>
     <Color x:Key="ClassicalColor">#FF6495ED</Color>
     <Color x:Key="RomanticColor">#FF5AAA5A</Color>
-    <Color x:Key="ModernColor">#FFA0785A</Color>
+    <Color x:Key="ModernColor">#FFA0785A</Color> 
     <SolidColorBrush x:Key="MedievalBrush"
                      Color="{StaticResource MedievalColor}" />
     <SolidColorBrush x:Key="RenaissanceBrush"
@@ -70,7 +71,6 @@
                             <t:EraDisplay Name="PART_EraDisplay"
                                           Grid.Row="0"
                                           Height="26"
-                                          TimeUnitWidth="10"
                                           IsHitTestVisible="False"
                                           FontSize="14"
                                           Font="Cambria"
@@ -80,7 +80,6 @@
                                            Grid.Row="1"
                                            Height="24"
                                            IsHitTestVisible="False"
-                                           TimeUnitWidth="100"
                                            LabelOffset="10"
                                            Unit="10"
                                            FontSize="12"

@@ -1,47 +1,17 @@
 ﻿<Window x:Class="TimelineTest.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:t="clr-namespace:NHarren.Timeline;assembly=Timeline"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        xmlns:t="clr-namespace:NathanHarrenstein.Timeline;assembly=Timeline"
         Title="Timeline Test">
-    <t:Timeline Start="1000"
-                End="2013">
-        <t:Timeline.EraBrushes>
-            <t:EraBrush Era="Medieval"
-                        Brush="Gray" />
-            <t:EraBrush Era="Renaissance"
-                        Brush="Purple" />
-        </t:Timeline.EraBrushes>
-        <t:Timeline.Eras>
-            <t:Era Name="Medieval"
-                   Start="1000"
-                   End="1400">
-                <t:Era.Events>
-                    <t:Event Name="Medieval Event 1"
-                             Start="1000"
-                             End="1089" />
-                    <t:Event Name="Medieval Event 2"
-                             Start="1056"
-                             End="1113" />
-                    <t:Event Name="Medieval Event 3"
-                             Start="1077"
-                             End="1163" />
-                </t:Era.Events>
-            </t:Era>
-            <t:Era Name="Renaissance"
-                   Start="1400"
-                   End="1600">
-                <t:Era.Events>
-                    <t:Event Name="Renaissance Event 1"
-                             Start="1402"
-                             End="1470" />
-                    <t:Event Name="Renaissance Event 2"
-                             Start="1432"
-                             End="1500" />
-                    <t:Event Name="Renaissance Event 3"
-                             Start="1440"
-                             End="1511" />
-                </t:Era.Events>
-            </t:Era>
-        </t:Timeline.Eras>
+    <t:Timeline Start="1000-01-01"
+                End="2015-04-09"
+                Name="timeline"
+                Resolution="Decade">
+        <t:Timeline.Ruler>
+            <t:TimeRuler TimeRulerUnit="Day"
+                         TimeUnitWidth="0.04109589041" />
+            <!-- ce:0.00410958904d de:0.04109589041d y:0.41095890411d m:5d d:150d h:150h m:150m s:150s -->
+        </t:Timeline.Ruler>
     </t:Timeline>
 </Window>

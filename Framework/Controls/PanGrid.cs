@@ -58,7 +58,7 @@ namespace NathanHarrenstein.Controls
 
                 if (panningChild != null)
                 {
-                    var childCanPan = panningChild.CanPan(delta);
+                    var childCanPan = panningChild.ValidatePanVector(delta);
 
                     if (childCanPan != delta)
                     {

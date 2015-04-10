@@ -47,7 +47,7 @@ namespace Database
                 .IsUnicode(false);
 
             modelBuilder.Entity<Composer>()
-                .Property(e => e.Dates)
+                .Property(e => e.DatesString)
                 .IsUnicode(false);
 
             modelBuilder.Entity<Composer>()
@@ -92,10 +92,6 @@ namespace Database
                 .WithMany(e => e.Composers)
                 .Map(m => m.ToTable("composition_composer", "music"));
 
-            modelBuilder.Entity<ComposerImage>()
-                .Property(e => e.Path)
-                .IsUnicode(false);
-
             modelBuilder.Entity<ComposerLink>()
                 .Property(e => e.URL)
                 .IsUnicode(false);
@@ -105,7 +101,7 @@ namespace Database
                 .IsUnicode(false);
 
             modelBuilder.Entity<Composition>()
-                .Property(e => e.Dates)
+                .Property(e => e.DatesString)
                 .IsUnicode(false);
 
             modelBuilder.Entity<Composition>()
@@ -167,7 +163,7 @@ namespace Database
                 .IsUnicode(false);
 
             modelBuilder.Entity<Era>()
-                .Property(e => e.Dates)
+                .Property(e => e.DatesString)
                 .IsUnicode(false);
 
             modelBuilder.Entity<Era>()
@@ -218,7 +214,7 @@ namespace Database
                 .Map(m => m.ToTable("recording_performer", "music"));
 
             modelBuilder.Entity<Recording>()
-                .Property(e => e.Dates)
+                .Property(e => e.DatesString)
                 .IsUnicode(false);
         }
     }

@@ -33,6 +33,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="ExtendedDateTimeFormat">
+      <HintPath>..\..\..\..\Documents\GitHub\ExtendedDateTimeFormat\ExtendedDateTimeFormat\bin\Debug\ExtendedDateTimeFormat.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
@@ -48,17 +51,20 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="User Interface\Controls\EraControl.cs" />
+    <Compile Include="User Interface\Controls\EventControl.cs" />
+    <Compile Include="User Interface\Data\TimeRuler.cs" />
+    <Compile Include="User Interface\Data\TimeRulerUnit.cs" />
+    <Compile Include="User Interface\Data\TimeUnit.cs" />
     <Compile Include="User Interface\Native\MouseHook.Native.cs" />
     <Compile Include="User Interface\Native\MouseHook.cs" />
     <Compile Include="User Interface\Native\WindowsMessages.cs" />
-    <Compile Include="Data\Era.cs" />
     <Compile Include="Data\Event.cs" />
-    <Compile Include="User Interface\EraDisplay.cs" />
-    <Compile Include="User Interface\EventDisplay.cs" />
-    <Compile Include="User Interface\GuidelineDisplay.cs" />
-    <Compile Include="User Interface\Data\EraSettings.cs" />
-    <Compile Include="User Interface\TimeDisplay.cs" />
-    <Compile Include="User Interface\Timeline.cs" />
+    <Compile Include="User Interface\Displays\EraDisplay.cs" />
+    <Compile Include="User Interface\Displays\EventDisplay.cs" />
+    <Compile Include="User Interface\Displays\GuidelineDisplay.cs" />
+    <Compile Include="User Interface\Displays\TimeDisplay.cs" />
+    <Compile Include="User Interface\Controls\Timeline.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -72,6 +78,8 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <Compile Include="User Interface\Panels\EraPanel.cs" />
+    <Compile Include="User Interface\Panels\EventPanel.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -83,6 +91,18 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
+    <Page Include="Themes\Styles\EraControlStyle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\Styles\EventControlStyle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\Styles\TimelineStyle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Themes\Generic.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

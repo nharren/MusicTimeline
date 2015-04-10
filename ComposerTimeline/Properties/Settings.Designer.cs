@@ -23,21 +23,15 @@ namespace NathanHarrenstein.ComposerTimeline.Properties {
             }
         }
         
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("1000")]
-        public int ComposerTimelineStart {
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string AudioDirectory {
             get {
-                return ((int)(this["ComposerTimelineStart"]));
+                return ((string)(this["AudioDirectory"]));
             }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("2015")]
-        public int ComposerTimelineEnd {
-            get {
-                return ((int)(this["ComposerTimelineEnd"]));
+            set {
+                this["AudioDirectory"] = value;
             }
         }
     }
