@@ -1,0 +1,22 @@
+﻿<Window x:Name="window"
+        x:Class="NathanHarrenstein.ComposerTimeline.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Composer Timeline">
+    <DockPanel>
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="File">
+                <MenuItem Header="Add Files"
+                          Command="{Binding AddFilesCommand, ElementName=window}" />
+                <MenuItem Header="Add Folder"
+                          Command="{Binding AddFolderCommand, ElementName=window}" />
+                <Separator />
+                <MenuItem Header="Close"
+                          Command="{Binding CloseCommand, ElementName=window}" />
+            </MenuItem>
+        </Menu>
+        <Frame Name="Frame"
+               NavigationUIVisibility="Hidden"
+               Source="/Pages/TimelinePage.xaml" />
+    </DockPanel>
+</Window>

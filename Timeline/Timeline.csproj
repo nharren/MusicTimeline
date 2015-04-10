@@ -59,7 +59,6 @@
     <Compile Include="User Interface\Native\MouseHook.Native.cs" />
     <Compile Include="User Interface\Native\MouseHook.cs" />
     <Compile Include="User Interface\Native\WindowsMessages.cs" />
-    <Compile Include="Data\Event.cs" />
     <Compile Include="User Interface\Displays\EraDisplay.cs" />
     <Compile Include="User Interface\Displays\EventDisplay.cs" />
     <Compile Include="User Interface\Displays\GuidelineDisplay.cs" />

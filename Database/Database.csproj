@@ -62,11 +62,9 @@
     <Compile Include="Album.cs" />
     <Compile Include="CatalogNumber.cs" />
     <Compile Include="Composer.cs" />
-    <Compile Include="Composer.Custom.cs" />
     <Compile Include="ComposerImage.cs" />
     <Compile Include="ComposerLink.cs" />
     <Compile Include="Composition.cs" />
-    <Compile Include="Composition.Custom.cs" />
     <Compile Include="CompositionCatalog.cs" />
     <Compile Include="CompositionCollection.cs" />
     <Compile Include="DataProvider.cs" />
@@ -77,11 +75,9 @@
     <Compile Include="Performer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Recording.cs" />
-    <Compile Include="Recording.Custom.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config" />
-    <Compile Include="Era.Custom.cs" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>

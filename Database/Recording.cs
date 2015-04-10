@@ -22,7 +22,7 @@ namespace Database
         [Required]
         [StringLength(50)]
         [Column("dates")]
-        public string DatesString { get; set; }
+        public string Dates { get; set; }
 
         [Column("location_id", TypeName = "umediumint")]
         public int? LocationID { get; set; }

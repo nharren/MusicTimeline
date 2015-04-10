@@ -47,7 +47,7 @@ namespace Database
                 .IsUnicode(false);
 
             modelBuilder.Entity<Composer>()
-                .Property(e => e.DatesString)
+                .Property(e => e.Dates)
                 .IsUnicode(false);
 
             modelBuilder.Entity<Composer>()
@@ -101,7 +101,7 @@ namespace Database
                 .IsUnicode(false);
 
             modelBuilder.Entity<Composition>()
-                .Property(e => e.DatesString)
+                .Property(e => e.Dates)
                 .IsUnicode(false);
 
             modelBuilder.Entity<Composition>()
@@ -163,7 +163,7 @@ namespace Database
                 .IsUnicode(false);
 
             modelBuilder.Entity<Era>()
-                .Property(e => e.DatesString)
+                .Property(e => e.Dates)
                 .IsUnicode(false);
 
             modelBuilder.Entity<Era>()
@@ -214,7 +214,7 @@ namespace Database
                 .Map(m => m.ToTable("recording_performer", "music"));
 
             modelBuilder.Entity<Recording>()
-                .Property(e => e.DatesString)
+                .Property(e => e.Dates)
                 .IsUnicode(false);
         }
     }

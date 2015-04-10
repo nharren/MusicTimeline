@@ -30,7 +30,7 @@ namespace Database
         [Required]
         [StringLength(50)]
         [Column("dates")]
-        public string DatesString { get; set; }
+        public string Dates { get; set; }
 
         [StringLength(50)]
         [Column("nickname")]

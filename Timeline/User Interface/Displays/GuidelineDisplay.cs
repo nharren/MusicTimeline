@@ -13,10 +13,6 @@ namespace NathanHarrenstein.Timeline
         private Pen majorPen;
         private Pen minorPen;
 
-        public GuidelineDisplay()
-        {
-        }
-
         public double LineWidth
         {
             get
@@ -74,7 +70,6 @@ namespace NathanHarrenstein.Timeline
             set
             {
                 horizontalOffset = value;
-                InvalidateVisual();
             }
         }
 
@@ -93,6 +88,8 @@ namespace NathanHarrenstein.Timeline
         public void Pan(Vector delta)
         {
             HorizontalOffset += delta.X;
+
+            InvalidateVisual();
         }
 
         protected override void OnRender(DrawingContext drawingContext)

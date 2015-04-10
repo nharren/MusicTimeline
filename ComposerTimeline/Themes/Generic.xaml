@@ -2,9 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
                     xmlns:local="clr-namespace:NathanHarrenstein.ComposerTimeline"
                     xmlns:controls="clr-namespace:NathanHarrenstein.ComposerTimeline.Controls"
-                    xmlns:domain="clr-namespace:NathanHarrenstein.ComposerTimeline.Data"
                     xmlns:t="clr-namespace:NathanHarrenstein.Timeline;assembly=Timeline"
-                    xmlns:ui="clr-namespace:NathanHarrenstein.ComposerTimeline.UI"
                     xmlns:fw="clr-namespace:NathanHarrenstein.Controls;assembly=Framework">
     
     <Color x:Key="MedievalColor">#FFAFAFAF</Color>
@@ -13,6 +11,7 @@
     <Color x:Key="ClassicalColor">#FF6495ED</Color>
     <Color x:Key="RomanticColor">#FF5AAA5A</Color>
     <Color x:Key="ModernColor">#FFA0785A</Color> 
+    
     <SolidColorBrush x:Key="MedievalBrush"
                      Color="{StaticResource MedievalColor}" />
     <SolidColorBrush x:Key="RenaissanceBrush"
@@ -25,6 +24,7 @@
                      Color="{StaticResource RomanticColor}" />
     <SolidColorBrush x:Key="ModernBrush"
                      Color="{StaticResource ModernColor}" />
+    
     <LinearGradientBrush x:Key="MedievalToRenaissanceBrush">
         <GradientStop Offset="0"
                       Color="{StaticResource MedievalColor}" />
@@ -55,101 +55,11 @@
         <GradientStop Offset="1"
                       Color="{StaticResource ModernColor}" />
     </LinearGradientBrush>
-    <Style TargetType="{x:Type ui:ComposerTimeline}">
+    
+    <Style TargetType="{x:Type controls:ComposerEventControl}">
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="{x:Type ui:ComposerTimeline}">
-                    <Border Background="{TemplateBinding Background}"
-                            BorderBrush="{TemplateBinding BorderBrush}"
-                            BorderThickness="{TemplateBinding BorderThickness}">
-                        <fw:PanGrid Background="Transparent">
-                            <fw:PanGrid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition />
-                            </fw:PanGrid.RowDefinitions>
-                            <t:EraDisplay Name="PART_EraDisplay"
-                                          Grid.Row="0"
-                                          Height="26"
-                                          IsHitTestVisible="False"
-                                          FontSize="14"
-                                          Font="Cambria"
-                                          Foreground="Black"
-                                          LabelOffset="10" />
-                            <t:TimeDisplay Name="PART_TimeDisplay"
-                                           Grid.Row="1"
-                                           Height="24"
-                                           IsHitTestVisible="False"
-                                           LabelOffset="10"
-                                           Unit="10"
-                                           FontSize="12"
-                                           Foreground="Black"
-                                           Font="Calibri">
-                                <t:TimeDisplay.LinePen>
-                                    <Pen Brush="#FFD7D7D7"
-                                         Thickness="1" />
-                                </t:TimeDisplay.LinePen>
-                            </t:TimeDisplay>
-                            <t:GuidelineDisplay Grid.Row="2"
-                                                MajorFrequency="10"
-                                                LineWidth="10"
-                                                IsHitTestVisible="False">
-                                <t:GuidelineDisplay.MinorPen>
-                                    <Pen Brush="#FFEBEBEB"
-                                         Thickness="1" />
-                                </t:GuidelineDisplay.MinorPen>
-                                <t:GuidelineDisplay.MajorPen>
-                                    <Pen Brush="#FFD7D7D7"
-                                         Thickness="1" />
-                                </t:GuidelineDisplay.MajorPen>
-                            </t:GuidelineDisplay>
-                            <local:ComposerControlPanel EventHeight="60"
-                                                        Grid.Row="2"
-                                                        Name="PART_ComposerControlPanel"
-                                                        EventSpacing="1"
-                                                        TimeUnitWidth="10" />
-                        </fw:PanGrid>
-                    </Border>
-                </ControlTemplate>
-            </Setter.Value>
-        </Setter>
-    </Style>
-    <Style TargetType="{x:Type controls:ComposerControl}">
-        <Style.Triggers>
-            <DataTrigger Binding="{Binding Era, RelativeSource={RelativeSource Self}}"
-                         Value="Medieval">
-                <Setter Property="Background"
-                        Value="{StaticResource MedievalBrush}" />
-            </DataTrigger>
-            <DataTrigger Binding="{Binding Era, RelativeSource={RelativeSource Self}}"
-                         Value="Renaissance">
-                <Setter Property="Background"
-                        Value="{StaticResource RenaissanceBrush}" />
-            </DataTrigger>
-            <DataTrigger Binding="{Binding Era, RelativeSource={RelativeSource Self}}"
-                         Value="Baroque">
-                <Setter Property="Background"
-                        Value="{StaticResource BaroqueBrush}" />
-            </DataTrigger>
-            <DataTrigger Binding="{Binding Era, RelativeSource={RelativeSource Self}}"
-                         Value="Classical">
-                <Setter Property="Background"
-                        Value="{StaticResource ClassicalBrush}" />
-            </DataTrigger>
-            <DataTrigger Binding="{Binding Era, RelativeSource={RelativeSource Self}}"
-                         Value="Romantic">
-                <Setter Property="Background"
-                        Value="{StaticResource RomanticBrush}" />
-            </DataTrigger>
-            <DataTrigger Binding="{Binding Era, RelativeSource={RelativeSource Self}}"
-                         Value="Modern">
-                <Setter Property="Background"
-                        Value="{StaticResource ModernBrush}" />
-            </DataTrigger>
-        </Style.Triggers>
-        <Setter Property="Template">
-            <Setter.Value>
-                <ControlTemplate TargetType="{x:Type controls:ComposerControl}">
+                <ControlTemplate TargetType="{x:Type controls:ComposerEventControl}">
                     <Border Background="{TemplateBinding Background}"
                             Height="60"
                             Width="{TemplateBinding ActualWidth}"
@@ -166,7 +76,7 @@
                                     Focusable="False"
                                     FontFamily="Cambria"
                                     Foreground="White"
-                                    Command="{Binding Click, RelativeSource={RelativeSource TemplatedParent}, Mode=OneTime}"
+                                    Command="{Binding Command, RelativeSource={RelativeSource TemplatedParent}, Mode=OneTime}"
                                     Padding="7,5,0,5">
                                 <Button.Template>
                                     <ControlTemplate TargetType="{x:Type Button}">
@@ -192,7 +102,7 @@
                                                     Orientation="Horizontal">
                                             <TextBlock FontSize="14"
                                                        FontWeight="SemiBold"
-                                                       Text="{Binding Title, RelativeSource={RelativeSource TemplatedParent}, Mode=OneTime}" />
+                                                       Text="{Binding Label, RelativeSource={RelativeSource TemplatedParent}, Mode=OneTime}" />
                                             <Image Width="16"
                                                    Height="16"
                                                    SnapsToDevicePixels="True"
@@ -263,10 +173,10 @@
         </Setter>
     </Style>
     <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter" />
-    <Style TargetType="{x:Type ui:TreeViewItemBase}">
+    <Style TargetType="{x:Type local:TreeViewItemBase}">
         <Setter Property="Template">
             <Setter.Value>
-                <ControlTemplate TargetType="{x:Type ui:TreeViewItemBase}">
+                <ControlTemplate TargetType="{x:Type local:TreeViewItemBase}">
                     <Border Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}">
@@ -343,7 +253,7 @@
                                        SnapsToDevicePixels="True"
                                        VerticalAlignment="Center"
                                        Margin="7,-3,0,0"
-                                       Source="UI/Resources/Star.png"
+                                       Source="pack://application:,,,/Resources/Star.png"
                                        Visibility="{TemplateBinding StarVisibility}" />
                             </StackPanel>
                             <ItemsControl x:Name="childrenItemsControl"

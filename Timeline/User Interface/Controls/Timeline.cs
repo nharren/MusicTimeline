@@ -23,6 +23,24 @@ namespace NathanHarrenstein.Timeline
 
         public static readonly DependencyProperty StartProperty = DependencyProperty.Register("Start", typeof(DateTime), typeof(Timeline));
 
+
+
+        public double EventHeight
+        {
+            get
+            {
+                return (double)GetValue(EventHeightProperty);
+            }
+            set
+            {
+                SetValue(EventHeightProperty, value);
+            }
+        }
+
+        public static readonly DependencyProperty EventHeightProperty = DependencyProperty.Register("EventHeight", typeof(double), typeof(Timeline), new PropertyMetadata(26d));
+
+
+
         static Timeline()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(Timeline), new FrameworkPropertyMetadata(typeof(Timeline)));
