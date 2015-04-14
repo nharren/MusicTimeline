@@ -22,7 +22,7 @@ namespace NathanHarrenstein.ComposerTimeline.Data.Providers
 
         private static BitmapImage GetImage(string nationality, FlagSize flagSize)
         {
-            var imagePath = @"\UI\Resources\Flags\{0}\{1}.png";
+            var imagePath = @"{0}\Resources\Flags\{1}\{2}.png";
 
             if (nationality == null)
             {
@@ -42,7 +42,7 @@ namespace NathanHarrenstein.ComposerTimeline.Data.Providers
                 }
                 else
                 {
-                    uri = new Uri(string.Format(imagePath, 16, nationality), UriKind.Relative);
+                    uri = new Uri(string.Format(imagePath, Environment.CurrentDirectory, 16, nationality), UriKind.Absolute);
                     decodeHeight = 16;
                     decodeWidth = 16;
                 }
@@ -55,7 +55,7 @@ namespace NathanHarrenstein.ComposerTimeline.Data.Providers
                 }
                 else
                 {
-                    uri = new Uri(string.Format(imagePath, 32, nationality), UriKind.Relative);
+                    uri = new Uri(string.Format(imagePath, Environment.CurrentDirectory, 32, nationality), UriKind.Absolute);
                     decodeHeight = 32;
                     decodeWidth = 32;
                 }

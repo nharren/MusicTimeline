@@ -1,5 +1,6 @@
 ﻿using Database;
 using NathanHarrenstein.Timeline;
+using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
@@ -10,6 +11,10 @@ namespace NathanHarrenstein.ComposerTimeline.Controls
 {
     public class ComposerEventControl : EventControl
     {
+        public static readonly DependencyProperty FlagsProperty = DependencyProperty.Register("Flags", typeof(List<Flag>), typeof(ComposerEventControl));
+
+        public static readonly DependencyProperty ImageProperty = DependencyProperty.Register("Image", typeof(BitmapImage), typeof(ComposerEventControl));
+
         public static readonly DependencyProperty PlayPopularCommandProperty = DependencyProperty.Register("PlayPopularCommand", typeof(ICommand), typeof(ComposerEventControl));
 
         static ComposerEventControl()
@@ -17,22 +22,44 @@ namespace NathanHarrenstein.ComposerTimeline.Controls
             DefaultStyleKeyProperty.OverrideMetadata(typeof(ComposerEventControl), new FrameworkPropertyMetadata(typeof(ComposerEventControl)));
         }
 
-        public Composer Composer { get; set; }
-
         public string Born { get; set; }
+
+        public Composer Composer { get; set; }
 
         public string Died { get; set; }
 
-        public IEnumerable<Flag> Flags { get; set; }
-
-        public BitmapImage Image { get; set; }
-
+        public List<Flag> Flags
+        {
+            get
+            {
+                return (List<Flag>)GetValue(FlagsProperty);
+            }
+            set
+            {
+                SetValue(FlagsProperty, value);
+            }
+        }
+        public BitmapImage Image
+        {
+            get
+            {
+                return (BitmapImage)GetValue(ImageProperty);
+            }
+            set
+            {
+                SetValue(ImageProperty, value);
+            }
+        }
         public ICommand PlayPopularCommand
         {
-            get { return (ICommand)GetValue(PlayPopularCommandProperty); }
-            set { SetValue(PlayPopularCommandProperty, value); }
+            get
+            {
+                return (ICommand)GetValue(PlayPopularCommandProperty);
+            }
+            set
+            {
+                SetValue(PlayPopularCommandProperty, value);
+            }
         }
-
-        internal static BitmapImage DefaultImage { get; set; }
     }
 }

@@ -45,9 +45,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\EntityFramework.6.0.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
     </Reference>
-    <Reference Include="ExtendedDateTimeFormat">
-      <HintPath>..\..\..\..\Documents\GitHub\ExtendedDateTimeFormat\ExtendedDateTimeFormat\bin\Debug\ExtendedDateTimeFormat.dll</HintPath>
-    </Reference>
     <Reference Include="MySql.Data, Version=6.9.6.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\MySql.Data.6.9.6\lib\net45\MySql.Data.dll</HintPath>
@@ -169,6 +166,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\Documents\GitHub\ExtendedDateTimeFormat\ExtendedDateTimeFormat\ExtendedDateTimeFormat.csproj">
+      <Project>{de828727-15f5-4327-933c-6d6825513400}</Project>
+      <Name>ExtendedDateTimeFormat</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Database\Database.csproj">
       <Project>{0151a74e-334f-4e5f-95f7-eeff670ca036}</Project>
       <Name>Database</Name>

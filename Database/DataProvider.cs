@@ -10,6 +10,7 @@ namespace Database
         public DataProvider()
             : base("name=DataProvider")
         {
+            Database.SetInitializer<DataProvider>(null);
         }
 
         public virtual DbSet<Album> Albums { get; set; }

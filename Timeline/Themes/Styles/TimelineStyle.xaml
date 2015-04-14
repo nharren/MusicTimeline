@@ -17,8 +17,7 @@
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition />
                             </Grid.RowDefinitions>
-                            <local:EraDisplay Start="{TemplateBinding Start}"
-                                              End="{TemplateBinding End}"
+                            <local:EraDisplay Dates="{TemplateBinding Dates}"
                                               ItemsSource="{TemplateBinding Eras}"
                                               Grid.Row="0"
                                               Height="26"
@@ -34,8 +33,7 @@
                                     </ItemsPanelTemplate>
                                 </local:EraDisplay.ItemsPanel>
                             </local:EraDisplay>
-                            <local:TimeDisplay Start="{TemplateBinding Start}"
-                                               End="{TemplateBinding End}"
+                            <local:TimeDisplay Dates="{TemplateBinding Dates}"
                                                Grid.Row="1"
                                                Height="24"
                                                IsHitTestVisible="False"
@@ -72,8 +70,7 @@
                                                 TextBlock.Foreground="Black"
                                                 Ruler="{TemplateBinding Ruler}"
                                                 Resolution="{TemplateBinding Resolution}"
-                                                Start="{TemplateBinding Start}"
-                                                End="{TemplateBinding End}"
+                                                Dates="{TemplateBinding Dates}"
                                                 ItemsSource="{TemplateBinding Events}">
                                 <local:EventDisplay.ItemsPanel>
                                     <ItemsPanelTemplate>

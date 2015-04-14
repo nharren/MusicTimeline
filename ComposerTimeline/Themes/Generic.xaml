@@ -76,7 +76,7 @@
                                     Focusable="False"
                                     FontFamily="Cambria"
                                     Foreground="White"
-                                    Command="{Binding Command, RelativeSource={RelativeSource TemplatedParent}, Mode=OneTime}"
+                                    Command="{Binding Command, RelativeSource={RelativeSource TemplatedParent}}"
                                     Padding="7,5,0,5">
                                 <Button.Template>
                                     <ControlTemplate TargetType="{x:Type Button}">
@@ -95,20 +95,27 @@
                                     </Grid.ColumnDefinitions>
                                     <Image SnapsToDevicePixels="True"
                                            UseLayoutRounding="True"
-                                           Source="{Binding Image, RelativeSource={RelativeSource TemplatedParent}, Mode=OneTime}" />
+                                           Source="{Binding Image, RelativeSource={RelativeSource TemplatedParent}}" />
                                     <StackPanel Grid.Column="1"
                                                 Margin="10,0,0,0">
                                         <StackPanel Margin="0,1,0,2"
                                                     Orientation="Horizontal">
                                             <TextBlock FontSize="14"
                                                        FontWeight="SemiBold"
-                                                       Text="{Binding Label, RelativeSource={RelativeSource TemplatedParent}, Mode=OneTime}" />
-                                            <Image Width="16"
-                                                   Height="16"
-                                                   SnapsToDevicePixels="True"
-                                                   UseLayoutRounding="True"
-                                                   Margin="8,0,0,0"
-                                                   Source="{Binding Flag.Image, RelativeSource={RelativeSource TemplatedParent}, Mode=OneTime}" />
+                                                       Text="{TemplateBinding Label}" />
+                                            <ItemsControl ItemsSource="{Binding Flags, RelativeSource={RelativeSource TemplatedParent}}">
+                                                <ItemsControl.ItemTemplate>
+                                                    <DataTemplate>
+                                                        <Image Width="16"
+                                                               Height="16"
+                                                               SnapsToDevicePixels="True"
+                                                               UseLayoutRounding="True"
+                                                               Margin="5,0,0,0"
+                                                               Source="{Binding Image}" />
+                                                    </DataTemplate>
+                                                </ItemsControl.ItemTemplate>
+                                            </ItemsControl>
+                                            
                                         </StackPanel>
                                         <StackPanel Orientation="Horizontal">
                                             <TextBlock FontSize="12"

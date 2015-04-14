@@ -11,9 +11,12 @@ using System.Configuration;
 using System.ExtendedDateTimeFormat;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Threading;
 
 namespace NathanHarrenstein.ComposerTimeline.Initializers
 {
@@ -21,13 +24,12 @@ namespace NathanHarrenstein.ComposerTimeline.Initializers
     {
         private static Dictionary<int, BitmapImage> ThumbnailDictionary = new Dictionary<int, BitmapImage>();
 
-        public static Timeline.Timeline GetTimeline()
+        public async static Task<Timeline.Timeline> GetTimeline()
         {
             var timeline = new Timeline.Timeline();
-            timeline.Start = new DateTime(1000, 1, 1);
-            timeline.End = DateTime.Now;
+            timeline.Dates = new ExtendedDateTimeInterval(new ExtendedDateTime(1000, 1, 1), ExtendedDateTime.Now);
             timeline.Eras = GetEras();
-            timeline.Events = GetEvents((List<EraControl>)timeline.Eras).OrderBy(e => e.Dates.Earliest()).ToList();
+            timeline.Events = await GetEvents((List<EraControl>)timeline.Eras);
             timeline.Ruler = GetRuler();
             timeline.Resolution = TimeUnit.Decade;
             timeline.EventHeight = 60;
@@ -93,20 +95,24 @@ namespace NathanHarrenstein.ComposerTimeline.Initializers
             return eras;
         }
 
-        private static IEnumerable<EventControl> GetEvents(List<EraControl> eraControls)
+        private async static Task<List<EventControl>> GetEvents(List<EraControl> eraControls)
         {
+            var eventList = new List<EventControl>();
+
             using (var dataProvider = new Database.DataProvider())
             {
                 foreach (var composer in dataProvider.Composers)
                 {
                     var composerEvent = new ComposerEventControl();
+
+                    composerEvent.Image = await GetThumbnail(composer);
+                    composerEvent.Flags = await GetFlags(composer);
                     composerEvent.Tag = composer;
                     composerEvent.Label = NameConverter.ToFirstLast(composer.Name);
                     composerEvent.Dates = ExtendedDateTimeInterval.Parse(composer.Dates);
-                    composerEvent.Image = GetThumbnail(composer);
                     composerEvent.Born = GetBorn(composer);
                     composerEvent.Died = GetDied(composer);
-                    composerEvent.Flags = GetFlags(composer);
+
                     composerEvent.Command = GetCommand(composer);
 
                     foreach (var era in composer.Eras)
@@ -122,9 +128,11 @@ namespace NathanHarrenstein.ComposerTimeline.Initializers
                         }
                     }
 
-                    yield return composerEvent;
-                } 
+                    eventList.Add(composerEvent);
+                }
             }
+
+            return eventList.OrderBy(e => e.Dates.Earliest()).ToList();
         }
 
         private static string GetBorn(Composer composer)
@@ -161,78 +169,36 @@ namespace NathanHarrenstein.ComposerTimeline.Initializers
             return ExtendedDateTimeInterval.Parse(composer.Dates).End.ToString();
         }
 
-        private static IEnumerable<Flag> GetFlags(Composer composer)
+        private async static Task<List<Flag>> GetFlags(Composer composer)
         {
-            return composer.Nationalities
+            return await Task.Run<List<Flag>>(() => composer.Nationalities
                 .Select(n => FlagProvider.GetFlag(n.Name, FlagSize.Small))
-                .DefaultIfEmpty(FlagProvider.GetFlag(null, FlagSize.Small));
+                .DefaultIfEmpty(FlagProvider.GetFlag(null, FlagSize.Small))
+                .ToList());
         }
 
-        private static BitmapImage GetThumbnail(Composer composer)
+        private async static Task<BitmapImage> GetThumbnail(Composer composer)
         {
-            var thumbnail = (BitmapImage)null;
-
-            if (ThumbnailDictionary.TryGetValue(composer.ID, out thumbnail))                                                // Return thumbnail from cache.
+            return await Task.Run<BitmapImage>(() =>
             {
-                return ThumbnailDictionary[composer.ID];
-            }
+                var thumbnail = (BitmapImage)null;
 
-            var directoryPath = string.Format(@"{0}\Resources\Thumbnails\", Environment.CurrentDirectory);
-
-            if (!Directory.Exists(directoryPath))
-            {
-                Directory.CreateDirectory(directoryPath); 
-            }
-
-            var thumbnailPath = string.Format(@"{0}\Resources\Thumbnails\{1}.jpg", Environment.CurrentDirectory, composer.ID);
-            var thumbnailUri = new Uri(thumbnailPath, UriKind.Absolute);
-
-            if (File.Exists(thumbnailPath))                                                              // Cache and return thumbnail from file.
-            {
-                thumbnail = new BitmapImage();
-                thumbnail.CacheOption = BitmapCacheOption.None;
-                thumbnail.BeginInit();
-                thumbnail.DecodePixelHeight = 50;
-                thumbnail.UriSource = thumbnailUri;
-                thumbnail.EndInit();
-                thumbnail.Freeze();
-
-                ThumbnailDictionary[composer.ID] = thumbnail;
-
-                return thumbnail;
-            }
-
-            var image = composer.ComposerImages.Select(ci => ci.Image).FirstOrDefault();
-
-            if (image != null)                                                                          // Create, cache, and return a thumbnail from a composer image.
-            {
-                thumbnail = new BitmapImage();
-                thumbnail.CacheOption = BitmapCacheOption.None;
-                thumbnail.BeginInit();
-                thumbnail.DecodePixelHeight = 50;
-                thumbnail.UriSource = thumbnailUri;
-                thumbnail.EndInit();
-                thumbnail.Freeze();
-
-                var encoder = new JpegBitmapEncoder();
-                encoder.QualityLevel = 80;
-                encoder.Frames.Add(BitmapFrame.Create(thumbnail));
-
-                using (var stream = new FileStream(thumbnailPath, FileMode.CreateNew))
+                if (ThumbnailDictionary.TryGetValue(composer.ID, out thumbnail))                                                // Return thumbnail from cache.
                 {
-                    encoder.Save(stream);
+                    return ThumbnailDictionary[composer.ID];
                 }
 
-                ThumbnailDictionary[composer.ID] = thumbnail;
+                var directoryPath = string.Format(@"{0}\Resources\Thumbnails\", Environment.CurrentDirectory);
 
-                return thumbnail;
-            }
-            else if (!ThumbnailDictionary.TryGetValue(0, out thumbnail))
-            {
-                thumbnailPath = string.Format(@"{0}\Resources\Thumbnails\0.jpg", Environment.CurrentDirectory);
-                thumbnailUri = new Uri(thumbnailPath, UriKind.Absolute);
+                if (!Directory.Exists(directoryPath))
+                {
+                    Directory.CreateDirectory(directoryPath);
+                }
 
-                if (File.Exists(thumbnailPath))                                                                // Cache and return default thumbnail from file.
+                var thumbnailPath = string.Format(@"{0}\Resources\Thumbnails\{1}.jpg", Environment.CurrentDirectory, composer.ID);
+                var thumbnailUri = new Uri(thumbnailPath, UriKind.Absolute);
+
+                if (File.Exists(thumbnailPath))                                                              // Cache and return thumbnail from file.
                 {
                     thumbnail = new BitmapImage();
                     thumbnail.CacheOption = BitmapCacheOption.None;
@@ -242,19 +208,20 @@ namespace NathanHarrenstein.ComposerTimeline.Initializers
                     thumbnail.EndInit();
                     thumbnail.Freeze();
 
-                    ThumbnailDictionary[0] = thumbnail;
+                    ThumbnailDictionary[composer.ID] = thumbnail;
 
                     return thumbnail;
                 }
-                else                                                                                            // Create, cache and return default thumbnail from file.
-                {
-                    var defaultUri = new Uri("pack://application:,,,/Resources/Composers/Unknown.jpg", UriKind.Absolute);
 
+                var image = composer.ComposerImages.Select(ci => ci.Image).FirstOrDefault();
+
+                if (image != null)                                                                          // Create, cache, and return a thumbnail from a composer image.
+                {
                     thumbnail = new BitmapImage();
                     thumbnail.CacheOption = BitmapCacheOption.None;
                     thumbnail.BeginInit();
                     thumbnail.DecodePixelHeight = 50;
-                    thumbnail.UriSource = defaultUri;
+                    thumbnail.UriSource = thumbnailUri;
                     thumbnail.EndInit();
                     thumbnail.Freeze();
 
@@ -267,15 +234,60 @@ namespace NathanHarrenstein.ComposerTimeline.Initializers
                         encoder.Save(stream);
                     }
 
-                    ThumbnailDictionary[0] = thumbnail;
+                    ThumbnailDictionary[composer.ID] = thumbnail;
 
                     return thumbnail;
                 }
-            }
-            else                                                                                      // Return default thumbnail from cache.
-            {
-                return thumbnail;
-            }
+                else if (!ThumbnailDictionary.TryGetValue(0, out thumbnail))
+                {
+                    thumbnailPath = string.Format(@"{0}\Resources\Thumbnails\0.jpg", Environment.CurrentDirectory);
+                    thumbnailUri = new Uri(thumbnailPath, UriKind.Absolute);
+
+                    if (File.Exists(thumbnailPath))                                                                // Cache and return default thumbnail from file.
+                    {
+                        thumbnail = new BitmapImage();
+                        thumbnail.CacheOption = BitmapCacheOption.None;
+                        thumbnail.BeginInit();
+                        thumbnail.DecodePixelHeight = 50;
+                        thumbnail.UriSource = thumbnailUri;
+                        thumbnail.EndInit();
+                        thumbnail.Freeze();
+
+                        ThumbnailDictionary[0] = thumbnail;
+
+                        return thumbnail;
+                    }
+                    else                                                                                            // Create, cache and return default thumbnail from file.
+                    {
+                        var defaultUri = new Uri("pack://application:,,,/Resources/Composers/Unknown.jpg", UriKind.Absolute);
+
+                        thumbnail = new BitmapImage();
+                        thumbnail.CacheOption = BitmapCacheOption.None;
+                        thumbnail.BeginInit();
+                        thumbnail.DecodePixelHeight = 50;
+                        thumbnail.UriSource = defaultUri;
+                        thumbnail.EndInit();
+                        thumbnail.Freeze();
+
+                        var encoder = new JpegBitmapEncoder();
+                        encoder.QualityLevel = 80;
+                        encoder.Frames.Add(BitmapFrame.Create(thumbnail));
+
+                        using (var stream = new FileStream(thumbnailPath, FileMode.CreateNew))
+                        {
+                            encoder.Save(stream);
+                        }
+
+                        ThumbnailDictionary[0] = thumbnail;
+
+                        return thumbnail;
+                    }
+                }
+                else                                                                                      // Return default thumbnail from cache.
+                {
+                    return thumbnail;
+                }
+            });
         }
     }
 }

@@ -51,19 +51,19 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="User Interface\Controls\EraControl.cs" />
-    <Compile Include="User Interface\Controls\EventControl.cs" />
-    <Compile Include="User Interface\Data\TimeRuler.cs" />
-    <Compile Include="User Interface\Data\TimeRulerUnit.cs" />
-    <Compile Include="User Interface\Data\TimeUnit.cs" />
-    <Compile Include="User Interface\Native\MouseHook.Native.cs" />
-    <Compile Include="User Interface\Native\MouseHook.cs" />
-    <Compile Include="User Interface\Native\WindowsMessages.cs" />
-    <Compile Include="User Interface\Displays\EraDisplay.cs" />
-    <Compile Include="User Interface\Displays\EventDisplay.cs" />
-    <Compile Include="User Interface\Displays\GuidelineDisplay.cs" />
-    <Compile Include="User Interface\Displays\TimeDisplay.cs" />
-    <Compile Include="User Interface\Controls\Timeline.cs" />
+    <Compile Include="Controls\EraControl.cs" />
+    <Compile Include="Controls\EventControl.cs" />
+    <Compile Include="Data\TimeRuler.cs" />
+    <Compile Include="Data\TimeRulerUnit.cs" />
+    <Compile Include="Data\TimeUnit.cs" />
+    <Compile Include="Native\MouseHook.Native.cs" />
+    <Compile Include="Native\MouseHook.cs" />
+    <Compile Include="Native\WindowsMessages.cs" />
+    <Compile Include="Displays\EraDisplay.cs" />
+    <Compile Include="Displays\EventDisplay.cs" />
+    <Compile Include="Displays\GuidelineDisplay.cs" />
+    <Compile Include="Displays\TimeDisplay.cs" />
+    <Compile Include="Controls\Timeline.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -77,8 +77,8 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="User Interface\Panels\EraPanel.cs" />
-    <Compile Include="User Interface\Panels\EventPanel.cs" />
+    <Compile Include="Panels\EraPanel.cs" />
+    <Compile Include="Panels\EventPanel.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
