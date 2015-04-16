@@ -11,75 +11,16 @@ namespace TimelineTest
         {
             InitializeComponent();
 
-            var medievalEra = new EraControl
-            {
-                Dates = ExtendedDateTimeInterval.Parse("1000/1400"),
-                Background = Brushes.Gray,
-                Foreground = Brushes.White,
-                Label = "Medieval"
-            };
+            var medievalEra = new TimelineEra("Medieval", ExtendedDateTimeInterval.Parse("1000/1400"), Brushes.Gray, Brushes.White);
+            var renaissanceEra = new TimelineEra("Renaissance", ExtendedDateTimeInterval.Parse("1400/1600"), Brushes.Purple, Brushes.White);
 
-            var renaissanceEra = new EraControl
-            {
-                Dates = ExtendedDateTimeInterval.Parse("1400/1600"),
-                Background = Brushes.Purple,
-                Foreground = Brushes.White,
-                Label = "Renaissance"
-            };
+            var medievalEvent1 = new TimelineEvent("Medieval Event 1", ExtendedDateTimeInterval.Parse("1000/1089"), medievalEra);
+            var medievalEvent2 = new TimelineEvent("Medieval Event 2", ExtendedDateTimeInterval.Parse("1056/1113"), medievalEra);
+            var medievalEvent3 = new TimelineEvent("Medieval Event 3", ExtendedDateTimeInterval.Parse("1077/1163"), medievalEra);
+            var renaissanceEvent1 = new TimelineEvent("Renaissance Event 1", ExtendedDateTimeInterval.Parse("1402/1470"), renaissanceEra);
+            var renaissanceEvent2 = new TimelineEvent("Renaissance Event 2", ExtendedDateTimeInterval.Parse("1432/1500"), renaissanceEra);
+            var renaissanceEvent3 = new TimelineEvent("Renaissance Event 3", ExtendedDateTimeInterval.Parse("1440/1511"), renaissanceEra);
 
-            var medievalEvent1 = new EventControl
-            {
-                Label = "Medieval Event 1",
-                Dates = ExtendedDateTimeInterval.Parse("1000/1089"),
-                Background = medievalEra.Background,
-                Foreground = medievalEra.Foreground,
-                Eras = new EraControl[] { medievalEra }
-            };
-
-            var medievalEvent2 = new EventControl
-            {
-                Label = "Medieval Event 2",
-                Dates = ExtendedDateTimeInterval.Parse("1056/1113"),
-                Background = medievalEra.Background,
-                Foreground = medievalEra.Foreground,
-                Eras = new EraControl[] { medievalEra }
-            };
-
-            var medievalEvent3 = new EventControl
-            {
-                Label = "Medieval Event 3",
-                Dates = ExtendedDateTimeInterval.Parse("1077/1163"),
-                Background = medievalEra.Background,
-                Foreground = medievalEra.Foreground,
-                Eras = new EraControl[] { medievalEra }
-            };
-
-            var renaissanceEvent1 = new EventControl
-            {
-                Label = "Renaissance Event 1",
-                Dates = ExtendedDateTimeInterval.Parse("1402/1470"),
-                Background = renaissanceEra.Background,
-                Foreground = renaissanceEra.Foreground,
-                Eras = new EraControl[] { renaissanceEra }
-            };
-
-            var renaissanceEvent2 = new EventControl
-            {
-                Label = "Renaissance Event 2",
-                Dates = ExtendedDateTimeInterval.Parse("1432/1500"),
-                Background = renaissanceEra.Background,
-                Foreground = renaissanceEra.Foreground,
-                Eras = new EraControl[] { renaissanceEra }
-            };
-
-            var renaissanceEvent3 = new EventControl
-            {
-                Label = "Renaissance Event 3",
-                Dates = ExtendedDateTimeInterval.Parse("1440/1511"),
-                Background = renaissanceEra.Background,
-                Foreground = renaissanceEra.Foreground,
-                Eras = new EraControl[] { renaissanceEra }
-            };
 
             timeline.Eras.Add(medievalEra);
             timeline.Eras.Add(renaissanceEra);

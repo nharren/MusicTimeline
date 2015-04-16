@@ -3,9 +3,9 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
         xmlns:t="clr-namespace:NathanHarrenstein.Timeline;assembly=Timeline"
+        xmlns:local="clr-namespace:TimelineTest"
         Title="Timeline Test">
-    <t:Timeline Start="1000-01-01"
-                End="2015-04-09"
+    <t:Timeline Dates="1000-01-01/2015-04-09"
                 Name="timeline"
                 Resolution="Decade">
         <t:Timeline.Ruler>
@@ -13,5 +13,37 @@
                          TimeUnitWidth="0.04109589041" />
             <!-- ce:0.00410958904d de:0.04109589041d y:0.41095890411d m:5d d:150d h:150h m:150m s:150s -->
         </t:Timeline.Ruler>
+        <t:Timeline.EraTemplates>
+            <DataTemplate DataType="{x:Type local:TimelineEra}">
+                <Grid Background="{Binding Background}">
+                    <TextBlock Foreground="{Binding Foreground}"
+                                   VerticalAlignment="Center"
+                                   Margin="15,0,0,0"
+                                   Text="{Binding Label}" />
+                </Grid>
+            </DataTemplate>
+        </t:Timeline.EraTemplates>
+        <t:Timeline.EventTemplates>
+            <DataTemplate DataType="{x:Type local:TimelineEvent}">
+                <Border Background="{Binding Background}"
+                            CornerRadius="5">
+                    <Button Focusable="False">
+                        <Button.Template>
+                            <ControlTemplate TargetType="{x:Type Button}">
+                                <Border Background="Transparent">
+                                    <Grid>
+                                        <ContentPresenter />
+                                    </Grid>
+                                </Border>
+                            </ControlTemplate>
+                        </Button.Template>
+                        <TextBlock Foreground="{Binding Foreground}"
+                                       VerticalAlignment="Center"
+                                       Margin="15,0,0,0"
+                                       Text="{Binding Label}" />
+                    </Button>
+                </Border>
+            </DataTemplate>
+        </t:Timeline.EventTemplates>
     </t:Timeline>
 </Window>

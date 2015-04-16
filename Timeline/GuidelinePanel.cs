@@ -5,7 +5,7 @@ using System.Windows.Media;
 
 namespace NathanHarrenstein.Timeline
 {
-    public class GuidelineDisplay : FrameworkElement, IPan
+    public class GuidelinePanel : FrameworkElement, IPan
     {
         private double horizontalOffset;
         private double lineWidth;

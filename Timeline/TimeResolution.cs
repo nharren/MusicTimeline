@@ -1,6 +1,6 @@
 ﻿namespace NathanHarrenstein.Timeline
 {
-    public enum TimeUnit
+    public enum TimeResolution
     {
         Century,
         Decade,

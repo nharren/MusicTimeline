@@ -2,8 +2,6 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">   
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="pack://application:,,,/Timeline;component/Themes/Styles/TimelineStyle.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/Timeline;component/Themes/Styles/EventControlStyle.xaml" />
-        <ResourceDictionary Source="pack://application:,,,/Timeline;component/Themes/Styles/EraControlStyle.xaml" />
     </ResourceDictionary.MergedDictionaries>
     <Style TargetType="{x:Type Rectangle}" />
 </ResourceDictionary>

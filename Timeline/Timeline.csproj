@@ -51,19 +51,16 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Controls\EraControl.cs" />
-    <Compile Include="Controls\EventControl.cs" />
-    <Compile Include="Data\TimeRuler.cs" />
-    <Compile Include="Data\TimeRulerUnit.cs" />
-    <Compile Include="Data\TimeUnit.cs" />
-    <Compile Include="Native\MouseHook.Native.cs" />
-    <Compile Include="Native\MouseHook.cs" />
-    <Compile Include="Native\WindowsMessages.cs" />
-    <Compile Include="Displays\EraDisplay.cs" />
-    <Compile Include="Displays\EventDisplay.cs" />
-    <Compile Include="Displays\GuidelineDisplay.cs" />
-    <Compile Include="Displays\TimeDisplay.cs" />
-    <Compile Include="Controls\Timeline.cs" />
+    <Compile Include="ITimelineEra.cs" />
+    <Compile Include="TimeRuler.cs" />
+    <Compile Include="TimeRulerUnit.cs" />
+    <Compile Include="TimeResolution.cs" />
+    <Compile Include="ITimelineEvent.cs" />
+    <Compile Include="EraPanel.cs" />
+    <Compile Include="EventPanel.cs" />
+    <Compile Include="GuidelinePanel.cs" />
+    <Compile Include="TimePanel.cs" />
+    <Compile Include="Timeline.cs" />
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -77,8 +74,6 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <Compile Include="Panels\EraPanel.cs" />
-    <Compile Include="Panels\EventPanel.cs" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -90,14 +85,6 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Themes\Styles\EraControlStyle.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Themes\Styles\EventControlStyle.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Themes\Styles\TimelineStyle.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

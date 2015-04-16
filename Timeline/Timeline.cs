@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.ExtendedDateTimeFormat;
-using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -13,15 +9,12 @@ namespace NathanHarrenstein.Timeline
     public class Timeline : Control
     {
         public static readonly DependencyProperty DatesProperty = DependencyProperty.Register("Dates", typeof(ExtendedDateTimeInterval), typeof(Timeline));
-
         public static readonly DependencyProperty ErasProperty = DependencyProperty.Register("Eras", typeof(IList), typeof(Timeline));
-
+        public static readonly DependencyProperty EraTemplatesProperty = DependencyProperty.Register("EraTemplates", typeof(IList), typeof(Timeline));
         public static readonly DependencyProperty EventHeightProperty = DependencyProperty.Register("EventHeight", typeof(double), typeof(Timeline), new PropertyMetadata(26d));
-
         public static readonly DependencyProperty EventsProperty = DependencyProperty.Register("Events", typeof(IList), typeof(Timeline));
-
-        public static readonly DependencyProperty ResolutionProperty = DependencyProperty.Register("Resolution", typeof(TimeUnit), typeof(Timeline));
-
+        public static readonly DependencyProperty EventTemplatesProperty = DependencyProperty.Register("EventTemplates", typeof(IList), typeof(Timeline));
+        public static readonly DependencyProperty ResolutionProperty = DependencyProperty.Register("Resolution", typeof(TimeResolution), typeof(Timeline));
         public static readonly DependencyProperty RulerProperty = DependencyProperty.Register("Ruler", typeof(TimeRuler), typeof(Timeline));
 
         static Timeline()
@@ -31,8 +24,10 @@ namespace NathanHarrenstein.Timeline
 
         public Timeline()
         {
-            Eras = new List<EraControl>();
-            Events = new List<EventControl>();
+            Eras = new List<ITimelineEra>();
+            Events = new List<ITimelineEvent>();
+            EventTemplates = new List<DataTemplate>();
+            EraTemplates = new List<DataTemplate>();
         }
 
         public ExtendedDateTimeInterval Dates
@@ -59,6 +54,18 @@ namespace NathanHarrenstein.Timeline
             }
         }
 
+        public IList EraTemplates
+        {
+            get
+            {
+                return (IList)GetValue(EraTemplatesProperty);
+            }
+            set
+            {
+                SetValue(EraTemplatesProperty, value);
+            }
+        }
+
         public double EventHeight
         {
             get
@@ -70,6 +77,7 @@ namespace NathanHarrenstein.Timeline
                 SetValue(EventHeightProperty, value);
             }
         }
+
         public IList Events
         {
             get
@@ -82,11 +90,23 @@ namespace NathanHarrenstein.Timeline
             }
         }
 
-        public TimeUnit Resolution
+        public IList EventTemplates
         {
             get
             {
-                return (TimeUnit)GetValue(ResolutionProperty);
+                return (IList)GetValue(EventTemplatesProperty);
+            }
+            set
+            {
+                SetValue(EventTemplatesProperty, value);
+            }
+        }
+
+        public TimeResolution Resolution
+        {
+            get
+            {
+                return (TimeResolution)GetValue(ResolutionProperty);
             }
             set
             {

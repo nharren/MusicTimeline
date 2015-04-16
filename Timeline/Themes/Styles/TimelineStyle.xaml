@@ -17,8 +17,9 @@
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition />
                             </Grid.RowDefinitions>
-                            <local:EraDisplay Dates="{TemplateBinding Dates}"
-                                              ItemsSource="{TemplateBinding Eras}"
+                            <local:EraPanel Dates="{TemplateBinding Dates}"
+                                              Eras="{TemplateBinding Eras}"
+                                              EraTemplates="{TemplateBinding EraTemplates}"
                                               Grid.Row="0"
                                               Height="26"
                                               IsHitTestVisible="False"
@@ -26,29 +27,18 @@
                                               TextBlock.FontFamily="Cambria"
                                               TextBlock.Foreground="Black"
                                               Resolution="{TemplateBinding Resolution}"
-                                              Ruler="{TemplateBinding Ruler}">
-                                <local:EraDisplay.ItemsPanel>
-                                    <ItemsPanelTemplate>
-                                        <panels:EraPanel />
-                                    </ItemsPanelTemplate>
-                                </local:EraDisplay.ItemsPanel>
-                            </local:EraDisplay>
-                            <local:TimeDisplay Dates="{TemplateBinding Dates}"
+                                              Ruler="{TemplateBinding Ruler}" />
+                            <local:TimePanel Dates="{TemplateBinding Dates}"
                                                Grid.Row="1"
                                                Height="24"
                                                IsHitTestVisible="False"
                                                Ruler="{TemplateBinding Ruler}"
                                                Resolution="{TemplateBinding Resolution}"
                                                LabelOffset="10"
-                                               Unit="10"
                                                FontSize="12"
                                                Foreground="Black"
-                                               Font="Calibri">
-                                <local:TimeDisplay.LinePen>
-                                    <Pen Brush="#FFD7D7D7"
-                                         Thickness="1" />
-                                </local:TimeDisplay.LinePen>
-                            </local:TimeDisplay>
+                                               Stroke="#FFD7D7D7"
+                                               FontFamily="Calibri" />
                             <!--<local:GuidelineDisplay Grid.Row="2"
                                                     MajorFrequency="10"
                                                     LineWidth="10"
@@ -62,7 +52,7 @@
                                          Thickness="1" />
                                 </local:GuidelineDisplay.MajorPen>
                             </local:GuidelineDisplay>-->
-                            <local:EventDisplay Grid.Row="2"
+                            <local:EventPanel Grid.Row="2"
                                                 EventSpacing="1"
                                                 EventHeight="{TemplateBinding EventHeight}"
                                                 TextBlock.FontSize="14"
@@ -71,13 +61,8 @@
                                                 Ruler="{TemplateBinding Ruler}"
                                                 Resolution="{TemplateBinding Resolution}"
                                                 Dates="{TemplateBinding Dates}"
-                                                ItemsSource="{TemplateBinding Events}">
-                                <local:EventDisplay.ItemsPanel>
-                                    <ItemsPanelTemplate>
-                                        <panels:EventPanel />
-                                    </ItemsPanelTemplate>
-                                </local:EventDisplay.ItemsPanel>
-                            </local:EventDisplay>
+                                                Events="{TemplateBinding Events}"
+                                                EventTemplates="{TemplateBinding EventTemplates}" />
                         </controls:PanGrid>
                     </Border>
                 </ControlTemplate>

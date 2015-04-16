@@ -11,47 +11,27 @@ using System.Windows.Shapes;
 
 namespace NathanHarrenstein.Timeline
 {
-    public class TimeDisplay : Panel, IPan
+    public class TimePanel : Panel, IPan
     {
-        public static readonly DependencyProperty DatesProperty = DependencyProperty.Register("Dates", typeof(ExtendedDateTimeInterval), typeof(TimeDisplay), new PropertyMetadata(LayoutPropertyChanged));
+        public static readonly DependencyProperty DatesProperty = DependencyProperty.Register("Dates", typeof(ExtendedDateTimeInterval), typeof(TimePanel), new PropertyMetadata(LayoutPropertyChanged));
+        public static readonly DependencyProperty ResolutionProperty = DependencyProperty.Register("Resolution", typeof(TimeResolution), typeof(TimePanel), new PropertyMetadata(LayoutPropertyChanged));
+        public static readonly DependencyProperty RulerProperty = DependencyProperty.Register("Ruler", typeof(TimeRuler), typeof(TimePanel), new PropertyMetadata(LayoutPropertyChanged));
 
-        public static readonly DependencyProperty ResolutionProperty = DependencyProperty.Register("Resolution", typeof(TimeUnit), typeof(TimeDisplay), new PropertyMetadata(LayoutPropertyChanged));
-
-        public static readonly DependencyProperty RulerProperty = DependencyProperty.Register("Ruler", typeof(TimeRuler), typeof(TimeDisplay), new PropertyMetadata(LayoutPropertyChanged));
-
-        private StackPanel[] cache;
-
-        private string font;
-
-        private double fontSize;
-
-        private Brush foreground;
-
-        private double horizontalOffset;
-
-        private bool viewUpdated = true;
-
-        private string labelFormat;
-
-        private double labelOffset;
-
-        private Pen linePen;
-
-        private ExtendedDateTime preciseInitialDate;
-
-        private ExtendedDateTime roundedInitialDate;
-
-        private int roundedStartIndex;
-
-        private int? timelineStartIndex;
-
-        private double unit;
-
-        private int viewportEndIndex;
-
-        private int viewportStartIndex = 0;
-
-        private List<int> visibleCacheIndexes = new List<int>();
+        private FrameworkElement[] _cache;
+        private FontFamily _fontFamily;
+        private double _fontSize;
+        private Brush _foreground;
+        private double _horizontalOffset;
+        private bool _hasViewChanged = true;
+        private double _labelOffset;
+        private Brush _stroke;
+        private ExtendedDateTime _preciseInitialDate;
+        private ExtendedDateTime _roundedInitialDate;
+        private int _roundedStartIndex;
+        private int? _timelineStartIndex;
+        private int _viewportEndIndex;
+        private int _viewportStartIndex = 0;
+        private List<int> _visibleCacheIndexes = new List<int>();
 
         public ExtendedDateTimeInterval Dates
         {
@@ -65,15 +45,15 @@ namespace NathanHarrenstein.Timeline
             }
         }
 
-        public string Font
+        public FontFamily FontFamily
         {
             get
             {
-                return font;
+                return _fontFamily;
             }
             set
             {
-                font = value;
+                _fontFamily = value;
             }
         }
 
@@ -81,11 +61,11 @@ namespace NathanHarrenstein.Timeline
         {
             get
             {
-                return fontSize;
+                return _fontSize;
             }
             set
             {
-                fontSize = value;
+                _fontSize = value;
             }
         }
 
@@ -93,11 +73,11 @@ namespace NathanHarrenstein.Timeline
         {
             get
             {
-                return foreground;
+                return _foreground;
             }
             set
             {
-                foreground = value;
+                _foreground = value;
             }
         }
 
@@ -105,23 +85,11 @@ namespace NathanHarrenstein.Timeline
         {
             get
             {
-                return horizontalOffset;
+                return _horizontalOffset;
             }
             set
             {
-                horizontalOffset = value;
-            }
-        }
-
-        public string LabelFormat
-        {
-            get
-            {
-                return labelFormat;
-            }
-            set
-            {
-                labelFormat = value;
+                _horizontalOffset = value;
             }
         }
 
@@ -129,31 +97,19 @@ namespace NathanHarrenstein.Timeline
         {
             get
             {
-                return labelOffset;
+                return _labelOffset;
             }
             set
             {
-                labelOffset = value;
+                _labelOffset = value;
             }
         }
 
-        public Pen LinePen
+        public TimeResolution Resolution
         {
             get
             {
-                return linePen;
-            }
-            set
-            {
-                linePen = value;
-            }
-        }
-
-        public TimeUnit Resolution
-        {
-            get
-            {
-                return (TimeUnit)GetValue(ResolutionProperty);
+                return (TimeResolution)GetValue(ResolutionProperty);
             }
             set
             {
@@ -173,28 +129,29 @@ namespace NathanHarrenstein.Timeline
             }
         }
 
-        public double Unit
-        {
-            get
-            {
-                return unit;
-            }
-            set
-            {
-                unit = value;
-            }
-        }
-
         private int TimelineStartIndex
         {
             get
             {
-                if (timelineStartIndex == null)
+                if (_timelineStartIndex == null)
                 {
-                    timelineStartIndex = Ruler.ToUnitCount(Dates.Earliest() - new ExtendedDateTime(0));
+                    _timelineStartIndex = Ruler.ToUnitCount(Dates.Earliest() - new ExtendedDateTime(0));
                 }
 
-                return timelineStartIndex.Value;
+                return _timelineStartIndex.Value;
+            }
+        }
+
+        public Brush Stroke
+        {
+            get
+            {
+                return _stroke;
+            }
+
+            set
+            {
+                _stroke = value;
             }
         }
 
@@ -219,9 +176,9 @@ namespace NathanHarrenstein.Timeline
         {
             HorizontalOffset += delta.X;
 
-            viewUpdated = true;
+            _hasViewChanged = true;
 
-            visibleCacheIndexes.Clear();
+            _visibleCacheIndexes.Clear();
             Children.Clear();
         }
 
@@ -231,8 +188,7 @@ namespace NathanHarrenstein.Timeline
             {
                 var child = Children[i];
 
-                child.Arrange(new Rect(Ruler.ToPixels(visibleCacheIndexes[i] - viewportStartIndex), 0, child.DesiredSize.Width, child.DesiredSize.Height));
-
+                child.Arrange(new Rect(Ruler.ToPixels(_visibleCacheIndexes[i] - _viewportStartIndex), 0, child.DesiredSize.Width, child.DesiredSize.Height));
             }
 
             return base.ArrangeOverride(finalSize);
@@ -240,90 +196,72 @@ namespace NathanHarrenstein.Timeline
 
         protected override Size MeasureOverride(Size availableSize)
         {
-            if (viewUpdated)
+            if (_hasViewChanged)
             {
-                preciseInitialDate = Dates.Earliest() + Ruler.ToTimeSpan(HorizontalOffset);
+                _preciseInitialDate = Dates.Earliest() + Ruler.ToTimeSpan(HorizontalOffset);
 
                 var year = 0;
 
                 switch (Resolution)
                 {
-                    case TimeUnit.Century:
-
-                        year = preciseInitialDate.Year;
+                    case TimeResolution.Century:
+                        year = _preciseInitialDate.Year;
                         year -= year % 100;                                            // round year down to nearest century.
-                        roundedInitialDate = new ExtendedDateTime(year);
+                        _roundedInitialDate = new ExtendedDateTime(year);
                         break;
-
-                    case TimeUnit.Decade:
-
-                        year = preciseInitialDate.Year;
+                    case TimeResolution.Decade:
+                        year = _preciseInitialDate.Year;
                         year -= year % 10;                                             // round year down to nearest decade.
-                        roundedInitialDate = new ExtendedDateTime(year);
+                        _roundedInitialDate = new ExtendedDateTime(year);
                         break;
-
-                    case TimeUnit.Year:
-
-                        roundedInitialDate = new ExtendedDateTime(preciseInitialDate.Year);
+                    case TimeResolution.Year:
+                        _roundedInitialDate = new ExtendedDateTime(_preciseInitialDate.Year);
                         break;
-
-                    case TimeUnit.Month:
-
-                        roundedInitialDate = preciseInitialDate.ToPrecision(ExtendedDateTimePrecision.Month, roundUp: false);
+                    case TimeResolution.Month:
+                        _roundedInitialDate = _preciseInitialDate.ToPrecision(ExtendedDateTimePrecision.Month, roundUp: false);
                         break;
-
-                    case TimeUnit.Day:
-
-                        roundedInitialDate = preciseInitialDate.ToPrecision(ExtendedDateTimePrecision.Day, roundUp: false);
+                    case TimeResolution.Day:
+                        _roundedInitialDate = _preciseInitialDate.ToPrecision(ExtendedDateTimePrecision.Day, roundUp: false);
                         break;
-
-                    case TimeUnit.Hour:
-
-                        roundedInitialDate = preciseInitialDate.ToPrecision(ExtendedDateTimePrecision.Hour, roundUp: false);
+                    case TimeResolution.Hour:
+                        _roundedInitialDate = _preciseInitialDate.ToPrecision(ExtendedDateTimePrecision.Hour, roundUp: false);
                         break;
-
-                    case TimeUnit.Minute:
-
-                        roundedInitialDate = preciseInitialDate.ToPrecision(ExtendedDateTimePrecision.Minute, roundUp: false);
+                    case TimeResolution.Minute:
+                        _roundedInitialDate = _preciseInitialDate.ToPrecision(ExtendedDateTimePrecision.Minute, roundUp: false);
                         break;
-
-                    case TimeUnit.Second:
-
-                        roundedInitialDate = preciseInitialDate.ToPrecision(ExtendedDateTimePrecision.Second, roundUp: false);
+                    case TimeResolution.Second:
+                        _roundedInitialDate = _preciseInitialDate.ToPrecision(ExtendedDateTimePrecision.Second, roundUp: false);
                         break;
-
                     default:
-
                         break;
                 }
 
-                viewportStartIndex = Ruler.ToUnitCount(HorizontalOffset);                                                           // represents days/hours/minutes/seconds from the timeline start.
-                viewportEndIndex = viewportStartIndex + Ruler.ToUnitCount(availableSize.Width);
+                _viewportStartIndex = Ruler.ToUnitCount(HorizontalOffset);                                                              // represents days/hours/minutes/seconds from the timeline start.
+                _viewportEndIndex = _viewportStartIndex + Ruler.ToUnitCount(availableSize.Width);
+                _roundedStartIndex = _viewportStartIndex + Ruler.ToUnitCount(_roundedInitialDate - _preciseInitialDate);                // calculate days/hours/minutes/seconds the initial date is from the timeline start.
 
-                roundedStartIndex = viewportStartIndex + Ruler.ToUnitCount(roundedInitialDate - preciseInitialDate);                // calculate days/hours/minutes/seconds the initial date is from the timeline start.
-
-                var currentDate = roundedInitialDate;
-                var currentIndex = roundedStartIndex;
+                var currentDate = _roundedInitialDate;
+                var currentIndex = _roundedStartIndex;
                 var cacheIndex = Ruler.ToUnitCount(currentDate - Dates.Earliest());
 
-                while (Ruler.ToPixels(preciseInitialDate, currentDate) < availableSize.Width)
+                while (Ruler.ToPixels(_preciseInitialDate, currentDate) < availableSize.Width)
                 {
-                    if (cache[cacheIndex] == null)
+                    if (_cache[cacheIndex] == null)
                     {
                         var stackPanel = new StackPanel();
                         stackPanel.Orientation = Orientation.Horizontal;
 
                         var line = new Line();
-                        line.Stroke = LinePen.Brush;
+                        line.Stroke =  _stroke;
                         line.Y2 = availableSize.Height;
                         line.StrokeThickness = 1;
 
                         var label = new TextBlock();
                         label.Text = currentDate.ToString();
-                        label.FontFamily = new FontFamily(font);
+                        label.FontFamily = _fontFamily;
                         label.VerticalAlignment = VerticalAlignment.Center;
                         label.FontSize = FontSize;
-                        label.Foreground = foreground;
+                        label.Foreground = _foreground;
                         label.Margin = new Thickness(LabelOffset, 0, 0, 0);
 
                         stackPanel.Children.Add(line);
@@ -333,46 +271,46 @@ namespace NathanHarrenstein.Timeline
                     }
                     else
                     {
-                        Children.Add(cache[cacheIndex]);
+                        Children.Add(_cache[cacheIndex]);
                     }
 
-                    visibleCacheIndexes.Add(currentIndex);
+                    _visibleCacheIndexes.Add(currentIndex);
 
                     switch (Resolution)
                     {
-                        case TimeUnit.Century:
+                        case TimeResolution.Century:
                             currentDate = ExtendedDateTimeCalculator.AddYears(currentDate, 100);
                             break;
-                        case TimeUnit.Decade:
+                        case TimeResolution.Decade:
                             currentDate = ExtendedDateTimeCalculator.AddYears(currentDate, 10);
                             break;
-                        case TimeUnit.Year:
+                        case TimeResolution.Year:
                             currentDate = ExtendedDateTimeCalculator.AddYears(currentDate, 1);
                             break;
-                        case TimeUnit.Month:
+                        case TimeResolution.Month:
                             currentDate = ExtendedDateTimeCalculator.AddMonths(currentDate, 1);
                             break;
-                        case TimeUnit.Day:
+                        case TimeResolution.Day:
                             currentDate += TimeSpan.FromDays(1);
                             break;
-                        case TimeUnit.Hour:
+                        case TimeResolution.Hour:
                             currentDate += TimeSpan.FromHours(1);
                             break;
-                        case TimeUnit.Minute:
+                        case TimeResolution.Minute:
                             currentDate += TimeSpan.FromMinutes(1);
                             break;
-                        case TimeUnit.Second:
+                        case TimeResolution.Second:
                             currentDate += TimeSpan.FromSeconds(1);
                             break;
                         default:
                             break;
                     }
 
-                    currentIndex = roundedStartIndex + Ruler.ToUnitCount(currentDate - roundedInitialDate);
+                    currentIndex = _roundedStartIndex + Ruler.ToUnitCount(currentDate - _roundedInitialDate);
                     cacheIndex = Ruler.ToUnitCount(currentDate - Dates.Earliest());
                 }
 
-                viewUpdated = false;
+                _hasViewChanged = false;
 
                 InvalidateMeasure();
             }
@@ -387,10 +325,10 @@ namespace NathanHarrenstein.Timeline
 
         private static void LayoutPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            var timeDisplay = (TimeDisplay)d;
+            var timeDisplay = (TimePanel)d;
             timeDisplay.ResetChildrenCapacity();
-            timeDisplay.viewUpdated = true;
-            timeDisplay.visibleCacheIndexes.Clear();
+            timeDisplay._hasViewChanged = true;
+            timeDisplay._visibleCacheIndexes.Clear();
             timeDisplay.Children.Clear();
         }
 
@@ -401,7 +339,7 @@ namespace NathanHarrenstein.Timeline
                 return;
             }
 
- 	         cache = new StackPanel[Ruler.ToUnitCount(Dates.Span())];
+ 	         _cache = new StackPanel[Ruler.ToUnitCount(Dates.Span())];
         }
     }
 }
