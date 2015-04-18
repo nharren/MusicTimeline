@@ -33,13 +33,13 @@ namespace NathanHarrenstein.ComposerTimeline
 
         public string HeaderText { get; set; }
 
-        public IEnumerable<InfluenceData> Influenced { get; set; }
+        public IEnumerable<Influence> Influenced { get; set; }
 
-        public IEnumerable<InfluenceData> Influences { get; set; }
+        public IEnumerable<Influence> Influences { get; set; }
 
         public Visibility LinksVisibility { get; set; }
 
-        public IEnumerable<LinkData> Links { get; set; }
+        public IEnumerable<Link> Links { get; set; }
 
         public string Nationality { get; set; }
 

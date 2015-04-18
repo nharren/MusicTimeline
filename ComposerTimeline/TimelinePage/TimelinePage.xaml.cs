@@ -9,7 +9,7 @@ namespace NathanHarrenstein.ComposerTimeline
         {
             InitializeComponent();
 
-            TimelinePageInitializer.Initialize(this);
+            TimelineInitializer.Initialize(timeline);
         }
     }
 }

@@ -75,64 +75,64 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Pages\InputPage\InputPage.xaml.cs">
+    <Compile Include="Data\ComposerEvent.cs" />
+    <Compile Include="Data\MusicEra.cs" />
+    <Compile Include="InputPage\InputPage.xaml.cs">
       <DependentUpon>InputPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Initializers\ComposerPageInitializer.cs" />
-    <Compile Include="Initializers\TimelinePageInitializer.cs" />
-    <Compile Include="Pages\TimelinePage.xaml.cs">
+    <Compile Include="Initializers\TimelineInitializer.cs" />
+    <Compile Include="TimelinePage\TimelinePage.xaml.cs">
       <DependentUpon>TimelinePage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\CompositionCollectionTreeViewItem.cs" />
-    <Compile Include="Controls\CompositionTreeViewItem.cs" />
+    <Compile Include="ComposerPage\TreeViewItems\CompositionCollectionTreeViewItem.cs" />
+    <Compile Include="ComposerPage\TreeViewItems\CompositionTreeViewItem.cs" />
     <Compile Include="Data\Flag.cs" />
-    <Compile Include="Pages\InputPage\RecordingSection.xaml.cs">
+    <Compile Include="InputPage\RecordingSection.xaml.cs">
       <DependentUpon>RecordingSection.xaml</DependentUpon>
     </Compile>
     <Compile Include="Initializers\MainWindowInitializer.cs" />
-    <Compile Include="Windows\MainWindow.xaml.cs">
+    <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\MovementTreeViewItem.cs" />
-    <Compile Include="Data\Providers\InfluenceDataProvider.cs" />
-    <Compile Include="Data\Providers\LinkDataProvider.cs" />
-    <Compile Include="Data\InfluenceData.cs" />
-    <Compile Include="Data\Providers\FlagProvider.cs" />
-    <Compile Include="Pages\ComposerPage.xaml.cs">
+    <Compile Include="ComposerPage\TreeViewItems\MovementTreeViewItem.cs" />
+    <Compile Include="Providers\InfluenceDataProvider.cs" />
+    <Compile Include="Providers\LinkDataProvider.cs" />
+    <Compile Include="Data\Influence.cs" />
+    <Compile Include="Providers\FlagProvider.cs" />
+    <Compile Include="ComposerPage\ComposerPage.xaml.cs">
       <DependentUpon>ComposerPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Data\LinkData.cs" />
+    <Compile Include="Data\Link.cs" />
     <Compile Include="Providers\CompositionCollectionTreeViewItemProvider.cs" />
     <Compile Include="Providers\CompositionTreeViewItemProvider.cs" />
     <Compile Include="Providers\MovementTreeViewItemProvider.cs" />
-    <Compile Include="Providers\TimelineProvider.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Controls\ComposerEventControl.cs" />
-    <Compile Include="Controls\TreeViewItemBase.cs" />
+    <Compile Include="ComposerPage\TreeViewItems\TreeViewItemBase.cs" />
     <Page Include="Themes\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Pages\InputPage\InputPage.xaml">
+    <Page Include="InputPage\InputPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\ComposerPage.xaml">
+    <Page Include="ComposerPage\ComposerPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\TimelinePage.xaml">
+    <Page Include="TimelinePage\TimelinePage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Pages\InputPage\RecordingSection.xaml">
+    <Page Include="InputPage\RecordingSection.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Windows\MainWindow.xaml">
+    <Page Include="MainWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

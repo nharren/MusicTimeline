@@ -1,15 +1,11 @@
 ﻿using Database;
-using NathanHarrenstein.ComposerTimeline.Data.Providers;
 using NathanHarrenstein.ComposerTimeline.Providers;
 using NathanHarrenstein.Controls;
 using NathanHarrenstein.Converters;
-using System;
 using System.Collections.Generic;
 using System.ExtendedDateTimeFormat;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media.Imaging;
 
@@ -29,7 +25,7 @@ namespace NathanHarrenstein.ComposerTimeline.Initializers
             composerPage.HasInfluences = HasInfluences(composerPage);
             composerPage.HasInfluenced = HasInfluenced(composerPage);
             composerPage.Links = GetLinks(composer);
-            composerPage.LinksVisibility = composerPage.Links.Count() > 0 ? Visibility.Visible : Visibility.Collapsed; ;
+            composerPage.LinksVisibility = composerPage.Links.Count() > 0 ? Visibility.Visible : Visibility.Collapsed;
             composerPage.Born = GetBorn(composer);
             composerPage.Died = GetDied(composer);
             composerPage.Biography = composer.Biography;
@@ -71,7 +67,7 @@ namespace NathanHarrenstein.ComposerTimeline.Initializers
         private static string GetBorn(Composer composer)
         {
             var composerDates = (ExtendedDateTimeInterval)ExtendedDateTimeFormatParser.Parse(composer.Dates);
-            
+
             if (!string.IsNullOrWhiteSpace(composer.DeathLocation.Name))
             {
                 return string.Format("{0}; {1}", composerDates.Start, composer.DeathLocation.Name);
@@ -106,17 +102,17 @@ namespace NathanHarrenstein.ComposerTimeline.Initializers
             return composer.Nationalities.Select(n => FlagProvider.GetFlag(n.Name, FlagSize.Large));
         }
 
-        private static IEnumerable<InfluenceData> GetInfluenced(Composer composer)
+        private static IEnumerable<Influence> GetInfluenced(Composer composer)
         {
             return composer.Influenced.Select(i => InfluenceDataProvider.GetInfluenceData(i));
         }
 
-        private static IEnumerable<InfluenceData> GetInfluences(Composer composer)
+        private static IEnumerable<Influence> GetInfluences(Composer composer)
         {
             return composer.Influences.Select(i => InfluenceDataProvider.GetInfluenceData(i));
         }
 
-        private static IEnumerable<LinkData> GetLinks(Composer composer)
+        private static IEnumerable<Link> GetLinks(Composer composer)
         {
             return composer.ComposerLinks.Select(cl => LinkDataProvider.GetLinkData(cl.URL));
         }

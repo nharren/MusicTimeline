@@ -3,7 +3,7 @@ using System.Windows.Input;
 
 namespace NathanHarrenstein.ComposerTimeline
 {
-    public class LinkData
+    public class Link
     {
         public Uri Icon { get; set; }
 

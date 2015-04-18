@@ -17,6 +17,6 @@
         </Menu>
         <Frame Name="Frame"
                NavigationUIVisibility="Hidden"
-               Source="/Pages/TimelinePage.xaml" />
+               Source="/TimelinePage/TimelinePage.xaml" />
     </DockPanel>
 </Window>

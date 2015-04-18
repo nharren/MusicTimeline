@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Windows.Media.Imaging;
 
-namespace NathanHarrenstein.ComposerTimeline.Data.Providers
+namespace NathanHarrenstein.ComposerTimeline.Providers
 {
     public enum FlagSize { Small, Large }
 

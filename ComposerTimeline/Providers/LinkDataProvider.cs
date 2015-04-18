@@ -1,21 +1,16 @@
-﻿using NathanHarrenstein.ComposerTimeline.Controls;
-using NathanHarrenstein.Input;
+﻿using NathanHarrenstein.Input;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Net;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace NathanHarrenstein.ComposerTimeline
+namespace NathanHarrenstein.ComposerTimeline.Providers
 {
     public static class LinkDataProvider
     {
-        public static LinkData GetLinkData(string link)
+        public static Link GetLinkData(string link)
         {
-            var linkData = new LinkData();
+            var linkData = new Link();
             var linkUri = new Uri(link);
 
             linkData.Icon = GetIcon(linkUri);

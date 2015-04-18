@@ -3,13 +3,13 @@ using NathanHarrenstein.Input;
 using System;
 using System.Windows.Input;
 
-namespace NathanHarrenstein.ComposerTimeline
+namespace NathanHarrenstein.ComposerTimeline.Providers
 {
     public static class InfluenceDataProvider
     {
-        public static InfluenceData GetInfluenceData(Composer composer)
+        public static Influence GetInfluenceData(Composer composer)
         {
-            var influence = new InfluenceData();
+            var influence = new Influence();
             influence.Composer = composer;
             influence.Name = composer.Name;
             influence.Click = GetClickCommand(composer);
