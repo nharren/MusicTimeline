@@ -66,16 +66,12 @@ namespace NathanHarrenstein.ComposerTimeline.Initializers
 
         private static string GetBorn(Composer composer)
         {
-            var composerDates = (ExtendedDateTimeInterval)ExtendedDateTimeFormatParser.Parse(composer.Dates);
+            if (composer.BirthLocation != null)
+            {
+                return string.Format("{0}; {1}", ExtendedDateTimeInterval.Parse(composer.Dates).Start, composer.BirthLocation.Name);
+            }
 
-            if (!string.IsNullOrWhiteSpace(composer.DeathLocation.Name))
-            {
-                return string.Format("{0}; {1}", composerDates.Start, composer.DeathLocation.Name);
-            }
-            else
-            {
-                return composerDates.Start.ToString();
-            }
+            return ExtendedDateTimeInterval.Parse(composer.Dates).Start.ToString();
         }
 
         private static string GetComposerName(Composer composer)
@@ -85,16 +81,12 @@ namespace NathanHarrenstein.ComposerTimeline.Initializers
 
         private static string GetDied(Composer composer)
         {
-            var composerDates = (ExtendedDateTimeInterval)ExtendedDateTimeFormatParser.Parse(composer.Dates);
+            if (composer.DeathLocation != null)
+            {
+                return string.Format("{0}; {1}", ExtendedDateTimeInterval.Parse(composer.Dates).End, composer.DeathLocation.Name);
+            }
 
-            if (!string.IsNullOrWhiteSpace(composer.BirthLocation.Name))
-            {
-                return string.Format("{0}; {1}", composerDates.End, composer.BirthLocation.Name);
-            }
-            else
-            {
-                return composerDates.End.ToString();
-            }
+            return ExtendedDateTimeInterval.Parse(composer.Dates).End.ToString();
         }
 
         private static IEnumerable<Flag> GetFlags(Composer composer)
@@ -119,11 +111,15 @@ namespace NathanHarrenstein.ComposerTimeline.Initializers
 
         private static IEnumerable<TreeViewItem> GetTreeViewItems(Composer composer)
         {
-            var compositionCollectionTreeViewItems = composer.CompositionCollections.Select<CompositionCollection, TreeViewItem>(cc => CompositionCollectionTreeViewItemProvider.GetCompositionCollectionTreeViewItem(cc, null));
+            foreach (var compositionCollection in composer.CompositionCollections)
+            {
+                yield return CompositionCollectionTreeViewItemProvider.GetCompositionCollectionTreeViewItem(compositionCollection, null);
+            }
 
-            var compositionTreeViewItems = composer.Compositions.Select<Composition, TreeViewItem>(c => CompositionTreeViewItemProvider.GetCompositionTreeViewItem(c, null));
-
-            return compositionCollectionTreeViewItems.Concat(compositionTreeViewItems);
+            foreach (var composition in composer.Compositions)
+            {
+                yield return CompositionTreeViewItemProvider.GetCompositionTreeViewItem(composition, null);
+            }
         }
 
         private static Visibility HasInfluenced(ComposerPage composerPage)

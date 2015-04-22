@@ -1,16 +1,13 @@
+using System.Data.Entity;
+
 namespace Database
 {
-    using System;
-    using System.Data.Entity;
-    using System.ComponentModel.DataAnnotations.Schema;
-    using System.Linq;
-
     public partial class DataProvider : DbContext
     {
         public DataProvider()
             : base("name=DataProvider")
         {
-            Database.SetInitializer<DataProvider>(null);
+            System.Data.Entity.Database.SetInitializer<DataProvider>(null);
         }
 
         public virtual DbSet<Album> Albums { get; set; }
@@ -35,7 +32,7 @@ namespace Database
                 .IsUnicode(false);
 
             modelBuilder.Entity<Album>()
-                .HasMany<Recording>(e => e.Recordings)
+                .HasMany(e => e.Recordings)
                 .WithOptional(e => e.Album)
                 .HasForeignKey(e => e.AlbumID);
 
@@ -81,17 +78,17 @@ namespace Database
             modelBuilder.Entity<Composer>()
                 .HasMany(e => e.Nationalities)
                 .WithMany(e => e.Composers)
-                .Map(m => m.ToTable("composer_nationality", "music"));
+                .Map(m => m.ToTable("composer_nationality", "music").MapRightKey("composer_id"));
 
             modelBuilder.Entity<Composer>()
                 .HasMany(e => e.CompositionCollections)
                 .WithMany(e => e.Composers)
-                .Map(m => m.ToTable("composition_collection_composer", "music"));
+                .Map(m => m.ToTable("composition_collection_composer", "music").MapRightKey("composer_id"));
 
             modelBuilder.Entity<Composer>()
                 .HasMany(e => e.Compositions)
                 .WithMany(e => e.Composers)
-                .Map(m => m.ToTable("composition_composer", "music"));
+                .Map(m => m.ToTable("composition_composer", "music").MapRightKey("composer_id"));
 
             modelBuilder.Entity<ComposerLink>()
                 .Property(e => e.URL)

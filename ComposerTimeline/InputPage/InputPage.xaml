@@ -4,10 +4,329 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:local="clr-namespace:NathanHarrenstein.ComposerTimeline"
+      xmlns:controls="clr-namespace:NathanHarrenstein.Controls;assembly=Framework"
       mc:Ignorable="d"
+      d:DesignWidth="1440"
+      d:DesignHeight="900"
       Background="#FF42474B"
       Foreground="#FFDFE0E6">
-    <Grid>
-        <local:RecordingSection />
-    </Grid>
+    <Page.Resources>
+        <Style x:Key="SectionHeaderStyle"
+               TargetType="TextBlock">
+            <Setter Property="FontSize"
+                    Value="21.333" />
+            <Setter Property="FontFamily"
+                    Value="Franklin Gothic Medium" />
+            <Setter Property="Foreground"
+                    Value="#FFC8CDD1" />
+        </Style>
+        <Style x:Key="FieldHeaderStyle"
+               TargetType="TextBlock">
+            <Setter Property="FontSize"
+                    Value="13.333" />
+            <Setter Property="FontFamily"
+                    Value="Segoe UI Semibold" />
+            <Setter Property="Foreground"
+                    Value="#FFC8CDD1" />
+            <Setter Property="VerticalAlignment"
+                    Value="Bottom" />
+        </Style>
+        <Style x:Key="FieldBorderStyle"
+               TargetType="controls:DoubleBorderDecorator">
+            <Setter Property="OuterBorderThickness"
+                    Value="5" />
+            <Setter Property="Background"
+                    Value="#FF2F3437" />
+            <Setter Property="OuterBorderBrush"
+                    Value="#FF2F3437" />
+            <Setter Property="CornerRadius"
+                    Value="7" />
+        </Style>
+        <Style x:Key="FieldStyle"
+               TargetType="Control">
+            <Setter Property="BorderThickness"
+                    Value="0" />
+            <Setter Property="Background"
+                    Value="#FF2F3437" />
+            <Setter Property="Foreground"
+                    Value="#FFDFE0E6" />
+            <Setter Property="FontFamily"
+                    Value="Calibri" />
+        </Style>
+    </Page.Resources>
+    <ScrollViewer HorizontalScrollBarVisibility="Auto"
+                  VerticalScrollBarVisibility="Auto">
+        <Grid Margin="75"
+              TextElement.FontSize="18">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="3" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="15" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="37" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="35" />
+                <RowDefinition Height="Auto" />
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="550" />
+                <ColumnDefinition Width="500" />
+                <ColumnDefinition Width="60" />
+                <ColumnDefinition Width="60" />
+                <ColumnDefinition Width="150" />
+                <ColumnDefinition Width="400" />
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.ColumnSpan="6"
+                       Style="{StaticResource SectionHeaderStyle}"
+                       Text="Recording" />
+            <Rectangle Grid.Row="2" 
+                       Grid.ColumnSpan="6"
+                       Fill="#FF6D797E" 
+                       StrokeThickness="0"
+                       Height="1" />
+            <TextBlock Grid.Row="4"
+                       Grid.Column="0"
+                       Grid.ColumnSpan="6"
+                       Style="{StaticResource FieldHeaderStyle}"
+                       Text="Target:"
+                       Margin="0,0,0,3" />
+            <TextBlock x:Name="TargetText"
+                       Grid.Row="5"
+                       Grid.Column="0"
+                       Grid.ColumnSpan="6"
+                       Foreground="#FFDFE0E6"
+                       FontFamily="Calibri" />
+            <TextBlock Grid.Row="6"
+                       Grid.Column="0"
+                       Style="{StaticResource FieldHeaderStyle}"
+                       Text="Performers:"
+                       Margin="13,0,0,3" />
+            <controls:DoubleBorderDecorator Grid.Row="7"
+                                            Margin="0,0,5,0"
+                                            Style="{StaticResource FieldBorderStyle}">
+                <Grid>
+                    <TextBox Text="Performer 1; Performer 2; etc."
+                             Background="Transparent"
+                             BorderThickness="0"
+                             FontSize="16"
+                             VerticalAlignment="Center"
+                             Foreground="DarkGray"
+                             HorizontalAlignment="Left"
+                             Panel.ZIndex="1" />
+                    <controls:AutoCompleteBox x:Name="PerformersBox"
+                                              Panel.ZIndex="2"
+                                              IsTabStop="False">
+                        <controls:AutoCompleteBox.Style>
+                            <Style TargetType="controls:AutoCompleteBox"
+                                   BasedOn="{StaticResource FieldStyle}">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Text, ElementName=PerformersBox}"
+                                                 Value="">
+                                        <Setter Property="Background"
+                                                Value="Transparent" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Text, ElementName=PerformersBox}"
+                                                 Value="{x:Null}">
+                                        <Setter Property="Background"
+                                                Value="Transparent" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </controls:AutoCompleteBox.Style>
+                    </controls:AutoCompleteBox>
+                </Grid>
+            </controls:DoubleBorderDecorator>
+            <TextBlock Grid.Row="6"
+                       Grid.Column="1"
+                       Style="{StaticResource FieldHeaderStyle}"
+                       Text="Album:"
+                       Margin="13,0,0,3" />
+            <controls:DoubleBorderDecorator  Grid.Row="7"
+                                             Grid.Column="1"
+                                             Style="{StaticResource FieldBorderStyle}"
+                                             Margin="5,0,5,0">
+                <controls:AutoCompleteBox x:Name="AlbumBox"
+                                          Style="{StaticResource FieldStyle}"
+                                          IsTabStop="False" />
+            </controls:DoubleBorderDecorator>
+            <TextBlock Style="{StaticResource FieldHeaderStyle}"
+                       Grid.Row="6"
+                       Grid.Column="2"
+                       Margin="13,0,0,3"
+                       Text="Track:" />
+            <controls:DoubleBorderDecorator  Grid.Row="7"
+                                             Grid.Column="2"
+                                             Style="{StaticResource FieldBorderStyle}"
+                                             Margin="5,0,5,0">
+                <controls:NumberBox x:Name="TrackNumberBox"
+                                    Style="{StaticResource FieldStyle}"
+                                    MaxLength="2"
+                                    CaretBrush="#DFE0E6"
+                                    TextAlignment="Center" />
+            </controls:DoubleBorderDecorator>
+            <TextBlock Style="{StaticResource FieldHeaderStyle}"
+                       Grid.Row="6"
+                       Grid.Column="3"
+                       Margin="13,0,0,3"
+                       Text="Total:" />
+            <controls:DoubleBorderDecorator Grid.Row="7"
+                                            Grid.Column="3"
+                                            Style="{StaticResource FieldBorderStyle}"
+                                            Margin="5,0,5,0">
+                <controls:NumberBox x:Name="TotalTracksBox"
+                                    Style="{StaticResource FieldStyle}"
+                                    MaxLength="2"
+                                    CaretBrush="#DFE0E6"
+                                    TextAlignment="Center" />
+            </controls:DoubleBorderDecorator>
+            <TextBlock Style="{StaticResource FieldHeaderStyle}"
+                       Grid.Row="6"
+                       Grid.Column="4"
+                       Margin="13,0,0,3"
+                       Text="Recording Date:" />
+            <controls:DoubleBorderDecorator  Grid.Row="7"
+                                             Grid.Column="4"
+                                             Style="{StaticResource FieldBorderStyle}"
+                                             Margin="5,0,5,0">
+                <StackPanel Orientation="Horizontal">
+                    <Grid>
+                        <controls:NumberBox Style="{StaticResource FieldStyle}"
+                                            Background="Transparent"
+                                            MaxLength="4"
+                                            Width="50"
+                                            TextAlignment="Center"
+                                            CaretBrush="#DFE0E6"
+                                            Height="22"
+                                            VerticalAlignment="Bottom"
+                                            x:Name="RecordingYearBox"
+                                            Panel.ZIndex="2" Margin="2,0,1,1" />
+                        <TextBox BorderThickness="0"
+                                 FontSize="16"
+                                 Background="Transparent"
+                                 VerticalAlignment="Center"
+                                 HorizontalAlignment="Left"
+                                 Text="    yyyy"
+                                 IsTabStop="False"
+                                 Panel.ZIndex="1">
+                            <TextBox.Style>
+                                <Style TargetType="{x:Type TextBox}">
+                                    <Setter Property="Foreground"
+                                            Value="Transparent" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Text, ElementName=RecordingYearBox}"
+                                                     Value="">
+                                            <Setter Property="Foreground"
+                                                    Value="DarkGray" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding Text, ElementName=RecordingYearBox}"
+                                                     Value="{x:Null}">
+                                            <Setter Property="Foreground"
+                                                    Value="DarkGray" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBox.Style>
+                        </TextBox>
+                    </Grid>
+                    <TextBlock Foreground="#DFE0E6"
+                               FontFamily="Calibri"
+                               Text="/" />
+                    <Grid>
+                        <controls:NumberBox Background="Transparent"
+                                            MaxLength="2"
+                                            Width="30"
+                                            TextAlignment="Center"
+                                            CaretBrush="#DFE0E6"
+                                            Height="22"
+                                            Style="{StaticResource FieldStyle}"
+                                            x:Name="RecordingMonthBox"
+                                            Panel.ZIndex="2" HorizontalAlignment="Left" Margin="1,1,0,1" />
+                        <TextBox BorderThickness="0"
+                                 FontSize="16"
+                                 Background="Transparent"
+                                 VerticalAlignment="Center"
+                                 HorizontalAlignment="Left"
+                                 Text="mm"
+                                 IsTabStop="False"
+                                 Panel.ZIndex="1">
+                            <TextBox.Style>
+                                <Style TargetType="{x:Type TextBox}">
+                                    <Setter Property="Foreground"
+                                            Value="Transparent" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Text, ElementName=RecordingMonthBox}"
+                                                     Value="">
+                                            <Setter Property="Foreground"
+                                                    Value="DarkGray" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding Text, ElementName=RecordingMonthBox}"
+                                                     Value="{x:Null}">
+                                            <Setter Property="Foreground"
+                                                    Value="DarkGray" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBox.Style>
+                        </TextBox>
+                    </Grid>
+                    <TextBlock Foreground="#DFE0E6"
+                               FontFamily="Calibri"
+                               Text="/" />
+                    <Grid>
+                        <controls:NumberBox Style="{StaticResource FieldStyle}"
+                                            Background="Transparent"
+                                            MaxLength="2"
+                                            Width="30"
+                                            TextAlignment="Center"
+                                            CaretBrush="#DFE0E6"
+                                            Height="22"
+                                            x:Name="RecordingDayBox"
+                                            Panel.ZIndex="2" />
+                        <TextBox BorderThickness="0"
+                                 FontSize="16"
+                                 Background="Transparent"
+                                 VerticalAlignment="Center"
+                                 HorizontalAlignment="Left"
+                                 Text="dd"
+                                 IsTabStop="False"
+                                 Panel.ZIndex="1">
+                            <TextBox.Style>
+                                <Style TargetType="{x:Type TextBox}">
+                                    <Setter Property="Foreground"
+                                            Value="Transparent" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding Text, ElementName=RecordingDayBox}"
+                                                     Value="">
+                                            <Setter Property="Foreground"
+                                                    Value="DarkGray" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding Text, ElementName=RecordingDayBox}"
+                                                     Value="{x:Null}">
+                                            <Setter Property="Foreground"
+                                                    Value="DarkGray" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBox.Style>
+                        </TextBox>
+                    </Grid>
+                </StackPanel>
+            </controls:DoubleBorderDecorator>
+            <TextBlock Grid.Row="6"
+                       Grid.Column="5"
+                       Style="{StaticResource FieldHeaderStyle}"
+                       Text="Recording Location:"
+                       Margin="13,0,0,3" />
+            <controls:DoubleBorderDecorator Grid.Row="7"
+                                            Grid.Column="5"
+                                            Style="{StaticResource FieldBorderStyle}"
+                                            Margin="5,0,5,0">
+                <controls:AutoCompleteBox x:Name="RecordingLocationBox"
+                                          Style="{StaticResource FieldStyle}"
+                                          IsTabStop="False" HorizontalAlignment="Right" Width="380" />
+            </controls:DoubleBorderDecorator>
+        </Grid>
+    </ScrollViewer>
 </Page>

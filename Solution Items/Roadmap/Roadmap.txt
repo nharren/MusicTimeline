@@ -1,21 +1,19 @@
-Release 1
-
------ComposerTimeline------
-- Tie database into ComposerTimeline.
-- Draw object and relationship diagram for Timeline and ComposerTimeline.
-- Draw design specification for InputPage.
+- Conceptualize InputPage.
 - Create controls used by the InputPage.
 - Create InputPage.
+- Release initial version.
+- Add indicators for approximate and uncertain dates.
 
------Deployment-----
-- Find server
-- Install MySQL
-- Install database
-- Tie ComposerTimeline to the location of database in the server.
 
-Release 2
 
-- Incorporate FLAC tag loading and saving using FlacBox.}
+
+Feature Ideas:
+- FLAC tag loading and saving using FlacBox. (https://flacbox.codeplex.com/)
 - Allow import of music.
+- Music Management Page
+- Search / Advanced Search
+- Audio Highlights on Composer Page
+- Filters Menu with Timeline Views for Instruments, Major Events (Wars, Kings/Queens, Diseases?), Genres/Styles, Stylistic Movements
+- Data Validator.
 
 

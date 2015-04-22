@@ -10,11 +10,6 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Framework", "Framework\Framework.csproj", "{42F625DF-600B-48E6-B1CC-81925CAF6BB2}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{91A29C48-0499-4A2B-B0B4-C5A2E2A33F0D}"
-	ProjectSection(SolutionItems) = preProject
-		Solution Items\ClassicalMusic.sql = Solution Items\ClassicalMusic.sql
-		Solution Items\Code Guidelines.txt = Solution Items\Code Guidelines.txt
-		Solution Items\Ideas.txt = Solution Items\Ideas.txt
-	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Considerations", "Considerations", "{82F976FE-BD0D-43E8-8050-94697AB06549}"
 	ProjectSection(SolutionItems) = preProject
@@ -26,6 +21,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Concepts", "Concepts", "{5D
 	ProjectSection(SolutionItems) = preProject
 		Solution Items\Concepts\DataEntryPage 1.pdn = Solution Items\Concepts\DataEntryPage 1.pdn
 		Solution Items\Concepts\DataEntryPage 10.pdn = Solution Items\Concepts\DataEntryPage 10.pdn
+		Solution Items\Concepts\DataEntryPage 11.pdn = Solution Items\Concepts\DataEntryPage 11.pdn
 		Solution Items\Concepts\DataEntryPage 2.pdn = Solution Items\Concepts\DataEntryPage 2.pdn
 		Solution Items\Concepts\DataEntryPage 3.pdn = Solution Items\Concepts\DataEntryPage 3.pdn
 		Solution Items\Concepts\DataEntryPage 4.pdn = Solution Items\Concepts\DataEntryPage 4.pdn

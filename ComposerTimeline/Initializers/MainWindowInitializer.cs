@@ -32,7 +32,7 @@ namespace NathanHarrenstein.ComposerTimeline.Initializers
 
                     var frame = (Frame)mainWindow.FindName("Frame");
 
-                    frame.Navigate(new Uri(@"\Pages\AddFilePage.xaml", UriKind.Relative));
+                    frame.Navigate(new Uri(@"\InputPage\InputPage.xaml", UriKind.Relative));
                 }
             };
 

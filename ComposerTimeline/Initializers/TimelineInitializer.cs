@@ -44,7 +44,7 @@ namespace NathanHarrenstein.ComposerTimeline.Initializers
         {
             Action<object> command = o =>
             {
-                App.Current.Properties.Add("SelectedComposer", composer);
+                App.Current.Properties["SelectedComposer"] = composer;
 
                 var frame = (Frame)App.Current.MainWindow.FindName("Frame");
 
@@ -68,45 +68,42 @@ namespace NathanHarrenstein.ComposerTimeline.Initializers
         {
             var eras = new List<MusicEra>();
 
-            using (var dataProvider = new DataProvider())
+            foreach (var era in App.DataProvider.Eras)
             {
-                foreach (var era in dataProvider.Eras)
+                var background = (SolidColorBrush)null;
+
+                if (era.Name == "Medieval")
                 {
-                    var background = (SolidColorBrush)null;
-
-                    if (era.Name == "Medieval")
-                    {
-                        background = new SolidColorBrush(Color.FromRgb(153, 153, 153));            // #FF999999
-                    }
-                    else if (era.Name == "Renaissance")
-                    {
-                        background = new SolidColorBrush(Color.FromRgb(155, 128, 181));            // #FF9B80B5
-                    }
-                    else if (era.Name == "Baroque")
-                    {
-                        background = new SolidColorBrush(Color.FromRgb(204, 77, 77));              // #FFCC4D4D
-                    }
-                    else if (era.Name == "Classical")
-                    {
-                        background = new SolidColorBrush(Color.FromRgb(51, 151, 193));             // #FF3397C1
-                    }
-                    else if (era.Name == "Romantic")
-                    {
-                        background = new SolidColorBrush(Color.FromRgb(69, 168, 90));              // #FF45A85A
-                    }
-                    else if (era.Name == "20th Century")
-                    {
-                        background = new SolidColorBrush(Color.FromRgb(205, 173, 74));             // #FFCDAD4A
-                    }
-                    else if (era.Name == "21st Century")
-                    {
-                        background = new SolidColorBrush(Color.FromRgb(219, 109, 138));            // #FFDB6D8A
-                    }
-
-                    var musicEra = new MusicEra(era.Name, ExtendedDateTimeInterval.Parse(era.Dates), background, Brushes.White);
-
-                    eras.Add(musicEra);
+                    background = new SolidColorBrush(Color.FromRgb(153, 153, 153));            // #FF999999
                 }
+                else if (era.Name == "Renaissance")
+                {
+                    background = new SolidColorBrush(Color.FromRgb(155, 128, 181));            // #FF9B80B5
+                }
+                else if (era.Name == "Baroque")
+                {
+                    background = new SolidColorBrush(Color.FromRgb(204, 77, 77));              // #FFCC4D4D
+                }
+                else if (era.Name == "Classical")
+                {
+                    background = new SolidColorBrush(Color.FromRgb(51, 151, 193));             // #FF3397C1
+                }
+                else if (era.Name == "Romantic")
+                {
+                    background = new SolidColorBrush(Color.FromRgb(69, 168, 90));              // #FF45A85A
+                }
+                else if (era.Name == "20th Century")
+                {
+                    background = new SolidColorBrush(Color.FromRgb(205, 173, 74));             // #FFCDAD4A
+                }
+                else if (era.Name == "21st Century")
+                {
+                    background = new SolidColorBrush(Color.FromRgb(219, 109, 138));            // #FFDB6D8A
+                }
+
+                var musicEra = new MusicEra(era.Name, ExtendedDateTimeInterval.Parse(era.Dates), background, Brushes.White);
+
+                eras.Add(musicEra);
             }
 
             return eras;
@@ -116,44 +113,41 @@ namespace NathanHarrenstein.ComposerTimeline.Initializers
         {
             var eventList = new List<ComposerEvent>();
 
-            using (var dataProvider = new DataProvider())
+            foreach (var composer in App.DataProvider.Composers)
             {
-                foreach (var composer in dataProvider.Composers)
+                var background = (Brush)null;
+                var composerEras = new List<MusicEra>();
+
+                foreach (var era in composer.Eras)
                 {
-                    var background = (Brush)null;
-                    var composerEras = new List<MusicEra>();
-
-                    foreach (var era in composer.Eras)
+                    foreach (var musicEra in musicEras)
                     {
-                        foreach (var musicEra in musicEras)
+                        if (era.Name == musicEra.Label)
                         {
-                            if (era.Name == musicEra.Label)
-                            {
-                                composerEras.Add(musicEra);
-                            }
+                            composerEras.Add(musicEra);
                         }
                     }
-
-                    var composerEraCount = composerEras.Count;
-
-                    if (composerEraCount > 1)
-                    {
-                        background = new LinearGradientBrush { StartPoint = new Point(0, 0.5), EndPoint = new Point(1, 0.5) };
-
-                        for (int i = 0; i < composerEraCount; i++)
-                        {
-                            ((LinearGradientBrush)background).GradientStops.Add(new GradientStop(composerEras[i].Background.Color, i / (composerEraCount - 1)));
-                        }
-                    }
-                    else
-                    {
-                        background = composerEras[0].Background;
-                    }
-
-                    var composerEvent = new ComposerEvent(NameConverter.ToFirstLast(composer.Name), ExtendedDateTimeInterval.Parse(composer.Dates), GetBorn(composer), GetDied(composer), composer, background, Brushes.White, GetThumbnail(composer), GetFlags(composer), composerEras, GetCommand(composer), null);
-
-                    eventList.Add(composerEvent);
                 }
+
+                var composerEraCount = composerEras.Count;
+
+                if (composerEraCount > 1)
+                {
+                    background = new LinearGradientBrush { StartPoint = new Point(0, 0.5), EndPoint = new Point(1, 0.5) };
+
+                    for (int i = 0; i < composerEraCount; i++)
+                    {
+                        ((LinearGradientBrush)background).GradientStops.Add(new GradientStop(composerEras[i].Background.Color, i / (composerEraCount - 1)));
+                    }
+                }
+                else
+                {
+                    background = composerEras[0].Background;
+                }
+
+                var composerEvent = new ComposerEvent(NameConverter.ToFirstLast(composer.Name), ExtendedDateTimeInterval.Parse(composer.Dates), GetBorn(composer), GetDied(composer), composer, background, Brushes.White, GetThumbnail(composer), GetFlags(composer), composerEras, GetCommand(composer), null);
+
+                eventList.Add(composerEvent);
             }
 
             return eventList.OrderBy(e => e.Dates.Earliest()).ToList();

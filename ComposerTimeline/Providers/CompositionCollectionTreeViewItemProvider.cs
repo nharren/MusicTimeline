@@ -1,15 +1,5 @@
-﻿using NathanHarrenstein.Comparers;
-using Database;
-using NathanHarrenstein.Input;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Database;
 using System.Windows;
-using System.Windows.Input;
 
 namespace NathanHarrenstein.ComposerTimeline.Providers
 {
@@ -22,7 +12,7 @@ namespace NathanHarrenstein.ComposerTimeline.Providers
             compositionCollectionTreeViewItem.CompositionCollection = compositionCollection;
             compositionCollectionTreeViewItem.Parent = parent;
             compositionCollectionTreeViewItem.Header = compositionCollection.Name;
-            compositionCollectionTreeViewItem.IsExpanded = compositionCollection.Compositions.Count > 0 ? new Nullable<bool>(false) : null;
+            compositionCollectionTreeViewItem.IsExpanded = compositionCollection.Compositions.Count > 0 ? new bool?(false) : null;
             compositionCollectionTreeViewItem.CanExpand = compositionCollection.Compositions.Count > 0 ? true : false;
             // compositionCollectionTreeViewItem.Command = GetCommand(compositionCollection);                                    REQUIREMENTS: Set Audio Directory; Retrieve ID from track.
             compositionCollectionTreeViewItem.StarVisibility = compositionCollection.IsPopular ? Visibility.Visible : Visibility.Collapsed;
