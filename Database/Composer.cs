@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Database
 {
-    [Table("music.composer")]
+    [Table("music_test.composer")]
     public partial class Composer
     {
         public Composer()

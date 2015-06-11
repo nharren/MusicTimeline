@@ -6,7 +6,7 @@ namespace Database
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    [Table("music.composer_image")]
+    [Table("music_test.composer_image")]
     public partial class ComposerImage
     {
         [Column("id", TypeName = "usmallint")]

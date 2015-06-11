@@ -73,22 +73,22 @@ namespace Database
             modelBuilder.Entity<Composer>()
                 .HasMany(e => e.Influences)
                 .WithMany(e => e.Influenced)
-                .Map(m => m.ToTable("composer_influence", "music").MapRightKey("influence_id"));
+                .Map(m => m.ToTable("composer_influence", "music_test").MapRightKey("influence_id"));
 
             modelBuilder.Entity<Composer>()
                 .HasMany(e => e.Nationalities)
                 .WithMany(e => e.Composers)
-                .Map(m => m.ToTable("composer_nationality", "music").MapRightKey("composer_id"));
+                .Map(m => m.ToTable("composer_nationality", "music_test").MapRightKey("composer_id"));
 
             modelBuilder.Entity<Composer>()
                 .HasMany(e => e.CompositionCollections)
                 .WithMany(e => e.Composers)
-                .Map(m => m.ToTable("composition_collection_composer", "music").MapRightKey("composer_id"));
+                .Map(m => m.ToTable("composition_collection_composer", "music_test").MapRightKey("composer_id"));
 
             modelBuilder.Entity<Composer>()
                 .HasMany(e => e.Compositions)
                 .WithMany(e => e.Composers)
-                .Map(m => m.ToTable("composition_composer", "music").MapRightKey("composer_id"));
+                .Map(m => m.ToTable("composition_composer", "music_test").MapRightKey("composer_id"));
 
             modelBuilder.Entity<ComposerLink>()
                 .Property(e => e.URL)
@@ -129,7 +129,7 @@ namespace Database
                 .IsUnicode(false);
 
             modelBuilder.Entity<CompositionCatalog>()
-                .HasMany(e => e.CatalogNumber)
+                .HasMany(e => e.CatalogNumbers)
                 .WithRequired(e => e.CompositionCatalog)
                 .HasForeignKey(e => e.CompositionCatalogID)
                 .WillCascadeOnDelete(false);
@@ -139,14 +139,14 @@ namespace Database
                 .IsUnicode(false);
 
             modelBuilder.Entity<CompositionCollection>()
-                .HasMany(e => e.CatalogNumber)
+                .HasMany(e => e.CatalogNumbers)
                 .WithRequired(e => e.CompositionCollection)
                 .HasForeignKey(e => e.CompositionCollectionID)
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<CompositionCollection>()
                 .HasMany(e => e.Compositions)
-                .WithRequired(e => e.CompositionCollections)
+                .WithRequired(e => e.CompositionCollection)
                 .HasForeignKey(e => e.CompositionCollectionID)
                 .WillCascadeOnDelete(false);
 
@@ -167,7 +167,7 @@ namespace Database
             modelBuilder.Entity<Era>()
                 .HasMany(e => e.Composers)
                 .WithMany(e => e.Eras)
-                .Map(m => m.ToTable("composer_era", "music"));
+                .Map(m => m.ToTable("composer_era", "music_test"));
 
             modelBuilder.Entity<Location>()
                 .Property(e => e.Name)
@@ -209,7 +209,7 @@ namespace Database
             modelBuilder.Entity<Performer>()
                 .HasMany(e => e.Recordings)
                 .WithMany(e => e.Performers)
-                .Map(m => m.ToTable("recording_performer", "music"));
+                .Map(m => m.ToTable("recording_performer", "music_test"));
 
             modelBuilder.Entity<Recording>()
                 .Property(e => e.Dates)

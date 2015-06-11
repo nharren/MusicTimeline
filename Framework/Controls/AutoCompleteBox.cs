@@ -1,6 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+using System.Collections;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -11,92 +10,134 @@ using System.Windows.Media;
 
 namespace NathanHarrenstein.Controls
 {
-    public class AutoCompleteBox : Control, INotifyPropertyChanged
+    public class AutoCompleteBox : Control
     {
-        private ListBox listBox;
-        private IEnumerable<string> suggestions;
-        private string text;
-        private TextBox textBox;
-        private Popup popup;
+        public static readonly DependencyProperty SuggestionsProperty = DependencyProperty.Register("Suggestions", typeof(IEnumerable), typeof(AutoCompleteBox), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsArrange));
+        public static readonly DependencyProperty SuggestionTemplateProperty = DependencyProperty.Register("SuggestionTemplate", typeof(DataTemplate), typeof(AutoCompleteBox));
+        public static readonly DependencyProperty TextProperty = DependencyProperty.Register("Text", typeof(string), typeof(AutoCompleteBox));
+        private Func<IEnumerable, IEnumerable> _filter;
+        private Func<object, string> _stringSelector;
+        private ListBox _suggestionlistBox;
+        private Popup _suggestionPopup;
+        private TextBox _textBox;
 
         public AutoCompleteBox()
         {
             FocusVisualStyle = null;
 
-            textBox = new TextBox();
-            textBox.PreviewKeyDown += textBox_KeyDown;
-            textBox.TextChanged += textBox_TextChanged;
+            _textBox = new TextBox();
+            _textBox.PreviewKeyDown += textBox_KeyDown;
+            _textBox.TextChanged += _textBox_TextChanged;
 
-            listBox = new ListBox();
-            listBox.SelectionMode = SelectionMode.Single;
-            listBox.Visibility = Visibility.Collapsed;
-            listBox.IsHitTestVisible = false;
-            listBox.PreviewKeyDown += listBox_PreviewKeyDown;
-            listBox.FocusVisualStyle = null;
+            AddVisualChild(_textBox);
+
+            var textBoxBinding = new Binding("Text");
+            textBoxBinding.Source = _textBox;
+            textBoxBinding.Mode = BindingMode.TwoWay;
+            textBoxBinding.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
+            SetBinding(TextProperty, textBoxBinding);
+
+            _suggestionlistBox = new ListBox();
+            _suggestionlistBox.SelectionMode = SelectionMode.Single;
+            _suggestionlistBox.Visibility = Visibility.Collapsed;
+            _suggestionlistBox.IsHitTestVisible = false;
+            _suggestionlistBox.PreviewKeyDown += listBox_PreviewKeyDown;
+            _suggestionlistBox.FocusVisualStyle = null;
+
+            var suggestionTemplateBinding = new Binding("SuggestionTemplate");
+            suggestionTemplateBinding.Source = this;
+            _suggestionlistBox.SetBinding(ItemsControl.ItemTemplateProperty, suggestionTemplateBinding);
 
             var style = new Style(typeof(ListBoxItem));
-            var setter = new Setter(ListBoxItem.FocusVisualStyleProperty, null);
-            style.Setters.Add(setter);
-            listBox.ItemContainerStyle = style;
+            style.Setters.Add(new Setter(FocusVisualStyleProperty, null));
+            _suggestionlistBox.ItemContainerStyle = style;
 
-            AddVisualChild(textBox);
-
-            popup = new Popup();
-            popup.AllowsTransparency = true;
-            popup.Child = listBox;
-            popup.IsOpen = true;
-            popup.PlacementTarget = textBox;
-            popup.Placement = PlacementMode.Bottom;
+            _suggestionPopup = new Popup();
+            _suggestionPopup.AllowsTransparency = true;
+            _suggestionPopup.Child = _suggestionlistBox;
+            _suggestionPopup.IsOpen = true;
+            _suggestionPopup.PlacementTarget = _textBox;
+            _suggestionPopup.Placement = PlacementMode.Bottom;
 
             var popupWidthBinding = new Binding("ActualWidth");
-            popupWidthBinding.Source = textBox;
-            listBox.SetBinding(ListBox.WidthProperty, popupWidthBinding);
+            popupWidthBinding.Source = _textBox;
+            _suggestionlistBox.SetBinding(WidthProperty, popupWidthBinding);
 
             var backgroundBinding = new Binding("Background");
             backgroundBinding.Source = this;
-            listBox.SetBinding(ListBox.BackgroundProperty, backgroundBinding);
-            textBox.SetBinding(TextBox.BackgroundProperty, backgroundBinding);
+            _suggestionlistBox.SetBinding(BackgroundProperty, backgroundBinding);
+            _textBox.SetBinding(BackgroundProperty, backgroundBinding);
+
+            var foregroundBinding = new Binding("Foreground");
+            foregroundBinding.Source = this;
+            _suggestionlistBox.SetBinding(ForegroundProperty, foregroundBinding);
+            _textBox.SetBinding(ForegroundProperty, foregroundBinding);
+            _textBox.SetBinding(TextBoxBase.CaretBrushProperty, foregroundBinding);
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected override void OnInitialized(EventArgs e)
+        private void _textBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            textBox.BorderThickness = BorderThickness;
-            textBox.BorderBrush = BorderBrush;
-            //textBox.Background = Background;
-            textBox.Foreground = Foreground;
-            textBox.CaretBrush = Foreground;
-            textBox.FontFamily = FontFamily;
-            textBox.FontSize = FontSize;
-
-            //listBox.Background = Background;
-            listBox.Foreground = Foreground;
-            listBox.FontFamily = FontFamily;
-            listBox.FontSize = FontSize;
-
-            base.OnInitialized(e);
+            UpdateSuggestions();
         }
 
-        public IEnumerable<string> Suggestions
+        public Func<IEnumerable, IEnumerable> Filter
         {
-            get { return suggestions; }
+            get
+            {
+                return _filter;
+            }
             set
             {
-                suggestions = value;
-                OnPropertyChanged("Suggestions");
-                InvalidateArrange();
+                _filter = value;
+            }
+        }
+
+        public Func<object, string> StringSelector
+        {
+            get
+            {
+                return _stringSelector;
+            }
+
+            set
+            {
+                _stringSelector = value;
+            }
+        }
+
+        public IEnumerable Suggestions
+        {
+            get
+            {
+                return (IEnumerable)GetValue(SuggestionsProperty);
+            }
+            set
+            {
+                SetValue(SuggestionsProperty, value);
+            }
+        }
+
+        public DataTemplate SuggestionTemplate
+        {
+            get
+            {
+                return (DataTemplate)GetValue(SuggestionTemplateProperty);
+            }
+            set
+            {
+                SetValue(SuggestionTemplateProperty, value);
             }
         }
 
         public string Text
         {
-            get { return text; }
+            get
+            {
+                return (string)GetValue(TextProperty);
+            }
             set
             {
-                text = value;
-                OnPropertyChanged("Text");
-                textBox.Text = Text;
+                SetValue(TextProperty, value);
             }
         }
 
@@ -110,7 +151,7 @@ namespace NathanHarrenstein.Controls
 
         protected override Size ArrangeOverride(Size arrangeBounds)
         {
-            textBox.Arrange(new Rect(arrangeBounds));
+            _textBox.Arrange(new Rect(arrangeBounds));
 
             return base.ArrangeOverride(arrangeBounds);
         }
@@ -122,43 +163,63 @@ namespace NathanHarrenstein.Controls
 
         protected override Visual GetVisualChild(int index)
         {
-            return textBox;
+            return _textBox;
         }
 
         protected override Size MeasureOverride(Size constraint)
         {
-            textBox.Measure(constraint);
-            listBox.Measure(new Size(constraint.Height, textBox.DesiredSize.Width));
+            _textBox.Measure(constraint);
+            _suggestionlistBox.Measure(new Size(constraint.Height, _textBox.DesiredSize.Width));
 
             return base.MeasureOverride(constraint);
         }
 
-        protected void OnPropertyChanged(string name)
+        protected override void OnInitialized(EventArgs e)
         {
-            if (PropertyChanged != null)
+            _textBox.BorderThickness = BorderThickness;
+            _textBox.BorderBrush = BorderBrush;
+            _textBox.FontFamily = FontFamily;
+            _textBox.FontSize = FontSize;
+
+            _suggestionlistBox.BorderThickness = new Thickness();
+            _suggestionlistBox.FontFamily = FontFamily;
+            _suggestionlistBox.FontSize = FontSize;
+
+            base.OnInitialized(e);
+        }
+
+        private IEnumerable DefaultFilter(IEnumerable suggestions)
+        {
+            foreach (var suggestion in suggestions)
             {
-                PropertyChanged(this, new PropertyChangedEventArgs(name));
+                var suggestionString = StringSelector(suggestion);
+
+                if (suggestionString.StartsWith(_textBox.Text) && suggestionString != _textBox.Text)
+                {
+                    yield return suggestion;
+                }
             }
         }
 
         private void listBox_PreviewKeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Up && listBox.SelectedIndex == 0)
+            if (e.Key == Key.Up && _suggestionlistBox.SelectedIndex == 0)
             {
-                listBox.SelectedIndex = -1;
+                _suggestionlistBox.SelectedIndex = -1;
 
-                Keyboard.Focus(textBox);
+                Keyboard.Focus(_textBox);
             }
 
             if (e.Key == Key.Enter)
             {
-                textBox.Text = (string)listBox.SelectedItem;
+                _textBox.Text = StringSelector(_suggestionlistBox.SelectedItem);
 
-                listBox.SelectedIndex = -1;
-                listBox.Visibility = Visibility.Collapsed;
+                _suggestionlistBox.SelectedIndex = -1;
+                _suggestionlistBox.Visibility = Visibility.Collapsed;
 
-                Keyboard.Focus(textBox);
-                textBox.CaretIndex = textBox.Text.Length;
+                Keyboard.Focus(_textBox);
+
+                _textBox.CaretIndex = _textBox.Text.Length;
             }
         }
 
@@ -166,59 +227,49 @@ namespace NathanHarrenstein.Controls
         {
             if (e.Key == Key.Down)
             {
-                listBox.Items.Refresh(); // Necessary for correct behavior when switching focus from TextBox to ListBox using the down arrow key.
+                _suggestionlistBox.Items.Refresh();                                          // Necessary for correct behavior when switching focus from TextBox to ListBox using the down arrow key.
 
-                Keyboard.Focus(listBox);
+                Keyboard.Focus(_suggestionlistBox);
             }
             else if (e.Key == Key.Enter)
             {
-                textBox.Text = (string)listBox.SelectedItem;
+                _textBox.Text = StringSelector(_suggestionlistBox.SelectedItem);
 
-                Text = textBox.Text;
+                Text = _textBox.Text;
 
-                listBox.SelectedIndex = -1;
-                listBox.Visibility = Visibility.Collapsed;
-            }
-        }
-
-        private void textBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            if (!string.Equals(textBox.Text, text, StringComparison.CurrentCultureIgnoreCase))
-            {
-                Text = textBox.Text;
-
-                UpdateSuggestions();
+                _suggestionlistBox.SelectedIndex = -1;
+                _suggestionlistBox.Visibility = Visibility.Collapsed;
             }
         }
 
         private void UpdateSuggestions()
         {
-            if (suggestions == null)
+            if (Suggestions == null)
             {
                 return;
             }
 
-            if (string.IsNullOrEmpty(textBox.Text))
+            if (string.IsNullOrEmpty(_textBox.Text))
             {
-                listBox.SelectedIndex = -1;
-                listBox.Visibility = Visibility.Collapsed;
+                _suggestionlistBox.SelectedIndex = -1;
+                _suggestionlistBox.Visibility = Visibility.Collapsed;
 
                 return;
             }
 
-            var query = suggestions.Where(s => s.StartsWith(textBox.Text, StringComparison.CurrentCultureIgnoreCase));
+            var query = Filter == null ? DefaultFilter(Suggestions) : Filter(Suggestions);
 
-            listBox.ItemsSource = query;
+            _suggestionlistBox.ItemsSource = query;
 
-            if (query == null || query.Count() == 0)
+            if (query == null || query.Cast<object>().Count() == 0)
             {
-                listBox.SelectedIndex = -1;
-                listBox.Visibility = Visibility.Collapsed;
+                _suggestionlistBox.SelectedIndex = -1;
+                _suggestionlistBox.Visibility = Visibility.Collapsed;
 
                 return;
             }
 
-            listBox.Visibility = Visibility.Visible;
+            _suggestionlistBox.Visibility = Visibility.Visible;
         }
     }
 }

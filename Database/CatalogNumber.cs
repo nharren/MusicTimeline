@@ -6,7 +6,7 @@ namespace Database
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    [Table("music.catalog_number")]
+    [Table("music_test.catalog_number")]
     public partial class CatalogNumber
     {
         [Column("id", TypeName = "usmallint")]

@@ -1,18 +1,14 @@
-﻿<Window x:Name="window"
-        x:Class="NathanHarrenstein.ComposerTimeline.MainWindow"
+﻿<Window x:Class="NathanHarrenstein.ComposerTimeline.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Name="window"
         Title="Composer Timeline">
     <DockPanel>
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="File">
-                <MenuItem Header="Add Files"
-                          Command="{Binding AddFilesCommand, ElementName=window}" />
-                <MenuItem Header="Add Folder"
-                          Command="{Binding AddFolderCommand, ElementName=window}" />
+                <MenuItem Command="{Binding ManageDataCommand, ElementName=window}" Header="Manage Data" />
                 <Separator />
-                <MenuItem Header="Close"
-                          Command="{Binding CloseCommand, ElementName=window}" />
+                <MenuItem Command="{Binding CloseCommand, ElementName=window}" Header="Close" />
             </MenuItem>
         </Menu>
         <Frame Name="Frame"

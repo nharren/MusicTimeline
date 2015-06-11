@@ -106,7 +106,7 @@ namespace NathanHarrenstein.ComposerTimeline.Initializers
 
         private static IEnumerable<Link> GetLinks(Composer composer)
         {
-            return composer.ComposerLinks.Select(cl => LinkDataProvider.GetLinkData(cl.URL));
+            return composer.ComposerLinks.Select(cl => LinkProvider.GetLink(cl.URL));
         }
 
         private static IEnumerable<TreeViewItem> GetTreeViewItems(Composer composer)

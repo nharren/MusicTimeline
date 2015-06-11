@@ -1,14 +1,11 @@
-- Conceptualize InputPage.
-- Create controls used by the InputPage.
-- Create InputPage.
-- Release initial version.
 - Add indicators for approximate and uncertain dates.
+- Test
+- Deploy on server
 
 
 
 
 Feature Ideas:
-- FLAC tag loading and saving using FlacBox. (https://flacbox.codeplex.com/)
 - Allow import of music.
 - Music Management Page
 - Search / Advanced Search

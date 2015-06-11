@@ -240,13 +240,13 @@ namespace NathanHarrenstein.Timeline
                 _viewportEndIndex = _viewportStartIndex + Ruler.ToUnitCount(availableSize.Width);
                 _roundedStartIndex = _viewportStartIndex + Ruler.ToUnitCount(_roundedInitialDate - _preciseInitialDate);                // calculate days/hours/minutes/seconds the initial date is from the timeline start.
 
-                var currentDate = _roundedInitialDate;
+                var currentDate = (ExtendedDateTime)_roundedInitialDate.Clone();
                 var currentIndex = _roundedStartIndex;
                 var cacheIndex = Ruler.ToUnitCount(currentDate - Dates.Earliest());
 
                 while (Ruler.ToPixels(_preciseInitialDate, currentDate) < availableSize.Width)
                 {
-                    if (_cache[cacheIndex] == null)
+                    if (cacheIndex < _cache.Length && _cache[cacheIndex] == null)
                     {
                         var stackPanel = new StackPanel();
                         stackPanel.Orientation = Orientation.Horizontal;
@@ -279,16 +279,16 @@ namespace NathanHarrenstein.Timeline
                     switch (Resolution)
                     {
                         case TimeResolution.Century:
-                            currentDate = ExtendedDateTimeCalculator.AddYears(currentDate, 100);
+                            currentDate = currentDate.AddYears(100);
                             break;
                         case TimeResolution.Decade:
-                            currentDate = ExtendedDateTimeCalculator.AddYears(currentDate, 10);
+                            currentDate = currentDate.AddYears(10);
                             break;
                         case TimeResolution.Year:
-                            currentDate = ExtendedDateTimeCalculator.AddYears(currentDate, 1);
+                            currentDate = currentDate.AddYears(1);
                             break;
                         case TimeResolution.Month:
-                            currentDate = ExtendedDateTimeCalculator.AddMonths(currentDate, 1);
+                            currentDate = currentDate.AddMonths(1);
                             break;
                         case TimeResolution.Day:
                             currentDate += TimeSpan.FromDays(1);

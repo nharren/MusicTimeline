@@ -1,13 +1,13 @@
 ﻿using NathanHarrenstein.ComposerTimeline.Initializers;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace NathanHarrenstein.ComposerTimeline
 {
     public partial class MainWindow : Window
     {
-        public static readonly DependencyProperty AddFilesCommandProperty = DependencyProperty.Register("AddFilesCommand", typeof(ICommand), typeof(MainWindow));
-        public static readonly DependencyProperty AddFolderCommandProperty = DependencyProperty.Register("AddFolderCommand", typeof(ICommand), typeof(MainWindow));
+        public static readonly DependencyProperty ManageDataCommandProperty = DependencyProperty.Register("ManageDataCommand", typeof(ICommand), typeof(MainWindow));
         public static readonly DependencyProperty CloseCommandProperty = DependencyProperty.Register("CloseCommand", typeof(ICommand), typeof(MainWindow));
 
         public MainWindow()
@@ -17,22 +17,30 @@ namespace NathanHarrenstein.ComposerTimeline
             MainWindowInitializer.Initialize(this);
         }
 
-        public ICommand AddFilesCommand
+        public ICommand ManageDataCommand
         {
-            get { return (ICommand)GetValue(AddFilesCommandProperty); }
-            set { SetValue(AddFilesCommandProperty, value); }
-        }
+            get
+            {
+                return (ICommand)GetValue(ManageDataCommandProperty);
+            }
 
-        public ICommand AddFolderCommand
-        {
-            get { return (ICommand)GetValue(AddFolderCommandProperty); }
-            set { SetValue(AddFolderCommandProperty, value); }
+            set
+            {
+                SetValue(ManageDataCommandProperty, value);
+            }
         }
 
         public ICommand CloseCommand
         {
-            get { return (ICommand)GetValue(CloseCommandProperty); }
-            set { SetValue(CloseCommandProperty, value); }
+            get
+            {
+                return (ICommand)GetValue(CloseCommandProperty);
+            }
+
+            set
+            {
+                SetValue(CloseCommandProperty, value);
+            }
         }
     }
 }

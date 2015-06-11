@@ -4,18 +4,18 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Database
 {
-    [Table("music.composition_collection")]
+    [Table("music_test.composition_collection")]
     public partial class CompositionCollection
     {
         public CompositionCollection()
         {
-            CatalogNumber = new HashSet<CatalogNumber>();
+            CatalogNumbers = new HashSet<CatalogNumber>();
             Compositions = new HashSet<Composition>();
             Recordings = new HashSet<Recording>();
             Composers = new HashSet<Composer>();
         }
 
-        public virtual ICollection<CatalogNumber> CatalogNumber { get; set; }
+        public virtual ICollection<CatalogNumber> CatalogNumbers { get; set; }
         public virtual ICollection<Composer> Composers { get; set; }
         public virtual ICollection<Composition> Compositions { get; set; }
 

@@ -1,0 +1,8 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <SolidColorBrush x:Key="BackgroundBrush" Color="#FF42474B" />
+    <SolidColorBrush x:Key="ForegroundBrush" Color="#FFE4E8EC" />
+    <!--  Alternative Foreground: FFDFE0E6  -->
+    <SolidColorBrush x:Key="ScrollBarThumbBrush" Color="#FF4B5155" />
+    <SolidColorBrush x:Key="ScrollBarThumbHighlightBrush" Color="#FF565D61" />
+    <SolidColorBrush x:Key="ShellBrush" Color="#FF5F6266" />
+</ResourceDictionary>

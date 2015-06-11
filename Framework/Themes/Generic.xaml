@@ -28,7 +28,9 @@
                                               Height="20"
                                               FontSize="16"
                                               Foreground="#FF9C9C9C"
-                                              IsChecked="{Binding IsExpanded, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay}"
+                                              IsChecked="{Binding IsExpanded,
+                                                                  RelativeSource={RelativeSource TemplatedParent},
+                                                                  Mode=TwoWay}"
                                               IsEnabled="{TemplateBinding CanExpand}">
                                     <ToggleButton.Template>
                                         <ControlTemplate TargetType="ToggleButton">
@@ -36,38 +38,30 @@
                                                 <ContentPresenter Margin="0,-2,0,0" />
                                             </Grid>
                                             <ControlTemplate.Triggers>
-                                                <Trigger Property="IsChecked"
-                                                         Value="True">
-                                                    <Setter Property="Content"
-                                                            Value="&#x2212;" />
+                                                <Trigger Property="IsChecked" Value="True">
+                                                    <Setter Property="Content" Value="&#x2212;" />
                                                 </Trigger>
-                                                <Trigger Property="IsChecked"
-                                                         Value="False">
-                                                    <Setter Property="Content"
-                                                            Value="&#x002B;" />
+                                                <Trigger Property="IsChecked" Value="False">
+                                                    <Setter Property="Content" Value="&#x002B;" />
                                                 </Trigger>
-                                                <Trigger Property="IsEnabled"
-                                                         Value="True">
-                                                    <Setter Property="Visibility"
-                                                            Value="Visible" />
+                                                <Trigger Property="IsEnabled" Value="True">
+                                                    <Setter Property="Visibility" Value="Visible" />
                                                 </Trigger>
-                                                <Trigger Property="IsEnabled"
-                                                         Value="False">
-                                                    <Setter Property="Visibility"
-                                                            Value="Hidden" />
+                                                <Trigger Property="IsEnabled" Value="False">
+                                                    <Setter Property="Visibility" Value="Hidden" />
                                                 </Trigger>
                                             </ControlTemplate.Triggers>
                                         </ControlTemplate>
                                     </ToggleButton.Template>
                                 </ToggleButton>
-                                <Button Content="{TemplateBinding Header}"
-                                        Command="{TemplateBinding Command}"
-                                        ToolTip="{TemplateBinding Header}"
-                                        Foreground="{TemplateBinding Foreground}"
+                                <Button Command="{TemplateBinding Command}"
+                                        Content="{TemplateBinding Header}"
+                                        Cursor="{TemplateBinding Cursor}"
                                         FontFamily="{TemplateBinding FontFamily}"
                                         FontSize="{TemplateBinding FontSize}"
-                                        Cursor="{TemplateBinding Cursor}"
-                                        FontWeight="{TemplateBinding FontWeight}">
+                                        FontWeight="{TemplateBinding FontWeight}"
+                                        Foreground="{TemplateBinding Foreground}"
+                                        ToolTip="{TemplateBinding Header}">
                                     <Button.Template>
                                         <ControlTemplate TargetType="Button">
                                             <Grid>
@@ -80,7 +74,8 @@
                             <ItemsControl x:Name="childrenItemsControl"
                                           Margin="20,0,0,0"
                                           ItemsSource="{TemplateBinding Children}"
-                                          Visibility="{TemplateBinding IsExpanded, Converter={StaticResource BooleanToVisibilityConverter}}" />
+                                          Visibility="{TemplateBinding IsExpanded,
+                                                                       Converter={StaticResource BooleanToVisibilityConverter}}" />
                         </StackPanel>
                     </Border>
                 </ControlTemplate>

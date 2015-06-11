@@ -77,7 +77,7 @@ namespace NathanHarrenstein.Timeline
             }
         }
 
-        public int ToUnitCount(TimeSpan timeSpan)
+        public int ToUnitCount(ExtendedTimeSpan timeSpan)
         {
             switch (TimeRulerUnit)
             {

@@ -10,9 +10,18 @@ namespace NathanHarrenstein.ComposerTimeline.Initializers
     {
         public static void Initialize(MainWindow mainWindow)
         {
-            mainWindow.AddFilesCommand = GetAddFilesCommand(mainWindow);
-            mainWindow.AddFolderCommand = GetAddFolderCommand(mainWindow);
+            mainWindow.ManageDataCommand = GetManageDataCommand(mainWindow);
             mainWindow.CloseCommand = GetCloseCommand(mainWindow);
+        }
+
+        private static ICommand GetManageDataCommand(MainWindow mainWindow)
+        {
+            Action<object> manageData = o =>
+            {
+                mainWindow.Frame.Navigate(new Uri(@"\InputPage\InputPage.xaml", UriKind.Relative));
+            };
+
+            return new DelegateCommand(manageData);
         }
 
         private static ICommand GetAddFilesCommand(MainWindow mainWindow)
