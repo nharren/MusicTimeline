@@ -14,7 +14,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
-namespace NathanHarrenstein.ComposerTimeline.Initializers
+namespace NathanHarrenstein.ComposerTimeline
 {
     public static class TimelineInitializer
     {

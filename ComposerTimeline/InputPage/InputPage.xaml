@@ -1,17 +1,17 @@
 ﻿<Page x:Class="NathanHarrenstein.ComposerTimeline.InputPage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:Themes="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2"
-      xmlns:controls="clr-namespace:NathanHarrenstein.Controls;assembly=Framework"
-      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-      xmlns:data="clr-namespace:Database;assembly=Database"
-      xmlns:local="clr-namespace:NathanHarrenstein.ComposerTimeline"
+      xmlns:c="clr-namespace:NathanHarrenstein.Controls;assembly=Framework"
+      xmlns:d="clr-namespace:Database;assembly=Database"
+      xmlns:design="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:l="clr-namespace:NathanHarrenstein.ComposerTimeline"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      xmlns:t="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2"
       Background="{StaticResource BackgroundBrush}"
       Foreground="{StaticResource ForegroundBrush}"
-      d:DesignHeight="2500"
-      d:DesignWidth="1000"
-      mc:Ignorable="d">
+      design:DesignHeight="2500"
+      design:DesignWidth="1000"
+      mc:Ignorable="design">
     <Page.Resources>
         <Style x:Key="SectionHeaderStyle" TargetType="{x:Type TextBlock}">
             <Setter Property="FontSize" Value="21.333" />
@@ -21,7 +21,7 @@
             <Setter Property="FontSize" Value="13.333" />
             <Setter Property="FontFamily" Value="Segoe UI Semibold" />
         </Style>
-        <Style x:Key="FieldBorderStyle" TargetType="{x:Type controls:DoubleBorderDecorator}">
+        <Style x:Key="FieldBorderStyle" TargetType="{x:Type c:DoubleBorderDecorator}">
             <Setter Property="InnerBorderThickness" Value="5" />
             <Setter Property="InnerBorderBrush" Value="{StaticResource BackgroundBrush}" />
             <Setter Property="CornerRadius" Value="7" />
@@ -42,13 +42,13 @@
             <Setter Property="Template">
                 <Setter.Value>
                     <ControlTemplate TargetType="{x:Type Thumb}">
-                        <controls:DoubleBorderDecorator x:Name="Border"
-                                                        Background="{StaticResource ScrollBarThumbBrush}"
-                                                        CornerRadius="5"
-                                                        OuterBorderBrush="{StaticResource ScrollBarThumbHighlightBrush}"
-                                                        OuterBorderThickness="1">
+                        <c:DoubleBorderDecorator x:Name="Border"
+                                                 Background="{StaticResource ScrollBarThumbBrush}"
+                                                 CornerRadius="5"
+                                                 OuterBorderBrush="{StaticResource ScrollBarThumbHighlightBrush}"
+                                                 OuterBorderThickness="1">
                             <TextBlock />
-                        </controls:DoubleBorderDecorator>
+                        </c:DoubleBorderDecorator>
                         <ControlTemplate.Triggers>
                             <Trigger Property="IsDragging" Value="True">
                                 <Setter TargetName="Border" Property="Background" Value="{StaticResource ScrollBarThumbHighlightBrush}" />
@@ -98,14 +98,14 @@
             </Style.Triggers>
         </Style>
         <ControlTemplate x:Key="ButtonTemplate" TargetType="{x:Type Button}">
-            <controls:DoubleBorderDecorator x:Name="border"
-                                            Grid.Row="14"
-                                            Background="#FF798287"
-                                            CornerRadius="5"
-                                            InnerBorderBrush="#FF798287"
-                                            InnerBorderThickness="3"
-                                            OuterBorderBrush="#FF9AA8B0"
-                                            OuterBorderThickness="1">
+            <c:DoubleBorderDecorator x:Name="border"
+                                     Grid.Row="14"
+                                     Background="#FF798287"
+                                     CornerRadius="5"
+                                     InnerBorderBrush="#FF798287"
+                                     InnerBorderThickness="3"
+                                     OuterBorderBrush="#FF9AA8B0"
+                                     OuterBorderThickness="1">
                 <ContentPresenter x:Name="contentPresenter"
                                   Margin="{TemplateBinding Padding}"
                                   HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
@@ -119,7 +119,7 @@
                                   TextElement.FontFamily="Segoe UI Semibold"
                                   TextElement.FontSize="13.333"
                                   TextElement.Foreground="White" />
-            </controls:DoubleBorderDecorator>
+            </c:DoubleBorderDecorator>
             <ControlTemplate.Triggers>
                 <Trigger Property="IsMouseOver" Value="True">
                     <Setter TargetName="border" Property="Background" Value="#FF9AA8B0" />
@@ -137,16 +137,18 @@
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="{x:Type ListBox}">
-                            <Border x:Name="Bd"
-                                    Background="{TemplateBinding Background}"
-                                    BorderBrush="{TemplateBinding BorderBrush}"
-                                    BorderThickness="{TemplateBinding BorderThickness}"
-                                    Padding="1"
-                                    SnapsToDevicePixels="True">
-                                <ScrollViewer Focusable="False" Padding="{TemplateBinding Padding}">
-                                    <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
-                                </ScrollViewer>
-                            </Border>
+                            <c:DoubleBorderDecorator Style="{StaticResource FieldBorderStyle}">
+                                <Border x:Name="Bd"
+                                        Background="{TemplateBinding Background}"
+                                        BorderBrush="{TemplateBinding BorderBrush}"
+                                        BorderThickness="{TemplateBinding BorderThickness}"
+                                        Padding="1"
+                                        SnapsToDevicePixels="True">
+                                    <ScrollViewer Focusable="False" Padding="{TemplateBinding Padding}">
+                                        <ItemsPresenter SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                    </ScrollViewer>
+                                </Border>
+                            </c:DoubleBorderDecorator>
                             <ControlTemplate.Triggers>
                                 <MultiTrigger>
                                     <MultiTrigger.Conditions>
@@ -225,11 +227,11 @@
                                         RelativeSource={RelativeSource TemplatedParent}}"
                        Placement="Bottom"
                        PopupAnimation="{DynamicResource {x:Static SystemParameters.ComboBoxPopupAnimationKey}}">
-                    <Themes:SystemDropShadowChrome x:Name="shadow"
-                                                   MinWidth="{Binding ActualWidth,
-                                                                      ElementName=templateRoot}"
-                                                   MaxHeight="{TemplateBinding MaxDropDownHeight}"
-                                                   Color="Transparent">
+                    <t:SystemDropShadowChrome x:Name="shadow"
+                                              MinWidth="{Binding ActualWidth,
+                                                                 ElementName=templateRoot}"
+                                              MaxHeight="{TemplateBinding MaxDropDownHeight}"
+                                              Color="Transparent">
                         <Border x:Name="DropDownBorder" Background="{StaticResource BackgroundBrush}">
                             <ScrollViewer x:Name="DropDownScrollViewer">
                                 <Grid x:Name="grid" RenderOptions.ClearTypeHint="Enabled">
@@ -252,7 +254,7 @@
                                 </Grid>
                             </ScrollViewer>
                         </Border>
-                    </Themes:SystemDropShadowChrome>
+                    </t:SystemDropShadowChrome>
                 </Popup>
                 <ToggleButton x:Name="toggleButton"
                               Grid.ColumnSpan="2"
@@ -350,109 +352,140 @@
                 </Trigger>
             </ControlTemplate.Triggers>
         </ControlTemplate>
+        <Style BasedOn="{StaticResource FieldStyle}" TargetType="{x:Type TextBox}">
+            <Style.Setters>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type TextBox}">
+                            <c:DoubleBorderDecorator Style="{StaticResource FieldBorderStyle}">
+                                <Border x:Name="border"
+                                        Background="{TemplateBinding Background}"
+                                        BorderBrush="{TemplateBinding BorderBrush}"
+                                        BorderThickness="{TemplateBinding BorderThickness}"
+                                        SnapsToDevicePixels="True">
+                                    <ScrollViewer x:Name="PART_ContentHost"
+                                                  Focusable="False"
+                                                  HorizontalScrollBarVisibility="Hidden"
+                                                  VerticalScrollBarVisibility="Hidden" />
+                                </Border>
+                            </c:DoubleBorderDecorator>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsEnabled" Value="False">
+                                    <Setter TargetName="border" Property="Opacity" Value="0.56" />
+                                </Trigger>
+                                <Trigger Property="IsMouseOver" Value="True">
+                                    <Setter TargetName="border" Property="BorderBrush" Value="#FF7EB4EA" />
+                                </Trigger>
+                                <Trigger Property="IsKeyboardFocused" Value="True">
+                                    <Setter TargetName="border" Property="BorderBrush" Value="#FF569DE5" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style.Setters>
+        </Style>
     </Page.Resources>
-
     <ScrollViewer Background="#FF42474B">
         <Border Width="942"
                 HorizontalAlignment="Center"
                 Background="{StaticResource ShellBrush}">
             <Grid Margin="70,50" TextElement.FontSize="18">
                 <Grid.RowDefinitions>
-                    <!--  Composer Section (0)  -->
+                    <!--  0. Composer Section  -->
                     <RowDefinition Height="Auto" />
-                    <!--  Space (1)  -->
+                    <!--  1. Space  -->
                     <RowDefinition Height="30" />
-                    <!--  Composition Collection Section (2)  -->
+                    <!--  2. Composition Collection Section  -->
                     <RowDefinition Height="Auto" />
-                    <!--  Space (3)  -->
+                    <!--  3. Space  -->
                     <RowDefinition Height="30" />
-                    <!--  Composition Section (4)  -->
+                    <!--  4. Composition Section  -->
                     <RowDefinition Height="Auto" />
-                    <!--  Space (5)  -->
+                    <!--  5. Space  -->
                     <RowDefinition Height="30" />
-                    <!--  Movement Section (6)  -->
+                    <!--  6. Movement Section  -->
                     <RowDefinition Height="Auto" />
-                    <!--  Space (7)  -->
+                    <!--  7. Space  -->
                     <RowDefinition Height="30" />
-                    <!--  Recording Section (0)  -->
+                    <!--  8. Recording Section  -->
                     <RowDefinition Height="Auto" />
-                    <!--  Space (9)  -->
+                    <!--  9. Space  -->
                     <RowDefinition Height="75" />
-                    <!--  Status and Button Section (10)  -->
+                    <!--  10. Status and Button Section  -->
                     <RowDefinition Height="Auto" />
                 </Grid.RowDefinitions>
-                <!--  Composer Section  -->
-                <Grid>
+                <Grid Name="ComposerSection" Grid.Row="0">
                     <Grid.RowDefinitions>
-                        <!--  Section Header (0)  -->
+                        <!--  0. Section Header  -->
                         <RowDefinition Height="Auto" />
-                        <!--  Space (1)  -->
+                        <!--  1. Space  -->
                         <RowDefinition Height="2" />
-                        <!--  Section Header Rule (2)  -->
+                        <!--  2. Section Header Rule  -->
                         <RowDefinition Height="1" />
-                        <!--  Space (3)  -->
+                        <!--  3. Space  -->
                         <RowDefinition Height="20" />
-                        <!--  Field Header (4)  -->
+                        <!--  4. Field 1 Header  -->
                         <RowDefinition Height="18" />
-                        <!--  Space (5)  -->
+                        <!--  5. Space  -->
                         <RowDefinition Height="3" />
-                        <!--  Field 1 (6)  -->
+                        <!--  6. Field 1  -->
                         <RowDefinition Height="32" />
-                        <!--  Space (7)  -->
+                        <!--  7. Space  -->
                         <RowDefinition Height="10" />
-                        <!--  Field Header (8)  -->
+                        <!--  8. Field 2 Header  -->
                         <RowDefinition Height="18" />
-                        <!--  Space (9)  -->
+                        <!--  9. Space  -->
                         <RowDefinition Height="3" />
-                        <!--  Field 2 (10)  -->
+                        <!--  10. Field 2  -->
                         <RowDefinition Height="32" />
-                        <!--  Space (11)  -->
+                        <!--  11. Space  -->
                         <RowDefinition Height="10" />
-                        <!--  Field Header (12)  -->
+                        <!--  12. Field 3 Header  -->
                         <RowDefinition Height="18" />
-                        <!--  Space (13)  -->
+                        <!--  13. Space  -->
                         <RowDefinition Height="3" />
-                        <!--  Field 3 (14)  -->
+                        <!--  14. Field 3  -->
                         <RowDefinition Height="32" />
-                        <!--  Space (15)  -->
+                        <!--  15. Space  -->
                         <RowDefinition Height="10" />
-                        <!--  Field Header (16)  -->
+                        <!--  16. Field 4 Header  -->
                         <RowDefinition Height="18" />
-                        <!--  Space (17)  -->
+                        <!--  17. Space  -->
                         <RowDefinition Height="3" />
-                        <!--  Field 4 (18)  -->
+                        <!--  18. Field 4  -->
                         <RowDefinition Height="32" />
-                        <!--  Space (19)  -->
+                        <!--  19. Space  -->
                         <RowDefinition Height="10" />
-                        <!--  Field Header (20)  -->
+                        <!--  20. Field 5 Header  -->
                         <RowDefinition Height="18" />
-                        <!--  Space (21)  -->
+                        <!--  21. Space  -->
                         <RowDefinition Height="3" />
-                        <!--  Field 5 (22)  -->
+                        <!--  22. Field 5  -->
                         <RowDefinition Height="180" />
-                        <!--  Space (23)  -->
+                        <!--  23. Space  -->
                         <RowDefinition Height="10" />
-                        <!--  Field Header (24)  -->
+                        <!--  24. Field 6 Header  -->
                         <RowDefinition Height="18" />
-                        <!--  Space (25)  -->
+                        <!--  25. Space  -->
                         <RowDefinition Height="3" />
-                        <!--  Field 6 (26)  -->
+                        <!--  26. Field 6  -->
                         <RowDefinition Height="250" />
-                        <!--  Space (27)  -->
+                        <!--  27. Space  -->
                         <RowDefinition Height="10" />
-                        <!--  Field Header (28)  -->
+                        <!--  28. Field 7 Header  -->
                         <RowDefinition Height="18" />
-                        <!--  Space (29)  -->
+                        <!--  29. Space  -->
                         <RowDefinition Height="3" />
-                        <!--  Field 6 (30)  -->
+                        <!--  30. Field 7  -->
                         <RowDefinition Height="100" />
-                        <!--  Space (31)  -->
+                        <!--  31. Space  -->
                         <RowDefinition Height="10" />
-                        <!--  Field Header (32)  -->
+                        <!--  32. Field 8 Header  -->
                         <RowDefinition Height="18" />
-                        <!--  Space (33)  -->
+                        <!--  33. Space  -->
                         <RowDefinition Height="3" />
-                        <!--  Field 6 (34)  -->
+                        <!--  34. Field 8  -->
                         <RowDefinition Height="178" />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
@@ -472,39 +505,36 @@
                                Grid.ColumnSpan="8"
                                Fill="#FF758287"
                                StrokeThickness="0" />
-                    <controls:DoubleBorderDecorator Grid.Row="4"
-                                                    Grid.RowSpan="31"
-                                                    Grid.ColumnSpan="2"
-                                                    Style="{StaticResource FieldBorderStyle}">
-
-                        <ListBox x:Name="ComposerListBox"
-                                 AllowDrop="True"
-                                 Background="#FF42474B"
-                                 BorderThickness="0"
-                                 Drop="Drop_ComposerListBox"
-                                 PreviewMouseLeftButtonDown="PreviewMouseLeftButtonDown_ComposerListBox"
-                                 PreviewMouseLeftButtonUp="PreviewMouseLeftButtonUp_ComposerListBoxItem"
-                                 SelectionChanged="SelectionChanged_ComposerListBox"
-                                 SelectionMode="Extended">
-                            <ListBox.CommandBindings>
-                                <CommandBinding Command="{x:Static ApplicationCommands.Delete}" Executed="Executed_ComposerDeleteCommand" />
-                            </ListBox.CommandBindings>
-                            <ListBox.ItemTemplate>
-                                <DataTemplate DataType="{x:Type data:Composer}">
-                                    <TextBlock FontSize="14.667"
-                                               Foreground="#FFC8CDD1"
-                                               MouseMove="MouseMove_ComposerListBoxItem"
-                                               Text="{Binding Name}">
-                                        <TextBlock.ContextMenu>
-                                            <ContextMenu>
-                                                <MenuItem Command="{x:Static ApplicationCommands.Delete}" />
-                                            </ContextMenu>
-                                        </TextBlock.ContextMenu>
-                                    </TextBlock>
-                                </DataTemplate>
-                            </ListBox.ItemTemplate>
-                        </ListBox>
-                    </controls:DoubleBorderDecorator>
+                    <ListBox x:Name="ComposerListBox"
+                             Grid.Row="4"
+                             Grid.RowSpan="31"
+                             Grid.ColumnSpan="2"
+                             AllowDrop="True"
+                             Background="#FF42474B"
+                             BorderThickness="0"
+                             Drop="Drop_ComposerListBox"
+                             PreviewMouseLeftButtonDown="PreviewMouseLeftButtonDown_ComposerListBox"
+                             PreviewMouseLeftButtonUp="PreviewMouseLeftButtonUp_ComposerListBoxItem"
+                             SelectionChanged="SelectionChanged_ComposerListBox"
+                             SelectionMode="Extended">
+                        <ListBox.CommandBindings>
+                            <CommandBinding Command="{x:Static ApplicationCommands.Delete}" Executed="Executed_ComposerDeleteCommand" />
+                        </ListBox.CommandBindings>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate DataType="{x:Type d:Composer}">
+                                <TextBlock FontSize="14.667"
+                                           Foreground="#FFC8CDD1"
+                                           MouseMove="MouseMove_ComposerListBoxItem"
+                                           Text="{Binding Name}">
+                                    <TextBlock.ContextMenu>
+                                        <ContextMenu>
+                                            <MenuItem Command="{x:Static ApplicationCommands.Delete}" />
+                                        </ContextMenu>
+                                    </TextBlock.ContextMenu>
+                                </TextBlock>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
                     <TextBlock Grid.Row="4"
                                Grid.Column="4"
                                Style="{StaticResource FieldHeaderStyle}"
@@ -513,102 +543,94 @@
                                Grid.Column="7"
                                Style="{StaticResource FieldHeaderStyle}"
                                Text="Images:" />
-                    <controls:DoubleBorderDecorator Grid.Row="6"
-                                                    Grid.Column="3"
-                                                    Grid.ColumnSpan="2"
-                                                    Style="{StaticResource FieldBorderStyle}">
-                        <TextBox x:Name="ComposerNameTextBox"
-                                 Style="{StaticResource FieldStyle}"
-                                 TabIndex="0" />
-                    </controls:DoubleBorderDecorator>
-                    <controls:DoubleBorderDecorator Grid.Row="6"
-                                                    Grid.RowSpan="13"
-                                                    Grid.Column="6"
-                                                    Grid.ColumnSpan="2"
-                                                    Style="{StaticResource FieldBorderStyle}">
-                        <ListBox x:Name="ComposerImageListBox"
-                                 AllowDrop="True"
-                                 Drop="Drop_ComposerImageListBox"
-                                 IsEnabled="False">
-                            <ListBox.CommandBindings>
-                                <CommandBinding Command="{x:Static ApplicationCommands.Delete}" Executed="Executed_ComposerImageDeleteCommand" />
-                            </ListBox.CommandBindings>
-                            <ListBox.Template>
-                                <ControlTemplate TargetType="{x:Type ListBox}">
-                                    <Grid Background="#FF42474B">
-                                        <Grid.ColumnDefinitions>
-                                            <ColumnDefinition Width="Auto" />
-                                            <ColumnDefinition />
-                                        </Grid.ColumnDefinitions>
-                                        <Image x:Name="SelectedImage"
-                                               Grid.ColumnSpan="2"
-                                               Source="{TemplateBinding SelectedItem}">
-                                            <Image.ContextMenu>
-                                                <ContextMenu>
-                                                    <MenuItem Command="{x:Static ApplicationCommands.Delete}" />
-                                                </ContextMenu>
-                                            </Image.ContextMenu>
-                                        </Image>
-                                        <controls:PanningScrollViewer>
-                                            <ItemsPresenter />
-                                        </controls:PanningScrollViewer>
-                                    </Grid>
-                                </ControlTemplate>
-                            </ListBox.Template>
-                            <ListBox.ItemContainerStyle>
-                                <Style BasedOn="{StaticResource {x:Type ListBoxItem}}" TargetType="{x:Type ListBoxItem}">
-                                    <Setter Property="Margin" Value="0,0,5,0" />
-                                    <Setter Property="Padding" Value="0" />
-                                </Style>
-                            </ListBox.ItemContainerStyle>
-                            <ListBox.ItemTemplate>
-                                <DataTemplate>
-                                    <Image Height="30"
-                                           MaxWidth="30"
-                                           Cursor="Hand"
-                                           Source="{Binding}" />
-                                </DataTemplate>
-                            </ListBox.ItemTemplate>
-                        </ListBox>
-                    </controls:DoubleBorderDecorator>
+                    <TextBox x:Name="ComposerNameTextBox"
+                             Grid.Row="6"
+                             Grid.Column="3"
+                             Grid.ColumnSpan="2"
+                             TabIndex="0" />
+                    <ListBox x:Name="ComposerImageListBox"
+                             Grid.Row="6"
+                             Grid.RowSpan="13"
+                             Grid.Column="6"
+                             Grid.ColumnSpan="2"
+                             AllowDrop="True"
+                             Drop="Drop_ComposerImageListBox"
+                             IsEnabled="False">
+                        <ListBox.CommandBindings>
+                            <CommandBinding Command="{x:Static ApplicationCommands.Delete}" Executed="Executed_ComposerImageDeleteCommand" />
+                        </ListBox.CommandBindings>
+                        <ListBox.Template>
+                            <ControlTemplate TargetType="{x:Type ListBox}">
+                                <Grid Background="#FF42474B">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto" />
+                                        <ColumnDefinition />
+                                    </Grid.ColumnDefinitions>
+                                    <Image x:Name="SelectedImage"
+                                           Grid.ColumnSpan="2"
+                                           Source="{TemplateBinding SelectedItem}">
+                                        <Image.ContextMenu>
+                                            <ContextMenu>
+                                                <MenuItem Command="{x:Static ApplicationCommands.Delete}" />
+                                            </ContextMenu>
+                                        </Image.ContextMenu>
+                                    </Image>
+                                    <c:PanningScrollViewer>
+                                        <ItemsPresenter />
+                                    </c:PanningScrollViewer>
+                                </Grid>
+                            </ControlTemplate>
+                        </ListBox.Template>
+                        <ListBox.ItemContainerStyle>
+                            <Style BasedOn="{StaticResource {x:Type ListBoxItem}}" TargetType="{x:Type ListBoxItem}">
+                                <Setter Property="Margin" Value="0,0,5,0" />
+                                <Setter Property="Padding" Value="0" />
+                            </Style>
+                        </ListBox.ItemContainerStyle>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <Image Height="30"
+                                       MaxWidth="30"
+                                       Cursor="Hand"
+                                       Source="{Binding}" />
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
                     <TextBlock Grid.Row="8"
                                Grid.Column="4"
                                Style="{StaticResource FieldHeaderStyle}"
                                Text="Dates:" />
-                    <controls:DoubleBorderDecorator Grid.Row="10"
-                                                    Grid.Column="3"
-                                                    Grid.ColumnSpan="2"
-                                                    Style="{StaticResource FieldBorderStyle}">
-                        <TextBox x:Name="ComposerDatesTextBox"
-                                 Style="{StaticResource FieldStyle}"
-                                 TabIndex="1" />
-                    </controls:DoubleBorderDecorator>
+                    <TextBox x:Name="ComposerDatesTextBox"
+                             Grid.Row="10"
+                             Grid.Column="3"
+                             Grid.ColumnSpan="2"
+                             TabIndex="1" />
                     <TextBlock Grid.Row="12"
                                Grid.Column="4"
                                Style="{StaticResource FieldHeaderStyle}"
                                Text="Birth Location:" />
-                    <controls:DoubleBorderDecorator Grid.Row="14"
-                                                    Grid.Column="3"
-                                                    Grid.ColumnSpan="2"
-                                                    Style="{StaticResource FieldBorderStyle}">
-                        <controls:AutoCompleteBox x:Name="ComposerBirthLocationAutoCompleteBox"
-                                                  Style="{StaticResource FieldStyle}"
-                                                  TabIndex="2"
-                                                  TextBoxBase.TextChanged="TextChanged_ComposerBirthLocationAutoCompleteBox" />
-                    </controls:DoubleBorderDecorator>
+                    <c:DoubleBorderDecorator Grid.Row="14"
+                                             Grid.Column="3"
+                                             Grid.ColumnSpan="2"
+                                             Style="{StaticResource FieldBorderStyle}">
+                        <c:AutoCompleteBox x:Name="ComposerBirthLocationAutoCompleteBox"
+                                           Style="{StaticResource FieldStyle}"
+                                           TabIndex="2"
+                                           TextBoxBase.TextChanged="TextChanged_ComposerBirthLocationAutoCompleteBox" />
+                    </c:DoubleBorderDecorator>
                     <TextBlock Grid.Row="16"
                                Grid.Column="4"
                                Style="{StaticResource FieldHeaderStyle}"
                                Text="Death Location:" />
-                    <controls:DoubleBorderDecorator Grid.Row="18"
-                                                    Grid.Column="3"
-                                                    Grid.ColumnSpan="2"
-                                                    Style="{StaticResource FieldBorderStyle}">
-                        <controls:AutoCompleteBox x:Name="ComposerDeathLocationAutoCompleteBox"
-                                                  Style="{StaticResource FieldStyle}"
-                                                  TabIndex="3"
-                                                  TextBoxBase.TextChanged="TextChanged_ComposerDeathLocationAutoCompleteBox" />
-                    </controls:DoubleBorderDecorator>
+                    <c:DoubleBorderDecorator Grid.Row="18"
+                                             Grid.Column="3"
+                                             Grid.ColumnSpan="2"
+                                             Style="{StaticResource FieldBorderStyle}">
+                        <c:AutoCompleteBox x:Name="ComposerDeathLocationAutoCompleteBox"
+                                           Style="{StaticResource FieldStyle}"
+                                           TabIndex="3"
+                                           TextBoxBase.TextChanged="TextChanged_ComposerDeathLocationAutoCompleteBox" />
+                    </c:DoubleBorderDecorator>
                     <TextBlock Grid.Row="20"
                                Grid.Column="4"
                                Style="{StaticResource FieldHeaderStyle}"
@@ -617,220 +639,228 @@
                                Grid.Column="7"
                                Style="{StaticResource FieldHeaderStyle}"
                                Text="Nationalities:" />
-                    <controls:DoubleBorderDecorator Grid.Row="22"
-                                                    Grid.Column="3"
-                                                    Grid.ColumnSpan="2"
-                                                    Style="{StaticResource FieldBorderStyle}">
-                        <ListBox x:Name="ComposerEraListBox"
-                                 Background="#FF42474B"
-                                 BorderThickness="0"
-                                 IsEnabled="False"
-                                 SelectionChanged="SelectionChanged_ComposerEraListBox"
-                                 SelectionMode="Extended">
-                            <ListBox.ItemTemplate>
-                                <DataTemplate DataType="{x:Type data:Era}">
-                                    <TextBlock FontSize="14.667"
-                                               Foreground="#FFC8CDD1"
-                                               Text="{Binding Name}" />
-                                </DataTemplate>
-                            </ListBox.ItemTemplate>
-                        </ListBox>
-                    </controls:DoubleBorderDecorator>
-                    <controls:DoubleBorderDecorator Grid.Row="22"
-                                                    Grid.RowSpan="5"
-                                                    Grid.Column="6"
-                                                    Grid.ColumnSpan="2"
-                                                    Style="{StaticResource FieldBorderStyle}">
-                        <ListBox x:Name="ComposerNationalityListBox"
-                                 Background="#FF42474B"
-                                 BorderThickness="0"
-                                 IsEnabled="False"
-                                 ScrollViewer.HorizontalScrollBarVisibility="Hidden"
-                                 SelectionChanged="SelectionChanged_ComposerNationalityListBox"
-                                 SelectionMode="Extended">
-                            <ListBox.ItemTemplate>
-                                <DataTemplate DataType="{x:Type data:Nationality}">
-                                    <TextBlock FontSize="14.667"
-                                               Foreground="#FFC8CDD1"
-                                               Text="{Binding Name}" />
-                                </DataTemplate>
-                            </ListBox.ItemTemplate>
-                        </ListBox>
-                    </controls:DoubleBorderDecorator>
+                    <ListBox x:Name="ComposerEraListBox"
+                             Grid.Row="22"
+                             Grid.Column="3"
+                             Grid.ColumnSpan="2"
+                             Background="#FF42474B"
+                             BorderThickness="0"
+                             IsEnabled="False"
+                             SelectionChanged="SelectionChanged_ComposerEraListBox"
+                             SelectionMode="Extended">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate DataType="{x:Type d:Era}">
+                                <TextBlock FontSize="14.667"
+                                           Foreground="#FFC8CDD1"
+                                           Text="{Binding Name}" />
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                    <ListBox x:Name="ComposerNationalityListBox"
+                             Grid.Row="22"
+                             Grid.RowSpan="5"
+                             Grid.Column="6"
+                             Grid.ColumnSpan="2"
+                             Background="#FF42474B"
+                             BorderThickness="0"
+                             IsEnabled="False"
+                             ScrollViewer.HorizontalScrollBarVisibility="Hidden"
+                             SelectionChanged="SelectionChanged_ComposerNationalityListBox"
+                             SelectionMode="Extended">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate DataType="{x:Type d:Nationality}">
+                                <TextBlock FontSize="14.667"
+                                           Foreground="#FFC8CDD1"
+                                           Text="{Binding Name}" />
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
                     <TextBlock Grid.Row="24"
                                Grid.Column="4"
                                Style="{StaticResource FieldHeaderStyle}"
                                Text="Influences:" />
-                    <controls:DoubleBorderDecorator Grid.Row="26"
-                                                    Grid.Column="3"
-                                                    Grid.ColumnSpan="2"
-                                                    Style="{StaticResource FieldBorderStyle}">
-                        <ListBox x:Name="ComposerInfluenceListBox"
-                                 AllowDrop="True"
-                                 Background="#FF42474B"
-                                 BorderThickness="0"
-                                 Drop="Drop_ComposerInfluenceListBox"
-                                 IsEnabled="False"
-                                 SelectionMode="Extended">
-                            <ListBox.CommandBindings>
-                                <CommandBinding Command="{x:Static ApplicationCommands.Delete}" Executed="Executed_ComposerInfluenceDeleteCommand" />
-                            </ListBox.CommandBindings>
-                            <ListBox.ItemTemplate>
-                                <DataTemplate DataType="{x:Type data:Composer}">
-                                    <TextBlock FontSize="14.667"
-                                               Foreground="#FFC8CDD1"
-                                               Text="{Binding Name}">
-                                        <TextBlock.ContextMenu>
-                                            <ContextMenu>
-                                                <MenuItem Command="{x:Static ApplicationCommands.Delete}" />
-                                            </ContextMenu>
-                                        </TextBlock.ContextMenu>
-                                    </TextBlock>
-                                </DataTemplate>
-                            </ListBox.ItemTemplate>
-                        </ListBox>
-                    </controls:DoubleBorderDecorator>
+                    <ListBox x:Name="ComposerInfluenceListBox"
+                             Grid.Row="26"
+                             Grid.Column="3"
+                             Grid.ColumnSpan="2"
+                             AllowDrop="True"
+                             Background="#FF42474B"
+                             BorderThickness="0"
+                             Drop="Drop_ComposerInfluenceListBox"
+                             IsEnabled="False"
+                             SelectionMode="Extended">
+                        <ListBox.CommandBindings>
+                            <CommandBinding Command="{x:Static ApplicationCommands.Delete}" Executed="Executed_ComposerInfluenceDeleteCommand" />
+                        </ListBox.CommandBindings>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate DataType="{x:Type d:Composer}">
+                                <TextBlock FontSize="14.667"
+                                           Foreground="#FFC8CDD1"
+                                           Text="{Binding Name}">
+                                    <TextBlock.ContextMenu>
+                                        <ContextMenu>
+                                            <MenuItem Command="{x:Static ApplicationCommands.Delete}" />
+                                        </ContextMenu>
+                                    </TextBlock.ContextMenu>
+                                </TextBlock>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
                     <TextBlock Grid.Row="28"
                                Grid.Column="4"
                                Grid.ColumnSpan="4"
                                Style="{StaticResource FieldHeaderStyle}"
                                Text="Links:" />
-                    <controls:DoubleBorderDecorator Grid.Row="30"
-                                                    Grid.Column="3"
-                                                    Grid.ColumnSpan="5"
-                                                    Style="{StaticResource FieldBorderStyle}">
-                        <ListBox x:Name="ComposerLinkListBox"
-                                 AllowDrop="True"
-                                 Background="#FF42474B"
-                                 BorderThickness="0"
-                                 Drop="Drop_ComposerLinkListBox"
-                                 IsEnabled="False"
-                                 SelectionMode="Extended">
-                            <ListBox.CommandBindings>
-                                <CommandBinding Command="{x:Static ApplicationCommands.Delete}" Executed="Executed_ComposerLinkDeleteCommand" />
-                            </ListBox.CommandBindings>
-                            <ListBox.ItemTemplate>
-                                <DataTemplate DataType="{x:Type local:Link}">
-                                    <Button Command="{Binding Click}"
-                                            Content="{Binding Title}"
-                                            FontSize="14.667"
-                                            Foreground="#FFC8CDD1">
-                                        <Button.ContextMenu>
-                                            <ContextMenu>
-                                                <MenuItem Command="{x:Static ApplicationCommands.Delete}" />
-                                            </ContextMenu>
-                                        </Button.ContextMenu>
-                                        <Button.Template>
-                                            <ControlTemplate TargetType="{x:Type Button}">
-                                                <Grid>
-                                                    <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="16" />
-                                                        <ColumnDefinition Width="5" />
-                                                        <ColumnDefinition />
-                                                    </Grid.ColumnDefinitions>
-                                                    <Image Source="{Binding FaviconUrl}" />
-                                                    <ContentPresenter Grid.Column="2" />
-                                                </Grid>
-                                            </ControlTemplate>
-                                        </Button.Template>
-                                    </Button>
-                                </DataTemplate>
-                            </ListBox.ItemTemplate>
-                        </ListBox>
-                    </controls:DoubleBorderDecorator>
+                    <ListBox x:Name="ComposerLinkListBox"
+                             Grid.Row="30"
+                             Grid.Column="3"
+                             Grid.ColumnSpan="5"
+                             AllowDrop="True"
+                             Background="#FF42474B"
+                             BorderThickness="0"
+                             Drop="Drop_ComposerLinkListBox"
+                             IsEnabled="False"
+                             SelectionMode="Extended">
+                        <ListBox.CommandBindings>
+                            <CommandBinding Command="{x:Static ApplicationCommands.Delete}" Executed="Executed_ComposerLinkDeleteCommand" />
+                        </ListBox.CommandBindings>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate DataType="{x:Type l:Link}">
+                                <Button Command="{Binding Click}"
+                                        Content="{Binding Title}"
+                                        FontSize="14.667"
+                                        Foreground="#FFC8CDD1">
+                                    <Button.ContextMenu>
+                                        <ContextMenu>
+                                            <MenuItem Command="{x:Static ApplicationCommands.Delete}" />
+                                        </ContextMenu>
+                                    </Button.ContextMenu>
+                                    <Button.Template>
+                                        <ControlTemplate TargetType="{x:Type Button}">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="16" />
+                                                    <ColumnDefinition Width="5" />
+                                                    <ColumnDefinition />
+                                                </Grid.ColumnDefinitions>
+                                                <Image Source="{Binding FaviconUrl}" />
+                                                <ContentPresenter Grid.Column="2" />
+                                            </Grid>
+                                        </ControlTemplate>
+                                    </Button.Template>
+                                </Button>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
                     <TextBlock Grid.Row="32"
                                Grid.Column="4"
                                Style="{StaticResource FieldHeaderStyle}"
                                Text="Biography:" />
-                    <controls:DoubleBorderDecorator Grid.Row="34"
-                                                    Grid.Column="3"
-                                                    Grid.ColumnSpan="5"
-                                                    Style="{StaticResource FieldBorderStyle}">
-                        <TextBox x:Name="ComposerBiographyTextBox"
-                                 Background="#FF42474B"
-                                 BorderThickness="0"
-                                 FontSize="14.667"
-                                 Foreground="#FFC8CDD1"
-                                 IsEnabled="False"
-                                 TabIndex="4"
-                                 TextWrapping="Wrap"
-                                 VerticalScrollBarVisibility="Auto" />
-                    </controls:DoubleBorderDecorator>
+                    <TextBox x:Name="ComposerBiographyTextBox"
+                             Grid.Row="34"
+                             Grid.Column="3"
+                             Grid.ColumnSpan="5"
+                             Background="#FF42474B"
+                             BorderThickness="0"
+                             FontSize="14.667"
+                             Foreground="#FFC8CDD1"
+                             IsEnabled="False"
+                             TabIndex="4"
+                             TextWrapping="Wrap"
+                             VerticalScrollBarVisibility="Auto" />
                 </Grid>
-                <!--  Composition Collection Section  -->
-                <Grid Grid.Row="2">
+                <Grid Name="CompositionCollectionSection" Grid.Row="2">
                     <Grid.RowDefinitions>
-                        <!--  Section Header (0)  -->
+                        <!--  0. Section Header  -->
                         <RowDefinition Height="Auto" />
-                        <!--  Space (1)  -->
+                        <!--  1. Space  -->
                         <RowDefinition Height="2" />
-                        <!--  Section Header Rule (2)  -->
+                        <!--  2. Section Header Rule  -->
                         <RowDefinition Height="1" />
-                        <!--  Space (3)  -->
+                        <!--  3. Space  -->
                         <RowDefinition Height="20" />
-                        <!--  Field Header (4)  -->
+                        <!--  4. Field 1 Header  -->
                         <RowDefinition Height="18" />
-                        <!--  Space (5)  -->
+                        <!--  5. Space  -->
                         <RowDefinition Height="3" />
-                        <!--  Field 1 (6)  -->
+                        <!--  6. Field 1  -->
                         <RowDefinition Height="32" />
-                        <!--  Space (7)  -->
+                        <!--  7. Space  -->
                         <RowDefinition Height="10" />
-                        <!--  Field Header (8)  -->
+                        <!--  8. Field 2 Header  -->
                         <RowDefinition Height="18" />
-                        <!--  Space (9)  -->
+                        <!--  9. Space  -->
                         <RowDefinition Height="3" />
-                        <!--  Field 2 (10)  -->
-                        <RowDefinition Height="100" />
+                        <!--  10. Field 2  -->
+                        <RowDefinition Height="32" />
+                        <!--  11. Space  -->
+                        <RowDefinition Height="10" />
+                        <!--  12. Field 3 Header  -->
+                        <RowDefinition Height="18" />
+                        <!--  13. Space  -->
+                        <RowDefinition Height="3" />
+                        <!--  14. Field 3  -->
+                        <RowDefinition Height="32" />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
+                        <!--  1. Field 1  -->
                         <ColumnDefinition Width="10" />
+                        <!--  2. Field 1 Header  -->
                         <ColumnDefinition Width="244" />
+                        <!--  3. Space  -->
                         <ColumnDefinition Width="20" />
+                        <!--  4. Field 2  -->
                         <ColumnDefinition Width="10" />
+                        <!--  5. Field 2 Header  -->
                         <ColumnDefinition Width="244" />
+                        <!--  6. Space  -->
                         <ColumnDefinition Width="20" />
+                        <!--  7. Field 3  -->
                         <ColumnDefinition Width="10" />
-                        <ColumnDefinition Width="150" />
-                        <ColumnDefinition />
+                        <!--  8. Field 3 Header  -->
+                        <ColumnDefinition Width="107" />
+                        <!--  9. Space  -->
+                        <ColumnDefinition Width="20" />
+                        <!--  10. Field 4  -->
+                        <ColumnDefinition Width="10" />
+                        <!--  11. Field 4 Header  -->
+                        <ColumnDefinition Width="107" />
                     </Grid.ColumnDefinitions>
-                    <TextBlock Grid.ColumnSpan="9"
+                    <TextBlock Grid.ColumnSpan="11"
                                Style="{StaticResource SectionHeaderStyle}"
                                Text="Composition Collections" />
                     <Rectangle Grid.Row="2"
-                               Grid.ColumnSpan="9"
+                               Grid.ColumnSpan="11"
                                Height="1"
                                Fill="#FF758287"
                                StrokeThickness="0" />
-                    <controls:DoubleBorderDecorator Grid.Row="4"
-                                                    Grid.RowSpan="7"
-                                                    Grid.ColumnSpan="2"
-                                                    Style="{StaticResource FieldBorderStyle}">
-                        <ListBox x:Name="CompositionCollectionListBox"
-                                 AllowDrop="True"
-                                 Background="#FF42474B"
-                                 BorderThickness="0"
-                                 Drop="Drop_CompositionCollectionListBox"
-                                 SelectionChanged="SelectionChanged_CompositionCollectionListBox"
-                                 SelectionMode="Extended">
-                            <ListBox.CommandBindings>
-                                <CommandBinding Command="{x:Static ApplicationCommands.Delete}" Executed="Executed_CompositionCollectionDeleteCommand" />
-                            </ListBox.CommandBindings>
-                            <ListBox.ItemTemplate>
-                                <DataTemplate DataType="{x:Type data:Composer}">
-                                    <TextBlock FontSize="14.667"
-                                               Foreground="#FFC8CDD1"
-                                               Text="{Binding Name}">
-                                        <TextBlock.ContextMenu>
-                                            <ContextMenu>
-                                                <MenuItem Command="{x:Static ApplicationCommands.Delete}" />
-                                            </ContextMenu>
-                                        </TextBlock.ContextMenu>
-                                    </TextBlock>
-                                </DataTemplate>
-                            </ListBox.ItemTemplate>
-                        </ListBox>
-                    </controls:DoubleBorderDecorator>
+                    <ListBox x:Name="CompositionCollectionListBox"
+                             Grid.Row="4"
+                             Grid.RowSpan="11"
+                             Grid.ColumnSpan="2"
+                             AllowDrop="True"
+                             Background="#FF42474B"
+                             BorderThickness="0"
+                             Drop="Drop_CompositionCollectionListBox"
+                             SelectionChanged="SelectionChanged_CompositionCollectionListBox"
+                             SelectionMode="Extended">
+                        <ListBox.CommandBindings>
+                            <CommandBinding Command="{x:Static ApplicationCommands.Delete}" Executed="Executed_CompositionCollectionDeleteCommand" />
+                        </ListBox.CommandBindings>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate DataType="{x:Type d:Composer}">
+                                <TextBlock FontSize="14.667"
+                                           Foreground="#FFC8CDD1"
+                                           Text="{Binding Name}">
+                                    <TextBlock.ContextMenu>
+                                        <ContextMenu>
+                                            <MenuItem Command="{x:Static ApplicationCommands.Delete}" />
+                                        </ContextMenu>
+                                    </TextBlock.ContextMenu>
+                                </TextBlock>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
                     <TextBlock Grid.Row="4"
                                Grid.Column="4"
                                Style="{StaticResource FieldHeaderStyle}"
@@ -838,41 +868,49 @@
                     <TextBlock Grid.Row="4"
                                Grid.Column="7"
                                Style="{StaticResource FieldHeaderStyle}"
-                               Text="Catalog Numbers:" />
-                    <controls:DoubleBorderDecorator Grid.Row="6"
-                                                    Grid.Column="3"
-                                                    Grid.ColumnSpan="2"
-                                                    Style="{StaticResource FieldBorderStyle}">
-                        <TextBox x:Name="CompositionCollectionNameTextBox" Style="{StaticResource FieldStyle}" />
-                    </controls:DoubleBorderDecorator>
-                    <controls:DoubleBorderDecorator Grid.Row="6"
-                                                    Grid.Column="6"
-                                                    Grid.ColumnSpan="2"
-                                                    Style="{StaticResource FieldBorderStyle}">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="60" />
-                                <ColumnDefinition />
-                            </Grid.ColumnDefinitions>
-                            <ComboBox x:Name="CompositionCollectionCatalogPrefixComboBox"
-                                      DisplayMemberPath="Prefix"
-                                      FontSize="14.667"
-                                      Foreground="#FFC8CDD1"
-                                      IsEditable="True"
-                                      PreviewKeyDown="PreviewKeyDown_CompositionCollectionCatalogPrefixComboBox"
-                                      SelectionChanged="SelectionChanged_CompositionCollectionCatalogPrefixComboBox"
-                                      Template="{DynamicResource ComboBoxControlTemplate}"
-                                      TextBoxBase.TextChanged="TextChanged_CompositionCollectionCatalogPrefixComboBox" />
-                            <TextBox x:Name="CompositionCollectionCatalogNumberTextBox"
-                                     Grid.Column="1"
-                                     PreviewKeyDown="PreviewKeyDown_CompositionCollectionCatalogNumberTextBox"
-                                     Style="{StaticResource FieldStyle}"
-                                     TextChanged="TextChanged_CompositionCollectionCatalogNumberTextBox" />
-                        </Grid>
-                    </controls:DoubleBorderDecorator>
+                               Text="Cat. Prefixes:" />
+                    <TextBlock Grid.Row="4"
+                               Grid.Column="10"
+                               Style="{StaticResource FieldHeaderStyle}"
+                               Text="Cat. Number:" />
+                    <TextBox x:Name="CompositionCollectionNameTextBox"
+                             Grid.Row="6"
+                             Grid.Column="3"
+                             Grid.ColumnSpan="2" />
+                    <ListBox x:Name="CompositionCollectionCatalogPrefixListBox"
+                             Grid.Row="6"
+                             Grid.RowSpan="9"
+                             Grid.Column="7"
+                             AllowDrop="True"
+                             Background="#FF42474B"
+                             BorderThickness="0"
+                             Drop="CompositionCollectionCatalogPrefixListBox_Drop"
+                             SelectionChanged="CompositionCollectionCatalogPrefixListBox_SelectionChanged"
+                             SelectionMode="Extended">
+                        <ListBox.CommandBindings>
+                            <CommandBinding Command="{x:Static ApplicationCommands.Delete}" Executed="CompositionCollectionCatalogPrefixDeleteCommand_Executed" />
+                        </ListBox.CommandBindings>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock FontSize="14.667"
+                                           Foreground="#FFC8CDD1"
+                                           Text="{Binding}">
+                                    <TextBlock.ContextMenu>
+                                        <ContextMenu>
+                                            <MenuItem Command="{x:Static ApplicationCommands.Delete}" />
+                                        </ContextMenu>
+                                    </TextBlock.ContextMenu>
+                                </TextBlock>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                    <TextBox x:Name="CompositionCollectionCatalogNumberTextBox"
+                             Grid.Row="6"
+                             Grid.Column="9"
+                             Grid.ColumnSpan="2"
+                             TextChanged="CompositionCollectionCatalogNumberTextBox_TextChanged" />
                 </Grid>
-                <!--  Composition Section  -->
-                <Grid Grid.Row="4">
+                <Grid Name="CompositionSection" Grid.Row="4">
                     <Grid.RowDefinitions>
                         <!--  Section Header (0)  -->
                         <RowDefinition Height="Auto" />
@@ -917,35 +955,33 @@
                                Height="1"
                                Fill="#FF758287"
                                StrokeThickness="0" />
-                    <controls:DoubleBorderDecorator Grid.Row="4"
-                                                    Grid.RowSpan="8"
-                                                    Grid.ColumnSpan="2"
-                                                    Style="{StaticResource FieldBorderStyle}">
-                        <ListBox x:Name="CompositionListBox"
-                                 AllowDrop="True"
-                                 Background="#FF42474B"
-                                 BorderThickness="0"
-                                 Drop="Drop_CompositionListBox"
-                                 SelectionChanged="SelectionChanged_CompositionListBox"
-                                 SelectionMode="Extended">
-                            <ListBox.CommandBindings>
-                                <CommandBinding Command="{x:Static ApplicationCommands.Delete}" Executed="Executed_CompositionCollectionDeleteCommand" />
-                            </ListBox.CommandBindings>
-                            <ListBox.ItemTemplate>
-                                <DataTemplate DataType="{x:Type data:Composer}">
-                                    <TextBlock FontSize="14.667"
-                                               Foreground="#FFC8CDD1"
-                                               Text="{Binding Name}">
-                                        <TextBlock.ContextMenu>
-                                            <ContextMenu>
-                                                <MenuItem Command="{x:Static ApplicationCommands.Delete}" />
-                                            </ContextMenu>
-                                        </TextBlock.ContextMenu>
-                                    </TextBlock>
-                                </DataTemplate>
-                            </ListBox.ItemTemplate>
-                        </ListBox>
-                    </controls:DoubleBorderDecorator>
+                    <ListBox x:Name="CompositionListBox"
+                             Grid.Row="4"
+                             Grid.RowSpan="8"
+                             Grid.ColumnSpan="2"
+                             AllowDrop="True"
+                             Background="#FF42474B"
+                             BorderThickness="0"
+                             Drop="Drop_CompositionListBox"
+                             SelectionChanged="SelectionChanged_CompositionListBox"
+                             SelectionMode="Extended">
+                        <ListBox.CommandBindings>
+                            <CommandBinding Command="{x:Static ApplicationCommands.Delete}" Executed="Executed_CompositionCollectionDeleteCommand" />
+                        </ListBox.CommandBindings>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate DataType="{x:Type d:Composer}">
+                                <TextBlock FontSize="14.667"
+                                           Foreground="#FFC8CDD1"
+                                           Text="{Binding Name}">
+                                    <TextBlock.ContextMenu>
+                                        <ContextMenu>
+                                            <MenuItem Command="{x:Static ApplicationCommands.Delete}" />
+                                        </ContextMenu>
+                                    </TextBlock.ContextMenu>
+                                </TextBlock>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
                     <TextBlock Grid.Row="4"
                                Grid.Column="4"
                                Style="{StaticResource FieldHeaderStyle}"
@@ -954,22 +990,22 @@
                                Grid.Column="7"
                                Style="{StaticResource FieldHeaderStyle}"
                                Text="Catalog Numbers:" />
-                    <controls:DoubleBorderDecorator Grid.Row="6"
-                                                    Grid.Column="3"
-                                                    Grid.ColumnSpan="2"
-                                                    Style="{StaticResource FieldBorderStyle}">
-                        <controls:AutoCompleteBox x:Name="CompositionNameAutoCompleteBox" Style="{StaticResource FieldStyle}">
-                            <controls:AutoCompleteBox.SuggestionTemplate>
-                                <DataTemplate DataType="{x:Type data:Composition}">
+                    <c:DoubleBorderDecorator Grid.Row="6"
+                                             Grid.Column="3"
+                                             Grid.ColumnSpan="2"
+                                             Style="{StaticResource FieldBorderStyle}">
+                        <c:AutoCompleteBox x:Name="CompositionNameAutoCompleteBox" Style="{StaticResource FieldStyle}">
+                            <c:AutoCompleteBox.SuggestionTemplate>
+                                <DataTemplate DataType="{x:Type d:Composition}">
                                     <TextBlock Text="{Binding Name}" />
                                 </DataTemplate>
-                            </controls:AutoCompleteBox.SuggestionTemplate>
-                        </controls:AutoCompleteBox>
-                    </controls:DoubleBorderDecorator>
-                    <controls:DoubleBorderDecorator Grid.Row="6"
-                                                    Grid.Column="6"
-                                                    Grid.ColumnSpan="2"
-                                                    Style="{StaticResource FieldBorderStyle}">
+                            </c:AutoCompleteBox.SuggestionTemplate>
+                        </c:AutoCompleteBox>
+                    </c:DoubleBorderDecorator>
+                    <c:DoubleBorderDecorator Grid.Row="6"
+                                             Grid.Column="6"
+                                             Grid.ColumnSpan="2"
+                                             Style="{StaticResource FieldBorderStyle}">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="60" />
@@ -980,7 +1016,7 @@
                                       Template="{DynamicResource ComboBoxControlTemplate}"
                                       TextBoxBase.TextChanged="TextChanged_CompositionCatalogPrefixComboBox">
                                 <ComboBox.ItemTemplate>
-                                    <DataTemplate DataType="{x:Type data:CompositionCatalog}">
+                                    <DataTemplate DataType="{x:Type d:CompositionCatalog}">
                                         <TextBlock FontSize="14.667"
                                                    Foreground="#FFC8CDD1"
                                                    Text="{Binding Prefix}" />
@@ -992,7 +1028,7 @@
                                      Style="{StaticResource FieldStyle}"
                                      TextChanged="TextChanged_CompositionCatalogNumberTextBox" />
                         </Grid>
-                    </controls:DoubleBorderDecorator>
+                    </c:DoubleBorderDecorator>
                     <TextBlock Grid.Row="8"
                                Grid.Column="4"
                                Style="{StaticResource FieldHeaderStyle}"
@@ -1001,21 +1037,20 @@
                                Grid.Column="7"
                                Style="{StaticResource FieldHeaderStyle}"
                                Text="Dates:" />
-                    <controls:DoubleBorderDecorator Grid.Row="10"
-                                                    Grid.Column="3"
-                                                    Grid.ColumnSpan="2"
-                                                    Style="{StaticResource FieldBorderStyle}">
+                    <c:DoubleBorderDecorator Grid.Row="10"
+                                             Grid.Column="3"
+                                             Grid.ColumnSpan="2"
+                                             Style="{StaticResource FieldBorderStyle}">
                         <TextBox x:Name="CompositionNicknameTextBox" Style="{StaticResource FieldStyle}" />
-                    </controls:DoubleBorderDecorator>
-                    <controls:DoubleBorderDecorator Grid.Row="10"
-                                                    Grid.Column="6"
-                                                    Grid.ColumnSpan="2"
-                                                    Style="{StaticResource FieldBorderStyle}">
+                    </c:DoubleBorderDecorator>
+                    <c:DoubleBorderDecorator Grid.Row="10"
+                                             Grid.Column="6"
+                                             Grid.ColumnSpan="2"
+                                             Style="{StaticResource FieldBorderStyle}">
                         <TextBox x:Name="CompositionDatesTextBox" Style="{StaticResource FieldStyle}" />
-                    </controls:DoubleBorderDecorator>
+                    </c:DoubleBorderDecorator>
                 </Grid>
-                <!--  Movement Section  -->
-                <Grid Grid.Row="6">
+                <Grid Name="MovementSection" Grid.Row="6">
                     <Grid.RowDefinitions>
                         <!--  Section Header (0)  -->
                         <RowDefinition Height="Auto" />
@@ -1052,35 +1087,33 @@
                                Height="1"
                                Fill="#FF758287"
                                StrokeThickness="0" />
-                    <controls:DoubleBorderDecorator Grid.Row="4"
-                                                    Grid.RowSpan="4"
-                                                    Grid.ColumnSpan="2"
-                                                    Style="{StaticResource FieldBorderStyle}">
-                        <ListBox x:Name="MovementListBox"
-                                 AllowDrop="True"
-                                 Background="#FF42474B"
-                                 BorderThickness="0"
-                                 Drop="Drop_MovementListBox"
-                                 SelectionChanged="SelectionChanged_MovementListBox"
-                                 SelectionMode="Extended">
-                            <ListBox.CommandBindings>
-                                <CommandBinding Command="{x:Static ApplicationCommands.Delete}" Executed="Executed_CompositionCollectionDeleteCommand" />
-                            </ListBox.CommandBindings>
-                            <ListBox.ItemTemplate>
-                                <DataTemplate DataType="{x:Type data:Composer}">
-                                    <TextBlock FontSize="14.667"
-                                               Foreground="#FFC8CDD1"
-                                               Text="{Binding Name}">
-                                        <TextBlock.ContextMenu>
-                                            <ContextMenu>
-                                                <MenuItem Command="{x:Static ApplicationCommands.Delete}" />
-                                            </ContextMenu>
-                                        </TextBlock.ContextMenu>
-                                    </TextBlock>
-                                </DataTemplate>
-                            </ListBox.ItemTemplate>
-                        </ListBox>
-                    </controls:DoubleBorderDecorator>
+                    <ListBox x:Name="MovementListBox"
+                             Grid.Row="4"
+                             Grid.RowSpan="4"
+                             Grid.ColumnSpan="2"
+                             AllowDrop="True"
+                             Background="#FF42474B"
+                             BorderThickness="0"
+                             Drop="Drop_MovementListBox"
+                             SelectionChanged="SelectionChanged_MovementListBox"
+                             SelectionMode="Extended">
+                        <ListBox.CommandBindings>
+                            <CommandBinding Command="{x:Static ApplicationCommands.Delete}" Executed="Executed_CompositionCollectionDeleteCommand" />
+                        </ListBox.CommandBindings>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate DataType="{x:Type d:Composer}">
+                                <TextBlock FontSize="14.667"
+                                           Foreground="#FFC8CDD1"
+                                           Text="{Binding Name}">
+                                    <TextBlock.ContextMenu>
+                                        <ContextMenu>
+                                            <MenuItem Command="{x:Static ApplicationCommands.Delete}" />
+                                        </ContextMenu>
+                                    </TextBlock.ContextMenu>
+                                </TextBlock>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
                     <TextBlock Grid.Row="4"
                                Grid.Column="4"
                                Style="{StaticResource FieldHeaderStyle}"
@@ -1089,31 +1122,30 @@
                                Grid.Column="7"
                                Style="{StaticResource FieldHeaderStyle}"
                                Text="Name:" />
-                    <controls:DoubleBorderDecorator Grid.Row="6"
-                                                    Grid.Column="3"
-                                                    Grid.ColumnSpan="2"
-                                                    Style="{StaticResource FieldBorderStyle}">
-                        <controls:NumberBox x:Name="MovementNumberBox"
-                                            CaretBrush="#DFE0E6"
-                                            MaxLength="2"
-                                            Style="{StaticResource FieldStyle}"
-                                            TextAlignment="Center" />
-                    </controls:DoubleBorderDecorator>
-                    <controls:DoubleBorderDecorator Grid.Row="6"
-                                                    Grid.Column="6"
-                                                    Grid.ColumnSpan="2"
-                                                    Style="{StaticResource FieldBorderStyle}">
-                        <controls:AutoCompleteBox x:Name="MovementNameAutoCompleteBox" Style="{StaticResource FieldStyle}">
-                            <controls:AutoCompleteBox.SuggestionTemplate>
-                                <DataTemplate DataType="{x:Type data:Movement}">
+                    <c:DoubleBorderDecorator Grid.Row="6"
+                                             Grid.Column="3"
+                                             Grid.ColumnSpan="2"
+                                             Style="{StaticResource FieldBorderStyle}">
+                        <c:NumberBox x:Name="MovementNumberBox"
+                                     CaretBrush="#DFE0E6"
+                                     MaxLength="2"
+                                     Style="{StaticResource FieldStyle}"
+                                     TextAlignment="Center" />
+                    </c:DoubleBorderDecorator>
+                    <c:DoubleBorderDecorator Grid.Row="6"
+                                             Grid.Column="6"
+                                             Grid.ColumnSpan="2"
+                                             Style="{StaticResource FieldBorderStyle}">
+                        <c:AutoCompleteBox x:Name="MovementNameAutoCompleteBox" Style="{StaticResource FieldStyle}">
+                            <c:AutoCompleteBox.SuggestionTemplate>
+                                <DataTemplate DataType="{x:Type d:Movement}">
                                     <TextBlock Text="{Binding Name}" />
                                 </DataTemplate>
-                            </controls:AutoCompleteBox.SuggestionTemplate>
-                        </controls:AutoCompleteBox>
-                    </controls:DoubleBorderDecorator>
+                            </c:AutoCompleteBox.SuggestionTemplate>
+                        </c:AutoCompleteBox>
+                    </c:DoubleBorderDecorator>
                 </Grid>
-                <!--  Recording Section  -->
-                <Grid Grid.Row="8">
+                <Grid Name="RecordingSection" Grid.Row="8">
                     <Grid.RowDefinitions>
                         <!--  Section Header (0)  -->
                         <RowDefinition Height="Auto" />
@@ -1184,68 +1216,64 @@
                                Grid.ColumnSpan="13"
                                Fill="#FF758287"
                                StrokeThickness="0" />
-                    <controls:DoubleBorderDecorator Grid.Row="4"
-                                                    Grid.RowSpan="7"
-                                                    Grid.ColumnSpan="8"
-                                                    Style="{StaticResource FieldBorderStyle}">
-                        <ListBox x:Name="RecordingListBox"
-                                 AllowDrop="True"
-                                 Background="#FF42474B"
-                                 BorderThickness="0"
-                                 Drop="Drop_RecordingListBox"
-                                 SelectionChanged="SelectionChanged_RecordingListBox"
-                                 SelectionMode="Extended">
-                            <ListBox.CommandBindings>
-                                <CommandBinding Command="{x:Static ApplicationCommands.Delete}" Executed="Executed_CompositionCollectionDeleteCommand" />
-                            </ListBox.CommandBindings>
-                            <ListBox.ItemTemplate>
-                                <DataTemplate DataType="{x:Type data:Composer}">
-                                    <TextBlock FontSize="14.667"
-                                               Foreground="#FFC8CDD1"
-                                               Text="{Binding Name}">
-                                        <TextBlock.ContextMenu>
-                                            <ContextMenu>
-                                                <MenuItem Command="{x:Static ApplicationCommands.Delete}" />
-                                            </ContextMenu>
-                                        </TextBlock.ContextMenu>
-                                    </TextBlock>
-                                </DataTemplate>
-                            </ListBox.ItemTemplate>
-                        </ListBox>
-                    </controls:DoubleBorderDecorator>
+                    <ListBox x:Name="RecordingListBox"
+                             Grid.Row="4"
+                             Grid.RowSpan="7"
+                             Grid.ColumnSpan="8"
+                             AllowDrop="True"
+                             Background="#FF42474B"
+                             BorderThickness="0"
+                             Drop="Drop_RecordingListBox"
+                             SelectionChanged="SelectionChanged_RecordingListBox"
+                             SelectionMode="Extended">
+                        <ListBox.CommandBindings>
+                            <CommandBinding Command="{x:Static ApplicationCommands.Delete}" Executed="Executed_CompositionCollectionDeleteCommand" />
+                        </ListBox.CommandBindings>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate DataType="{x:Type d:Composer}">
+                                <TextBlock FontSize="14.667"
+                                           Foreground="#FFC8CDD1"
+                                           Text="{Binding Name}">
+                                    <TextBlock.ContextMenu>
+                                        <ContextMenu>
+                                            <MenuItem Command="{x:Static ApplicationCommands.Delete}" />
+                                        </ContextMenu>
+                                    </TextBlock.ContextMenu>
+                                </TextBlock>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
                     <TextBlock Grid.Row="4"
                                Grid.Column="10"
                                Style="{StaticResource FieldHeaderStyle}"
                                Text="Performers:" />
-                    <controls:DoubleBorderDecorator Grid.Row="6"
-                                                    Grid.RowSpan="17"
-                                                    Grid.Column="10"
-                                                    Grid.ColumnSpan="3"
-                                                    Style="{StaticResource FieldBorderStyle}">
-                        <ListBox x:Name="RecordingPerformerListBox"
-                                 Background="#FF42474B"
-                                 BorderThickness="0"
-                                 SelectionMode="Extended">
-                            <ListBox.ItemTemplate>
-                                <DataTemplate DataType="{x:Type data:Era}">
-                                    <TextBlock FontSize="14.667"
-                                               Foreground="#FFC8CDD1"
-                                               Text="{Binding Name}" />
-                                </DataTemplate>
-                            </ListBox.ItemTemplate>
-                        </ListBox>
-                    </controls:DoubleBorderDecorator>
+                    <ListBox x:Name="RecordingPerformerListBox"
+                             Grid.Row="6"
+                             Grid.RowSpan="17"
+                             Grid.Column="10"
+                             Grid.ColumnSpan="3"
+                             Background="#FF42474B"
+                             BorderThickness="0"
+                             SelectionMode="Extended">
+                        <ListBox.ItemTemplate>
+                            <DataTemplate DataType="{x:Type d:Era}">
+                                <TextBlock FontSize="14.667"
+                                           Foreground="#FFC8CDD1"
+                                           Text="{Binding Name}" />
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
                     <TextBlock Grid.Row="12"
                                Grid.Column="1"
                                Style="{StaticResource FieldHeaderStyle}"
                                Text="Path:" />
-                    <controls:DoubleBorderDecorator Grid.Row="14"
-                                                    Grid.ColumnSpan="8"
-                                                    Style="{StaticResource FieldBorderStyle}">
+                    <c:DoubleBorderDecorator Grid.Row="14"
+                                             Grid.ColumnSpan="8"
+                                             Style="{StaticResource FieldBorderStyle}">
                         <TextBox x:Name="RecordingPathTextBox"
                                  IsTabStop="False"
                                  Style="{StaticResource FieldStyle}" />
-                    </controls:DoubleBorderDecorator>
+                    </c:DoubleBorderDecorator>
                     <TextBlock Grid.Row="16"
                                Grid.Column="1"
                                Style="{StaticResource FieldHeaderStyle}"
@@ -1254,23 +1282,23 @@
                                Grid.Column="4"
                                Style="{StaticResource FieldHeaderStyle}"
                                Text="Album:" />
-                    <controls:DoubleBorderDecorator Grid.Row="18"
-                                                    Grid.ColumnSpan="2"
-                                                    Style="{StaticResource FieldBorderStyle}">
-                        <controls:NumberBox x:Name="RecordingTrackNumberBox"
-                                            CaretBrush="#DFE0E6"
-                                            MaxLength="2"
-                                            Style="{StaticResource FieldStyle}"
-                                            TextAlignment="Center" />
-                    </controls:DoubleBorderDecorator>
-                    <controls:DoubleBorderDecorator Grid.Row="18"
-                                                    Grid.Column="3"
-                                                    Grid.ColumnSpan="5"
-                                                    Style="{StaticResource FieldBorderStyle}">
-                        <controls:AutoCompleteBox x:Name="RecordingAlbumAutoCompleteBox"
-                                                  IsTabStop="False"
-                                                  Style="{StaticResource FieldStyle}" />
-                    </controls:DoubleBorderDecorator>
+                    <c:DoubleBorderDecorator Grid.Row="18"
+                                             Grid.ColumnSpan="2"
+                                             Style="{StaticResource FieldBorderStyle}">
+                        <c:NumberBox x:Name="RecordingTrackNumberBox"
+                                     CaretBrush="#DFE0E6"
+                                     MaxLength="2"
+                                     Style="{StaticResource FieldStyle}"
+                                     TextAlignment="Center" />
+                    </c:DoubleBorderDecorator>
+                    <c:DoubleBorderDecorator Grid.Row="18"
+                                             Grid.Column="3"
+                                             Grid.ColumnSpan="5"
+                                             Style="{StaticResource FieldBorderStyle}">
+                        <c:AutoCompleteBox x:Name="RecordingAlbumAutoCompleteBox"
+                                           IsTabStop="False"
+                                           Style="{StaticResource FieldStyle}" />
+                    </c:DoubleBorderDecorator>
                     <TextBlock Grid.Row="20"
                                Grid.Column="1"
                                Grid.ColumnSpan="4"
@@ -1281,22 +1309,21 @@
                                Grid.ColumnSpan="2"
                                Style="{StaticResource FieldHeaderStyle}"
                                Text="Location:" />
-                    <controls:DoubleBorderDecorator Grid.Row="22"
-                                                    Grid.ColumnSpan="5"
-                                                    Style="{StaticResource FieldBorderStyle}">
+                    <c:DoubleBorderDecorator Grid.Row="22"
+                                             Grid.ColumnSpan="5"
+                                             Style="{StaticResource FieldBorderStyle}">
                         <TextBox x:Name="RecordingDatesTextBox" Style="{StaticResource FieldStyle}" />
-                    </controls:DoubleBorderDecorator>
-                    <controls:DoubleBorderDecorator Grid.Row="22"
-                                                    Grid.Column="6"
-                                                    Grid.ColumnSpan="2"
-                                                    Style="{StaticResource FieldBorderStyle}">
-                        <controls:AutoCompleteBox x:Name="RecordingLocationAutoCompleteBox"
-                                                  IsTabStop="False"
-                                                  Style="{StaticResource FieldStyle}" />
-                    </controls:DoubleBorderDecorator>
+                    </c:DoubleBorderDecorator>
+                    <c:DoubleBorderDecorator Grid.Row="22"
+                                             Grid.Column="6"
+                                             Grid.ColumnSpan="2"
+                                             Style="{StaticResource FieldBorderStyle}">
+                        <c:AutoCompleteBox x:Name="RecordingLocationAutoCompleteBox"
+                                           IsTabStop="False"
+                                           Style="{StaticResource FieldStyle}" />
+                    </c:DoubleBorderDecorator>
                 </Grid>
-                <!--  Status and Button Section  -->
-                <Grid Grid.Row="10">
+                <Grid Name="StatusAndButtonSection" Grid.Row="10">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition />
                         <ColumnDefinition Width="Auto" />

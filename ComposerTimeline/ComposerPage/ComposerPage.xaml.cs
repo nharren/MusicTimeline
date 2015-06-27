@@ -1,6 +1,4 @@
-﻿using NathanHarrenstein.ComposerTimeline.Initializers;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
@@ -43,7 +41,7 @@ namespace NathanHarrenstein.ComposerTimeline
 
         public string Nationality { get; set; }
 
-        public IEnumerable<NathanHarrenstein.Controls.TreeViewItem> TreeViewItems { get; set; }
+        public IEnumerable<Controls.TreeViewItem> TreeViewItems { get; set; }
 
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {

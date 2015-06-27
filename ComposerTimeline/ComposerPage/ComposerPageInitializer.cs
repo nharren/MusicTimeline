@@ -9,7 +9,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Media.Imaging;
 
-namespace NathanHarrenstein.ComposerTimeline.Initializers
+namespace NathanHarrenstein.ComposerTimeline
 {
     public static class ComposerPageInitializer
     {

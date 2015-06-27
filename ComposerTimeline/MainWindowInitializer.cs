@@ -4,7 +4,7 @@ using System.IO;
 using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace NathanHarrenstein.ComposerTimeline.Initializers
+namespace NathanHarrenstein.ComposerTimeline
 {
     public static class MainWindowInitializer
     {

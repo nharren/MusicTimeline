@@ -1,6 +1,4 @@
-﻿using NathanHarrenstein.ComposerTimeline.Initializers;
-using System.Windows;
-using System.Windows.Controls;
+﻿using System.Windows;
 using System.Windows.Input;
 
 namespace NathanHarrenstein.ComposerTimeline

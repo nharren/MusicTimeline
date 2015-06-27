@@ -87,20 +87,21 @@
     <Compile Include="Data\ComposerEvent.cs" />
     <Compile Include="Data\MusicEra.cs" />
     <Compile Include="InputPage\ComposerLinkConverter.cs" />
-    <Compile Include="Initializers\InputPageInitializer.cs" />
+    <Compile Include="InputPage\InputPageInitializer.cs" />
     <Compile Include="InputPage\ComposerImageConverter.cs" />
     <Compile Include="InputPage\InputPage.xaml.cs">
       <DependentUpon>InputPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Initializers\ComposerPageInitializer.cs" />
-    <Compile Include="Initializers\TimelineInitializer.cs" />
+    <Compile Include="ComposerPage\ComposerPageInitializer.cs" />
+    <Compile Include="StreamReaderExtensions.cs" />
+    <Compile Include="TimelinePage\TimelineInitializer.cs" />
     <Compile Include="TimelinePage\TimelinePage.xaml.cs">
       <DependentUpon>TimelinePage.xaml</DependentUpon>
     </Compile>
     <Compile Include="ComposerPage\TreeViewItems\CompositionCollectionTreeViewItem.cs" />
     <Compile Include="ComposerPage\TreeViewItems\CompositionTreeViewItem.cs" />
     <Compile Include="Data\Flag.cs" />
-    <Compile Include="Initializers\MainWindowInitializer.cs" />
+    <Compile Include="MainWindowInitializer.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>

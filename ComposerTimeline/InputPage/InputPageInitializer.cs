@@ -13,7 +13,7 @@ using System.Windows.Data;
 using System.Windows.Markup;
 using System.Xml;
 
-namespace NathanHarrenstein.ComposerTimeline.Initializers
+namespace NathanHarrenstein.ComposerTimeline
 {
     public static class InputPageInitializer
     {
@@ -268,8 +268,8 @@ namespace NathanHarrenstein.ComposerTimeline.Initializers
                 inputPage.CompositionCollectionNameTextBox.IsEnabled = false;
                 inputPage.CompositionCollectionNameTextBox.Text = null;
 
-                inputPage.CompositionCollectionCatalogPrefixComboBox.IsEnabled = false;
-                inputPage.CompositionCollectionCatalogPrefixComboBox.ItemsSource = null;
+                inputPage.CompositionCollectionCatalogPrefixListBox.IsEnabled = false;
+                inputPage.CompositionCollectionCatalogPrefixListBox.ItemsSource = null;
 
                 inputPage.CompositionCollectionCatalogNumberTextBox.IsEnabled = false;
                 inputPage.CompositionCollectionCatalogNumberTextBox.Text = null;
@@ -286,18 +286,16 @@ namespace NathanHarrenstein.ComposerTimeline.Initializers
             inputPage.CompositionCollectionNameTextBox.SetBinding(TextBox.TextProperty, compositionCollectionNameBinding);
             inputPage.CompositionCollectionNameTextBox.IsEnabled = true;
 
-            inputPage.CompositionCollectionCatalogPrefixComboBox.ItemsSource = new List<CompositionCatalog>(compositionCollection.Composers.SelectMany(c => c.CompositionCatalogs));
-            inputPage.CompositionCollectionCatalogPrefixComboBox.IsEnabled = true;
+            inputPage.CompositionCollectionCatalogPrefixListBox.ItemsSource = new List<string>(compositionCollection.Composers.SelectMany(c => c.CompositionCatalogs).Select(cc => cc.Prefix));
+            inputPage.CompositionCollectionCatalogPrefixListBox.IsEnabled = true;
 
-            var currentCatalogNumber = compositionCollection.CatalogNumbers.FirstOrDefault(cn => cn.CompositionCatalog == inputPage.CompositionCollectionCatalogPrefixComboBox.SelectedItem);
-
-            if (currentCatalogNumber != null)
-            {
-                inputPage.CompositionCollectionCatalogNumberTextBox.Text = currentCatalogNumber.Number;
-            }
+            var catalogNumber = compositionCollection.CatalogNumbers
+                .FirstOrDefault(cn => cn.CompositionCatalog == inputPage.CompositionCollectionCatalogPrefixListBox.SelectedItem);
+            inputPage.CompositionCollectionCatalogNumberTextBox.Text = catalogNumber == null ? null : catalogNumber.Number;
+            inputPage.CompositionCollectionCatalogNumberTextBox.IsEnabled = true;
 
             inputPage.CompositionListBox.ItemsSource = new List<Composition>(compositionCollection.Compositions);
-            inputPage.CompositionCollectionCatalogNumberTextBox.IsEnabled = true;
+            inputPage.CompositionListBox.IsEnabled = true;
         }
 
         internal static void BindMovement(InputPage inputPage, Movement movement)
