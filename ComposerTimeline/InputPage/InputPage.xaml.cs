@@ -627,63 +627,114 @@ namespace NathanHarrenstein.ComposerTimeline
             }
         }
 
-        private void TextChanged_CompositionCatalogNumberTextBox(object sender, TextChangedEventArgs e)
+        private void CompositionCatalogNumberTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (CompositionCatalogNumberTextBox.IsEnabled)
+            if (!CompositionCatalogNumberTextBox.IsEnabled)
             {
-                var compositionCatalog = _currentComposers[0].CompositionCatalogs
-                    .FirstOrDefault(cc => cc.Prefix == CompositionCatalogPrefixComboBox.Text);
+                return;
+            }
 
-                var catalogNumber = _currentComposition.CatalogNumbers
-                    .FirstOrDefault(cn => cn.CompositionCatalog.Prefix == CompositionCatalogPrefixComboBox.Text);
+            var selectedCatalogs = _currentComposers
+                .SelectMany(c => c.CompositionCatalogs)
+                .Where(cc => cc.Prefix == (string)CompositionCatalogPrefixListBox.SelectedItem);
 
-                if (catalogNumber == null)
+            var selectedCatalogNumbers = selectedCatalogs
+                .SelectMany(cc => cc.CatalogNumbers)
+                .Where(cn => cn.Composition == _currentComposition);
+
+            if (selectedCatalogNumbers.Count() == 0)
+            {
+                var catalogNumbers = new List<CatalogNumber>();
+
+                foreach (var catalog in selectedCatalogs)
                 {
-                    if (compositionCatalog == null)
-                    {
-                        compositionCatalog = new CompositionCatalog { Prefix = CompositionCatalogPrefixComboBox.Text };
-                        _currentComposers[0].CompositionCatalogs.Add(compositionCatalog);
-                    }
-
-                    catalogNumber = new CatalogNumber();
-                    catalogNumber.CompositionCatalog = compositionCatalog;
+                    var catalogNumber = new CatalogNumber();
+                    catalogNumber.CompositionCatalog = catalog;
                     catalogNumber.Composition = _currentComposition;
-                    catalogNumber.Number = CompositionCatalogNumberTextBox.Text;
 
                     _currentComposition.CatalogNumbers.Add(catalogNumber);
+                    catalog.CatalogNumbers.Add(catalogNumber);
+                    catalogNumbers.Add(catalogNumber);
                 }
-                else
-                {
-                    if (string.IsNullOrEmpty(CompositionCatalogNumberTextBox.Text))
-                    {
-                        if (catalogNumber.CompositionCatalog.CatalogNumbers.Count == 1)
-                        {
-                            _currentComposers[0].CompositionCatalogs.Remove(catalogNumber.CompositionCatalog);
-                        }
 
-                        _currentComposition.CatalogNumbers.Remove(catalogNumber);
-                    }
-                    else
-                    {
-                        catalogNumber.Number = CompositionCatalogNumberTextBox.Text;
-                    }
-                }
+                selectedCatalogNumbers = catalogNumbers;
+            }
+
+            foreach (var catalogNumber in selectedCatalogNumbers)
+            {
+                catalogNumber.Number = CompositionCatalogNumberTextBox.Text;
             }
         }
 
-        private void TextChanged_CompositionCatalogPrefixComboBox(object sender, TextChangedEventArgs e)
+        private void CompositionCatalogPrefixListBox_Drop(object sender, DragEventArgs e)
         {
-            if (CompositionCatalogPrefixComboBox.IsEnabled)
+            if (!CompositionCatalogPrefixListBox.IsEnabled)
             {
-                var catalogNumber = _currentComposition.CatalogNumbers.FirstOrDefault(cn => cn.CompositionCatalog.Prefix == CompositionCatalogPrefixComboBox.Text);
+                return;
+            }
 
-                if (catalogNumber == null)
+            var droppedString = (string)e.Data.GetData(typeof(string));
+
+            if (droppedString == null)
+            {
+                return;
+            }
+
+            var newCompositionCatalogs = new CompositionCatalog[_currentComposers.Count];
+
+            for (int i = 0; i < _currentComposers.Count; i++)
+            {
+                var newCompositionCatalog = new CompositionCatalog();
+                newCompositionCatalog.Prefix = droppedString;
+                newCompositionCatalog.Composer = _currentComposers[i];
+
+                _currentComposers[i].CompositionCatalogs.Add(newCompositionCatalog);
+                newCompositionCatalogs[i] = newCompositionCatalog;
+            }
+
+            var availableCompositionCatalogs = _currentComposers
+                .SelectMany(c => c.CompositionCatalogs)
+                .Select(cc => cc.Prefix)
+                .Distinct();
+
+            CompositionCatalogPrefixListBox.ItemsSource = new List<string>(availableCompositionCatalogs);
+            CompositionCatalogPrefixListBox.SelectedItem = droppedString;
+
+            CompositionCatalogNumberTextBox.Text = null;
+        }
+
+        private void CompositionCatalogPrefixListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (e.AddedItems.Count < 1)
+            {
+                return;
+            }
+
+            var catalogNumber = _currentCompositionCollection.CatalogNumbers
+                .FirstOrDefault(cn => cn.CompositionCatalog.Prefix == (string)CompositionCollectionCatalogPrefixListBox.SelectedItem);
+
+            CompositionCollectionCatalogNumberTextBox.Text = catalogNumber == null ? null : catalogNumber.Number;
+        }
+
+        private void CompositionCatalogPrefixDeleteCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (!CompositionCatalogPrefixListBox.IsEnabled)
+            {
+                return;
+            }
+
+            if (!(e.OriginalSource is ListBoxItem))
+            {
+                return;
+            }
+
+            foreach (var composer in _currentComposers)
+            {
+                var selectedCatalog = composer.CompositionCatalogs.FirstOrDefault(cc => cc.Prefix == (string)CompositionCatalogPrefixListBox.SelectedItem);
+
+                if (selectedCatalog != null)
                 {
-                    CompositionCatalogNumberTextBox.Text = null;
-                }
-                else
-                {
-                    CompositionCatalogNumberTextBox.Text = catalogNumber.Number;
+                    composer.CompositionCatalogs.Remove(selectedCatalog);
                 }
             }
         }
