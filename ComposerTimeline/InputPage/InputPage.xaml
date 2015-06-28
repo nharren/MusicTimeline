@@ -489,13 +489,21 @@
                         <RowDefinition Height="178" />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
+                        <!--  1. Field 1  -->
                         <ColumnDefinition Width="10" />
+                        <!--  2. Field 1 Header  -->
                         <ColumnDefinition Width="244" />
+                        <!--  3. Space  -->
                         <ColumnDefinition Width="20" />
+                        <!--  4. Field 2  -->
                         <ColumnDefinition Width="10" />
+                        <!--  5. Field 2 Header  -->
                         <ColumnDefinition Width="244" />
+                        <!--  6. Space  -->
                         <ColumnDefinition Width="20" />
+                        <!--  7. Field 3  -->
                         <ColumnDefinition Width="10" />
+                        <!--  8. Field 3 Header  -->
                         <ColumnDefinition Width="244" />
                     </Grid.ColumnDefinitions>
                     <TextBlock Grid.ColumnSpan="8"
@@ -912,40 +920,60 @@
                 </Grid>
                 <Grid Name="CompositionSection" Grid.Row="4">
                     <Grid.RowDefinitions>
-                        <!--  Section Header (0)  -->
+                        <!--  0. Section Header  -->
                         <RowDefinition Height="Auto" />
-                        <!--  Space (1)  -->
+                        <!--  1. Space  -->
                         <RowDefinition Height="2" />
-                        <!--  Section Header Rule (2)  -->
+                        <!--  2. Section Header Rule  -->
                         <RowDefinition Height="1" />
-                        <!--  Space (3)  -->
+                        <!--  3. Space  -->
                         <RowDefinition Height="20" />
-                        <!--  Field Header (4)  -->
+                        <!--  4. Field 1 Header  -->
                         <RowDefinition Height="18" />
-                        <!--  Space (5)  -->
+                        <!--  5. Space  -->
                         <RowDefinition Height="3" />
-                        <!--  Field 1 (6)  -->
+                        <!--  6. Field 1  -->
                         <RowDefinition Height="32" />
-                        <!--  Space (7)  -->
+                        <!--  7. Space  -->
                         <RowDefinition Height="10" />
-                        <!--  Field Header (8)  -->
+                        <!--  8. Field 2 Header  -->
                         <RowDefinition Height="18" />
-                        <!--  Space (9)  -->
+                        <!--  9. Space  -->
                         <RowDefinition Height="3" />
-                        <!--  Field 2 (10)  -->
+                        <!--  10. Field 2  -->
                         <RowDefinition Height="32" />
-                        <RowDefinition Height="100" />
+                        <!--  11. Space  -->
+                        <RowDefinition Height="10" />
+                        <!--  12. Field 3 Header  -->
+                        <RowDefinition Height="18" />
+                        <!--  13. Space  -->
+                        <RowDefinition Height="3" />
+                        <!--  14. Field 3  -->
+                        <RowDefinition Height="32" />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
+                        <!--  1. Field 1  -->
                         <ColumnDefinition Width="10" />
+                        <!--  2. Field 1 Header  -->
                         <ColumnDefinition Width="244" />
+                        <!--  3. Space  -->
                         <ColumnDefinition Width="20" />
+                        <!--  4. Field 2  -->
                         <ColumnDefinition Width="10" />
+                        <!--  5. Field 2 Header  -->
                         <ColumnDefinition Width="244" />
+                        <!--  6. Space  -->
                         <ColumnDefinition Width="20" />
+                        <!--  7. Field 3  -->
                         <ColumnDefinition Width="10" />
-                        <ColumnDefinition Width="150" />
-                        <ColumnDefinition />
+                        <!--  8. Field 3 Header  -->
+                        <ColumnDefinition Width="107" />
+                        <!--  9. Space  -->
+                        <ColumnDefinition Width="20" />
+                        <!--  10. Field 4  -->
+                        <ColumnDefinition Width="10" />
+                        <!--  11. Field 4 Header  -->
+                        <ColumnDefinition Width="107" />
                     </Grid.ColumnDefinitions>
                     <TextBlock Grid.ColumnSpan="11"
                                Style="{StaticResource SectionHeaderStyle}"
@@ -957,7 +985,7 @@
                                StrokeThickness="0" />
                     <ListBox x:Name="CompositionListBox"
                              Grid.Row="4"
-                             Grid.RowSpan="8"
+                             Grid.RowSpan="11"
                              Grid.ColumnSpan="2"
                              AllowDrop="True"
                              Background="#FF42474B"
@@ -989,66 +1017,63 @@
                     <TextBlock Grid.Row="4"
                                Grid.Column="7"
                                Style="{StaticResource FieldHeaderStyle}"
-                               Text="Catalog Numbers:" />
-                    <c:DoubleBorderDecorator Grid.Row="6"
-                                             Grid.Column="3"
-                                             Grid.ColumnSpan="2"
-                                             Style="{StaticResource FieldBorderStyle}">
-                        <c:AutoCompleteBox x:Name="CompositionNameAutoCompleteBox" Style="{StaticResource FieldStyle}">
-                            <c:AutoCompleteBox.SuggestionTemplate>
-                                <DataTemplate DataType="{x:Type d:Composition}">
-                                    <TextBlock Text="{Binding Name}" />
-                                </DataTemplate>
-                            </c:AutoCompleteBox.SuggestionTemplate>
-                        </c:AutoCompleteBox>
-                    </c:DoubleBorderDecorator>
-                    <c:DoubleBorderDecorator Grid.Row="6"
-                                             Grid.Column="6"
-                                             Grid.ColumnSpan="2"
-                                             Style="{StaticResource FieldBorderStyle}">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="60" />
-                                <ColumnDefinition />
-                            </Grid.ColumnDefinitions>
-                            <ComboBox x:Name="CompositionCatalogPrefixComboBox"
-                                      IsEditable="True"
-                                      Template="{DynamicResource ComboBoxControlTemplate}"
-                                      TextBoxBase.TextChanged="TextChanged_CompositionCatalogPrefixComboBox">
-                                <ComboBox.ItemTemplate>
-                                    <DataTemplate DataType="{x:Type d:CompositionCatalog}">
-                                        <TextBlock FontSize="14.667"
-                                                   Foreground="#FFC8CDD1"
-                                                   Text="{Binding Prefix}" />
-                                    </DataTemplate>
-                                </ComboBox.ItemTemplate>
-                            </ComboBox>
-                            <TextBox x:Name="CompositionCatalogNumberTextBox"
-                                     Grid.Column="1"
-                                     Style="{StaticResource FieldStyle}"
-                                     TextChanged="TextChanged_CompositionCatalogNumberTextBox" />
-                        </Grid>
-                    </c:DoubleBorderDecorator>
+                               Text="Cat. Prefixes:" />
+                    <TextBlock Grid.Row="4"
+                               Grid.Column="10"
+                               Style="{StaticResource FieldHeaderStyle}"
+                               Text="Cat. Number:" />
+                    <TextBox x:Name="CompositionNameTextBox"
+                             Grid.Row="6"
+                             Grid.Column="3"
+                             Grid.ColumnSpan="2" />
+                    <ListBox x:Name="CompositionCatalogPrefixListBox"
+                             Grid.Row="6"
+                             Grid.RowSpan="9"
+                             Grid.Column="7"
+                             AllowDrop="True"
+                             Background="#FF42474B"
+                             BorderThickness="0"
+                             Drop="CompositionCatalogPrefixListBox_Drop"
+                             SelectionChanged="CompositionCatalogPrefixListBox_SelectionChanged"
+                             SelectionMode="Extended">
+                        <ListBox.CommandBindings>
+                            <CommandBinding Command="{x:Static ApplicationCommands.Delete}" Executed="CompositionCatalogPrefixDeleteCommand_Executed" />
+                        </ListBox.CommandBindings>
+                        <ListBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock FontSize="14.667"
+                                           Foreground="#FFC8CDD1"
+                                           Text="{Binding}">
+                                    <TextBlock.ContextMenu>
+                                        <ContextMenu>
+                                            <MenuItem Command="{x:Static ApplicationCommands.Delete}" />
+                                        </ContextMenu>
+                                    </TextBlock.ContextMenu>
+                                </TextBlock>
+                            </DataTemplate>
+                        </ListBox.ItemTemplate>
+                    </ListBox>
+                    <TextBox x:Name="CompositionCatalogNumberTextBox"
+                             Grid.Row="6"
+                             Grid.Column="9"
+                             Grid.ColumnSpan="2"
+                             TextChanged="CompositionCatalogNumberTextBox_TextChanged" />
                     <TextBlock Grid.Row="8"
                                Grid.Column="4"
                                Style="{StaticResource FieldHeaderStyle}"
                                Text="Nickame:" />
-                    <TextBlock Grid.Row="8"
-                               Grid.Column="7"
+                    <TextBox x:Name="CompositionNicknameTextBox"
+                             Grid.Row="10"
+                             Grid.Column="3"
+                             Grid.ColumnSpan="2" />
+                    <TextBlock Grid.Row="12"
+                               Grid.Column="4"
                                Style="{StaticResource FieldHeaderStyle}"
                                Text="Dates:" />
-                    <c:DoubleBorderDecorator Grid.Row="10"
-                                             Grid.Column="3"
-                                             Grid.ColumnSpan="2"
-                                             Style="{StaticResource FieldBorderStyle}">
-                        <TextBox x:Name="CompositionNicknameTextBox" Style="{StaticResource FieldStyle}" />
-                    </c:DoubleBorderDecorator>
-                    <c:DoubleBorderDecorator Grid.Row="10"
-                                             Grid.Column="6"
-                                             Grid.ColumnSpan="2"
-                                             Style="{StaticResource FieldBorderStyle}">
-                        <TextBox x:Name="CompositionDatesTextBox" Style="{StaticResource FieldStyle}" />
-                    </c:DoubleBorderDecorator>
+                    <TextBox x:Name="CompositionDatesTextBox"
+                             Grid.Row="14"
+                             Grid.Column="3"
+                             Grid.ColumnSpan="2" />
                 </Grid>
                 <Grid Name="MovementSection" Grid.Row="6">
                     <Grid.RowDefinitions>

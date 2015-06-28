@@ -29,10 +29,9 @@ namespace NathanHarrenstein.ComposerTimeline
 
             inputPage.ComposerBirthLocationAutoCompleteBox.StringSelector = inputPage.ComposerDeathLocationAutoCompleteBox.StringSelector = inputPage.RecordingLocationAutoCompleteBox.StringSelector = stringSelector;
 
-            var xamlString =
-                "<DataTemplate xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\" xmlns:x=\"http://schemas.microsoft.com/winfx/2006/xaml\" xmlns:data=\"clr-namespace:Database;assembly=Database\" DataType=\"{x:Type data:Location}\">" +
-            "<TextBlock Text=\"{Binding Name}\"/>" +
-                "</DataTemplate>";
+            var xamlString = "<DataTemplate xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\" xmlns:x=\"http://schemas.microsoft.com/winfx/2006/xaml\" xmlns:data=\"clr-namespace:Database;assembly=Database\" DataType=\"{x:Type data:Location}\">"
+                           + "<TextBlock Text=\"{Binding Name}\" />"
+                           + "</DataTemplate>";
             var stringReader = new StringReader(xamlString);
             var xmlReader = XmlReader.Create(stringReader);
             inputPage.ComposerBirthLocationAutoCompleteBox.SuggestionTemplate = inputPage.ComposerDeathLocationAutoCompleteBox.SuggestionTemplate = inputPage.RecordingLocationAutoCompleteBox.SuggestionTemplate = (DataTemplate)XamlReader.Load(xmlReader);
