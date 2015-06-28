@@ -419,7 +419,7 @@ namespace NathanHarrenstein.ComposerTimeline
 
         #endregion Composer Section Events
 
-        #region Composition Collection Section
+        #region Composition Collection Section Events
 
         private void CompositionCollectionListBox_Drop(object sender, DragEventArgs e)
         {
@@ -575,7 +575,7 @@ namespace NathanHarrenstein.ComposerTimeline
             }
         }
 
-        #endregion Composition Collection Section
+        #endregion Composition Collection Section Events
 
         #region Composition Section Events
 
