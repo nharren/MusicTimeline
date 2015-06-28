@@ -111,6 +111,8 @@ namespace NathanHarrenstein.ComposerTimeline
             file.Dispose();
         }
 
+        #region Composer Section Events
+
         private void Drop_ComposerImageListBox(object sender, DragEventArgs e)
         {
             if (ComposerImageListBox.IsEnabled)
@@ -205,130 +207,6 @@ namespace NathanHarrenstein.ComposerTimeline
             }
         }
 
-        private void Drop_CompositionCollectionListBox(object sender, DragEventArgs e)
-        {
-            if (CompositionCollectionListBox.IsEnabled)
-            {
-                var droppedString = (string)e.Data.GetData(typeof(string));
-                var droppedStringExists = droppedString != null;
-
-                if (droppedStringExists)
-                {
-                    _currentCompositionCollection = new CompositionCollection();
-                    _currentCompositionCollection.Name = droppedString;
-
-                    foreach (var composer in _currentComposers)
-                    {
-                        composer.CompositionCollections.Add(_currentCompositionCollection);
-                    }
-
-                    var commonCompositionCollections = _currentComposers
-                        .Common(c => c.CompositionCollections);
-
-                    CompositionCollectionListBox.ItemsSource = new List<CompositionCollection>(commonCompositionCollections);
-                    CompositionCollectionListBox.SelectedItem = _currentCompositionCollection;
-                }
-            }
-        }
-
-        private void Drop_CompositionListBox(object sender, DragEventArgs e)
-        {
-            if (CompositionListBox.IsEnabled)
-            {
-                var droppedString = (string)e.Data.GetData(typeof(string));
-                var droppedStringExists = droppedString != null;
-
-                if (droppedStringExists)
-                {
-                    _currentComposition = new Composition();
-                    _currentComposition.Name = droppedString;
-
-                    var compositionNotInCollection = _currentCompositionCollection == null;
-
-                    if (compositionNotInCollection)
-                    {
-                        foreach (var composer in _currentComposers)
-                        {
-                            composer.Compositions.Add(_currentComposition);
-                        }
-
-                        var commonCompositions = _currentComposers
-                            .Common(c => c.Compositions);
-
-                        CompositionListBox.ItemsSource = new List<Composition>(commonCompositions);
-                    }
-                    else
-                    {
-                        _currentCompositionCollection.Compositions.Add(_currentComposition);
-
-                        CompositionListBox.ItemsSource = new List<Composition>(_currentCompositionCollection.Compositions);
-                    }
-
-                    CompositionListBox.SelectedItem = _currentComposition;
-                }
-            }
-        }
-
-        private void Drop_MovementListBox(object sender, DragEventArgs e)
-        {
-            if (MovementListBox.IsEnabled)
-            {
-                var data = (string)e.Data.GetData(typeof(string));
-
-                if (!string.IsNullOrEmpty(data))
-                {
-                    var movement = new Movement();
-                    movement.Name = data;
-
-                    _currentComposition.Movements.Add(movement);
-
-                    _currentMovement = movement;
-
-                    InputPageInitializer.BindMovement(this, _currentMovement);
-
-                    MovementListBox.SelectedItem = movement;
-                }
-            }
-        }
-
-        private void Drop_RecordingListBox(object sender, DragEventArgs e)
-        {
-            if (RecordingListBox.IsEnabled)
-            {
-                var droppedString = (string)e.Data.GetData(typeof(string));
-                var droppedStringExists = droppedString != null;
-
-                if (droppedStringExists)
-                {
-                    AddPathToLibrary(droppedString);
-
-                    _currentRecording = new Recording();
-
-                    var currentMovementExists = _currentMovement != null;
-                    var currentCompositionExists = _currentComposition != null;
-                    var currentCompositionCollectionExists = _currentCompositionCollection != null;
-
-                    if (currentMovementExists)
-                    {
-                        _currentRecording.Movement = _currentMovement;
-                        _currentMovement.Recordings.Add(_currentRecording);
-                    }
-                    else if (currentCompositionExists)
-                    {
-                        _currentRecording.Composition = _currentComposition;
-                        _currentComposition.Recordings.Add(_currentRecording);
-                    }
-                    else if (currentCompositionCollectionExists)
-                    {
-                        _currentRecording.CompositionCollection = _currentCompositionCollection;
-                        _currentCompositionCollection.Recordings.Add(_currentRecording);
-                    }
-
-                    RecordingListBox.SelectedItem = _currentRecording;
-                }
-            }
-        }
-
         private void Executed_ComposerDeleteCommand(object sender, ExecutedRoutedEventArgs e)
         {
             if (ComposerListBox.IsEnabled)
@@ -378,8 +256,17 @@ namespace NathanHarrenstein.ComposerTimeline
             }
         }
 
-        private void Executed_CompositionCollectionDeleteCommand(object sender, ExecutedRoutedEventArgs e)
+        private void PreviewMouseLeftButtonDown_ComposerListBox(object sender, MouseButtonEventArgs e)
         {
+            if (ComposerListBox.IsEnabled)
+            {
+                var frameworkElement = e.OriginalSource as FrameworkElement;
+
+                if (frameworkElement == null || frameworkElement.TemplatedParent == null || frameworkElement.TemplatedParent.GetType() != typeof(Thumb))
+                {
+                    e.Handled = true;
+                }
+            }
         }
 
         private void MouseMove_ComposerListBoxItem(object sender, MouseEventArgs e)
@@ -392,19 +279,6 @@ namespace NathanHarrenstein.ComposerTimeline
                 {
                     DragDrop.DoDragDrop(textBlock, new DataObject(typeof(Composer), textBlock.DataContext), DragDropEffects.Link);
 
-                    e.Handled = true;
-                }
-            }
-        }
-
-        private void PreviewMouseLeftButtonDown_ComposerListBox(object sender, MouseButtonEventArgs e)
-        {
-            if (ComposerListBox.IsEnabled)
-            {
-                var frameworkElement = e.OriginalSource as FrameworkElement;
-
-                if (frameworkElement == null || frameworkElement.TemplatedParent == null || frameworkElement.TemplatedParent.GetType() != typeof(Thumb))
-                {
                     e.Handled = true;
                 }
             }
@@ -477,46 +351,6 @@ namespace NathanHarrenstein.ComposerTimeline
             }
         }
 
-        private void SelectionChanged_CompositionCollectionListBox(object sender, SelectionChangedEventArgs e)
-        {
-            if (CompositionCollectionListBox.IsEnabled)
-            {
-                _currentCompositionCollection = (CompositionCollection)CompositionCollectionListBox.SelectedItem;
-
-                InputPageInitializer.BindCompositionCollection(this, _currentCompositionCollection);
-            }
-        }
-
-        private void SelectionChanged_CompositionListBox(object sender, SelectionChangedEventArgs e)
-        {
-            if (CompositionListBox.IsEnabled)
-            {
-                _currentComposition = (Composition)CompositionListBox.SelectedItem;
-
-                InputPageInitializer.BindComposition(this, _currentComposition);
-            }
-        }
-
-        private void SelectionChanged_MovementListBox(object sender, SelectionChangedEventArgs e)
-        {
-            if (MovementListBox.IsEnabled)
-            {
-                _currentMovement = (Movement)MovementListBox.SelectedItem;
-
-                InputPageInitializer.BindMovement(this, _currentMovement);
-            }
-        }
-
-        private void SelectionChanged_RecordingListBox(object sender, SelectionChangedEventArgs e)
-        {
-            if (RecordingListBox.IsEnabled)
-            {
-                _currentRecording = (Recording)RecordingListBox.SelectedItem;
-
-                InputPageInitializer.BindRecording(this, _currentRecording);
-            }
-        }
-
         private void TextChanged_ComposerBirthLocationAutoCompleteBox(object sender, TextChangedEventArgs e)
         {
             var composer = _currentComposers[0];
@@ -583,64 +417,47 @@ namespace NathanHarrenstein.ComposerTimeline
             }
         }
 
-        private void TextChanged_CompositionCatalogNumberTextBox(object sender, TextChangedEventArgs e)
+        #endregion Composer Section Events
+
+        #region Composition Collection Section
+
+        private void Drop_CompositionCollectionListBox(object sender, DragEventArgs e)
         {
-            if (CompositionCatalogNumberTextBox.IsEnabled)
+            if (CompositionCollectionListBox.IsEnabled)
             {
-                var compositionCatalog = _currentComposers[0].CompositionCatalogs
-                    .FirstOrDefault(cc => cc.Prefix == CompositionCatalogPrefixComboBox.Text);
+                var droppedString = (string)e.Data.GetData(typeof(string));
+                var droppedStringExists = droppedString != null;
 
-                var catalogNumber = _currentComposition.CatalogNumbers
-                    .FirstOrDefault(cn => cn.CompositionCatalog.Prefix == CompositionCatalogPrefixComboBox.Text);
-
-                if (catalogNumber == null)
+                if (droppedStringExists)
                 {
-                    if (compositionCatalog == null)
+                    _currentCompositionCollection = new CompositionCollection();
+                    _currentCompositionCollection.Name = droppedString;
+
+                    foreach (var composer in _currentComposers)
                     {
-                        compositionCatalog = new CompositionCatalog { Prefix = CompositionCatalogPrefixComboBox.Text };
-                        _currentComposers[0].CompositionCatalogs.Add(compositionCatalog);
+                        composer.CompositionCollections.Add(_currentCompositionCollection);
                     }
 
-                    catalogNumber = new CatalogNumber();
-                    catalogNumber.CompositionCatalog = compositionCatalog;
-                    catalogNumber.Composition = _currentComposition;
-                    catalogNumber.Number = CompositionCatalogNumberTextBox.Text;
+                    var commonCompositionCollections = _currentComposers
+                        .Common(c => c.CompositionCollections);
 
-                    _currentComposition.CatalogNumbers.Add(catalogNumber);
-                }
-                else
-                {
-                    if (string.IsNullOrEmpty(CompositionCatalogNumberTextBox.Text))
-                    {
-                        if (catalogNumber.CompositionCatalog.CatalogNumbers.Count == 1)
-                        {
-                            _currentComposers[0].CompositionCatalogs.Remove(catalogNumber.CompositionCatalog);
-                        }
-
-                        _currentComposition.CatalogNumbers.Remove(catalogNumber);
-                    }
-                    else
-                    {
-                        catalogNumber.Number = CompositionCatalogNumberTextBox.Text;
-                    }
+                    CompositionCollectionListBox.ItemsSource = new List<CompositionCollection>(commonCompositionCollections);
+                    CompositionCollectionListBox.SelectedItem = _currentCompositionCollection;
                 }
             }
         }
 
-        private void TextChanged_CompositionCatalogPrefixComboBox(object sender, TextChangedEventArgs e)
+        private void Executed_CompositionCollectionDeleteCommand(object sender, ExecutedRoutedEventArgs e)
         {
-            if (CompositionCatalogPrefixComboBox.IsEnabled)
-            {
-                var catalogNumber = _currentComposition.CatalogNumbers.FirstOrDefault(cn => cn.CompositionCatalog.Prefix == CompositionCatalogPrefixComboBox.Text);
+        }
 
-                if (catalogNumber == null)
-                {
-                    CompositionCatalogNumberTextBox.Text = null;
-                }
-                else
-                {
-                    CompositionCatalogNumberTextBox.Text = catalogNumber.Number;
-                }
+        private void SelectionChanged_CompositionCollectionListBox(object sender, SelectionChangedEventArgs e)
+        {
+            if (CompositionCollectionListBox.IsEnabled)
+            {
+                _currentCompositionCollection = (CompositionCollection)CompositionCollectionListBox.SelectedItem;
+
+                InputPageInitializer.BindCompositionCollection(this, _currentCompositionCollection);
             }
         }
 
@@ -753,5 +570,208 @@ namespace NathanHarrenstein.ComposerTimeline
                 }
             }
         }
+
+        #endregion Composition Collection Section
+
+        #region Composition Section Events
+
+        private void Drop_CompositionListBox(object sender, DragEventArgs e)
+        {
+            if (CompositionListBox.IsEnabled)
+            {
+                var droppedString = (string)e.Data.GetData(typeof(string));
+                var droppedStringExists = droppedString != null;
+
+                if (droppedStringExists)
+                {
+                    _currentComposition = new Composition();
+                    _currentComposition.Name = droppedString;
+
+                    var compositionNotInCollection = _currentCompositionCollection == null;
+
+                    if (compositionNotInCollection)
+                    {
+                        foreach (var composer in _currentComposers)
+                        {
+                            composer.Compositions.Add(_currentComposition);
+                        }
+
+                        var commonCompositions = _currentComposers
+                            .Common(c => c.Compositions);
+
+                        CompositionListBox.ItemsSource = new List<Composition>(commonCompositions);
+                    }
+                    else
+                    {
+                        _currentCompositionCollection.Compositions.Add(_currentComposition);
+
+                        CompositionListBox.ItemsSource = new List<Composition>(_currentCompositionCollection.Compositions);
+                    }
+
+                    CompositionListBox.SelectedItem = _currentComposition;
+                }
+            }
+        }
+
+        private void SelectionChanged_CompositionListBox(object sender, SelectionChangedEventArgs e)
+        {
+            if (CompositionListBox.IsEnabled)
+            {
+                _currentComposition = (Composition)CompositionListBox.SelectedItem;
+
+                InputPageInitializer.BindComposition(this, _currentComposition);
+            }
+        }
+
+        private void TextChanged_CompositionCatalogNumberTextBox(object sender, TextChangedEventArgs e)
+        {
+            if (CompositionCatalogNumberTextBox.IsEnabled)
+            {
+                var compositionCatalog = _currentComposers[0].CompositionCatalogs
+                    .FirstOrDefault(cc => cc.Prefix == CompositionCatalogPrefixComboBox.Text);
+
+                var catalogNumber = _currentComposition.CatalogNumbers
+                    .FirstOrDefault(cn => cn.CompositionCatalog.Prefix == CompositionCatalogPrefixComboBox.Text);
+
+                if (catalogNumber == null)
+                {
+                    if (compositionCatalog == null)
+                    {
+                        compositionCatalog = new CompositionCatalog { Prefix = CompositionCatalogPrefixComboBox.Text };
+                        _currentComposers[0].CompositionCatalogs.Add(compositionCatalog);
+                    }
+
+                    catalogNumber = new CatalogNumber();
+                    catalogNumber.CompositionCatalog = compositionCatalog;
+                    catalogNumber.Composition = _currentComposition;
+                    catalogNumber.Number = CompositionCatalogNumberTextBox.Text;
+
+                    _currentComposition.CatalogNumbers.Add(catalogNumber);
+                }
+                else
+                {
+                    if (string.IsNullOrEmpty(CompositionCatalogNumberTextBox.Text))
+                    {
+                        if (catalogNumber.CompositionCatalog.CatalogNumbers.Count == 1)
+                        {
+                            _currentComposers[0].CompositionCatalogs.Remove(catalogNumber.CompositionCatalog);
+                        }
+
+                        _currentComposition.CatalogNumbers.Remove(catalogNumber);
+                    }
+                    else
+                    {
+                        catalogNumber.Number = CompositionCatalogNumberTextBox.Text;
+                    }
+                }
+            }
+        }
+
+        private void TextChanged_CompositionCatalogPrefixComboBox(object sender, TextChangedEventArgs e)
+        {
+            if (CompositionCatalogPrefixComboBox.IsEnabled)
+            {
+                var catalogNumber = _currentComposition.CatalogNumbers.FirstOrDefault(cn => cn.CompositionCatalog.Prefix == CompositionCatalogPrefixComboBox.Text);
+
+                if (catalogNumber == null)
+                {
+                    CompositionCatalogNumberTextBox.Text = null;
+                }
+                else
+                {
+                    CompositionCatalogNumberTextBox.Text = catalogNumber.Number;
+                }
+            }
+        }
+
+        #endregion Composition Section Events
+
+        #region Movement Section Events
+
+        private void Drop_MovementListBox(object sender, DragEventArgs e)
+        {
+            if (MovementListBox.IsEnabled)
+            {
+                var data = (string)e.Data.GetData(typeof(string));
+
+                if (!string.IsNullOrEmpty(data))
+                {
+                    var movement = new Movement();
+                    movement.Name = data;
+
+                    _currentComposition.Movements.Add(movement);
+
+                    _currentMovement = movement;
+
+                    InputPageInitializer.BindMovement(this, _currentMovement);
+
+                    MovementListBox.SelectedItem = movement;
+                }
+            }
+        }
+
+        private void SelectionChanged_MovementListBox(object sender, SelectionChangedEventArgs e)
+        {
+            if (MovementListBox.IsEnabled)
+            {
+                _currentMovement = (Movement)MovementListBox.SelectedItem;
+
+                InputPageInitializer.BindMovement(this, _currentMovement);
+            }
+        }
+
+        #endregion Movement Section Events
+
+        #region Recording Section Events
+
+        private void Drop_RecordingListBox(object sender, DragEventArgs e)
+        {
+            if (RecordingListBox.IsEnabled)
+            {
+                var droppedString = (string)e.Data.GetData(typeof(string));
+                var droppedStringExists = droppedString != null;
+
+                if (droppedStringExists)
+                {
+                    AddPathToLibrary(droppedString);
+
+                    _currentRecording = new Recording();
+
+                    var currentMovementExists = _currentMovement != null;
+                    var currentCompositionExists = _currentComposition != null;
+                    var currentCompositionCollectionExists = _currentCompositionCollection != null;
+
+                    if (currentMovementExists)
+                    {
+                        _currentRecording.Movement = _currentMovement;
+                        _currentMovement.Recordings.Add(_currentRecording);
+                    }
+                    else if (currentCompositionExists)
+                    {
+                        _currentRecording.Composition = _currentComposition;
+                        _currentComposition.Recordings.Add(_currentRecording);
+                    }
+                    else if (currentCompositionCollectionExists)
+                    {
+                        _currentRecording.CompositionCollection = _currentCompositionCollection;
+                        _currentCompositionCollection.Recordings.Add(_currentRecording);
+                    }
+
+                    RecordingListBox.SelectedItem = _currentRecording;
+                }
+            }
+        }
+
+        private void SelectionChanged_RecordingListBox(object sender, SelectionChangedEventArgs e)
+        {
+            if (RecordingListBox.IsEnabled)
+            {
+                _currentRecording = (Recording)RecordingListBox.SelectedItem;
+
+                InputPageInitializer.BindRecording(this, _currentRecording);
+            }
+        }
+
+        #endregion Recording Section Events
     }
 }
