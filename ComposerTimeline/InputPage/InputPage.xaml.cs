@@ -502,41 +502,37 @@ namespace NathanHarrenstein.ComposerTimeline
 
         private void CompositionCollectionCatalogPrefixListBox_Drop(object sender, DragEventArgs e)
         {
-            if (!CompositionCollectionCatalogPrefixListBox.IsEnabled)
+            if (CompositionCollectionCatalogPrefixListBox.IsEnabled)
             {
-                return;
+                var droppedString = (string)e.Data.GetData(typeof(string));
+
+                if (droppedString == null)
+                {
+                    return;
+                }
+
+                var newCompositionCatalogs = new CompositionCatalog[_currentComposers.Count];
+
+                for (int i = 0; i < _currentComposers.Count; i++)
+                {
+                    var newCompositionCatalog = new CompositionCatalog();
+                    newCompositionCatalog.Prefix = droppedString;
+                    newCompositionCatalog.Composer = _currentComposers[i];
+
+                    _currentComposers[i].CompositionCatalogs.Add(newCompositionCatalog);
+                    newCompositionCatalogs[i] = newCompositionCatalog;
+                }
+
+                var availableCompositionCatalogs = _currentComposers
+                    .SelectMany(c => c.CompositionCatalogs)
+                    .Select(cc => cc.Prefix)
+                    .Distinct();
+
+                CompositionCollectionCatalogPrefixListBox.ItemsSource = new List<string>(availableCompositionCatalogs);
+                CompositionCollectionCatalogPrefixListBox.SelectedItem = droppedString;
+
+                CompositionCollectionCatalogNumberTextBox.Text = null;
             }
-
-            var droppedString = (string)e.Data.GetData(typeof(string));
-
-            if (droppedString == null)
-            {
-                return;
-            }
-
-            var newCompositionCatalogs = new CompositionCatalog[_currentComposers.Count];
-
-            for (int i = 0; i < _currentComposers.Count; i++)
-            {
-                var newCompositionCatalog = new CompositionCatalog();
-                newCompositionCatalog.Prefix = droppedString;
-                newCompositionCatalog.Composer = _currentComposers[i];
-
-                _currentComposers[i].CompositionCatalogs.Add(newCompositionCatalog);
-                newCompositionCatalogs[i] = newCompositionCatalog;
-
-                _currentComposers[i]
-            }
-
-            var availableCompositionCatalogs = _currentComposers
-                .SelectMany(c => c.CompositionCatalogs)
-                .Select(cc => cc.Prefix)
-                .Distinct();
-
-            CompositionCollectionCatalogPrefixListBox.ItemsSource = new List<string>(availableCompositionCatalogs);
-            CompositionCollectionCatalogPrefixListBox.SelectedItem = droppedString;
-
-            CompositionCollectionCatalogNumberTextBox.Text = null;
         }
 
         private void CompositionCollectionCatalogPrefixListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
