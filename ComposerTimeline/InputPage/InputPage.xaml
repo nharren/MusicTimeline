@@ -520,19 +520,19 @@
                              AllowDrop="True"
                              Background="#FF42474B"
                              BorderThickness="0"
-                             Drop="Drop_ComposerListBox"
-                             PreviewMouseLeftButtonDown="PreviewMouseLeftButtonDown_ComposerListBox"
-                             PreviewMouseLeftButtonUp="PreviewMouseLeftButtonUp_ComposerListBoxItem"
-                             SelectionChanged="SelectionChanged_ComposerListBox"
+                             Drop="ComposerListBox_Drop"
+                             PreviewMouseLeftButtonDown="ComposerListBox_PreviewMouseLeftButtonDown"
+                             PreviewMouseLeftButtonUp="ComposerListBoxItem_PreviewMouseLeftButtonUp"
+                             SelectionChanged="ComposerListBox_SelectionChanged"
                              SelectionMode="Extended">
                         <ListBox.CommandBindings>
-                            <CommandBinding Command="{x:Static ApplicationCommands.Delete}" Executed="Executed_ComposerDeleteCommand" />
+                            <CommandBinding Command="{x:Static ApplicationCommands.Delete}" Executed="ComposerDeleteCommand_Executed" />
                         </ListBox.CommandBindings>
                         <ListBox.ItemTemplate>
                             <DataTemplate DataType="{x:Type d:Composer}">
                                 <TextBlock FontSize="14.667"
                                            Foreground="#FFC8CDD1"
-                                           MouseMove="MouseMove_ComposerListBoxItem"
+                                           MouseMove="ComposerListBoxItem_MouseMove"
                                            Text="{Binding Name}">
                                     <TextBlock.ContextMenu>
                                         <ContextMenu>
@@ -562,7 +562,7 @@
                              Grid.Column="6"
                              Grid.ColumnSpan="2"
                              AllowDrop="True"
-                             Drop="Drop_ComposerImageListBox"
+                             Drop="ComposerImageListBox_Drop"
                              IsEnabled="False">
                         <ListBox.CommandBindings>
                             <CommandBinding Command="{x:Static ApplicationCommands.Delete}" Executed="Executed_ComposerImageDeleteCommand" />
@@ -654,7 +654,7 @@
                              Background="#FF42474B"
                              BorderThickness="0"
                              IsEnabled="False"
-                             SelectionChanged="SelectionChanged_ComposerEraListBox"
+                             SelectionChanged="ComposerEraListBox_SelectionChanged"
                              SelectionMode="Extended">
                         <ListBox.ItemTemplate>
                             <DataTemplate DataType="{x:Type d:Era}">
@@ -673,7 +673,7 @@
                              BorderThickness="0"
                              IsEnabled="False"
                              ScrollViewer.HorizontalScrollBarVisibility="Hidden"
-                             SelectionChanged="SelectionChanged_ComposerNationalityListBox"
+                             SelectionChanged="ComposerNationalityListBox_SelectionChanged"
                              SelectionMode="Extended">
                         <ListBox.ItemTemplate>
                             <DataTemplate DataType="{x:Type d:Nationality}">
@@ -694,11 +694,11 @@
                              AllowDrop="True"
                              Background="#FF42474B"
                              BorderThickness="0"
-                             Drop="Drop_ComposerInfluenceListBox"
+                             Drop="ComposerInfluenceListBox_Drop"
                              IsEnabled="False"
                              SelectionMode="Extended">
                         <ListBox.CommandBindings>
-                            <CommandBinding Command="{x:Static ApplicationCommands.Delete}" Executed="Executed_ComposerInfluenceDeleteCommand" />
+                            <CommandBinding Command="{x:Static ApplicationCommands.Delete}" Executed="ComposerInfluenceDeleteCommand_Executed" />
                         </ListBox.CommandBindings>
                         <ListBox.ItemTemplate>
                             <DataTemplate DataType="{x:Type d:Composer}">
@@ -726,11 +726,11 @@
                              AllowDrop="True"
                              Background="#FF42474B"
                              BorderThickness="0"
-                             Drop="Drop_ComposerLinkListBox"
+                             Drop="ComposerLinkListBox_Drop"
                              IsEnabled="False"
                              SelectionMode="Extended">
                         <ListBox.CommandBindings>
-                            <CommandBinding Command="{x:Static ApplicationCommands.Delete}" Executed="Executed_ComposerLinkDeleteCommand" />
+                            <CommandBinding Command="{x:Static ApplicationCommands.Delete}" Executed="ComposerLinkDeleteCommand_Executed" />
                         </ListBox.CommandBindings>
                         <ListBox.ItemTemplate>
                             <DataTemplate DataType="{x:Type l:Link}">
@@ -849,11 +849,11 @@
                              AllowDrop="True"
                              Background="#FF42474B"
                              BorderThickness="0"
-                             Drop="Drop_CompositionCollectionListBox"
-                             SelectionChanged="SelectionChanged_CompositionCollectionListBox"
+                             Drop="CompositionCollectionListBox_Drop"
+                             SelectionChanged="CompositionCollectionListBox_SelectionChanged"
                              SelectionMode="Extended">
                         <ListBox.CommandBindings>
-                            <CommandBinding Command="{x:Static ApplicationCommands.Delete}" Executed="Executed_CompositionCollectionDeleteCommand" />
+                            <CommandBinding Command="{x:Static ApplicationCommands.Delete}" Executed="CompositionCollectionDeleteCommand_Executed" />
                         </ListBox.CommandBindings>
                         <ListBox.ItemTemplate>
                             <DataTemplate DataType="{x:Type d:Composer}">
@@ -990,11 +990,11 @@
                              AllowDrop="True"
                              Background="#FF42474B"
                              BorderThickness="0"
-                             Drop="Drop_CompositionListBox"
-                             SelectionChanged="SelectionChanged_CompositionListBox"
+                             Drop="CompositionListBox_Drop"
+                             SelectionChanged="CompositionListBox_SelectionChanged"
                              SelectionMode="Extended">
                         <ListBox.CommandBindings>
-                            <CommandBinding Command="{x:Static ApplicationCommands.Delete}" Executed="Executed_CompositionCollectionDeleteCommand" />
+                            <CommandBinding Command="{x:Static ApplicationCommands.Delete}" Executed="CompositionCollectionDeleteCommand_Executed" />
                         </ListBox.CommandBindings>
                         <ListBox.ItemTemplate>
                             <DataTemplate DataType="{x:Type d:Composer}">
@@ -1119,11 +1119,11 @@
                              AllowDrop="True"
                              Background="#FF42474B"
                              BorderThickness="0"
-                             Drop="Drop_MovementListBox"
-                             SelectionChanged="SelectionChanged_MovementListBox"
+                             Drop="MovementListBox_Drop"
+                             SelectionChanged="MovementListBox_SelectionChanged"
                              SelectionMode="Extended">
                         <ListBox.CommandBindings>
-                            <CommandBinding Command="{x:Static ApplicationCommands.Delete}" Executed="Executed_CompositionCollectionDeleteCommand" />
+                            <CommandBinding Command="{x:Static ApplicationCommands.Delete}" Executed="CompositionCollectionDeleteCommand_Executed" />
                         </ListBox.CommandBindings>
                         <ListBox.ItemTemplate>
                             <DataTemplate DataType="{x:Type d:Composer}">
@@ -1248,11 +1248,11 @@
                              AllowDrop="True"
                              Background="#FF42474B"
                              BorderThickness="0"
-                             Drop="Drop_RecordingListBox"
-                             SelectionChanged="SelectionChanged_RecordingListBox"
+                             Drop="RecordingListBox_Drop"
+                             SelectionChanged="RecordingListBox_SelectionChanged"
                              SelectionMode="Extended">
                         <ListBox.CommandBindings>
-                            <CommandBinding Command="{x:Static ApplicationCommands.Delete}" Executed="Executed_CompositionCollectionDeleteCommand" />
+                            <CommandBinding Command="{x:Static ApplicationCommands.Delete}" Executed="CompositionCollectionDeleteCommand_Executed" />
                         </ListBox.CommandBindings>
                         <ListBox.ItemTemplate>
                             <DataTemplate DataType="{x:Type d:Composer}">

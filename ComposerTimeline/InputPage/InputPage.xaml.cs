@@ -113,7 +113,7 @@ namespace NathanHarrenstein.ComposerTimeline
 
         #region Composer Section Events
 
-        private void Drop_ComposerImageListBox(object sender, DragEventArgs e)
+        private void ComposerImageListBox_Drop(object sender, DragEventArgs e)
         {
             if (ComposerImageListBox.IsEnabled)
             {
@@ -148,7 +148,7 @@ namespace NathanHarrenstein.ComposerTimeline
             }
         }
 
-        private void Drop_ComposerInfluenceListBox(object sender, DragEventArgs e)
+        private void ComposerInfluenceListBox_Drop(object sender, DragEventArgs e)
         {
             if (ComposerInfluenceListBox.IsEnabled && _currentComposers.Count == 1)
             {
@@ -159,7 +159,7 @@ namespace NathanHarrenstein.ComposerTimeline
             }
         }
 
-        private void Drop_ComposerLinkListBox(object sender, DragEventArgs e)
+        private void ComposerLinkListBox_Drop(object sender, DragEventArgs e)
         {
             if (ComposerLinkListBox.IsEnabled)
             {
@@ -185,7 +185,7 @@ namespace NathanHarrenstein.ComposerTimeline
             }
         }
 
-        private void Drop_ComposerListBox(object sender, DragEventArgs e)
+        private void ComposerListBox_Drop(object sender, DragEventArgs e)
         {
             if (ComposerListBox.IsEnabled)
             {
@@ -207,7 +207,7 @@ namespace NathanHarrenstein.ComposerTimeline
             }
         }
 
-        private void Executed_ComposerDeleteCommand(object sender, ExecutedRoutedEventArgs e)
+        private void ComposerDeleteCommand_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             if (ComposerListBox.IsEnabled)
             {
@@ -215,7 +215,7 @@ namespace NathanHarrenstein.ComposerTimeline
             }
         }
 
-        private void Executed_ComposerImageDeleteCommand(object sender, ExecutedRoutedEventArgs e)
+        private void ComposerImageDeleteCommand_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             if (ComposerImageListBox.IsEnabled)
             {
@@ -225,7 +225,7 @@ namespace NathanHarrenstein.ComposerTimeline
             }
         }
 
-        private void Executed_ComposerInfluenceDeleteCommand(object sender, ExecutedRoutedEventArgs e)
+        private void ComposerInfluenceDeleteCommand_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             if (ComposerInfluenceListBox.IsEnabled)
             {
@@ -235,7 +235,7 @@ namespace NathanHarrenstein.ComposerTimeline
             }
         }
 
-        private void Executed_ComposerLinkDeleteCommand(object sender, ExecutedRoutedEventArgs e)
+        private void ComposerLinkDeleteCommand_Executed(object sender, ExecutedRoutedEventArgs e)
         {
             if (ComposerLinkListBox.IsEnabled)
             {
@@ -256,7 +256,7 @@ namespace NathanHarrenstein.ComposerTimeline
             }
         }
 
-        private void PreviewMouseLeftButtonDown_ComposerListBox(object sender, MouseButtonEventArgs e)
+        private void ComposerListBox_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             if (ComposerListBox.IsEnabled)
             {
@@ -269,7 +269,7 @@ namespace NathanHarrenstein.ComposerTimeline
             }
         }
 
-        private void MouseMove_ComposerListBoxItem(object sender, MouseEventArgs e)
+        private void ComposerListBoxItem_MouseMove(object sender, MouseEventArgs e)
         {
             if (ComposerListBox.IsEnabled)
             {
@@ -284,7 +284,7 @@ namespace NathanHarrenstein.ComposerTimeline
             }
         }
 
-        private void PreviewMouseLeftButtonUp_ComposerListBoxItem(object sender, MouseButtonEventArgs e)
+        private void ComposerListBoxItem_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             if (ComposerListBox.IsEnabled)
             {
@@ -299,7 +299,7 @@ namespace NathanHarrenstein.ComposerTimeline
             }
         }
 
-        private void SelectionChanged_ComposerEraListBox(object sender, SelectionChangedEventArgs e)
+        private void ComposerEraListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (ComposerEraListBox.IsEnabled)
             {
@@ -323,7 +323,7 @@ namespace NathanHarrenstein.ComposerTimeline
             }
         }
 
-        private void SelectionChanged_ComposerListBox(object sender, SelectionChangedEventArgs e)
+        private void ComposerListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (ComposerListBox.IsEnabled)
             {
@@ -333,7 +333,7 @@ namespace NathanHarrenstein.ComposerTimeline
             }
         }
 
-        private void SelectionChanged_ComposerNationalityListBox(object sender, SelectionChangedEventArgs e)
+        private void ComposerNationalityListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (ComposerNationalityListBox.IsEnabled)
             {
@@ -351,7 +351,7 @@ namespace NathanHarrenstein.ComposerTimeline
             }
         }
 
-        private void TextChanged_ComposerBirthLocationAutoCompleteBox(object sender, TextChangedEventArgs e)
+        private void ComposerBirthLocationAutoCompleteBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             var composer = _currentComposers[0];
 
@@ -384,7 +384,7 @@ namespace NathanHarrenstein.ComposerTimeline
             }
         }
 
-        private void TextChanged_ComposerDeathLocationAutoCompleteBox(object sender, TextChangedEventArgs e)
+        private void ComposerDeathLocationAutoCompleteBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             var composer = _currentComposers[0];
 
@@ -421,7 +421,7 @@ namespace NathanHarrenstein.ComposerTimeline
 
         #region Composition Collection Section
 
-        private void Drop_CompositionCollectionListBox(object sender, DragEventArgs e)
+        private void CompositionCollectionListBox_Drop(object sender, DragEventArgs e)
         {
             if (CompositionCollectionListBox.IsEnabled)
             {
@@ -447,11 +447,11 @@ namespace NathanHarrenstein.ComposerTimeline
             }
         }
 
-        private void Executed_CompositionCollectionDeleteCommand(object sender, ExecutedRoutedEventArgs e)
+        private void CompositionCollectionDeleteCommand_Executed(object sender, ExecutedRoutedEventArgs e)
         {
         }
 
-        private void SelectionChanged_CompositionCollectionListBox(object sender, SelectionChangedEventArgs e)
+        private void CompositionCollectionListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (CompositionCollectionListBox.IsEnabled)
             {
@@ -579,7 +579,7 @@ namespace NathanHarrenstein.ComposerTimeline
 
         #region Composition Section Events
 
-        private void Drop_CompositionListBox(object sender, DragEventArgs e)
+        private void CompositionListBox_Drop(object sender, DragEventArgs e)
         {
             if (CompositionListBox.IsEnabled)
             {
@@ -617,7 +617,7 @@ namespace NathanHarrenstein.ComposerTimeline
             }
         }
 
-        private void SelectionChanged_CompositionListBox(object sender, SelectionChangedEventArgs e)
+        private void CompositionListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (CompositionListBox.IsEnabled)
             {
@@ -743,7 +743,7 @@ namespace NathanHarrenstein.ComposerTimeline
 
         #region Movement Section Events
 
-        private void Drop_MovementListBox(object sender, DragEventArgs e)
+        private void MovementListBox_Drop(object sender, DragEventArgs e)
         {
             if (MovementListBox.IsEnabled)
             {
@@ -765,7 +765,7 @@ namespace NathanHarrenstein.ComposerTimeline
             }
         }
 
-        private void SelectionChanged_MovementListBox(object sender, SelectionChangedEventArgs e)
+        private void MovementListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (MovementListBox.IsEnabled)
             {
@@ -779,7 +779,7 @@ namespace NathanHarrenstein.ComposerTimeline
 
         #region Recording Section Events
 
-        private void Drop_RecordingListBox(object sender, DragEventArgs e)
+        private void RecordingListBox_Drop(object sender, DragEventArgs e)
         {
             if (RecordingListBox.IsEnabled)
             {
@@ -817,7 +817,7 @@ namespace NathanHarrenstein.ComposerTimeline
             }
         }
 
-        private void SelectionChanged_RecordingListBox(object sender, SelectionChangedEventArgs e)
+        private void RecordingListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (RecordingListBox.IsEnabled)
             {
