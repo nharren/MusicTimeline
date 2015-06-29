@@ -85,6 +85,8 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Library.cs" />
+    <Compile Include="Utilities\BindingUtility.cs" />
     <Compile Include="Utilities\ComposerImageUtility.cs" />
     <Compile Include="Data\ComposerEvent.cs" />
     <Compile Include="Data\MusicEra.cs" />
@@ -123,6 +125,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ComposerPage\TreeViewItems\TreeViewItemBase.cs" />
+    <Compile Include="Utilities\ListUtility.cs" />
     <Page Include="Themes\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>

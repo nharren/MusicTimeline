@@ -1,4 +1,5 @@
 ﻿using Database;
+using NathanHarrenstein.Controls;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
@@ -8,6 +9,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
+using System.Windows.Media.Imaging;
 
 namespace NathanHarrenstein.ComposerTimeline
 {
@@ -29,81 +31,337 @@ namespace NathanHarrenstein.ComposerTimeline
             }
         }
 
-        public IList<Composer> CurrentComposers
-        {
-            get
-            {
-                return _currentComposers;
-            }
+        #region Composer Section Methods
 
-            set
+        public void ClearComposerSection()
+        {
+            ComposerNameTextBox.Text = string.Empty;
+            ComposerDatesTextBox.Text = string.Empty;
+            ComposerBirthLocationAutoCompleteBox.Text = string.Empty;
+            ComposerDeathLocationAutoCompleteBox.Text = string.Empty;
+            ComposerNationalityListBox.SelectedItems.Clear();
+            ComposerEraListBox.SelectedItems.Clear();
+            ComposerInfluenceListBox.ItemsSource = null;
+            ComposerImageListBox.ItemsSource = null;
+            ComposerLinkListBox.ItemsSource = null;
+            ComposerBiographyTextBox.Text = string.Empty;
+        }
+
+        public void DisableComposerSection()
+        {
+            ComposerNameTextBox.IsEnabled = false;
+            ComposerDatesTextBox.IsEnabled = false;
+            ComposerBirthLocationAutoCompleteBox.IsEnabled = false;
+            ComposerDeathLocationAutoCompleteBox.IsEnabled = false;
+            ComposerNationalityListBox.IsEnabled = false;
+            ComposerEraListBox.IsEnabled = false;
+            ComposerInfluenceListBox.IsEnabled = false;
+            ComposerImageListBox.IsEnabled = false;
+            ComposerLinkListBox.IsEnabled = false;
+            ComposerBiographyTextBox.IsEnabled = false;
+        }
+
+        public void EnableComposerSection()
+        {
+            ComposerNameTextBox.IsEnabled = true;
+            ComposerDatesTextBox.IsEnabled = true;
+            ComposerBirthLocationAutoCompleteBox.IsEnabled = true;
+            ComposerDeathLocationAutoCompleteBox.IsEnabled = true;
+            ComposerNationalityListBox.IsEnabled = true;
+            ComposerEraListBox.IsEnabled = true;
+            ComposerInfluenceListBox.IsEnabled = true;
+            ComposerImageListBox.IsEnabled = true;
+            ComposerLinkListBox.IsEnabled = true;
+            ComposerBiographyTextBox.IsEnabled = true;
+        }
+
+        public void LoadComposerSection()
+        {
+            if (_currentComposers.Count == 1)
             {
-                _currentComposers = value;
+                var composer = _currentComposers.First();
+
+                ComposerNameTextBox.SetBinding(TextBox.TextProperty, BindingUtility.Create(composer, "Name"));
+                ComposerDatesTextBox.SetBinding(TextBox.TextProperty, BindingUtility.Create(composer, "Dates"));
+                ComposerBirthLocationAutoCompleteBox.Text = composer.BirthLocation != null ? composer.BirthLocation.Name : null;
+                ComposerDeathLocationAutoCompleteBox.Text = composer.DeathLocation != null ? composer.DeathLocation.Name : null;
+                ComposerInfluenceListBox.ItemsSource = new List<Composer>(composer.Influences);
+                ComposerImageListBox.ItemsSource = new List<BitmapImage>(composer.ComposerImages.Select(ci => ComposerImageUtility.ToBitmapImage(ci)));
+                ComposerLinkListBox.SetBinding(ItemsControl.ItemsSourceProperty, BindingUtility.Create(composer, "ComposerLinks", new ComposerLinkConverter()));
+                ComposerBiographyTextBox.SetBinding(TextBox.TextProperty, BindingUtility.Create(composer, "Biography"));
+                CompositionCollectionListBox.ItemsSource = new List<CompositionCollection>(composer.CompositionCollections);
+                CompositionListBox.ItemsSource = new List<Composition>(composer.Compositions);
+
+                ComposerNationalityListBox.SelectedItems.Clear();
+                ListUtility.AddMany(ComposerNationalityListBox.SelectedItems, composer.Nationalities);
+
+                ComposerEraListBox.SelectedItems.Clear();
+                ListUtility.AddMany(ComposerEraListBox.SelectedItems, composer.Eras);
+            }
+            else
+            {
+                ClearComposerSection();
+
+                ComposerNameTextBox.Text = "<< Multiple Selection >>";
+                ComposerDatesTextBox.Text = "<< Multiple Selection >>";
+                ComposerBirthLocationAutoCompleteBox.Text = "<< Multiple Selection >>";
+                ComposerDeathLocationAutoCompleteBox.Text = "<< Multiple Selection >>";
+                ComposerBiographyTextBox.Text = "<< Multiple Selection >>";
+                CompositionCollectionListBox.ItemsSource = _currentComposers.Common(c => c.CompositionCollections);
+                CompositionListBox.ItemsSource = _currentComposers.Common(c => c.Compositions);
             }
         }
 
-        public Composition CurrentComposition
+        public void RefreshComposerSection()
         {
-            get
+            if (_currentComposers.Count == 0)
             {
-                return _currentComposition;
+                DisableComposerSection();
+                ClearComposerSection();
+
+                _currentCompositionCollection = null;
+
+                RefreshCompositionCollectionSection();
+
+                return;
             }
 
-            set
+            LoadComposerSection();
+            EnableComposerSection();
+        }
+
+        #endregion Composer Section Methods
+
+        #region Composition Collection Section Methods
+
+        public void ClearCompositionCollectionSection()
+        {
+            CompositionCollectionNameTextBox.Text = null;
+            CompositionCollectionCatalogPrefixListBox.ItemsSource = null;
+            CompositionCollectionCatalogNumberTextBox.Text = null;
+        }
+
+        public void DisableCompositionCollectionSection()
+        {
+            CompositionCollectionNameTextBox.IsEnabled = false;
+            CompositionCollectionCatalogPrefixListBox.IsEnabled = false;
+            CompositionCollectionCatalogNumberTextBox.IsEnabled = false;
+
+            CompositionListBox.ItemsSource = new List<Composition>(_currentComposers.SelectMany(c => c.Compositions));
+        }
+
+        public void EnableCompositionCollectionSection()
+        {
+            CompositionCollectionNameTextBox.IsEnabled = true;
+            CompositionCollectionCatalogPrefixListBox.IsEnabled = true;
+            CompositionCollectionCatalogNumberTextBox.IsEnabled = true;
+            CompositionListBox.IsEnabled = true;
+        }
+
+        public void LoadCompositionCollectionSection()
+        {
+            CompositionCollectionNameTextBox.SetBinding(TextBox.TextProperty, BindingUtility.Create(_currentCompositionCollection, "Name"));
+            CompositionCollectionCatalogPrefixListBox.ItemsSource = new List<string>(_currentCompositionCollection.Composers.SelectMany(c => c.CompositionCatalogs).Select(cc => cc.Prefix));
+
+            var catalogNumber = _currentCompositionCollection.CatalogNumbers.FirstOrDefault(cn => cn.CompositionCatalog.Prefix == (string)CompositionCollectionCatalogPrefixListBox.SelectedItem);
+            CompositionCollectionCatalogNumberTextBox.Text = catalogNumber == null ? null : catalogNumber.Number;
+
+            CompositionListBox.ItemsSource = new List<Composition>(_currentCompositionCollection.Compositions);
+        }
+
+        public void RefreshCompositionCollectionSection()
+        {
+            if (_currentCompositionCollection == null)
             {
-                _currentComposition = value;
+                DisableCompositionCollectionSection();
+                ClearCompositionCollectionSection();
+
+                return;
+            }
+
+            LoadCompositionCollectionSection();
+            EnableCompositionCollectionSection();
+        }
+
+        #endregion Composition Collection Section Methods
+
+        #region Composition Section Methods
+
+        public void ClearCompositionSection()
+        {
+            CompositionNameTextBox.Text = null;
+            CompositionNicknameTextBox.Text = null;
+            CompositionDatesTextBox.Text = null;
+            CompositionNameTextBox.Text = null;
+            CompositionCatalogPrefixListBox.ItemsSource = null;
+            CompositionCatalogNumberTextBox.Text = null;
+            MovementListBox.ItemsSource = null;
+        }
+
+        public void DisableCompositionSection()
+        {
+            CompositionNameTextBox.IsEnabled = false;
+            CompositionNicknameTextBox.IsEnabled = false;
+            CompositionDatesTextBox.IsEnabled = false;
+            CompositionNameTextBox.IsEnabled = false;
+            CompositionCatalogPrefixListBox.IsEnabled = false;
+            CompositionCatalogNumberTextBox.IsEnabled = false;
+            MovementListBox.IsEnabled = false;
+        }
+
+        public void EnableCompositionSection()
+        {
+            CompositionNameTextBox.IsEnabled = true;
+            CompositionNicknameTextBox.IsEnabled = true;
+            CompositionDatesTextBox.IsEnabled = true;
+            CompositionNameTextBox.IsEnabled = true;
+            CompositionCatalogPrefixListBox.IsEnabled = true;
+            CompositionCatalogNumberTextBox.IsEnabled = true;
+            MovementListBox.IsEnabled = true;
+        }
+
+        public void LoadCompositionSection()
+        {
+            CompositionNameTextBox.SetBinding(TextBox.TextProperty, BindingUtility.Create(_currentComposition, "Name"));
+            CompositionNicknameTextBox.SetBinding(TextBox.TextProperty, BindingUtility.Create(_currentComposition, "Nickname"));
+            CompositionDatesTextBox.SetBinding(TextBox.TextProperty, BindingUtility.Create(_currentComposition, "Dates"));
+
+            CompositionCatalogPrefixListBox.ItemsSource = _currentComposition.Composers.SelectMany(c => c.CompositionCatalogs).Select(cc => cc.Prefix).ToList();
+
+            var catalogNumber = _currentComposition.CatalogNumbers.FirstOrDefault(cn => cn.CompositionCatalog.Prefix == (string)CompositionCatalogPrefixListBox.SelectedItem);
+            CompositionCatalogNumberTextBox.Text = catalogNumber == null ? null : catalogNumber.Number;
+
+            MovementListBox.ItemsSource = _currentComposition.Movements;
+        }
+
+        public void RefreshCompositionSection()
+        {
+            if (_currentComposition == null)
+            {
+                DisableCompositionSection();
+                ClearCompositionSection();
+
+                return;
+            }
+
+            LoadCompositionSection();
+            EnableCompositionSection();
+        }
+
+        #endregion Composition Section Methods
+
+        #region Movement Section Methods
+
+        public void DisableMovementSection()
+        {
+            MovementNumberBox.IsEnabled = false;
+            MovementNameAutoCompleteBox.IsEnabled = false;
+            RecordingListBox.IsEnabled = false;
+        }
+
+        public void ClearMovementSection()
+        {
+            MovementNumberBox.Text = null;
+            MovementNameAutoCompleteBox.Text = null;
+            RecordingListBox.ItemsSource = null;
+        }
+
+        public void RefreshMovementSection()
+        {
+            if (_currentMovement == null)
+            {
+                DisableMovementSection();
+                ClearMovementSection();
+
+                _currentRecording = null;
+
+                RefreshRecordingSection();
+
+                return;
+            }
+
+            LoadMovementSection();
+            EnableMovementSection();
+        }
+
+        public void LoadMovementSection()
+        {
+            MovementNumberBox.SetBinding(TextBox.TextProperty, BindingUtility.Create(_currentMovement, "Number"));
+            MovementNameAutoCompleteBox.SetBinding(AutoCompleteBox.TextProperty, BindingUtility.Create(_currentMovement, "Name"));
+            RecordingListBox.ItemsSource = new List<Recording>(_currentMovement.Recordings);
+        }
+
+        public void EnableMovementSection()
+        {
+            MovementNumberBox.IsEnabled = true;
+            MovementNameAutoCompleteBox.IsEnabled = true;
+            RecordingListBox.IsEnabled = true;
+        }
+
+        #endregion Movement Section Methods
+
+        #region Recording Section Methods
+
+        public void DisableRecordingSection()
+        {
+            RecordingPerformerListBox.IsEnabled = false;
+            RecordingAlbumAutoCompleteBox.IsEnabled = false;
+            RecordingTrackNumberBox.IsEnabled = false;
+            RecordingDatesTextBox.IsEnabled = false;
+            RecordingLocationAutoCompleteBox.IsEnabled = false;
+        }
+
+        public void ClearRecordingSection()
+        {
+            RecordingPerformerListBox.ItemsSource = null;
+            RecordingAlbumAutoCompleteBox.Text = null;
+            RecordingTrackNumberBox.Text = null;
+            RecordingDatesTextBox.Text = null;
+            RecordingLocationAutoCompleteBox.Text = null;
+        }
+
+        public void RefreshRecordingSection()
+        {
+            if (_currentRecording == null)
+            {
+                DisableRecordingSection();
+                ClearRecordingSection();
+
+                return;
+            }
+
+            LoadRecordingSection();
+            EnableRecordingSection();
+        }
+
+        public void LoadRecordingSection()
+        {
+            RecordingPerformerListBox.ItemsSource = _currentRecording.Performers;
+
+            if (_currentRecording.Album != null)
+            {
+                RecordingAlbumAutoCompleteBox.Text = _currentRecording.Album.Name;
+            }
+
+            RecordingTrackNumberBox.SetBinding(TextBox.TextProperty, BindingUtility.Create(_currentRecording, "TrackNumber"));
+            RecordingDatesTextBox.SetBinding(TextBox.TextProperty, BindingUtility.Create(_currentRecording, "Dates"));
+
+            if (_currentRecording.Location != null)
+            {
+                RecordingLocationAutoCompleteBox.Text = _currentRecording.Location.Name;
             }
         }
 
-        public CompositionCollection CurrentCompositionCollection
+        public void EnableRecordingSection()
         {
-            get
-            {
-                return _currentCompositionCollection;
-            }
-
-            set
-            {
-                _currentCompositionCollection = value;
-            }
+            RecordingPerformerListBox.IsEnabled = true;
+            RecordingAlbumAutoCompleteBox.IsEnabled = true;
+            RecordingTrackNumberBox.IsEnabled = true;
+            RecordingDatesTextBox.IsEnabled = true;
+            RecordingLocationAutoCompleteBox.IsEnabled = true;
         }
 
-        public Movement CurrentMovement
-        {
-            get
-            {
-                return _currentMovement;
-            }
-
-            set
-            {
-                _currentMovement = value;
-            }
-        }
-
-        public Recording CurrentRecording
-        {
-            get
-            {
-                return _currentRecording;
-            }
-
-            set
-            {
-                _currentRecording = value;
-            }
-        }
-
-        private static void AddPathToLibrary(string path)
-        {
-            using (var file = new FileStream("library.txt", FileMode.OpenOrCreate))
-            {
-                if (!FileUtility.HasLine(file, path))
-                {
-                    FileUtility.WriteLine(file, path);
-                }
-            }
-        }
+        #endregion Recording Section Methods
 
         #region Composer Section Events
 
@@ -313,18 +571,18 @@ namespace NathanHarrenstein.ComposerTimeline
         {
             if (ComposerListBox.IsEnabled)
             {
-                var data = (string)e.Data.GetData(typeof(string));
+                var composerName = (string)e.Data.GetData(typeof(string));
 
-                if (!string.IsNullOrEmpty(data))
+                if (composerName != null)
                 {
                     var composer = new Composer();
-                    composer.Name = data;
+                    composer.Name = composerName;
 
                     App.DataProvider.Composers.Add(composer);
 
                     _currentComposers = new List<Composer> { composer };
 
-                    InputPageInitializer.BindComposers(this, _currentComposers);
+                    RefreshComposerSection();
 
                     ComposerListBox.SelectedItem = composer;
                 }
@@ -346,12 +604,14 @@ namespace NathanHarrenstein.ComposerTimeline
 
         private void ComposerListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (ComposerListBox.IsEnabled)
+            if (!ComposerListBox.IsEnabled)
             {
-                _currentComposers = ComposerListBox.SelectedItems.Cast<Composer>().ToList();
-
-                InputPageInitializer.BindComposers(this, _currentComposers);
+                return;
             }
+
+            _currentComposers = ComposerListBox.SelectedItems.Cast<Composer>().ToList();
+
+            RefreshComposerSection();
         }
 
         private void ComposerListBoxItem_MouseMove(object sender, MouseEventArgs e)
@@ -553,7 +813,7 @@ namespace NathanHarrenstein.ComposerTimeline
             {
                 _currentCompositionCollection = (CompositionCollection)CompositionCollectionListBox.SelectedItem;
 
-                InputPageInitializer.BindCompositionCollection(this, _currentCompositionCollection);
+                RefreshCompositionCollectionSection();
             }
         }
 
@@ -724,7 +984,7 @@ namespace NathanHarrenstein.ComposerTimeline
 
             _currentComposition = (Composition)CompositionListBox.SelectedItem;
 
-            InputPageInitializer.BindComposition(this, _currentComposition);
+            RefreshCompositionSection();
         }
 
         #endregion Composition Section Events
@@ -735,18 +995,18 @@ namespace NathanHarrenstein.ComposerTimeline
         {
             if (MovementListBox.IsEnabled)
             {
-                var data = (string)e.Data.GetData(typeof(string));
+                var movementName = (string)e.Data.GetData(typeof(string));
 
-                if (!string.IsNullOrEmpty(data))
+                if (movementName != null)
                 {
                     var movement = new Movement();
-                    movement.Name = data;
+                    movement.Name = movementName;
 
                     _currentComposition.Movements.Add(movement);
 
                     _currentMovement = movement;
 
-                    InputPageInitializer.BindMovement(this, _currentMovement);
+                    RefreshMovementSection();
 
                     MovementListBox.SelectedItem = movement;
                 }
@@ -759,7 +1019,7 @@ namespace NathanHarrenstein.ComposerTimeline
             {
                 _currentMovement = (Movement)MovementListBox.SelectedItem;
 
-                InputPageInitializer.BindMovement(this, _currentMovement);
+                RefreshMovementSection();
             }
         }
 
@@ -776,7 +1036,7 @@ namespace NathanHarrenstein.ComposerTimeline
 
                 if (droppedStringExists)
                 {
-                    AddPathToLibrary(droppedString);
+                    Library.AddFilePath(droppedString);
 
                     _currentRecording = new Recording();
 
@@ -811,7 +1071,7 @@ namespace NathanHarrenstein.ComposerTimeline
             {
                 _currentRecording = (Recording)RecordingListBox.SelectedItem;
 
-                InputPageInitializer.BindRecording(this, _currentRecording);
+                RefreshRecordingSection();
             }
         }
 
