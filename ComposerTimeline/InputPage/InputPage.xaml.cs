@@ -1,7 +1,5 @@
 ﻿using Database;
-using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
@@ -9,9 +7,7 @@ using System.Net;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
-using System.Windows.Data;
 using System.Windows.Input;
-using System.Windows.Media.Imaging;
 
 namespace NathanHarrenstein.ComposerTimeline
 {
@@ -111,240 +107,6 @@ namespace NathanHarrenstein.ComposerTimeline
 
         #region Composer Section Events
 
-        private void ComposerImageListBox_Drop(object sender, DragEventArgs e)
-        {
-            if (!ComposerImageListBox.IsEnabled)
-            {
-                return;
-            }
-
-            var imagePath = (string)e.Data.GetData(typeof(string));
-
-            if (imagePath == null)
-            {
-                return;
-            }
-
-            var imageExtension = Path.GetExtension(imagePath);
-
-            if (imageExtension == ".jpg" || imageExtension == ".png" || imageExtension == ".gif" || imageExtension == ".jpeg")
-            {
-                var composer = (Composer)ComposerListBox.SelectedItem;
-
-                var composerImage = new ComposerImage();
-                composerImage.Composer = composer;
-                composerImage.Image = FileUtility.GetFile(imagePath);
-
-                composer.ComposerImages.Add(composerImage);
-
-                ComposerImageListBox.ItemsSource = composer.ComposerImages.Select(ci => ci.ToBitmapImage()).ToList();
-                ComposerImageListBox.SelectedIndex = composer.ComposerImages.Count - 1;
-            }
-        }
-
-        private void ComposerInfluenceListBox_Drop(object sender, DragEventArgs e)
-        {
-            if (ComposerInfluenceListBox.IsEnabled && _currentComposers.Count == 1)
-            {
-                var influence = (Composer)e.Data.GetData(typeof(Composer));
-                _currentComposers[0].Influences.Add(influence);
-
-                ComposerInfluenceListBox.ItemsSource = new List<Composer>(_currentComposers[0].Influences);
-            }
-        }
-
-        private void ComposerLinkListBox_Drop(object sender, DragEventArgs e)
-        {
-            if (ComposerLinkListBox.IsEnabled)
-            {
-                var data = (string)e.Data.GetData(typeof(string));
-
-                try
-                {
-                    if (!data.StartsWith("http"))
-                    {
-                        data = "http://" + data;
-                    }
-
-                    var webResponse = WebRequest.Create(data).GetResponse();
-
-                    var composer = (Composer)ComposerListBox.SelectedItem;
-                    composer.ComposerLinks.Add(new ComposerLink { Composer = composer, URL = data });
-
-                    ComposerLinkListBox.GetBindingExpression(ItemsControl.ItemsSourceProperty).UpdateTarget();
-                }
-                catch
-                {
-                }
-            }
-        }
-
-        private void ComposerListBox_Drop(object sender, DragEventArgs e)
-        {
-            if (ComposerListBox.IsEnabled)
-            {
-                var data = (string)e.Data.GetData(typeof(string));
-
-                if (!string.IsNullOrEmpty(data))
-                {
-                    var composer = new Composer();
-                    composer.Name = data;
-
-                    App.DataProvider.Composers.Add(composer);
-
-                    _currentComposers = new List<Composer> { composer };
-
-                    InputPageInitializer.BindComposers(this, _currentComposers);
-
-                    ComposerListBox.SelectedItem = composer;
-                }
-            }
-        }
-
-        private void ComposerDeleteCommand_Executed(object sender, ExecutedRoutedEventArgs e)
-        {
-            if (ComposerListBox.IsEnabled)
-            {
-                App.DataProvider.Composers.Local.Remove((Composer)ComposerListBox.SelectedItem);
-            }
-        }
-
-        private void ComposerImageDeleteCommand_Executed(object sender, ExecutedRoutedEventArgs e)
-        {
-            if (ComposerImageListBox.IsEnabled)
-            {
-                var composer = (Composer)ComposerListBox.SelectedItem;
-
-                composer.ComposerImages.Remove((ComposerImage)ComposerImageListBox.SelectedItem);
-            }
-        }
-
-        private void ComposerInfluenceDeleteCommand_Executed(object sender, ExecutedRoutedEventArgs e)
-        {
-            if (ComposerInfluenceListBox.IsEnabled)
-            {
-                var composer = (Composer)ComposerListBox.SelectedItem;
-
-                composer.Influences.Remove((Composer)ComposerInfluenceListBox.SelectedItem);
-            }
-        }
-
-        private void ComposerLinkDeleteCommand_Executed(object sender, ExecutedRoutedEventArgs e)
-        {
-            if (ComposerLinkListBox.IsEnabled)
-            {
-                var listBoxItem = e.OriginalSource as ListBoxItem;
-
-                if (listBoxItem != null)
-                {
-                    var link = (Link)ComposerLinkListBox.DataContext;
-                    var composer = (Composer)ComposerListBox.SelectedItem;
-
-                    var targetLink = composer.ComposerLinks.FirstOrDefault(cl => cl.URL == link.Url);
-
-                    if (targetLink != null)
-                    {
-                        composer.ComposerLinks.Remove(targetLink);
-                    }
-                }
-            }
-        }
-
-        private void ComposerListBox_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            if (ComposerListBox.IsEnabled)
-            {
-                var frameworkElement = e.OriginalSource as FrameworkElement;
-
-                if (frameworkElement == null || frameworkElement.TemplatedParent == null || frameworkElement.TemplatedParent.GetType() != typeof(Thumb))
-                {
-                    e.Handled = true;
-                }
-            }
-        }
-
-        private void ComposerListBoxItem_MouseMove(object sender, MouseEventArgs e)
-        {
-            if (ComposerListBox.IsEnabled)
-            {
-                var textBlock = sender as TextBlock;
-
-                if (textBlock != null && e.LeftButton == MouseButtonState.Pressed)
-                {
-                    DragDrop.DoDragDrop(textBlock, new DataObject(typeof(Composer), textBlock.DataContext), DragDropEffects.Link);
-
-                    e.Handled = true;
-                }
-            }
-        }
-
-        private void ComposerListBoxItem_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
-        {
-            if (ComposerListBox.IsEnabled)
-            {
-                var clickedElement = e.OriginalSource as FrameworkElement;
-                var exists = clickedElement != null;
-                var notScrollBar = !(clickedElement is Thumb);
-
-                if (exists && notScrollBar)
-                {
-                    ComposerListBox.SelectedItem = clickedElement.DataContext;
-                }
-            }
-        }
-
-        private void ComposerEraListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (ComposerEraListBox.IsEnabled)
-            {
-                var composer = (Composer)ComposerListBox.SelectedItem;
-
-                foreach (Era addedItem in e.AddedItems)
-                {
-                    if (!composer.Eras.Contains(addedItem))
-                    {
-                        composer.Eras.Add(addedItem);
-                    }
-                }
-
-                foreach (Era removedItem in e.RemovedItems)
-                {
-                    if (composer.Eras.Contains(removedItem))
-                    {
-                        composer.Eras.Remove(removedItem);
-                    }
-                }
-            }
-        }
-
-        private void ComposerListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (ComposerListBox.IsEnabled)
-            {
-                _currentComposers = ComposerListBox.SelectedItems.Cast<Composer>().ToList();
-
-                InputPageInitializer.BindComposers(this, _currentComposers);
-            }
-        }
-
-        private void ComposerNationalityListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (ComposerNationalityListBox.IsEnabled)
-            {
-                var composer = (Composer)ComposerListBox.SelectedItem;
-
-                foreach (var addedItem in e.AddedItems)
-                {
-                    composer.Nationalities.Add((Nationality)addedItem);
-                }
-
-                foreach (var removedItem in e.RemovedItems)
-                {
-                    composer.Nationalities.Remove((Nationality)removedItem);
-                }
-            }
-        }
-
         private void ComposerBirthLocationAutoCompleteBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             var composer = _currentComposers[0];
@@ -411,50 +173,243 @@ namespace NathanHarrenstein.ComposerTimeline
             }
         }
 
+        private void ComposerDeleteCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (ComposerListBox.IsEnabled)
+            {
+                App.DataProvider.Composers.Local.Remove((Composer)ComposerListBox.SelectedItem);
+            }
+        }
+
+        private void ComposerEraListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (ComposerEraListBox.IsEnabled)
+            {
+                var composer = (Composer)ComposerListBox.SelectedItem;
+
+                foreach (Era addedItem in e.AddedItems)
+                {
+                    if (!composer.Eras.Contains(addedItem))
+                    {
+                        composer.Eras.Add(addedItem);
+                    }
+                }
+
+                foreach (Era removedItem in e.RemovedItems)
+                {
+                    if (composer.Eras.Contains(removedItem))
+                    {
+                        composer.Eras.Remove(removedItem);
+                    }
+                }
+            }
+        }
+
+        private void ComposerImageDeleteCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (ComposerImageListBox.IsEnabled)
+            {
+                var composer = (Composer)ComposerListBox.SelectedItem;
+
+                composer.ComposerImages.Remove((ComposerImage)ComposerImageListBox.SelectedItem);
+            }
+        }
+
+        private void ComposerImageListBox_Drop(object sender, DragEventArgs e)
+        {
+            if (!ComposerImageListBox.IsEnabled)
+            {
+                return;
+            }
+
+            var imagePath = (string)e.Data.GetData(typeof(string));
+
+            if (imagePath == null)
+            {
+                return;
+            }
+
+            var imageExtension = Path.GetExtension(imagePath);
+
+            if (imageExtension == ".jpg" || imageExtension == ".png" || imageExtension == ".gif" || imageExtension == ".jpeg")
+            {
+                var composer = (Composer)ComposerListBox.SelectedItem;
+
+                var composerImage = new ComposerImage();
+                composerImage.Composer = composer;
+                composerImage.Image = FileUtility.GetFile(imagePath);
+
+                composer.ComposerImages.Add(composerImage);
+
+                ComposerImageListBox.ItemsSource = composer.ComposerImages.Select(ci => ComposerImageUtility.ToBitmapImage(ci)).ToList();
+                ComposerImageListBox.SelectedIndex = composer.ComposerImages.Count - 1;
+            }
+        }
+
+        private void ComposerInfluenceDeleteCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (ComposerInfluenceListBox.IsEnabled)
+            {
+                var composer = (Composer)ComposerListBox.SelectedItem;
+
+                composer.Influences.Remove((Composer)ComposerInfluenceListBox.SelectedItem);
+            }
+        }
+
+        private void ComposerInfluenceListBox_Drop(object sender, DragEventArgs e)
+        {
+            if (ComposerInfluenceListBox.IsEnabled && _currentComposers.Count == 1)
+            {
+                var influence = (Composer)e.Data.GetData(typeof(Composer));
+                _currentComposers[0].Influences.Add(influence);
+
+                ComposerInfluenceListBox.ItemsSource = new List<Composer>(_currentComposers[0].Influences);
+            }
+        }
+
+        private void ComposerLinkDeleteCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (ComposerLinkListBox.IsEnabled)
+            {
+                var listBoxItem = e.OriginalSource as ListBoxItem;
+
+                if (listBoxItem != null)
+                {
+                    var link = (Link)ComposerLinkListBox.DataContext;
+                    var composer = (Composer)ComposerListBox.SelectedItem;
+
+                    var targetLink = composer.ComposerLinks.FirstOrDefault(cl => cl.URL == link.Url);
+
+                    if (targetLink != null)
+                    {
+                        composer.ComposerLinks.Remove(targetLink);
+                    }
+                }
+            }
+        }
+
+        private void ComposerLinkListBox_Drop(object sender, DragEventArgs e)
+        {
+            if (ComposerLinkListBox.IsEnabled)
+            {
+                var data = (string)e.Data.GetData(typeof(string));
+
+                try
+                {
+                    if (!data.StartsWith("http"))
+                    {
+                        data = "http://" + data;
+                    }
+
+                    var webResponse = WebRequest.Create(data).GetResponse();
+
+                    var composer = (Composer)ComposerListBox.SelectedItem;
+                    composer.ComposerLinks.Add(new ComposerLink { Composer = composer, URL = data });
+
+                    ComposerLinkListBox.GetBindingExpression(ItemsControl.ItemsSourceProperty).UpdateTarget();
+                }
+                catch
+                {
+                }
+            }
+        }
+
+        private void ComposerListBox_Drop(object sender, DragEventArgs e)
+        {
+            if (ComposerListBox.IsEnabled)
+            {
+                var data = (string)e.Data.GetData(typeof(string));
+
+                if (!string.IsNullOrEmpty(data))
+                {
+                    var composer = new Composer();
+                    composer.Name = data;
+
+                    App.DataProvider.Composers.Add(composer);
+
+                    _currentComposers = new List<Composer> { composer };
+
+                    InputPageInitializer.BindComposers(this, _currentComposers);
+
+                    ComposerListBox.SelectedItem = composer;
+                }
+            }
+        }
+
+        private void ComposerListBox_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (ComposerListBox.IsEnabled)
+            {
+                var frameworkElement = e.OriginalSource as FrameworkElement;
+
+                if (frameworkElement == null || frameworkElement.TemplatedParent == null || frameworkElement.TemplatedParent.GetType() != typeof(Thumb))
+                {
+                    e.Handled = true;
+                }
+            }
+        }
+
+        private void ComposerListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (ComposerListBox.IsEnabled)
+            {
+                _currentComposers = ComposerListBox.SelectedItems.Cast<Composer>().ToList();
+
+                InputPageInitializer.BindComposers(this, _currentComposers);
+            }
+        }
+
+        private void ComposerListBoxItem_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (ComposerListBox.IsEnabled)
+            {
+                var textBlock = sender as TextBlock;
+
+                if (textBlock != null && e.LeftButton == MouseButtonState.Pressed)
+                {
+                    DragDrop.DoDragDrop(textBlock, new DataObject(typeof(Composer), textBlock.DataContext), DragDropEffects.Link);
+
+                    e.Handled = true;
+                }
+            }
+        }
+
+        private void ComposerListBoxItem_PreviewMouseLeftButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            if (ComposerListBox.IsEnabled)
+            {
+                var clickedElement = e.OriginalSource as FrameworkElement;
+                var exists = clickedElement != null;
+                var notScrollBar = !(clickedElement is Thumb);
+
+                if (exists && notScrollBar)
+                {
+                    ComposerListBox.SelectedItem = clickedElement.DataContext;
+                }
+            }
+        }
+
+        private void ComposerNationalityListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (ComposerNationalityListBox.IsEnabled)
+            {
+                var composer = (Composer)ComposerListBox.SelectedItem;
+
+                foreach (var addedItem in e.AddedItems)
+                {
+                    composer.Nationalities.Add((Nationality)addedItem);
+                }
+
+                foreach (var removedItem in e.RemovedItems)
+                {
+                    composer.Nationalities.Remove((Nationality)removedItem);
+                }
+            }
+        }
+
         #endregion Composer Section Events
 
         #region Composition Collection Section Events
-
-        private void CompositionCollectionListBox_Drop(object sender, DragEventArgs e)
-        {
-            if (CompositionCollectionListBox.IsEnabled)
-            {
-                var droppedString = (string)e.Data.GetData(typeof(string));
-
-                if (droppedString == null)
-                {
-                    return;
-                }
-
-                _currentCompositionCollection = new CompositionCollection();
-                _currentCompositionCollection.Name = droppedString;
-                _currentCompositionCollection.Composers = _currentComposers;
-
-                foreach (var composer in _currentComposers)
-                {
-                    composer.CompositionCollections.Add(_currentCompositionCollection);
-                }
-
-                CompositionCollectionListBox.ItemsSource = _currentComposers
-                    .Common(c => c.CompositionCollections)
-                    .ToList();
-                CompositionCollectionListBox.SelectedItem = _currentCompositionCollection;
-            }
-        }
-
-        private void CompositionCollectionDeleteCommand_Executed(object sender, ExecutedRoutedEventArgs e)
-        {
-        }
-
-        private void CompositionCollectionListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (CompositionCollectionListBox.IsEnabled)
-            {
-                _currentCompositionCollection = (CompositionCollection)CompositionCollectionListBox.SelectedItem;
-
-                InputPageInitializer.BindCompositionCollection(this, _currentCompositionCollection);
-            }
-        }
 
         private void CompositionCollectionCatalogNumberTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
@@ -492,6 +447,29 @@ namespace NathanHarrenstein.ComposerTimeline
             foreach (var catalogNumber in selectedCatalogNumbers)
             {
                 catalogNumber.Number = CompositionCollectionCatalogNumberTextBox.Text;
+            }
+        }
+
+        private void CompositionCollectionCatalogPrefixDeleteCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (!CompositionCollectionCatalogPrefixListBox.IsEnabled)
+            {
+                return;
+            }
+
+            if (!(e.OriginalSource is ListBoxItem))
+            {
+                return;
+            }
+
+            foreach (var composer in _currentComposers)
+            {
+                var selectedCatalog = composer.CompositionCatalogs.FirstOrDefault(cc => cc.Prefix == (string)CompositionCollectionCatalogPrefixListBox.SelectedItem);
+
+                if (selectedCatalog != null)
+                {
+                    composer.CompositionCatalogs.Remove(selectedCatalog);
+                }
             }
         }
 
@@ -543,86 +521,50 @@ namespace NathanHarrenstein.ComposerTimeline
             CompositionCollectionCatalogNumberTextBox.Text = catalogNumber == null ? null : catalogNumber.Number;
         }
 
-        private void CompositionCollectionCatalogPrefixDeleteCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        private void CompositionCollectionDeleteCommand_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            if (!CompositionCollectionCatalogPrefixListBox.IsEnabled)
-            {
-                return;
-            }
+        }
 
-            if (!(e.OriginalSource is ListBoxItem))
+        private void CompositionCollectionListBox_Drop(object sender, DragEventArgs e)
+        {
+            if (CompositionCollectionListBox.IsEnabled)
             {
-                return;
-            }
+                var droppedString = (string)e.Data.GetData(typeof(string));
 
-            foreach (var composer in _currentComposers)
-            {
-                var selectedCatalog = composer.CompositionCatalogs.FirstOrDefault(cc => cc.Prefix == (string)CompositionCollectionCatalogPrefixListBox.SelectedItem);
-
-                if (selectedCatalog != null)
+                if (droppedString == null)
                 {
-                    composer.CompositionCatalogs.Remove(selectedCatalog);
+                    return;
                 }
+
+                _currentCompositionCollection = new CompositionCollection();
+                _currentCompositionCollection.Name = droppedString;
+                _currentCompositionCollection.Composers = _currentComposers;
+
+                foreach (var composer in _currentComposers)
+                {
+                    composer.CompositionCollections.Add(_currentCompositionCollection);
+                }
+
+                CompositionCollectionListBox.ItemsSource = _currentComposers
+                    .Common(c => c.CompositionCollections)
+                    .ToList();
+                CompositionCollectionListBox.SelectedItem = _currentCompositionCollection;
+            }
+        }
+
+        private void CompositionCollectionListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (CompositionCollectionListBox.IsEnabled)
+            {
+                _currentCompositionCollection = (CompositionCollection)CompositionCollectionListBox.SelectedItem;
+
+                InputPageInitializer.BindCompositionCollection(this, _currentCompositionCollection);
             }
         }
 
         #endregion Composition Collection Section Events
 
         #region Composition Section Events
-
-        private void CompositionListBox_Drop(object sender, DragEventArgs e)
-        {
-            if (CompositionListBox.IsEnabled)
-            {
-                var droppedString = (string)e.Data.GetData(typeof(string));
-                var droppedStringExists = droppedString != null;
-
-                if (!droppedStringExists)
-                {
-                    return;
-                }
-
-                _currentComposition = new Composition();
-                _currentComposition.Name = droppedString;
-                _currentComposition.Composers = _currentComposers;
-
-                if (_currentCompositionCollection == null)
-                {
-                    foreach (var composer in _currentComposers)
-                    {
-                        composer.Compositions.Add(_currentComposition);
-                    }
-
-                    CompositionListBox.ItemsSource = _currentComposers
-                        .Common(c => c.Compositions)
-                        .ToList();
-                }
-                else
-                {
-                    _currentCompositionCollection.Compositions.Add(_currentComposition);
-
-                    CompositionListBox.ItemsSource = _currentCompositionCollection.Compositions.ToList();
-                }
-
-                CompositionListBox.SelectedItem = _currentComposition;
-            }
-        }
-
-        private void CompositionDeleteCommand_Executed(object sender, ExecutedRoutedEventArgs e)
-        {
-        }
-
-        private void CompositionListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (!CompositionListBox.IsEnabled)
-            {
-                return;
-            }
-
-            _currentComposition = (Composition)CompositionListBox.SelectedItem;
-
-            InputPageInitializer.BindComposition(this, _currentComposition);
-        }
 
         private void CompositionCatalogNumberTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
@@ -660,6 +602,29 @@ namespace NathanHarrenstein.ComposerTimeline
             foreach (var catalogNumber in selectedCatalogNumbers)
             {
                 catalogNumber.Number = CompositionCatalogNumberTextBox.Text;
+            }
+        }
+
+        private void CompositionCatalogPrefixDeleteCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (!CompositionCatalogPrefixListBox.IsEnabled)
+            {
+                return;
+            }
+
+            if (!(e.OriginalSource is ListBoxItem))
+            {
+                return;
+            }
+
+            foreach (var composer in _currentComposers)
+            {
+                var selectedCatalog = composer.CompositionCatalogs.FirstOrDefault(cc => cc.Prefix == (string)CompositionCatalogPrefixListBox.SelectedItem);
+
+                if (selectedCatalog != null)
+                {
+                    composer.CompositionCatalogs.Remove(selectedCatalog);
+                }
             }
         }
 
@@ -713,27 +678,58 @@ namespace NathanHarrenstein.ComposerTimeline
             CompositionCatalogNumberTextBox.Text = catalogNumber == null ? null : catalogNumber.Number;
         }
 
-        private void CompositionCatalogPrefixDeleteCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        private void CompositionDeleteCommand_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            if (!CompositionCatalogPrefixListBox.IsEnabled)
-            {
-                return;
-            }
+        }
 
-            if (!(e.OriginalSource is ListBoxItem))
+        private void CompositionListBox_Drop(object sender, DragEventArgs e)
+        {
+            if (CompositionListBox.IsEnabled)
             {
-                return;
-            }
+                var droppedString = (string)e.Data.GetData(typeof(string));
+                var droppedStringExists = droppedString != null;
 
-            foreach (var composer in _currentComposers)
-            {
-                var selectedCatalog = composer.CompositionCatalogs.FirstOrDefault(cc => cc.Prefix == (string)CompositionCatalogPrefixListBox.SelectedItem);
-
-                if (selectedCatalog != null)
+                if (!droppedStringExists)
                 {
-                    composer.CompositionCatalogs.Remove(selectedCatalog);
+                    return;
                 }
+
+                _currentComposition = new Composition();
+                _currentComposition.Name = droppedString;
+                _currentComposition.Composers = _currentComposers;
+
+                if (_currentCompositionCollection == null)
+                {
+                    foreach (var composer in _currentComposers)
+                    {
+                        composer.Compositions.Add(_currentComposition);
+                    }
+
+                    CompositionListBox.ItemsSource = _currentComposers
+                        .Common(c => c.Compositions)
+                        .ToList();
+                }
+                else
+                {
+                    _currentCompositionCollection.Compositions.Add(_currentComposition);
+
+                    CompositionListBox.ItemsSource = _currentCompositionCollection.Compositions.ToList();
+                }
+
+                CompositionListBox.SelectedItem = _currentComposition;
             }
+        }
+
+        private void CompositionListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (!CompositionListBox.IsEnabled)
+            {
+                return;
+            }
+
+            _currentComposition = (Composition)CompositionListBox.SelectedItem;
+
+            InputPageInitializer.BindComposition(this, _currentComposition);
         }
 
         #endregion Composition Section Events

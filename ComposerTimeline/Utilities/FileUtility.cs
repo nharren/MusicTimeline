@@ -4,9 +4,9 @@ using System.Net;
 
 namespace NathanHarrenstein.ComposerTimeline
 {
-    public static class FileUtility
+    internal static class FileUtility
     {
-        public static byte[] GetFile(string filePath)
+        internal static byte[] GetFile(string filePath)
         {
             Uri fileUri = null;
 
@@ -36,7 +36,7 @@ namespace NathanHarrenstein.ComposerTimeline
             return null;
         }
 
-        public static bool WebFileExists(string url)
+        internal static bool WebFileExists(string url)
         {
             var request = (HttpWebRequest)WebRequest.Create(url);
             request.Method = "HEAD";
@@ -66,7 +66,7 @@ namespace NathanHarrenstein.ComposerTimeline
             return result;
         }
 
-        public static bool HasLine(Stream file, string line)
+        internal static bool HasLine(Stream file, string line)
         {
             var reader = new StreamReader(file);
 
@@ -81,7 +81,7 @@ namespace NathanHarrenstein.ComposerTimeline
             return false;
         }
 
-        public static void WriteLine(Stream file, string line)
+        internal static void WriteLine(Stream file, string line)
         {
             new StreamWriter(file).WriteLine(line);
         }

@@ -105,7 +105,7 @@ namespace NathanHarrenstein.ComposerTimeline
                 inputPage.ComposerInfluenceListBox.ItemsSource = new List<Composer>(composer.Influences);
                 inputPage.ComposerInfluenceListBox.IsEnabled = true;
 
-                inputPage.ComposerImageListBox.ItemsSource = composer.ComposerImages.Select(ci => ci.ToBitmapImage()).ToList();
+                inputPage.ComposerImageListBox.ItemsSource = composer.ComposerImages.Select(ci => ComposerImageUtility.ToBitmapImage(ci)).ToList();
                 inputPage.ComposerImageListBox.IsEnabled = true;
 
                 var composerLinksBinding = new Binding("ComposerLinks");

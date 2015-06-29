@@ -4,9 +4,9 @@ using System.Windows.Media.Imaging;
 
 namespace NathanHarrenstein.ComposerTimeline
 {
-    internal static class ComposerImageExtensions
+    internal static class ComposerImageUtility
     {
-        internal static BitmapImage ToBitmapImage(this ComposerImage composerImage)
+        internal static BitmapImage ToBitmapImage(ComposerImage composerImage)
         {
             var bitmapImage = new BitmapImage();
             bitmapImage.BeginInit();
