@@ -426,24 +426,25 @@ namespace NathanHarrenstein.ComposerTimeline
             if (CompositionCollectionListBox.IsEnabled)
             {
                 var droppedString = (string)e.Data.GetData(typeof(string));
-                var droppedStringExists = droppedString != null;
 
-                if (droppedStringExists)
+                if (droppedString == null)
                 {
-                    _currentCompositionCollection = new CompositionCollection();
-                    _currentCompositionCollection.Name = droppedString;
-
-                    foreach (var composer in _currentComposers)
-                    {
-                        composer.CompositionCollections.Add(_currentCompositionCollection);
-                    }
-
-                    var commonCompositionCollections = _currentComposers
-                        .Common(c => c.CompositionCollections);
-
-                    CompositionCollectionListBox.ItemsSource = new List<CompositionCollection>(commonCompositionCollections);
-                    CompositionCollectionListBox.SelectedItem = _currentCompositionCollection;
+                    return;
                 }
+
+                _currentCompositionCollection = new CompositionCollection();
+                _currentCompositionCollection.Name = droppedString;
+                _currentCompositionCollection.Composers = _currentComposers;
+
+                foreach (var composer in _currentComposers)
+                {
+                    composer.CompositionCollections.Add(_currentCompositionCollection);
+                }
+
+                CompositionCollectionListBox.ItemsSource = _currentComposers
+                    .Common(c => c.CompositionCollections)
+                    .ToList();
+                CompositionCollectionListBox.SelectedItem = _currentCompositionCollection;
             }
         }
 
@@ -528,7 +529,7 @@ namespace NathanHarrenstein.ComposerTimeline
                     .Select(cc => cc.Prefix)
                     .Distinct();
 
-                CompositionCollectionCatalogPrefixListBox.ItemsSource = new List<string>(availableCompositionCatalogs);
+                CompositionCollectionCatalogPrefixListBox.ItemsSource = availableCompositionCatalogs.ToList();
                 CompositionCollectionCatalogPrefixListBox.SelectedItem = droppedString;
 
                 CompositionCollectionCatalogNumberTextBox.Text = null;
@@ -582,45 +583,51 @@ namespace NathanHarrenstein.ComposerTimeline
                 var droppedString = (string)e.Data.GetData(typeof(string));
                 var droppedStringExists = droppedString != null;
 
-                if (droppedStringExists)
+                if (!droppedStringExists)
                 {
-                    _currentComposition = new Composition();
-                    _currentComposition.Name = droppedString;
-
-                    var compositionNotInCollection = _currentCompositionCollection == null;
-
-                    if (compositionNotInCollection)
-                    {
-                        foreach (var composer in _currentComposers)
-                        {
-                            composer.Compositions.Add(_currentComposition);
-                        }
-
-                        var commonCompositions = _currentComposers
-                            .Common(c => c.Compositions);
-
-                        CompositionListBox.ItemsSource = new List<Composition>(commonCompositions);
-                    }
-                    else
-                    {
-                        _currentCompositionCollection.Compositions.Add(_currentComposition);
-
-                        CompositionListBox.ItemsSource = new List<Composition>(_currentCompositionCollection.Compositions);
-                    }
-
-                    CompositionListBox.SelectedItem = _currentComposition;
+                    return;
                 }
+
+                _currentComposition = new Composition();
+                _currentComposition.Name = droppedString;
+                _currentComposition.Composers = _currentComposers;
+
+                if (_currentCompositionCollection == null)
+                {
+                    foreach (var composer in _currentComposers)
+                    {
+                        composer.Compositions.Add(_currentComposition);
+                    }
+
+                    CompositionListBox.ItemsSource = _currentComposers
+                        .Common(c => c.Compositions)
+                        .ToList();
+                }
+                else
+                {
+                    _currentCompositionCollection.Compositions.Add(_currentComposition);
+
+                    CompositionListBox.ItemsSource = _currentCompositionCollection.Compositions.ToList();
+                }
+
+                CompositionListBox.SelectedItem = _currentComposition;
             }
+        }
+
+        private void CompositionDeleteCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
         }
 
         private void CompositionListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (CompositionListBox.IsEnabled)
+            if (!CompositionListBox.IsEnabled)
             {
-                _currentComposition = (Composition)CompositionListBox.SelectedItem;
-
-                InputPageInitializer.BindComposition(this, _currentComposition);
+                return;
             }
+
+            _currentComposition = (Composition)CompositionListBox.SelectedItem;
+
+            InputPageInitializer.BindComposition(this, _currentComposition);
         }
 
         private void CompositionCatalogNumberTextBox_TextChanged(object sender, TextChangedEventArgs e)
@@ -693,7 +700,7 @@ namespace NathanHarrenstein.ComposerTimeline
                 .Select(cc => cc.Prefix)
                 .Distinct();
 
-            CompositionCatalogPrefixListBox.ItemsSource = new List<string>(availableCompositionCatalogs);
+            CompositionCatalogPrefixListBox.ItemsSource = availableCompositionCatalogs.ToList();
             CompositionCatalogPrefixListBox.SelectedItem = droppedString;
 
             CompositionCatalogNumberTextBox.Text = null;
@@ -706,10 +713,10 @@ namespace NathanHarrenstein.ComposerTimeline
                 return;
             }
 
-            var catalogNumber = _currentCompositionCollection.CatalogNumbers
-                .FirstOrDefault(cn => cn.CompositionCatalog.Prefix == (string)CompositionCollectionCatalogPrefixListBox.SelectedItem);
+            var catalogNumber = _currentComposition.CatalogNumbers
+                .FirstOrDefault(cn => cn.CompositionCatalog.Prefix == (string)CompositionCatalogPrefixListBox.SelectedItem);
 
-            CompositionCollectionCatalogNumberTextBox.Text = catalogNumber == null ? null : catalogNumber.Number;
+            CompositionCatalogNumberTextBox.Text = catalogNumber == null ? null : catalogNumber.Number;
         }
 
         private void CompositionCatalogPrefixDeleteCommand_Executed(object sender, ExecutedRoutedEventArgs e)

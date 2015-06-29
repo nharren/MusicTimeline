@@ -112,13 +112,15 @@ namespace NathanHarrenstein.ComposerTimeline
         private static IList GetEvents(IList<MusicEra> musicEras)
         {
             var eventList = new List<ComposerEvent>();
+            var composers = App.DataProvider.Composers.ToList();
 
-            foreach (var composer in App.DataProvider.Composers)
+            foreach (var composer in composers)
             {
                 var background = (Brush)null;
                 var composerEras = new List<MusicEra>();
+                var eras = composer.Eras.ToList();
 
-                foreach (var era in composer.Eras)
+                foreach (var era in eras)
                 {
                     foreach (var musicEra in musicEras)
                     {

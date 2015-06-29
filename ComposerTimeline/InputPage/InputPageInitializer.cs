@@ -231,7 +231,8 @@ namespace NathanHarrenstein.ComposerTimeline
                 inputPage.CompositionCatalogNumberTextBox.IsEnabled = false;
                 inputPage.CompositionCatalogNumberTextBox.Text = null;
 
-                inputPage.MovementListBox.ItemsSource = new List<Movement>(composition.Movements);
+                inputPage.MovementListBox.IsEnabled = false;
+                inputPage.MovementListBox.ItemsSource = null;
 
                 return;
             }
@@ -248,15 +249,22 @@ namespace NathanHarrenstein.ComposerTimeline
             compositionNicknameBinding.Mode = BindingMode.TwoWay;
             compositionNicknameBinding.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
             compositionNicknameBinding.Source = composition;
+
             inputPage.CompositionNicknameTextBox.SetBinding(TextBox.TextProperty, compositionNicknameBinding);
+            inputPage.CompositionNicknameTextBox.IsEnabled = true;
 
             var compositionDatesBinding = new Binding("Dates");
             compositionDatesBinding.Mode = BindingMode.TwoWay;
             compositionDatesBinding.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
             compositionDatesBinding.Source = composition;
-            inputPage.CompositionDatesTextBox.SetBinding(TextBox.TextProperty, compositionDatesBinding);
 
-            inputPage.CompositionCatalogPrefixListBox.ItemsSource = new List<string>(composition.Composers.SelectMany(c => c.CompositionCatalogs).Select(cc => cc.Prefix));
+            inputPage.CompositionDatesTextBox.SetBinding(TextBox.TextProperty, compositionDatesBinding);
+            inputPage.CompositionDatesTextBox.IsEnabled = true;
+
+            inputPage.CompositionCatalogPrefixListBox.ItemsSource = composition.Composers
+                .SelectMany(c => c.CompositionCatalogs)
+                .Select(cc => cc.Prefix)
+                .ToList();
             inputPage.CompositionCatalogPrefixListBox.IsEnabled = true;
 
             var catalogNumber = composition.CatalogNumbers

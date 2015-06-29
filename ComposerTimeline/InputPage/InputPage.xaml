@@ -354,6 +354,7 @@
         </ControlTemplate>
         <Style BasedOn="{StaticResource FieldStyle}" TargetType="{x:Type TextBox}">
             <Style.Setters>
+                <Setter Property="AcceptsReturn" Value="False" />
                 <Setter Property="Template">
                     <Setter.Value>
                         <ControlTemplate TargetType="{x:Type TextBox}">
@@ -768,6 +769,7 @@
                              Grid.Row="34"
                              Grid.Column="3"
                              Grid.ColumnSpan="5"
+                             AcceptsReturn="true"
                              Background="#FF42474B"
                              BorderThickness="0"
                              FontSize="14.667"
@@ -994,7 +996,7 @@
                              SelectionChanged="CompositionListBox_SelectionChanged"
                              SelectionMode="Extended">
                         <ListBox.CommandBindings>
-                            <CommandBinding Command="{x:Static ApplicationCommands.Delete}" Executed="CompositionCollectionDeleteCommand_Executed" />
+                            <CommandBinding Command="{x:Static ApplicationCommands.Delete}" Executed="CompositionDeleteCommand_Executed" />
                         </ListBox.CommandBindings>
                         <ListBox.ItemTemplate>
                             <DataTemplate DataType="{x:Type d:Composer}">

@@ -87,6 +87,8 @@
     </ApplicationDefinition>
     <Compile Include="Data\ComposerEvent.cs" />
     <Compile Include="Data\MusicEra.cs" />
+    <Compile Include="FileLocation.cs" />
+    <Compile Include="FileManager.cs" />
     <Compile Include="InputPage\ComposerLinkConverter.cs" />
     <Compile Include="InputPage\InputPageInitializer.cs" />
     <Compile Include="InputPage\ComposerImageConverter.cs" />
