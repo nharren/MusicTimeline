@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -9,7 +10,7 @@ namespace Database
     {
         public Composer()
         {
-            ComposerImages = new HashSet<ComposerImage>();
+            ComposerImages = new ObservableCollection<ComposerImage>();
             ComposerLinks = new HashSet<ComposerLink>();
             CompositionCatalogs = new HashSet<CompositionCatalog>();
             Eras = new HashSet<Era>();
@@ -47,15 +48,25 @@ namespace Database
         public bool IsPopular { get; set; }
 
         public virtual Location BirthLocation { get; set; }
+
         public virtual Location DeathLocation { get; set; }
-        public virtual ICollection<ComposerImage> ComposerImages { get; set; }
+
+        public virtual ObservableCollection<ComposerImage> ComposerImages { get; set; }
+
         public virtual ICollection<ComposerLink> ComposerLinks { get; set; }
+
         public virtual ICollection<CompositionCatalog> CompositionCatalogs { get; set; }
+
         public virtual ICollection<Era> Eras { get; set; }
+
         public virtual ICollection<Composer> Influences { get; set; }
+
         public virtual ICollection<Composer> Influenced { get; set; }
+
         public virtual ICollection<Nationality> Nationalities { get; set; }
+
         public virtual ICollection<CompositionCollection> CompositionCollections { get; set; }
+
         public virtual ICollection<Composition> Compositions { get; set; }
     }
 }

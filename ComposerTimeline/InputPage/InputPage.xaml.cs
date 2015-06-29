@@ -1,6 +1,7 @@
 ﻿using Database;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
@@ -10,6 +11,7 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Input;
+using System.Windows.Media.Imaging;
 
 namespace NathanHarrenstein.ComposerTimeline
 {
@@ -115,36 +117,32 @@ namespace NathanHarrenstein.ComposerTimeline
 
         private void ComposerImageListBox_Drop(object sender, DragEventArgs e)
         {
-            if (ComposerImageListBox.IsEnabled)
+            if (!ComposerImageListBox.IsEnabled)
             {
-                var path = (string)e.Data.GetData(typeof(string));
-                var extension = Path.GetExtension(path);
+                return;
+            }
 
-                if (extension == ".jpg" || extension == ".png" || extension == ".gif" || extension == ".jpeg")
-                {
-                    var composer = (Composer)ComposerListBox.SelectedItem;
-                    var composerImage = new ComposerImage { Composer = composer };
+            var imagePath = (string)e.Data.GetData(typeof(string));
 
-                    if (new Uri(path).IsFile)
-                    {
-                        composerImage.Image = File.ReadAllBytes(path);
+            if (imagePath == null)
+            {
+                return;
+            }
 
-                        composer.ComposerImages.Add(composerImage);
-                    }
-                    else
-                    {
-                        using (var webClient = new WebClient())
-                        {
-                            composerImage.Image = webClient.DownloadData(path);
+            var imageExtension = Path.GetExtension(imagePath);
 
-                            composer.ComposerImages.Add(composerImage);
-                        }
-                    }
+            if (imageExtension == ".jpg" || imageExtension == ".png" || imageExtension == ".gif" || imageExtension == ".jpeg")
+            {
+                var composer = (Composer)ComposerListBox.SelectedItem;
 
-                    ComposerImageListBox.GetBindingExpression(ItemsControl.ItemsSourceProperty).UpdateTarget();
-                    ComposerImageListBox.SelectedIndex = composer.ComposerImages.Count - 1;
-                    ComposerImageListBox.ApplyTemplate();
-                }
+                var composerImage = new ComposerImage();
+                composerImage.Composer = composer;
+                composerImage.Image = FileManager.GetFile(imagePath);
+
+                composer.ComposerImages.Add(composerImage);
+
+                ComposerImageListBox.ItemsSource = composer.ComposerImages.Select(ci => ci.ToBitmapImage()).ToList();
+                ComposerImageListBox.SelectedIndex = composer.ComposerImages.Count - 1;
             }
         }
 

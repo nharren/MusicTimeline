@@ -1,27 +1,34 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
 using System.Net;
 
 namespace NathanHarrenstein.ComposerTimeline
 {
     public static class FileManager
     {
-        public static byte[] GetFile(string path, FileLocation fileLocation)
+        public static byte[] GetFile(string filePath)
         {
-            if (fileLocation == FileLocation.Local || fileLocation == FileLocation.LocalOrWeb)
+            Uri fileUri = null;
+
+            if (!Uri.TryCreate(filePath, UriKind.Absolute, out fileUri))
             {
-                if (File.Exists(path))
-                {
-                    return File.ReadAllBytes(path);
-                }
+                return null;
             }
 
-            if (fileLocation == FileLocation.Web || fileLocation == FileLocation.LocalOrWeb)
+            if (fileUri.IsFile)
             {
-                if (FileExists(path))
+                if (File.Exists(filePath))
+                {
+                    return File.ReadAllBytes(filePath);
+                }
+            }
+            else
+            {
+                if (WebFileExists(filePath))
                 {
                     using (var webClient = new WebClient() { Proxy = null })
                     {
-                        return webClient.DownloadData(path);
+                        return webClient.DownloadData(filePath);
                     }
                 }
             }
@@ -29,7 +36,7 @@ namespace NathanHarrenstein.ComposerTimeline
             return null;
         }
 
-        public static bool FileExists(string url)
+        public static bool WebFileExists(string url)
         {
             var request = (HttpWebRequest)WebRequest.Create(url);
             request.Method = "HEAD";

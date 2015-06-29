@@ -3,14 +3,19 @@ using Luminescence.Xiph;
 using NathanHarrenstein.Controls;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Data.Entity;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Input;
 using System.Windows.Markup;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using System.Xml;
 
 namespace NathanHarrenstein.ComposerTimeline
@@ -100,10 +105,7 @@ namespace NathanHarrenstein.ComposerTimeline
                 inputPage.ComposerInfluenceListBox.ItemsSource = new List<Composer>(composer.Influences);
                 inputPage.ComposerInfluenceListBox.IsEnabled = true;
 
-                var composerImagesBinding = new Binding("ComposerImages");
-                composerImagesBinding.Source = composer;
-                composerImagesBinding.Converter = new ComposerImageConverter();
-                inputPage.ComposerImageListBox.SetBinding(ItemsControl.ItemsSourceProperty, composerImagesBinding);
+                inputPage.ComposerImageListBox.ItemsSource = composer.ComposerImages.Select(ci => ci.ToBitmapImage()).ToList();
                 inputPage.ComposerImageListBox.IsEnabled = true;
 
                 var composerLinksBinding = new Binding("ComposerLinks");
