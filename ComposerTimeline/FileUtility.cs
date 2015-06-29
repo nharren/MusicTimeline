@@ -4,7 +4,7 @@ using System.Net;
 
 namespace NathanHarrenstein.ComposerTimeline
 {
-    public static class FileManager
+    public static class FileUtility
     {
         public static byte[] GetFile(string filePath)
         {
@@ -64,6 +64,26 @@ namespace NathanHarrenstein.ComposerTimeline
             }
 
             return result;
+        }
+
+        public static bool HasLine(Stream file, string line)
+        {
+            var reader = new StreamReader(file);
+
+            while (!reader.EndOfStream)
+            {
+                if (reader.ReadLine() == line)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public static void WriteLine(Stream file, string line)
+        {
+            new StreamWriter(file).WriteLine(line);
         }
     }
 }

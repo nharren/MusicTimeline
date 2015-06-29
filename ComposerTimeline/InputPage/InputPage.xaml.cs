@@ -100,17 +100,13 @@ namespace NathanHarrenstein.ComposerTimeline
 
         private static void AddPathToLibrary(string path)
         {
-            var file = new FileStream("library.txt", FileMode.OpenOrCreate);
-            var reader = new StreamReader(file);
-
-            if (!reader.HasLine(path))
+            using (var file = new FileStream("library.txt", FileMode.OpenOrCreate))
             {
-                var writer = new StreamWriter(file);
-
-                writer.WriteLine(path);
+                if (!FileUtility.HasLine(file, path))
+                {
+                    FileUtility.WriteLine(file, path);
+                }
             }
-
-            file.Dispose();
         }
 
         #region Composer Section Events
@@ -137,7 +133,7 @@ namespace NathanHarrenstein.ComposerTimeline
 
                 var composerImage = new ComposerImage();
                 composerImage.Composer = composer;
-                composerImage.Image = FileManager.GetFile(imagePath);
+                composerImage.Image = FileUtility.GetFile(imagePath);
 
                 composer.ComposerImages.Add(composerImage);
 
