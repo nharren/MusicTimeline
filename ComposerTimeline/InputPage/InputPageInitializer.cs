@@ -154,18 +154,6 @@ namespace NathanHarrenstein.ComposerTimeline
                 inputPage.ComposerBiographyTextBox.IsEnabled = false;
                 inputPage.ComposerBiographyTextBox.Text = "<< Multiple Selection >>";
 
-                if (composers.All(c => c.Compositions != null))
-                {
-                    var compositions = composers[0].Compositions.AsEnumerable();
-
-                    foreach (var composer in composers)
-                    {
-                        compositions = compositions.Intersect(composer.Compositions);
-                    }
-
-                    inputPage.CompositionNameAutoCompleteBox.Suggestions = compositions;
-                }
-
                 IEnumerable<CompositionCollection> commonCompositionCollections = composers[0].CompositionCollections;
 
                 for (int i = 1; i < composers.Count; i++)
@@ -223,27 +211,38 @@ namespace NathanHarrenstein.ComposerTimeline
 
         internal static void BindComposition(InputPage inputPage, Composition composition)
         {
+            if (composition == null)
+            {
+                inputPage.CompositionNameTextBox.IsEnabled = false;
+                inputPage.CompositionNameTextBox.Text = null;
+
+                inputPage.CompositionNicknameTextBox.IsEnabled = false;
+                inputPage.CompositionNicknameTextBox.Text = null;
+
+                inputPage.CompositionDatesTextBox.IsEnabled = false;
+                inputPage.CompositionDatesTextBox.Text = null;
+
+                inputPage.CompositionNameTextBox.IsEnabled = false;
+                inputPage.CompositionNameTextBox.Text = null;
+
+                inputPage.CompositionCatalogPrefixListBox.IsEnabled = false;
+                inputPage.CompositionCatalogPrefixListBox.ItemsSource = null;
+
+                inputPage.CompositionCatalogNumberTextBox.IsEnabled = false;
+                inputPage.CompositionCatalogNumberTextBox.Text = null;
+
+                inputPage.MovementListBox.ItemsSource = new List<Movement>(composition.Movements);
+
+                return;
+            }
+
             var compositionNameBinding = new Binding("Name");
             compositionNameBinding.Mode = BindingMode.TwoWay;
             compositionNameBinding.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
             compositionNameBinding.Source = composition;
-            inputPage.CompositionNameAutoCompleteBox.SetBinding(TextBox.TextProperty, compositionNameBinding);
 
-            if (composition.CompositionCollection != null)
-            {
-                inputPage.CompositionCatalogPrefixComboBox.ItemsSource = composition.CompositionCollection.Composers.SelectMany(c => c.CompositionCatalogs);
-            }
-            else
-            {
-                inputPage.CompositionCatalogPrefixComboBox.ItemsSource = composition.Composers.SelectMany(c => c.CompositionCatalogs);
-            }
-
-            var currentCatalogNumber = composition.CatalogNumbers.FirstOrDefault(cn => cn.CompositionCatalog == inputPage.CompositionCatalogPrefixComboBox.SelectedItem);
-
-            if (currentCatalogNumber != null)
-            {
-                inputPage.CompositionCatalogNumberTextBox.Text = currentCatalogNumber.Number;
-            }
+            inputPage.CompositionNameTextBox.SetBinding(TextBox.TextProperty, compositionNameBinding);
+            inputPage.CompositionNameTextBox.IsEnabled = true;
 
             var compositionNicknameBinding = new Binding("Nickname");
             compositionNicknameBinding.Mode = BindingMode.TwoWay;
@@ -256,6 +255,14 @@ namespace NathanHarrenstein.ComposerTimeline
             compositionDatesBinding.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
             compositionDatesBinding.Source = composition;
             inputPage.CompositionDatesTextBox.SetBinding(TextBox.TextProperty, compositionDatesBinding);
+
+            inputPage.CompositionCatalogPrefixListBox.ItemsSource = new List<string>(composition.Composers.SelectMany(c => c.CompositionCatalogs).Select(cc => cc.Prefix));
+            inputPage.CompositionCatalogPrefixListBox.IsEnabled = true;
+
+            var catalogNumber = composition.CatalogNumbers
+                .FirstOrDefault(cn => cn.CompositionCatalog.Prefix == (string)inputPage.CompositionCatalogPrefixListBox.SelectedItem);
+            inputPage.CompositionCatalogNumberTextBox.Text = catalogNumber == null ? null : catalogNumber.Number;
+            inputPage.CompositionCatalogNumberTextBox.IsEnabled = true;
 
             inputPage.MovementListBox.ItemsSource = composition.Movements;
         }
@@ -282,6 +289,7 @@ namespace NathanHarrenstein.ComposerTimeline
             compositionCollectionNameBinding.Mode = BindingMode.TwoWay;
             compositionCollectionNameBinding.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
             compositionCollectionNameBinding.Source = compositionCollection;
+
             inputPage.CompositionCollectionNameTextBox.SetBinding(TextBox.TextProperty, compositionCollectionNameBinding);
             inputPage.CompositionCollectionNameTextBox.IsEnabled = true;
 
@@ -289,7 +297,7 @@ namespace NathanHarrenstein.ComposerTimeline
             inputPage.CompositionCollectionCatalogPrefixListBox.IsEnabled = true;
 
             var catalogNumber = compositionCollection.CatalogNumbers
-                .FirstOrDefault(cn => cn.CompositionCatalog == inputPage.CompositionCollectionCatalogPrefixListBox.SelectedItem);
+                .FirstOrDefault(cn => cn.CompositionCatalog.Prefix == (string)inputPage.CompositionCollectionCatalogPrefixListBox.SelectedItem);
             inputPage.CompositionCollectionCatalogNumberTextBox.Text = catalogNumber == null ? null : catalogNumber.Number;
             inputPage.CompositionCollectionCatalogNumberTextBox.IsEnabled = true;
 

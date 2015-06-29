@@ -565,7 +565,7 @@
                              Drop="ComposerImageListBox_Drop"
                              IsEnabled="False">
                         <ListBox.CommandBindings>
-                            <CommandBinding Command="{x:Static ApplicationCommands.Delete}" Executed="Executed_ComposerImageDeleteCommand" />
+                            <CommandBinding Command="{x:Static ApplicationCommands.Delete}" Executed="ComposerImageDeleteCommand_Executed" />
                         </ListBox.CommandBindings>
                         <ListBox.Template>
                             <ControlTemplate TargetType="{x:Type ListBox}">
@@ -624,7 +624,7 @@
                         <c:AutoCompleteBox x:Name="ComposerBirthLocationAutoCompleteBox"
                                            Style="{StaticResource FieldStyle}"
                                            TabIndex="2"
-                                           TextBoxBase.TextChanged="TextChanged_ComposerBirthLocationAutoCompleteBox" />
+                                           TextBoxBase.TextChanged="ComposerBirthLocationAutoCompleteBox_TextChanged" />
                     </c:DoubleBorderDecorator>
                     <TextBlock Grid.Row="16"
                                Grid.Column="4"
@@ -637,7 +637,7 @@
                         <c:AutoCompleteBox x:Name="ComposerDeathLocationAutoCompleteBox"
                                            Style="{StaticResource FieldStyle}"
                                            TabIndex="3"
-                                           TextBoxBase.TextChanged="TextChanged_ComposerDeathLocationAutoCompleteBox" />
+                                           TextBoxBase.TextChanged="ComposerDeathLocationAutoCompleteBox_TextChanged" />
                     </c:DoubleBorderDecorator>
                     <TextBlock Grid.Row="20"
                                Grid.Column="4"
