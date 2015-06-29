@@ -209,9 +209,7 @@ namespace NathanHarrenstein.ComposerTimeline
         {
             if (ComposerImageListBox.IsEnabled)
             {
-                var composer = (Composer)ComposerListBox.SelectedItem;
-
-                composer.ComposerImages.Remove((ComposerImage)ComposerImageListBox.SelectedItem);
+                ((Composer)ComposerListBox.SelectedItem).ComposerImages.Remove((ComposerImage)ComposerImageListBox.SelectedItem);
             }
         }
 
@@ -250,9 +248,7 @@ namespace NathanHarrenstein.ComposerTimeline
         {
             if (ComposerInfluenceListBox.IsEnabled)
             {
-                var composer = (Composer)ComposerListBox.SelectedItem;
-
-                composer.Influences.Remove((Composer)ComposerInfluenceListBox.SelectedItem);
+                ((Composer)ComposerListBox.SelectedItem).Influences.Remove((Composer)ComposerInfluenceListBox.SelectedItem);
             }
         }
 
@@ -260,8 +256,7 @@ namespace NathanHarrenstein.ComposerTimeline
         {
             if (ComposerInfluenceListBox.IsEnabled && _currentComposers.Count == 1)
             {
-                var influence = (Composer)e.Data.GetData(typeof(Composer));
-                _currentComposers[0].Influences.Add(influence);
+                _currentComposers[0].Influences.Add((Composer)e.Data.GetData(typeof(Composer)));
 
                 ComposerInfluenceListBox.ItemsSource = new List<Composer>(_currentComposers[0].Influences);
             }

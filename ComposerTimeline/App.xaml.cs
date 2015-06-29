@@ -1,5 +1,5 @@
 ﻿using Database;
-using System.Data.Common;
+using System;
 using System.Windows;
 
 namespace NathanHarrenstein.ComposerTimeline
@@ -10,9 +10,16 @@ namespace NathanHarrenstein.ComposerTimeline
 
         protected override void OnStartup(StartupEventArgs e)
         {
+            AppDomain.CurrentDomain.FirstChanceException += CurrentDomain_FirstChanceException;
+
             DataProvider = new DataProvider();
 
             base.OnStartup(e);
+        }
+
+        private void CurrentDomain_FirstChanceException(object sender, System.Runtime.ExceptionServices.FirstChanceExceptionEventArgs e)
+        {
+            DataProvider.Dispose();
         }
 
         protected override void OnExit(ExitEventArgs e)
