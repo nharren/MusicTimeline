@@ -1082,44 +1082,64 @@
                 </Grid>
                 <Grid Name="MovementSection" Grid.Row="6">
                     <Grid.RowDefinitions>
-                        <!--  Section Header (0)  -->
+                        <!--  0. Section Header  -->
                         <RowDefinition Height="Auto" />
-                        <!--  Space (1)  -->
+                        <!--  1. Space  -->
                         <RowDefinition Height="2" />
-                        <!--  Section Header Rule (2)  -->
+                        <!--  2. Section Header Rule  -->
                         <RowDefinition Height="1" />
-                        <!--  Space (3)  -->
+                        <!--  3. Space  -->
                         <RowDefinition Height="20" />
-                        <!--  Field Header (4)  -->
+                        <!--  4. Field 1 Header  -->
                         <RowDefinition Height="18" />
-                        <!--  Space (5)  -->
+                        <!--  5. Space  -->
                         <RowDefinition Height="3" />
-                        <!--  Field 1 (6)  -->
+                        <!--  6. Field 1  -->
                         <RowDefinition Height="32" />
-                        <RowDefinition Height="60" />
+                        <!--  7. Space  -->
+                        <RowDefinition Height="10" />
+                        <!--  8. Field 2 Header  -->
+                        <RowDefinition Height="18" />
+                        <!--  9. Space  -->
+                        <RowDefinition Height="3" />
+                        <!--  10. Field 2  -->
+                        <RowDefinition Height="32" />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
+                        <!--  1. Field 1  -->
                         <ColumnDefinition Width="10" />
+                        <!--  2. Field 1 Header  -->
                         <ColumnDefinition Width="244" />
+                        <!--  3. Space  -->
                         <ColumnDefinition Width="20" />
+                        <!--  4. Field 2  -->
                         <ColumnDefinition Width="10" />
-                        <ColumnDefinition Width="60" />
+                        <!--  5. Field 2 Header  -->
+                        <ColumnDefinition Width="107" />
+                        <!--  6. Space  -->
                         <ColumnDefinition Width="20" />
+                        <!--  7. Field 3  -->
                         <ColumnDefinition Width="10" />
+                        <!--  8. Field 3 Header  -->
+                        <ColumnDefinition Width="107" />
+                        <!--  6. Space  -->
+                        <ColumnDefinition Width="20" />
+                        <!--  7. Field 4  -->
+                        <ColumnDefinition Width="10" />
+                        <!--  8. Field 4 Header  -->
                         <ColumnDefinition Width="244" />
-                        <ColumnDefinition />
                     </Grid.ColumnDefinitions>
                     <TextBlock Grid.ColumnSpan="9"
                                Style="{StaticResource SectionHeaderStyle}"
                                Text="Movements" />
                     <Rectangle Grid.Row="2"
-                               Grid.ColumnSpan="9"
+                               Grid.ColumnSpan="11"
                                Height="1"
                                Fill="#FF758287"
                                StrokeThickness="0" />
                     <ListBox x:Name="MovementListBox"
                              Grid.Row="4"
-                             Grid.RowSpan="4"
+                             Grid.RowSpan="7"
                              Grid.ColumnSpan="2"
                              AllowDrop="True"
                              Background="#FF42474B"
@@ -1146,13 +1166,18 @@
                     </ListBox>
                     <TextBlock Grid.Row="4"
                                Grid.Column="4"
-                               Style="{StaticResource FieldHeaderStyle}"
-                               Text="Number:" />
-                    <TextBlock Grid.Row="4"
-                               Grid.Column="7"
+                               Grid.ColumnSpan="4"
                                Style="{StaticResource FieldHeaderStyle}"
                                Text="Name:" />
-                    <c:DoubleBorderDecorator Grid.Row="6"
+                    <TextBox x:Name="MovementNameTextBox"
+                             Grid.Row="6"
+                             Grid.Column="3"
+                             Grid.ColumnSpan="5" />
+                    <TextBlock Grid.Row="8"
+                               Grid.Column="4"
+                               Style="{StaticResource FieldHeaderStyle}"
+                               Text="Number:" />
+                    <c:DoubleBorderDecorator Grid.Row="10"
                                              Grid.Column="3"
                                              Grid.ColumnSpan="2"
                                              Style="{StaticResource FieldBorderStyle}">
@@ -1161,18 +1186,6 @@
                                      MaxLength="2"
                                      Style="{StaticResource FieldStyle}"
                                      TextAlignment="Center" />
-                    </c:DoubleBorderDecorator>
-                    <c:DoubleBorderDecorator Grid.Row="6"
-                                             Grid.Column="6"
-                                             Grid.ColumnSpan="2"
-                                             Style="{StaticResource FieldBorderStyle}">
-                        <c:AutoCompleteBox x:Name="MovementNameAutoCompleteBox" Style="{StaticResource FieldStyle}">
-                            <c:AutoCompleteBox.SuggestionTemplate>
-                                <DataTemplate DataType="{x:Type d:Movement}">
-                                    <TextBlock Text="{Binding Name}" />
-                                </DataTemplate>
-                            </c:AutoCompleteBox.SuggestionTemplate>
-                        </c:AutoCompleteBox>
                     </c:DoubleBorderDecorator>
                 </Grid>
                 <Grid Name="RecordingSection" Grid.Row="8">

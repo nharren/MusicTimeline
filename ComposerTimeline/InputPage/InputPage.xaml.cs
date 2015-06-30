@@ -263,28 +263,28 @@ namespace NathanHarrenstein.ComposerTimeline
         public void ClearMovementSection()
         {
             MovementNumberBox.Text = null;
-            MovementNameAutoCompleteBox.Text = null;
+            MovementNameTextBox.Text = null;
             RecordingListBox.ItemsSource = null;
         }
 
         public void DisableMovementSection()
         {
             MovementNumberBox.IsEnabled = false;
-            MovementNameAutoCompleteBox.IsEnabled = false;
+            MovementNameTextBox.IsEnabled = false;
             RecordingListBox.IsEnabled = false;
         }
 
         public void EnableMovementSection()
         {
             MovementNumberBox.IsEnabled = true;
-            MovementNameAutoCompleteBox.IsEnabled = true;
+            MovementNameTextBox.IsEnabled = true;
             RecordingListBox.IsEnabled = true;
         }
 
         public void LoadMovementSection()
         {
             MovementNumberBox.SetBinding(TextBox.TextProperty, BindingUtility.Create(_currentMovement, "Number"));
-            MovementNameAutoCompleteBox.SetBinding(AutoCompleteBox.TextProperty, BindingUtility.Create(_currentMovement, "Name"));
+            MovementNameTextBox.SetBinding(TextBox.TextProperty, BindingUtility.Create(_currentMovement, "Name"));
             RecordingListBox.ItemsSource = new List<Recording>(_currentMovement.Recordings);
         }
 
