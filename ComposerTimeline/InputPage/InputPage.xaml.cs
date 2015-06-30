@@ -176,6 +176,10 @@ namespace NathanHarrenstein.ComposerTimeline
                 DisableCompositionCollectionSection();
                 ClearCompositionCollectionSection();
 
+                _currentComposition = null;
+
+                RefreshCompositionSection();
+
                 return;
             }
 
@@ -241,6 +245,10 @@ namespace NathanHarrenstein.ComposerTimeline
                 DisableCompositionSection();
                 ClearCompositionSection();
 
+                _currentMovement = null;
+
+                RefreshMovementSection();
+
                 return;
             }
 
@@ -252,6 +260,13 @@ namespace NathanHarrenstein.ComposerTimeline
 
         #region Movement Section Methods
 
+        public void ClearMovementSection()
+        {
+            MovementNumberBox.Text = null;
+            MovementNameAutoCompleteBox.Text = null;
+            RecordingListBox.ItemsSource = null;
+        }
+
         public void DisableMovementSection()
         {
             MovementNumberBox.IsEnabled = false;
@@ -259,11 +274,18 @@ namespace NathanHarrenstein.ComposerTimeline
             RecordingListBox.IsEnabled = false;
         }
 
-        public void ClearMovementSection()
+        public void EnableMovementSection()
         {
-            MovementNumberBox.Text = null;
-            MovementNameAutoCompleteBox.Text = null;
-            RecordingListBox.ItemsSource = null;
+            MovementNumberBox.IsEnabled = true;
+            MovementNameAutoCompleteBox.IsEnabled = true;
+            RecordingListBox.IsEnabled = true;
+        }
+
+        public void LoadMovementSection()
+        {
+            MovementNumberBox.SetBinding(TextBox.TextProperty, BindingUtility.Create(_currentMovement, "Number"));
+            MovementNameAutoCompleteBox.SetBinding(AutoCompleteBox.TextProperty, BindingUtility.Create(_currentMovement, "Name"));
+            RecordingListBox.ItemsSource = new List<Recording>(_currentMovement.Recordings);
         }
 
         public void RefreshMovementSection()
@@ -284,32 +306,9 @@ namespace NathanHarrenstein.ComposerTimeline
             EnableMovementSection();
         }
 
-        public void LoadMovementSection()
-        {
-            MovementNumberBox.SetBinding(TextBox.TextProperty, BindingUtility.Create(_currentMovement, "Number"));
-            MovementNameAutoCompleteBox.SetBinding(AutoCompleteBox.TextProperty, BindingUtility.Create(_currentMovement, "Name"));
-            RecordingListBox.ItemsSource = new List<Recording>(_currentMovement.Recordings);
-        }
-
-        public void EnableMovementSection()
-        {
-            MovementNumberBox.IsEnabled = true;
-            MovementNameAutoCompleteBox.IsEnabled = true;
-            RecordingListBox.IsEnabled = true;
-        }
-
         #endregion Movement Section Methods
 
         #region Recording Section Methods
-
-        public void DisableRecordingSection()
-        {
-            RecordingPerformerListBox.IsEnabled = false;
-            RecordingAlbumAutoCompleteBox.IsEnabled = false;
-            RecordingTrackNumberBox.IsEnabled = false;
-            RecordingDatesTextBox.IsEnabled = false;
-            RecordingLocationAutoCompleteBox.IsEnabled = false;
-        }
 
         public void ClearRecordingSection()
         {
@@ -320,18 +319,22 @@ namespace NathanHarrenstein.ComposerTimeline
             RecordingLocationAutoCompleteBox.Text = null;
         }
 
-        public void RefreshRecordingSection()
+        public void DisableRecordingSection()
         {
-            if (_currentRecording == null)
-            {
-                DisableRecordingSection();
-                ClearRecordingSection();
+            RecordingPerformerListBox.IsEnabled = false;
+            RecordingAlbumAutoCompleteBox.IsEnabled = false;
+            RecordingTrackNumberBox.IsEnabled = false;
+            RecordingDatesTextBox.IsEnabled = false;
+            RecordingLocationAutoCompleteBox.IsEnabled = false;
+        }
 
-                return;
-            }
-
-            LoadRecordingSection();
-            EnableRecordingSection();
+        public void EnableRecordingSection()
+        {
+            RecordingPerformerListBox.IsEnabled = true;
+            RecordingAlbumAutoCompleteBox.IsEnabled = true;
+            RecordingTrackNumberBox.IsEnabled = true;
+            RecordingDatesTextBox.IsEnabled = true;
+            RecordingLocationAutoCompleteBox.IsEnabled = true;
         }
 
         public void LoadRecordingSection()
@@ -352,13 +355,18 @@ namespace NathanHarrenstein.ComposerTimeline
             }
         }
 
-        public void EnableRecordingSection()
+        public void RefreshRecordingSection()
         {
-            RecordingPerformerListBox.IsEnabled = true;
-            RecordingAlbumAutoCompleteBox.IsEnabled = true;
-            RecordingTrackNumberBox.IsEnabled = true;
-            RecordingDatesTextBox.IsEnabled = true;
-            RecordingLocationAutoCompleteBox.IsEnabled = true;
+            if (_currentRecording == null)
+            {
+                DisableRecordingSection();
+                ClearRecordingSection();
+
+                return;
+            }
+
+            LoadRecordingSection();
+            EnableRecordingSection();
         }
 
         #endregion Recording Section Methods

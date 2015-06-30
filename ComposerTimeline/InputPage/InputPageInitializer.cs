@@ -1,17 +1,12 @@
 ﻿using Database;
 using Luminescence.Xiph;
-using NathanHarrenstein.Controls;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data.Entity;
-using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Markup;
-using System.Xml;
 
 namespace NathanHarrenstein.ComposerTimeline
 {
@@ -19,53 +14,54 @@ namespace NathanHarrenstein.ComposerTimeline
     {
         public static void Initialize(InputPage inputPage)
         {
-            InitializeDataSets();
+            InitializeDataSources();
             InitializeListBoxes(inputPage);
-
-            Func<object, string> stringSelector = o =>
-            {
-                return ((Location)o).Name;
-            };
-
-            inputPage.ComposerBirthLocationAutoCompleteBox.StringSelector = inputPage.ComposerDeathLocationAutoCompleteBox.StringSelector = inputPage.RecordingLocationAutoCompleteBox.StringSelector = stringSelector;
-
-            var xamlString = "<DataTemplate xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\" xmlns:x=\"http://schemas.microsoft.com/winfx/2006/xaml\" xmlns:data=\"clr-namespace:Database;assembly=Database\" DataType=\"{x:Type data:Location}\">"
-                           + "<TextBlock Text=\"{Binding Name}\" />"
-                           + "</DataTemplate>";
-            var stringReader = new StringReader(xamlString);
-            var xmlReader = XmlReader.Create(stringReader);
-            inputPage.ComposerBirthLocationAutoCompleteBox.SuggestionTemplate = inputPage.ComposerDeathLocationAutoCompleteBox.SuggestionTemplate = inputPage.RecordingLocationAutoCompleteBox.SuggestionTemplate = (DataTemplate)XamlReader.Load(xmlReader);
+            InitializeAutoCompleteBoxes(inputPage);
         }
 
-        private static Recording GetRecording(string selectedFilePath)
+        private static Recording GetRecordingFromFilePath(string selectedFilePath)
         {
             var flacTagger = new FlacTagger(selectedFilePath);
-            var tags = flacTagger.GetAllTags();
-            List<string> recordingIDStrings;
+            var recordingIDTag = flacTagger.GetAllTags().FirstOrDefault(t => t.Key == "RecordingId");
+            string recordingIDString = null;
 
-            if (tags.TryGetValue("RecordingID", out recordingIDStrings))
+            if (recordingIDTag.Value.Count > 0)
             {
-                recordingIDStrings.FirstOrDefault();
+                recordingIDString = recordingIDTag.Value.First();
             }
 
-            App.DataProvider.Recordings.Load();
+            int recordingID;
 
-            if (recordingIDStrings != null)
+            if (int.TryParse(recordingIDString, out recordingID))
             {
-                var recordingID = int.Parse(recordingIDStrings[0]);
-
                 return App.DataProvider.Recordings.Local.First(r => r.ID == recordingID);
             }
 
             return null;
         }
 
-        private static void InitializeDataSets()
+        private static void InitializeAutoCompleteBoxes(InputPage inputPage)
+        {
+            var stringSelector = new Func<object, string>(o => ((Location)o).Name);
+
+            inputPage.ComposerBirthLocationAutoCompleteBox.StringSelector = stringSelector;
+            inputPage.ComposerDeathLocationAutoCompleteBox.StringSelector = stringSelector;
+            inputPage.RecordingLocationAutoCompleteBox.StringSelector = stringSelector;
+
+            var suggestionTemplate = (DataTemplate)inputPage.FindResource("SuggestionTemplate");
+
+            inputPage.ComposerBirthLocationAutoCompleteBox.SuggestionTemplate = suggestionTemplate;
+            inputPage.ComposerDeathLocationAutoCompleteBox.SuggestionTemplate = suggestionTemplate;
+            inputPage.RecordingLocationAutoCompleteBox.SuggestionTemplate = suggestionTemplate;
+        }
+
+        private static void InitializeDataSources()
         {
             App.DataProvider.Composers.Load();
             App.DataProvider.Nationalities.Load();
             App.DataProvider.Eras.Load();
             App.DataProvider.Locations.Load();
+            App.DataProvider.Recordings.Load();
         }
 
         private static void InitializeListBoxes(InputPage inputPage)

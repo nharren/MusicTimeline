@@ -386,6 +386,9 @@
                 </Setter>
             </Style.Setters>
         </Style>
+        <DataTemplate x:Key="SuggestionTemplate" DataType="{x:Type d:Location}">
+            <TextBlock Text="{Binding Name}" />
+        </DataTemplate>
     </Page.Resources>
     <ScrollViewer Background="#FF42474B">
         <Border Width="942"
