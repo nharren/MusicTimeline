@@ -57,6 +57,8 @@ namespace NathanHarrenstein.ComposerTimeline
 
         private static void InitializeDataSources()
         {
+            App.EnsureDbConnection();
+
             App.DataProvider.Composers.Load();
             App.DataProvider.Nationalities.Load();
             App.DataProvider.Eras.Load();

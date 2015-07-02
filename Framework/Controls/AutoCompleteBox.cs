@@ -21,6 +21,21 @@ namespace NathanHarrenstein.Controls
         private Popup _suggestionPopup;
         private TextBox _textBox;
 
+        public event TextChangedEventHandler TextChanged
+        {
+            add
+            {
+                AddHandler(TextChangedEvent, value);
+            }
+
+            remove
+            {
+                RemoveHandler(TextChangedEvent, value);
+            }
+        }
+
+        public static readonly RoutedEvent TextChangedEvent = TextBoxBase.TextChangedEvent.AddOwner(typeof(AutoCompleteBox));
+
         public AutoCompleteBox()
         {
             FocusVisualStyle = null;

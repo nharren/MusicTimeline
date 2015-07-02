@@ -628,7 +628,7 @@
                         <c:AutoCompleteBox x:Name="ComposerBirthLocationAutoCompleteBox"
                                            Style="{StaticResource FieldStyle}"
                                            TabIndex="2"
-                                           TextBoxBase.TextChanged="ComposerBirthLocationAutoCompleteBox_TextChanged" />
+                                           TextChanged="ComposerBirthLocationAutoCompleteBox_TextChanged" />
                     </c:DoubleBorderDecorator>
                     <TextBlock Grid.Row="16"
                                Grid.Column="4"
@@ -641,7 +641,7 @@
                         <c:AutoCompleteBox x:Name="ComposerDeathLocationAutoCompleteBox"
                                            Style="{StaticResource FieldStyle}"
                                            TabIndex="3"
-                                           TextBoxBase.TextChanged="ComposerDeathLocationAutoCompleteBox_TextChanged" />
+                                           TextChanged="ComposerDeathLocationAutoCompleteBox_TextChanged" />
                     </c:DoubleBorderDecorator>
                     <TextBlock Grid.Row="20"
                                Grid.Column="4"
@@ -861,7 +861,7 @@
                             <CommandBinding Command="{x:Static ApplicationCommands.Delete}" Executed="CompositionCollectionDeleteCommand_Executed" />
                         </ListBox.CommandBindings>
                         <ListBox.ItemTemplate>
-                            <DataTemplate DataType="{x:Type d:Composer}">
+                            <DataTemplate DataType="{x:Type d:CompositionCollection}">
                                 <TextBlock FontSize="14.667"
                                            Foreground="#FFC8CDD1"
                                            Text="{Binding Name}">
@@ -1002,7 +1002,7 @@
                             <CommandBinding Command="{x:Static ApplicationCommands.Delete}" Executed="CompositionDeleteCommand_Executed" />
                         </ListBox.CommandBindings>
                         <ListBox.ItemTemplate>
-                            <DataTemplate DataType="{x:Type d:Composer}">
+                            <DataTemplate DataType="{x:Type d:Composition}">
                                 <TextBlock FontSize="14.667"
                                            Foreground="#FFC8CDD1"
                                            Text="{Binding Name}">
@@ -1115,13 +1115,13 @@
                         <!--  4. Field 2  -->
                         <ColumnDefinition Width="10" />
                         <!--  5. Field 2 Header  -->
-                        <ColumnDefinition Width="107" />
+                        <ColumnDefinition Width="53.5" />
                         <!--  6. Space  -->
                         <ColumnDefinition Width="20" />
                         <!--  7. Field 3  -->
                         <ColumnDefinition Width="10" />
                         <!--  8. Field 3 Header  -->
-                        <ColumnDefinition Width="107" />
+                        <ColumnDefinition Width="160.5" />
                         <!--  6. Space  -->
                         <ColumnDefinition Width="20" />
                         <!--  7. Field 4  -->
@@ -1148,10 +1148,10 @@
                              SelectionChanged="MovementListBox_SelectionChanged"
                              SelectionMode="Extended">
                         <ListBox.CommandBindings>
-                            <CommandBinding Command="{x:Static ApplicationCommands.Delete}" Executed="CompositionCollectionDeleteCommand_Executed" />
+                            <CommandBinding Command="{x:Static ApplicationCommands.Delete}" Executed="MovementDeleteCommand_Executed" />
                         </ListBox.CommandBindings>
                         <ListBox.ItemTemplate>
-                            <DataTemplate DataType="{x:Type d:Composer}">
+                            <DataTemplate DataType="{x:Type d:Movement}">
                                 <TextBlock FontSize="14.667"
                                            Foreground="#FFC8CDD1"
                                            Text="{Binding Name}">
@@ -1190,67 +1190,76 @@
                 </Grid>
                 <Grid Name="RecordingSection" Grid.Row="8">
                     <Grid.RowDefinitions>
-                        <!--  Section Header (0)  -->
+                        <!--  0. Section Header  -->
                         <RowDefinition Height="Auto" />
-                        <!--  Space (1)  -->
+                        <!--  1. Space  -->
                         <RowDefinition Height="2" />
-                        <!--  Section Header Rule (2)  -->
+                        <!--  2. Section Header Rule  -->
                         <RowDefinition Height="1" />
-                        <!--  Space (3)  -->
+                        <!--  3. Space  -->
                         <RowDefinition Height="20" />
-                        <!--  Field Header (4)  -->
+                        <!--  4. Field 1 Header  -->
                         <RowDefinition Height="18" />
-                        <!--  Space (5)  -->
+                        <!--  5. Space  -->
                         <RowDefinition Height="3" />
-                        <!--  Field 1 (6)  -->
+                        <!--  6. Field 1  -->
                         <RowDefinition Height="32" />
-                        <!--  Space (7)  -->
+                        <!--  7. Space  -->
                         <RowDefinition Height="10" />
-                        <!--  Field Header (8)  -->
+                        <!--  8. Field 2 Header  -->
                         <RowDefinition Height="18" />
-                        <!--  Space (9)  -->
+                        <!--  9. Space  -->
                         <RowDefinition Height="3" />
-                        <!--  Field 2 (10)  -->
+                        <!--  10. Field 2  -->
                         <RowDefinition Height="32" />
-                        <!--  Space (11)  -->
+                        <!--  11. Space  -->
                         <RowDefinition Height="10" />
-                        <!--  Field Header (12)  -->
+                        <!--  12. Field 3 Header  -->
                         <RowDefinition Height="18" />
-                        <!--  Space (13)  -->
+                        <!--  13. Space  -->
                         <RowDefinition Height="3" />
-                        <!--  Field 3 (14)  -->
+                        <!--  14. Field 3  -->
                         <RowDefinition Height="32" />
-                        <!--  Space (11)  -->
+                        <!--  15. Space  -->
                         <RowDefinition Height="10" />
-                        <!--  Field Header (12)  -->
+                        <!--  16. Field 4 Header  -->
                         <RowDefinition Height="18" />
-                        <!--  Space (13)  -->
+                        <!--  17. Space  -->
                         <RowDefinition Height="3" />
-                        <!--  Field 3 (14)  -->
+                        <!--  18. Field 4  -->
                         <RowDefinition Height="32" />
-                        <!--  Space (11)  -->
+                        <!--  19. Space  -->
                         <RowDefinition Height="10" />
-                        <!--  Field Header (12)  -->
+                        <!--  20. Field 5 Header  -->
                         <RowDefinition Height="18" />
-                        <!--  Space (13)  -->
+                        <!--  21. Space  -->
                         <RowDefinition Height="3" />
-                        <!--  Field 3 (14)  -->
+                        <!--  22. Field 5  -->
                         <RowDefinition Height="32" />
                     </Grid.RowDefinitions>
                     <Grid.ColumnDefinitions>
+                        <!--  1. Field 1  -->
                         <ColumnDefinition Width="10" />
-                        <ColumnDefinition Width="122" />
+                        <!--  2. Field 1 Header  -->
+                        <ColumnDefinition Width="107" />
+                        <!--  3. Space  -->
                         <ColumnDefinition Width="20" />
+                        <!--  4. Field 2  -->
                         <ColumnDefinition Width="10" />
-                        <ColumnDefinition Width="92" />
+                        <!--  5. Field 2 Header  -->
+                        <ColumnDefinition Width="107" />
+                        <!--  6. Space  -->
                         <ColumnDefinition Width="20" />
+                        <!--  7. Field 3  -->
                         <ColumnDefinition Width="10" />
+                        <!--  8. Field 3 Header  -->
                         <ColumnDefinition Width="244" />
+                        <!--  6. Space  -->
                         <ColumnDefinition Width="20" />
+                        <!--  7. Field 4  -->
                         <ColumnDefinition Width="10" />
-                        <ColumnDefinition Width="138" />
-                        <ColumnDefinition Width="10" />
-                        <ColumnDefinition Width="94" />
+                        <!--  8. Field 4 Header  -->
+                        <ColumnDefinition Width="244" />
                     </Grid.ColumnDefinitions>
                     <TextBlock Grid.ColumnSpan="13"
                                Style="{StaticResource SectionHeaderStyle}"
@@ -1270,13 +1279,13 @@
                              SelectionChanged="RecordingListBox_SelectionChanged"
                              SelectionMode="Extended">
                         <ListBox.CommandBindings>
-                            <CommandBinding Command="{x:Static ApplicationCommands.Delete}" Executed="CompositionCollectionDeleteCommand_Executed" />
+                            <CommandBinding Command="{x:Static ApplicationCommands.Delete}" Executed="RecordingDeleteCommand_Executed" />
                         </ListBox.CommandBindings>
                         <ListBox.ItemTemplate>
-                            <DataTemplate DataType="{x:Type d:Composer}">
+                            <DataTemplate DataType="{x:Type d:Recording}">
                                 <TextBlock FontSize="14.667"
                                            Foreground="#FFC8CDD1"
-                                           Text="{Binding Name}">
+                                           Text="{Binding ID}">
                                     <TextBlock.ContextMenu>
                                         <ContextMenu>
                                             <MenuItem Command="{x:Static ApplicationCommands.Delete}" />
@@ -1295,14 +1304,25 @@
                              Grid.RowSpan="17"
                              Grid.Column="10"
                              Grid.ColumnSpan="3"
+                             AllowDrop="True"
                              Background="#FF42474B"
                              BorderThickness="0"
+                             Drop="RecordingPerformerListBox_Drop"
                              SelectionMode="Extended">
+                        <ListBox.CommandBindings>
+                            <CommandBinding Command="{x:Static ApplicationCommands.Delete}" Executed="RecordingPerformerDeleteCommand_Executed" />
+                        </ListBox.CommandBindings>
                         <ListBox.ItemTemplate>
-                            <DataTemplate DataType="{x:Type d:Era}">
+                            <DataTemplate DataType="{x:Type d:Performer}">
                                 <TextBlock FontSize="14.667"
                                            Foreground="#FFC8CDD1"
-                                           Text="{Binding Name}" />
+                                           Text="{Binding Name}">
+                                    <TextBlock.ContextMenu>
+                                        <ContextMenu>
+                                            <MenuItem Command="{x:Static ApplicationCommands.Delete}" />
+                                        </ContextMenu>
+                                    </TextBlock.ContextMenu>
+                                </TextBlock>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>
@@ -1310,13 +1330,10 @@
                                Grid.Column="1"
                                Style="{StaticResource FieldHeaderStyle}"
                                Text="Path:" />
-                    <c:DoubleBorderDecorator Grid.Row="14"
-                                             Grid.ColumnSpan="8"
-                                             Style="{StaticResource FieldBorderStyle}">
-                        <TextBox x:Name="RecordingPathTextBox"
-                                 IsTabStop="False"
-                                 Style="{StaticResource FieldStyle}" />
-                    </c:DoubleBorderDecorator>
+                    <TextBox x:Name="RecordingPathTextBox"
+                             Grid.Row="14"
+                             Grid.ColumnSpan="8"
+                             IsTabStop="False" />
                     <TextBlock Grid.Row="16"
                                Grid.Column="1"
                                Style="{StaticResource FieldHeaderStyle}"
@@ -1340,7 +1357,8 @@
                                              Style="{StaticResource FieldBorderStyle}">
                         <c:AutoCompleteBox x:Name="RecordingAlbumAutoCompleteBox"
                                            IsTabStop="False"
-                                           Style="{StaticResource FieldStyle}" />
+                                           Style="{StaticResource FieldStyle}"
+                                           TextChanged="RecordingAlbumAutoCompleteBox_TextChanged" />
                     </c:DoubleBorderDecorator>
                     <TextBlock Grid.Row="20"
                                Grid.Column="1"
@@ -1352,18 +1370,17 @@
                                Grid.ColumnSpan="2"
                                Style="{StaticResource FieldHeaderStyle}"
                                Text="Location:" />
-                    <c:DoubleBorderDecorator Grid.Row="22"
-                                             Grid.ColumnSpan="5"
-                                             Style="{StaticResource FieldBorderStyle}">
-                        <TextBox x:Name="RecordingDatesTextBox" Style="{StaticResource FieldStyle}" />
-                    </c:DoubleBorderDecorator>
+                    <TextBox x:Name="RecordingDatesTextBox"
+                             Grid.Row="22"
+                             Grid.ColumnSpan="5" />
                     <c:DoubleBorderDecorator Grid.Row="22"
                                              Grid.Column="6"
                                              Grid.ColumnSpan="2"
                                              Style="{StaticResource FieldBorderStyle}">
                         <c:AutoCompleteBox x:Name="RecordingLocationAutoCompleteBox"
                                            IsTabStop="False"
-                                           Style="{StaticResource FieldStyle}" />
+                                           Style="{StaticResource FieldStyle}"
+                                           TextChanged="RecordingLocationAutoCompleteBox_TextChanged" />
                     </c:DoubleBorderDecorator>
                 </Grid>
                 <Grid Name="StatusAndButtonSection" Grid.Row="10">

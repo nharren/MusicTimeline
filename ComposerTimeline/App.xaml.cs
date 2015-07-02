@@ -28,5 +28,13 @@ namespace NathanHarrenstein.ComposerTimeline
 
             base.OnExit(e);
         }
+
+        internal static void EnsureDbConnection()
+        {
+            if (DataProvider.Database.Connection.State != System.Data.ConnectionState.Open)
+            {
+                DataProvider.Database.Connection.Open();
+            }
+        }
     }
 }
