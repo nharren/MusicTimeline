@@ -1,20 +1,21 @@
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace NathanHarrenstein.LibraryDb
+namespace LibraryDb
 {
-    [Table("recording")]
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
+    using System.Data.Entity.Spatial;
+
+    [Table("Recording")]
     public partial class Recording
     {
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        [Column("id")]
         public int ID { get; set; }
 
-        [Column("mdbid")]
         public int MDBID { get; set; }
 
-        [Column("path", TypeName = "text")]
         [Required]
-        public string Path { get; set; }
+        [StringLength(260)]
+        public string FilePath { get; set; }
     }
 }

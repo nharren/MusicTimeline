@@ -1,3 +1,4 @@
+using System.Collections.ObjectModel;
 using System.Data.Entity;
 
 namespace NathanHarrenstein.MusicDb
@@ -7,22 +8,35 @@ namespace NathanHarrenstein.MusicDb
         public DataProvider()
             : base("name=DataProvider")
         {
-            System.Data.Entity.Database.SetInitializer<DataProvider>(null);
+            Database.SetInitializer<DataProvider>(null);
         }
 
         public virtual DbSet<Album> Albums { get; set; }
+
         public virtual DbSet<CatalogNumber> CatalogNumbers { get; set; }
+
         public virtual DbSet<Composer> Composers { get; set; }
+
         public virtual DbSet<ComposerImage> ComposerImages { get; set; }
+
         public virtual DbSet<ComposerLink> ComposerLinks { get; set; }
+
         public virtual DbSet<Composition> Compositions { get; set; }
+
         public virtual DbSet<CompositionCatalog> CompositionCatalogs { get; set; }
+
         public virtual DbSet<CompositionCollection> CompositionCollections { get; set; }
+
         public virtual DbSet<Era> Eras { get; set; }
+
         public virtual DbSet<Location> Locations { get; set; }
+
         public virtual DbSet<Movement> Movements { get; set; }
+
         public virtual DbSet<Nationality> Nationalities { get; set; }
+
         public virtual DbSet<Performer> Performers { get; set; }
+
         public virtual DbSet<Recording> Recordings { get; set; }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

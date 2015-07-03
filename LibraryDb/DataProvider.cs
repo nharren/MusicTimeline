@@ -1,11 +1,14 @@
-using System.Data.Entity;
-
-namespace NathanHarrenstein.LibraryDb
+namespace LibraryDb
 {
+    using System;
+    using System.ComponentModel.DataAnnotations.Schema;
+    using System.Data.Entity;
+    using System.Linq;
+
     public partial class DataProvider : DbContext
     {
         public DataProvider()
-            : base("name=DataProvider")
+            : base("name=DataProvider1")
         {
         }
 
@@ -14,8 +17,49 @@ namespace NathanHarrenstein.LibraryDb
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Recording>()
-                .Property(e => e.Path)
+                .Property(e => e.FilePath)
                 .IsUnicode(false);
+        }
+
+        public static void Add(int mdbid, string path)
+        {
+            using (var dataProvider = new DataProvider())
+            {
+                var recording = new Recording();
+                recording.ID = dataProvider.Recordings.Count();
+                recording.MDBID = mdbid;
+                recording.FilePath = path;
+
+                dataProvider.Recordings.Add(recording);
+                dataProvider.SaveChanges();
+            }
+        }
+
+        public static string[] Get(int mdbid)
+        {
+            using (var dataProvider = new DataProvider())
+            {
+                return dataProvider.Recordings
+                    .Where(r => r.MDBID == mdbid)
+                    .Select(r => r.FilePath)
+                    .ToArray();
+            }
+        }
+
+        public static string[] GetAll()
+        {
+            using (var dataProvider = new DataProvider())
+            {
+                return dataProvider.Recordings.Local.Select(r => r.FilePath).ToArray();
+            }
+        }
+
+        public static bool Has(string path)
+        {
+            using (var dataProvider = new DataProvider())
+            {
+                return dataProvider.Recordings.Any(r => r.FilePath == path);
+            }
         }
     }
 }

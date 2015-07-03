@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("NathanHarrenstein.LibraryDb")]
+[assembly: AssemblyTitle("LibraryDb")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("NathanHarrenstein.LibraryDb")]
+[assembly: AssemblyProduct("LibraryDb")]
 [assembly: AssemblyCopyright("Copyright ©  2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("4356d592-3b1a-4cac-8481-523c7a52aacb")]
+[assembly: Guid("0ba043e6-3d96-4d32-8a2e-c54de859d59f")]
 
 // Version information for an assembly consists of the following four values:
 //

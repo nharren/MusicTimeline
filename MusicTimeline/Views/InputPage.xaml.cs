@@ -1,9 +1,9 @@
-﻿using NathanHarrenstein.MusicTimeline.Converters;
+﻿using NathanHarrenstein.MusicDb;
+using NathanHarrenstein.MusicTimeline.Converters;
 using NathanHarrenstein.MusicTimeline.Extensions;
 using NathanHarrenstein.MusicTimeline.Initializers;
 using NathanHarrenstein.MusicTimeline.Models;
 using NathanHarrenstein.MusicTimeline.Utilities;
-using NathanHarrenstein.MusicDb;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
@@ -164,8 +164,6 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
         public void LoadCompositionCollectionSection()
         {
-            App.EnsureDbConnection();
-
             CompositionCollectionNameTextBox.SetBinding(TextBox.TextProperty, BindingUtility.Create(_currentCompositionCollection, "Name"));
             CompositionCollectionCatalogPrefixListBox.SetBinding(ItemsControl.ItemsSourceProperty, BindingUtility.Create(_currentCompositionCollection.Composers.SelectMany(c => c.CompositionCatalogs), "Prefix", "Prefix"));
             CompositionCollectionCatalogNumberTextBox.Text = _currentCompositionCollection.CatalogNumbers.FirstOrDefault(cn => cn.CompositionCatalog.Prefix == (string)CompositionCollectionCatalogPrefixListBox.SelectedItem)?.Number;
@@ -338,23 +336,13 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
         public void LoadRecordingSection()
         {
-            App.EnsureDbConnection();
-
-            RecordingPerformerListBox.ItemsSource = new List<Performer>(App.DataProvider.Performers);
-            ListUtility.AddMany(RecordingPerformerListBox.SelectedItems, _currentRecording.Performers);
-
-            if (_currentRecording.Album != null)
-            {
-                RecordingAlbumAutoCompleteBox.Text = _currentRecording.Album.Name;
-            }
-
+            RecordingPerformerListBox.SetBinding(ItemsControl.ItemsSourceProperty, BindingUtility.Create(App.DataProvider.Performers.Local, null, "Name"));
+            RecordingAlbumAutoCompleteBox.Text = _currentRecording.Album?.Name;
             RecordingTrackNumberBox.SetBinding(TextBox.TextProperty, BindingUtility.Create(_currentRecording, "TrackNumber"));
             RecordingDatesTextBox.SetBinding(TextBox.TextProperty, BindingUtility.Create(_currentRecording, "Dates"));
+            RecordingLocationAutoCompleteBox.Text = _currentRecording.Location?.Name;
 
-            if (_currentRecording.Location != null)
-            {
-                RecordingLocationAutoCompleteBox.Text = _currentRecording.Location.Name;
-            }
+            ListUtility.AddMany(RecordingPerformerListBox.SelectedItems, _currentRecording.Performers);
         }
 
         public void RefreshRecordingSection()
@@ -644,10 +632,8 @@ namespace NathanHarrenstein.MusicTimeline.Views
             if (ComposerListBox.IsEnabled)
             {
                 var clickedElement = e.OriginalSource as FrameworkElement;
-                var exists = clickedElement != null;
-                var notScrollBar = !(clickedElement is Thumb);
 
-                if (exists && notScrollBar)
+                if (clickedElement != null && !(clickedElement is Thumb))
                 {
                     ComposerListBox.SelectedItem = clickedElement.DataContext;
                 }
@@ -1125,9 +1111,12 @@ namespace NathanHarrenstein.MusicTimeline.Views
                 return;
             }
 
-            LibraryDb.DataProvider.Add(App.DataProvider.Recordings.Count(), recordingPath);
+            var recordingId = App.DataProvider.Recordings.Count();
+
+            LibraryDb.DataProvider.Add(recordingId, recordingPath);
 
             _currentRecording = new Recording();
+            _currentRecording.ID = recordingId;
 
             if (_currentMovement != null)
             {
@@ -1198,7 +1187,6 @@ namespace NathanHarrenstein.MusicTimeline.Views
                 _currentRecording.Performers.Add(performer);
                 App.DataProvider.Performers.Add(performer);
 
-                RecordingPerformerListBox.ItemsSource = new List<Performer>(App.DataProvider.Performers);
                 RecordingPerformerListBox.SelectedItem = performer;
             }
         }

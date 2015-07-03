@@ -158,7 +158,6 @@ namespace NathanHarrenstein.MusicTimeline.Initializers
 
         private static List<Flag> GetFlags(Composer composer)
         {
-            App.EnsureDbConnection();
             return composer.Nationalities
                 .Select(n => FlagProvider.GetFlag(n.Name, FlagSize.Small))
                 .DefaultIfEmpty(FlagProvider.GetFlag(null, FlagSize.Small))

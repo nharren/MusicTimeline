@@ -1,5 +1,5 @@
-﻿using NathanHarrenstein.MusicDb;
-using Luminescence.Xiph;
+﻿using Luminescence.Xiph;
+using NathanHarrenstein.MusicDb;
 using NathanHarrenstein.MusicTimeline.Utilities;
 using NathanHarrenstein.MusicTimeline.Views;
 using System;
@@ -61,13 +61,12 @@ namespace NathanHarrenstein.MusicTimeline.Initializers
 
         private static void InitializeDataSources()
         {
-            App.EnsureDbConnection();
-
             App.DataProvider.Composers.Load();
             App.DataProvider.Nationalities.Load();
             App.DataProvider.Eras.Load();
             App.DataProvider.Locations.Load();
             App.DataProvider.Recordings.Load();
+            App.DataProvider.Performers.Load();
         }
 
         private static void InitializeListBoxes(InputPage inputPage)

@@ -1,10 +1,10 @@
-﻿using System;
+﻿using NathanHarrenstein.MusicTimeline.Utilities;
+using System;
 using System.Collections;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
-using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 
@@ -14,12 +14,24 @@ namespace NathanHarrenstein.MusicTimeline.Controls
     {
         public static readonly DependencyProperty SuggestionsProperty = DependencyProperty.Register("Suggestions", typeof(IEnumerable), typeof(AutoCompleteBox), new FrameworkPropertyMetadata(null, FrameworkPropertyMetadataOptions.AffectsArrange));
         public static readonly DependencyProperty SuggestionTemplateProperty = DependencyProperty.Register("SuggestionTemplate", typeof(DataTemplate), typeof(AutoCompleteBox));
+        public static readonly RoutedEvent TextChangedEvent = TextBoxBase.TextChangedEvent.AddOwner(typeof(AutoCompleteBox));
         public static readonly DependencyProperty TextProperty = DependencyProperty.Register("Text", typeof(string), typeof(AutoCompleteBox));
         private Func<IEnumerable, IEnumerable> _filter;
         private Func<object, string> _stringSelector;
         private ListBox _suggestionlistBox;
         private Popup _suggestionPopup;
         private TextBox _textBox;
+
+        public AutoCompleteBox()
+        {
+            FocusVisualStyle = null;
+
+            InitializeTextBox();
+            InitializeSuggestionListBox();
+            InitializeSuggestionPopup();
+
+            SetBindings();
+        }
 
         public event TextChangedEventHandler TextChanged
         {
@@ -32,67 +44,6 @@ namespace NathanHarrenstein.MusicTimeline.Controls
             {
                 RemoveHandler(TextChangedEvent, value);
             }
-        }
-
-        public static readonly RoutedEvent TextChangedEvent = TextBoxBase.TextChangedEvent.AddOwner(typeof(AutoCompleteBox));
-
-        public AutoCompleteBox()
-        {
-            FocusVisualStyle = null;
-
-            _textBox = new TextBox();
-            _textBox.PreviewKeyDown += textBox_KeyDown;
-            _textBox.TextChanged += _textBox_TextChanged;
-
-            AddVisualChild(_textBox);
-
-            var textBoxBinding = new Binding("Text");
-            textBoxBinding.Source = _textBox;
-            textBoxBinding.Mode = BindingMode.TwoWay;
-            textBoxBinding.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
-            SetBinding(TextProperty, textBoxBinding);
-
-            _suggestionlistBox = new ListBox();
-            _suggestionlistBox.SelectionMode = SelectionMode.Single;
-            _suggestionlistBox.Visibility = Visibility.Collapsed;
-            _suggestionlistBox.IsHitTestVisible = false;
-            _suggestionlistBox.PreviewKeyDown += listBox_PreviewKeyDown;
-            _suggestionlistBox.FocusVisualStyle = null;
-
-            var suggestionTemplateBinding = new Binding("SuggestionTemplate");
-            suggestionTemplateBinding.Source = this;
-            _suggestionlistBox.SetBinding(ItemsControl.ItemTemplateProperty, suggestionTemplateBinding);
-
-            var style = new Style(typeof(ListBoxItem));
-            style.Setters.Add(new Setter(FocusVisualStyleProperty, null));
-            _suggestionlistBox.ItemContainerStyle = style;
-
-            _suggestionPopup = new Popup();
-            _suggestionPopup.AllowsTransparency = true;
-            _suggestionPopup.Child = _suggestionlistBox;
-            _suggestionPopup.IsOpen = true;
-            _suggestionPopup.PlacementTarget = _textBox;
-            _suggestionPopup.Placement = PlacementMode.Bottom;
-
-            var popupWidthBinding = new Binding("ActualWidth");
-            popupWidthBinding.Source = _textBox;
-            _suggestionlistBox.SetBinding(WidthProperty, popupWidthBinding);
-
-            var backgroundBinding = new Binding("Background");
-            backgroundBinding.Source = this;
-            _suggestionlistBox.SetBinding(BackgroundProperty, backgroundBinding);
-            _textBox.SetBinding(BackgroundProperty, backgroundBinding);
-
-            var foregroundBinding = new Binding("Foreground");
-            foregroundBinding.Source = this;
-            _suggestionlistBox.SetBinding(ForegroundProperty, foregroundBinding);
-            _textBox.SetBinding(ForegroundProperty, foregroundBinding);
-            _textBox.SetBinding(TextBoxBase.CaretBrushProperty, foregroundBinding);
-        }
-
-        private void _textBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            UpdateSuggestions();
         }
 
         public Func<IEnumerable, IEnumerable> Filter
@@ -203,6 +154,11 @@ namespace NathanHarrenstein.MusicTimeline.Controls
             base.OnInitialized(e);
         }
 
+        private void _textBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            UpdateSuggestions();
+        }
+
         private IEnumerable DefaultFilter(IEnumerable suggestions)
         {
             foreach (var suggestion in suggestions)
@@ -214,6 +170,39 @@ namespace NathanHarrenstein.MusicTimeline.Controls
                     yield return suggestion;
                 }
             }
+        }
+
+        private void InitializeSuggestionListBox()
+        {
+            _suggestionlistBox = new ListBox();
+            _suggestionlistBox.SelectionMode = SelectionMode.Single;
+            _suggestionlistBox.Visibility = Visibility.Collapsed;
+            _suggestionlistBox.IsHitTestVisible = false;
+            _suggestionlistBox.PreviewKeyDown += listBox_PreviewKeyDown;
+            _suggestionlistBox.FocusVisualStyle = null;
+
+            var style = new Style(typeof(ListBoxItem));
+            style.Setters.Add(new Setter(FocusVisualStyleProperty, null));
+            _suggestionlistBox.ItemContainerStyle = style;
+        }
+
+        private void InitializeSuggestionPopup()
+        {
+            _suggestionPopup = new Popup();
+            _suggestionPopup.AllowsTransparency = true;
+            _suggestionPopup.Child = _suggestionlistBox;
+            _suggestionPopup.IsOpen = true;
+            _suggestionPopup.PlacementTarget = _textBox;
+            _suggestionPopup.Placement = PlacementMode.Bottom;
+        }
+
+        private void InitializeTextBox()
+        {
+            _textBox = new TextBox();
+            _textBox.PreviewKeyDown += textBox_KeyDown;
+            _textBox.TextChanged += _textBox_TextChanged;
+
+            AddVisualChild(_textBox);
         }
 
         private void listBox_PreviewKeyDown(object sender, KeyEventArgs e)
@@ -238,11 +227,27 @@ namespace NathanHarrenstein.MusicTimeline.Controls
             }
         }
 
+        private void SetBindings()
+        {
+            _suggestionlistBox.SetBinding(ItemsControl.ItemTemplateProperty, BindingUtility.Create(this, "SuggestionTemplate"));
+            _textBox.SetBinding(TextBox.TextProperty, BindingUtility.Create(this, "Text"));
+            _suggestionlistBox.SetBinding(WidthProperty, BindingUtility.Create(_textBox, "ActualWidth"));
+
+            var backgroundBinding = BindingUtility.Create(this, "Background");
+            _suggestionlistBox.SetBinding(BackgroundProperty, backgroundBinding);
+            _textBox.SetBinding(BackgroundProperty, backgroundBinding);
+
+            var foregroundBinding = BindingUtility.Create(this, "Foreground");
+            _suggestionlistBox.SetBinding(ForegroundProperty, foregroundBinding);
+            _textBox.SetBinding(ForegroundProperty, foregroundBinding);
+            _textBox.SetBinding(TextBoxBase.CaretBrushProperty, foregroundBinding);
+        }
+
         private void textBox_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Down)
             {
-                _suggestionlistBox.Items.Refresh();                                          // Necessary for correct behavior when switching focus from TextBox to ListBox using the down arrow key.
+                _suggestionlistBox.Items.Refresh();         // Necessary for correct behavior when switching focus from TextBox to ListBox using the down arrow key.
 
                 Keyboard.Focus(_suggestionlistBox);
             }

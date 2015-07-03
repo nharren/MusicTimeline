@@ -352,7 +352,9 @@
                 </Trigger>
             </ControlTemplate.Triggers>
         </ControlTemplate>
-        <Style BasedOn="{StaticResource FieldStyle}" TargetType="{x:Type TextBox}">
+        <Style x:Key="TextBoxFieldStyle"
+               BasedOn="{StaticResource FieldStyle}"
+               TargetType="{x:Type TextBox}">
             <Style.Setters>
                 <Setter Property="AcceptsReturn" Value="False" />
                 <Setter Property="Template">
@@ -559,6 +561,7 @@
                              Grid.Row="6"
                              Grid.Column="3"
                              Grid.ColumnSpan="2"
+                             Style="{StaticResource TextBoxFieldStyle}"
                              TabIndex="0" />
                     <ListBox x:Name="ComposerImageListBox"
                              Grid.Row="6"
@@ -616,6 +619,7 @@
                              Grid.Row="10"
                              Grid.Column="3"
                              Grid.ColumnSpan="2"
+                             Style="{StaticResource TextBoxFieldStyle}"
                              TabIndex="1" />
                     <TextBlock Grid.Row="12"
                                Grid.Column="4"
@@ -778,6 +782,7 @@
                              FontSize="14.667"
                              Foreground="#FFC8CDD1"
                              IsEnabled="False"
+                             Style="{StaticResource TextBoxFieldStyle}"
                              TabIndex="4"
                              TextWrapping="Wrap"
                              VerticalScrollBarVisibility="Auto" />
@@ -889,7 +894,8 @@
                     <TextBox x:Name="CompositionCollectionNameTextBox"
                              Grid.Row="6"
                              Grid.Column="3"
-                             Grid.ColumnSpan="2" />
+                             Grid.ColumnSpan="2"
+                             Style="{StaticResource TextBoxFieldStyle}" />
                     <ListBox x:Name="CompositionCollectionCatalogPrefixListBox"
                              Grid.Row="6"
                              Grid.RowSpan="9"
@@ -921,6 +927,7 @@
                              Grid.Row="6"
                              Grid.Column="9"
                              Grid.ColumnSpan="2"
+                             Style="{StaticResource TextBoxFieldStyle}"
                              TextChanged="CompositionCollectionCatalogNumberTextBox_TextChanged" />
                 </Grid>
                 <Grid Name="CompositionSection" Grid.Row="4">
@@ -1030,7 +1037,8 @@
                     <TextBox x:Name="CompositionNameTextBox"
                              Grid.Row="6"
                              Grid.Column="3"
-                             Grid.ColumnSpan="2" />
+                             Grid.ColumnSpan="2"
+                             Style="{StaticResource TextBoxFieldStyle}" />
                     <ListBox x:Name="CompositionCatalogPrefixListBox"
                              Grid.Row="6"
                              Grid.RowSpan="9"
@@ -1062,6 +1070,7 @@
                              Grid.Row="6"
                              Grid.Column="9"
                              Grid.ColumnSpan="2"
+                             Style="{StaticResource TextBoxFieldStyle}"
                              TextChanged="CompositionCatalogNumberTextBox_TextChanged" />
                     <TextBlock Grid.Row="8"
                                Grid.Column="4"
@@ -1070,7 +1079,8 @@
                     <TextBox x:Name="CompositionNicknameTextBox"
                              Grid.Row="10"
                              Grid.Column="3"
-                             Grid.ColumnSpan="2" />
+                             Grid.ColumnSpan="2"
+                             Style="{StaticResource TextBoxFieldStyle}" />
                     <TextBlock Grid.Row="12"
                                Grid.Column="4"
                                Style="{StaticResource FieldHeaderStyle}"
@@ -1078,7 +1088,8 @@
                     <TextBox x:Name="CompositionDatesTextBox"
                              Grid.Row="14"
                              Grid.Column="3"
-                             Grid.ColumnSpan="2" />
+                             Grid.ColumnSpan="2"
+                             Style="{StaticResource TextBoxFieldStyle}" />
                 </Grid>
                 <Grid Name="MovementSection" Grid.Row="6">
                     <Grid.RowDefinitions>
@@ -1115,13 +1126,13 @@
                         <!--  4. Field 2  -->
                         <ColumnDefinition Width="10" />
                         <!--  5. Field 2 Header  -->
-                        <ColumnDefinition Width="53.5" />
+                        <ColumnDefinition Width="61" />
                         <!--  6. Space  -->
                         <ColumnDefinition Width="20" />
                         <!--  7. Field 3  -->
                         <ColumnDefinition Width="10" />
                         <!--  8. Field 3 Header  -->
-                        <ColumnDefinition Width="160.5" />
+                        <ColumnDefinition Width="153" />
                         <!--  6. Space  -->
                         <ColumnDefinition Width="20" />
                         <!--  7. Field 4  -->
@@ -1172,7 +1183,8 @@
                     <TextBox x:Name="MovementNameTextBox"
                              Grid.Row="6"
                              Grid.Column="3"
-                             Grid.ColumnSpan="5" />
+                             Grid.ColumnSpan="5"
+                             Style="{StaticResource TextBoxFieldStyle}" />
                     <TextBlock Grid.Row="8"
                                Grid.Column="4"
                                Style="{StaticResource FieldHeaderStyle}"
@@ -1241,13 +1253,13 @@
                         <!--  1. Field 1  -->
                         <ColumnDefinition Width="10" />
                         <!--  2. Field 1 Header  -->
-                        <ColumnDefinition Width="107" />
+                        <ColumnDefinition Width="61" />
                         <!--  3. Space  -->
                         <ColumnDefinition Width="20" />
                         <!--  4. Field 2  -->
                         <ColumnDefinition Width="10" />
                         <!--  5. Field 2 Header  -->
-                        <ColumnDefinition Width="107" />
+                        <ColumnDefinition Width="153" />
                         <!--  6. Space  -->
                         <ColumnDefinition Width="20" />
                         <!--  7. Field 3  -->
@@ -1333,7 +1345,8 @@
                     <TextBox x:Name="RecordingPathTextBox"
                              Grid.Row="14"
                              Grid.ColumnSpan="8"
-                             IsTabStop="False" />
+                             IsTabStop="False"
+                             Style="{StaticResource TextBoxFieldStyle}" />
                     <TextBlock Grid.Row="16"
                                Grid.Column="1"
                                Style="{StaticResource FieldHeaderStyle}"
@@ -1372,7 +1385,8 @@
                                Text="Location:" />
                     <TextBox x:Name="RecordingDatesTextBox"
                              Grid.Row="22"
-                             Grid.ColumnSpan="5" />
+                             Grid.ColumnSpan="5"
+                             Style="{StaticResource TextBoxFieldStyle}" />
                     <c:DoubleBorderDecorator Grid.Row="22"
                                              Grid.Column="6"
                                              Grid.ColumnSpan="2"
