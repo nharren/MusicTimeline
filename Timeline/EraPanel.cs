@@ -1,10 +1,9 @@
-﻿using NathanHarrenstein.Controls;
+﻿using System;
 using System.Collections.Generic;
-using System.ExtendedDateTimeFormat;
+using System.EDTF;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Linq;
-using System;
 
 namespace NathanHarrenstein.Timeline
 {

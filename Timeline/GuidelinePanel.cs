@@ -1,4 +1,4 @@
-﻿using NathanHarrenstein.Controls;
+﻿using NathanHarrenstein.Timeline;
 using System;
 using System.Windows;
 using System.Windows.Media;

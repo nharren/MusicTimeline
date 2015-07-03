@@ -33,9 +33,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="ExtendedDateTimeFormat, Version=1.0.5605.22163, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\..\Documents\GitHub\ExtendedDateTimeFormat\Source\ExtendedDateTimeFormat\bin\Debug\ExtendedDateTimeFormat.dll</HintPath>
+    <Reference Include="EDTF">
+      <HintPath>..\..\..\..\Documents\GitHub\ExtendedDateTimeFormat\src\EDTF\bin\Debug\EDTF.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -52,6 +51,11 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Native\MouseHook.cs" />
+    <Compile Include="Native\MouseHook.Native.cs" />
+    <Compile Include="Native\WindowsMessages.cs" />
+    <Compile Include="PanGrid.cs" />
+    <Compile Include="IPan.cs" />
     <Compile Include="ITimelineEra.cs" />
     <Compile Include="TimeRuler.cs" />
     <Compile Include="TimeRulerUnit.cs" />
@@ -95,12 +99,7 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Framework\Framework.csproj">
-      <Project>{42f625df-600b-48e6-b1cc-81925caf6bb2}</Project>
-      <Name>Framework</Name>
-    </ProjectReference>
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

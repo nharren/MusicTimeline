@@ -1,11 +1,8 @@
-﻿using NathanHarrenstein.Controls;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.ExtendedDateTimeFormat;
-using System.Globalization;
+using System.EDTF;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
 using System.Windows.Media;
 using System.Windows.Shapes;
 
@@ -209,29 +206,37 @@ namespace NathanHarrenstein.Timeline
                         year -= year % 100;                                            // round year down to nearest century.
                         _roundedInitialDate = new ExtendedDateTime(year);
                         break;
+
                     case TimeResolution.Decade:
                         year = _preciseInitialDate.Year;
                         year -= year % 10;                                             // round year down to nearest decade.
                         _roundedInitialDate = new ExtendedDateTime(year);
                         break;
+
                     case TimeResolution.Year:
                         _roundedInitialDate = new ExtendedDateTime(_preciseInitialDate.Year);
                         break;
+
                     case TimeResolution.Month:
                         _roundedInitialDate = _preciseInitialDate.ToPrecision(ExtendedDateTimePrecision.Month, roundUp: false);
                         break;
+
                     case TimeResolution.Day:
                         _roundedInitialDate = _preciseInitialDate.ToPrecision(ExtendedDateTimePrecision.Day, roundUp: false);
                         break;
+
                     case TimeResolution.Hour:
                         _roundedInitialDate = _preciseInitialDate.ToPrecision(ExtendedDateTimePrecision.Hour, roundUp: false);
                         break;
+
                     case TimeResolution.Minute:
                         _roundedInitialDate = _preciseInitialDate.ToPrecision(ExtendedDateTimePrecision.Minute, roundUp: false);
                         break;
+
                     case TimeResolution.Second:
                         _roundedInitialDate = _preciseInitialDate.ToPrecision(ExtendedDateTimePrecision.Second, roundUp: false);
                         break;
+
                     default:
                         break;
                 }
@@ -252,7 +257,7 @@ namespace NathanHarrenstein.Timeline
                         stackPanel.Orientation = Orientation.Horizontal;
 
                         var line = new Line();
-                        line.Stroke =  _stroke;
+                        line.Stroke = _stroke;
                         line.Y2 = availableSize.Height;
                         line.StrokeThickness = 1;
 
@@ -267,7 +272,7 @@ namespace NathanHarrenstein.Timeline
                         stackPanel.Children.Add(line);
                         stackPanel.Children.Add(label);
 
-                        Children.Add(stackPanel); 
+                        Children.Add(stackPanel);
                     }
                     else
                     {
@@ -281,27 +286,35 @@ namespace NathanHarrenstein.Timeline
                         case TimeResolution.Century:
                             currentDate = currentDate.AddYears(100);
                             break;
+
                         case TimeResolution.Decade:
                             currentDate = currentDate.AddYears(10);
                             break;
+
                         case TimeResolution.Year:
                             currentDate = currentDate.AddYears(1);
                             break;
+
                         case TimeResolution.Month:
                             currentDate = currentDate.AddMonths(1);
                             break;
+
                         case TimeResolution.Day:
                             currentDate += TimeSpan.FromDays(1);
                             break;
+
                         case TimeResolution.Hour:
                             currentDate += TimeSpan.FromHours(1);
                             break;
+
                         case TimeResolution.Minute:
                             currentDate += TimeSpan.FromMinutes(1);
                             break;
+
                         case TimeResolution.Second:
                             currentDate += TimeSpan.FromSeconds(1);
                             break;
+
                         default:
                             break;
                     }
@@ -339,7 +352,7 @@ namespace NathanHarrenstein.Timeline
                 return;
             }
 
- 	         _cache = new StackPanel[Ruler.ToUnitCount(Dates.Span())];
+            _cache = new StackPanel[Ruler.ToUnitCount(Dates.Span())];
         }
     }
 }
