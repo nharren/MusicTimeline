@@ -92,7 +92,7 @@ namespace NathanHarrenstein.MusicDb
             modelBuilder.Entity<Composer>()
                 .HasMany(e => e.Nationalities)
                 .WithMany(e => e.Composers)
-                .Map(m => m.ToTable("composer_nationality", "music_test").MapRightKey("composer_id"));
+                .Map(m => m.ToTable("composer_nationality", "music_test"));
 
             modelBuilder.Entity<Composer>()
                 .HasMany(e => e.CompositionCollections)

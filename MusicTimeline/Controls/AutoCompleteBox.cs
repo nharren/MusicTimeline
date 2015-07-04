@@ -5,6 +5,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 
@@ -230,7 +231,10 @@ namespace NathanHarrenstein.MusicTimeline.Controls
         private void SetBindings()
         {
             _suggestionlistBox.SetBinding(ItemsControl.ItemTemplateProperty, BindingUtility.Create(this, "SuggestionTemplate"));
-            _textBox.SetBinding(TextBox.TextProperty, BindingUtility.Create(this, "Text"));
+            var binding = BindingUtility.Create(this, "Text");
+            binding.Mode = BindingMode.TwoWay;
+            binding.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
+            _textBox.SetBinding(TextBox.TextProperty, binding);
             _suggestionlistBox.SetBinding(WidthProperty, BindingUtility.Create(_textBox, "ActualWidth"));
 
             var backgroundBinding = BindingUtility.Create(this, "Background");

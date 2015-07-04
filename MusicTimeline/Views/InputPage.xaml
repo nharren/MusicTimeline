@@ -1405,10 +1405,12 @@
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
                     <Button Grid.Column="1"
+                            Click="CancelButton_Click"
                             Content="Cancel"
                             Padding="10,3"
                             Template="{DynamicResource ButtonTemplate}" />
                     <Button Grid.Column="3"
+                            Click="SubmitButton_Click"
                             Content="Submit"
                             Padding="10,3"
                             Template="{DynamicResource ButtonTemplate}" />

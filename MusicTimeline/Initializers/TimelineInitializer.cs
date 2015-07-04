@@ -182,7 +182,7 @@ namespace NathanHarrenstein.MusicTimeline.Initializers
                 return ThumbnailDictionary[composer.ID];
             }
 
-            var directoryPath = string.Format(@"{0}\Resources\Thumbnails\", Environment.CurrentDirectory);
+            var directoryPath = $@"{Environment.CurrentDirectory}\Resources\Thumbnails\";
 
             if (!Directory.Exists(directoryPath))
             {
@@ -215,7 +215,7 @@ namespace NathanHarrenstein.MusicTimeline.Initializers
                 thumbnail.CacheOption = BitmapCacheOption.OnLoad;
                 thumbnail.BeginInit();
                 thumbnail.DecodePixelHeight = 50;
-                thumbnail.UriSource = thumbnailUri;
+                thumbnail.StreamSource = new MemoryStream(image);
                 thumbnail.EndInit();
                 thumbnail.Freeze();
 

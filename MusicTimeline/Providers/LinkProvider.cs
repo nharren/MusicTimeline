@@ -1,5 +1,6 @@
 ﻿using NathanHarrenstein.MusicTimeline.Input;
 using NathanHarrenstein.MusicTimeline.Models;
+using NathanHarrenstein.MusicTimeline.Utilities;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -18,12 +19,12 @@ namespace NathanHarrenstein.MusicTimeline.Providers
         private static string GetIcon(string url)
         {
             var linkUri = new Uri(url);
-            var localIconPath = Path.Combine(Environment.CurrentDirectory, @"Files/Icons/" + linkUri.Host + ".ico");
+            var localIconPath = Path.Combine(Environment.CurrentDirectory, "Resources/Favicons/" + linkUri.Host + ".ico");
             var localIconUri = new Uri(localIconPath);
 
-            if (!Directory.Exists(@"Files/Icons"))
+            if (!Directory.Exists("Resources/Favicons"))
             {
-                Directory.CreateDirectory(@"Files/Icons");
+                Directory.CreateDirectory("Resources/Favicons");
             }
 
             if (File.Exists(localIconPath))
@@ -35,16 +36,16 @@ namespace NathanHarrenstein.MusicTimeline.Providers
                 var client = new WebClient();
                 var webIconPath = "http://" + linkUri.Host + "/favicon.ico";
 
-                try
-                {
-                    client.DownloadFile(webIconPath, localIconPath);
+                var favicon = FileUtility.GetFile(webIconPath);
 
-                    return localIconPath;
-                }
-                catch
+                if (favicon == null)
                 {
-                    return "pack://application:,,,/Pages/ComposerPage/Resources/Default.ico";
+                    return Path.Combine(Environment.CurrentDirectory, "Resources/Favicons/Default.ico");
                 }
+
+                File.WriteAllBytes(localIconPath, favicon);
+
+                return localIconPath;
             }
         }
 

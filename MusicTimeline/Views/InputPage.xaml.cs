@@ -4,6 +4,7 @@ using NathanHarrenstein.MusicTimeline.Extensions;
 using NathanHarrenstein.MusicTimeline.Initializers;
 using NathanHarrenstein.MusicTimeline.Models;
 using NathanHarrenstein.MusicTimeline.Utilities;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
@@ -87,8 +88,8 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
                 ComposerNameTextBox.SetBinding(TextBox.TextProperty, BindingUtility.Create(composer, "Name"));
                 ComposerDatesTextBox.SetBinding(TextBox.TextProperty, BindingUtility.Create(composer, "Dates"));
-                ComposerBirthLocationAutoCompleteBox.Text = composer.BirthLocation != null ? composer.BirthLocation.Name : null;
-                ComposerDeathLocationAutoCompleteBox.Text = composer.DeathLocation != null ? composer.DeathLocation.Name : null;
+                ComposerBirthLocationAutoCompleteBox.Text = composer.BirthLocation?.Name;
+                ComposerDeathLocationAutoCompleteBox.Text = composer.DeathLocation?.Name;
                 ComposerInfluenceListBox.SetBinding(ItemsControl.ItemsSourceProperty, BindingUtility.Create(composer.Influences, null, "Name"));
                 ComposerImageListBox.ItemsSource = new List<BitmapImage>(composer.ComposerImages.Select(ci => ComposerImageUtility.ToBitmapImage(ci)));
                 ComposerLinkListBox.SetBinding(ItemsControl.ItemsSourceProperty, BindingUtility.Create(composer, "ComposerLinks", new ComposerLinkConverter()));
@@ -382,7 +383,10 @@ namespace NathanHarrenstein.MusicTimeline.Views
                 }
                 else
                 {
-                    composer.BirthLocation = new Location { Name = ComposerBirthLocationAutoCompleteBox.Text };
+                    var location = new Location();
+                    location.Name = ComposerBirthLocationAutoCompleteBox.Text;
+                    App.DataProvider.Locations.Add(location);
+                    composer.BirthLocation = location;
                 }
             }
             else                                                                                                                                                                                                           // New location does exist.
@@ -554,10 +558,14 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
                     var webResponse = WebRequest.Create(data).GetResponse();
 
-                    var composer = (Composer)ComposerListBox.SelectedItem;
-                    composer.ComposerLinks.Add(new ComposerLink { Composer = composer, URL = data });
+                    var composerLink = new ComposerLink();
+                    composerLink.Composer = (Composer)ComposerListBox.SelectedItem;
+                    composerLink.URL = data;
 
+                    ((Composer)ComposerListBox.SelectedItem).ComposerLinks.Add(composerLink);
                     ComposerLinkListBox.GetBindingExpression(ItemsControl.ItemsSourceProperty).UpdateTarget();
+
+                    ComposerLinkListBox.SelectedItem = composerLink;
                 }
                 catch
                 {
@@ -646,14 +654,16 @@ namespace NathanHarrenstein.MusicTimeline.Views
             {
                 var composer = (Composer)ComposerListBox.SelectedItem;
 
-                foreach (var addedItem in e.AddedItems)
+                foreach (Nationality nationality in e.AddedItems)
                 {
-                    composer.Nationalities.Add((Nationality)addedItem);
+                    composer.Nationalities.Add(nationality);
+                    nationality.Composers.Add(composer);
                 }
 
-                foreach (var removedItem in e.RemovedItems)
+                foreach (Nationality nationality in e.RemovedItems)
                 {
-                    composer.Nationalities.Remove((Nationality)removedItem);
+                    composer.Nationalities.Remove(nationality);
+                    nationality.Composers.Remove(composer);
                 }
             }
         }
@@ -1192,5 +1202,26 @@ namespace NathanHarrenstein.MusicTimeline.Views
         }
 
         #endregion Recording Section Events
+
+        #region Status and Button Section Events
+
+        private void CancelButton_Click(object sender, RoutedEventArgs e)
+        {
+            ((Frame)Application.Current.MainWindow.FindName("Frame")).GoBack();
+        }
+
+        private void SubmitButton_Click(object sender, RoutedEventArgs e)
+        {
+            using (App.DataProvider)
+            {
+                App.DataProvider.SaveChanges();
+            }
+
+            App.DataProvider = new DataProvider();
+
+            ((Frame)Application.Current.MainWindow.FindName("Frame")).Navigate(new Uri(@"pack://application:,,,/Views/TimelinePage.xaml"));
+        }
+
+        #endregion Status and Button Section Events
     }
 }
