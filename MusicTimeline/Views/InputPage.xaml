@@ -913,7 +913,7 @@
                             <DataTemplate>
                                 <TextBlock FontSize="14.667"
                                            Foreground="#FFC8CDD1"
-                                           Text="{Binding}">
+                                           Text="{Binding Prefix}">
                                     <TextBlock.ContextMenu>
                                         <ContextMenu>
                                             <MenuItem Command="{x:Static ApplicationCommands.Delete}" />
@@ -1056,7 +1056,7 @@
                             <DataTemplate>
                                 <TextBlock FontSize="14.667"
                                            Foreground="#FFC8CDD1"
-                                           Text="{Binding}">
+                                           Text="{Binding Prefix}">
                                     <TextBlock.ContextMenu>
                                         <ContextMenu>
                                             <MenuItem Command="{x:Static ApplicationCommands.Delete}" />

@@ -166,7 +166,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
         public void LoadCompositionCollectionSection()
         {
             CompositionCollectionNameTextBox.SetBinding(TextBox.TextProperty, BindingUtility.Create(_currentCompositionCollection, "Name"));
-            CompositionCollectionCatalogPrefixListBox.SetBinding(ItemsControl.ItemsSourceProperty, BindingUtility.Create(_currentCompositionCollection.Composers.SelectMany(c => c.CompositionCatalogs), "Prefix", "Prefix"));
+            CompositionCollectionCatalogPrefixListBox.SetBinding(ItemsControl.ItemsSourceProperty, BindingUtility.Create(_currentCompositionCollection.Composers.SelectMany(c => c.CompositionCatalogs), null, "Prefix"));
             CompositionCollectionCatalogNumberTextBox.Text = _currentCompositionCollection.CatalogNumbers.FirstOrDefault(cn => cn.CompositionCatalog.Prefix == (string)CompositionCollectionCatalogPrefixListBox.SelectedItem)?.Number;
             CompositionListBox.SetBinding(ItemsControl.ItemsSourceProperty, BindingUtility.Create(_currentCompositionCollection.Compositions, null, "Name"));
         }
@@ -231,7 +231,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
             CompositionNameTextBox.SetBinding(TextBox.TextProperty, BindingUtility.Create(_currentComposition, "Name"));
             CompositionNicknameTextBox.SetBinding(TextBox.TextProperty, BindingUtility.Create(_currentComposition, "Nickname"));
             CompositionDatesTextBox.SetBinding(TextBox.TextProperty, BindingUtility.Create(_currentComposition, "Dates"));
-            CompositionCatalogPrefixListBox.SetBinding(ItemsControl.ItemsSourceProperty, BindingUtility.Create(_currentComposition.Composers.SelectMany(c => c.CompositionCatalogs), "Prefix", "Prefix"));
+            CompositionCatalogPrefixListBox.SetBinding(ItemsControl.ItemsSourceProperty, BindingUtility.Create(_currentComposition.Composers.SelectMany(c => c.CompositionCatalogs), null, "Prefix"));
             CompositionCatalogNumberTextBox.Text = _currentComposition.CatalogNumbers.FirstOrDefault(cn => cn.CompositionCatalog.Prefix == (string)CompositionCatalogPrefixListBox.SelectedItem)?.Number;
             MovementListBox.SetBinding(ItemsControl.ItemsSourceProperty, BindingUtility.Create(_currentComposition.Movements, null, "Name"));
         }
@@ -681,7 +681,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
             var selectedCatalogs = _currentComposers
                 .SelectMany(c => c.CompositionCatalogs)
-                .Where(cc => cc.Prefix == (string)CompositionCollectionCatalogPrefixListBox.SelectedItem);
+                .Where(cc => cc == CompositionCollectionCatalogPrefixListBox.SelectedItem);
 
             var selectedCatalogNumbers = selectedCatalogs
                 .SelectMany(cc => cc.CatalogNumbers)
@@ -776,10 +776,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
                 return;
             }
 
-            var catalogNumber = _currentCompositionCollection.CatalogNumbers
-                .FirstOrDefault(cn => cn.CompositionCatalog.Prefix == (string)CompositionCollectionCatalogPrefixListBox.SelectedItem);
-
-            CompositionCollectionCatalogNumberTextBox.Text = catalogNumber == null ? null : catalogNumber.Number;
+            CompositionCollectionCatalogNumberTextBox.Text = _currentCompositionCollection.CatalogNumbers.FirstOrDefault(cn => cn.CompositionCatalog == CompositionCollectionCatalogPrefixListBox.SelectedItem)?.Number;
         }
 
         private void CompositionCollectionDeleteCommand_Executed(object sender, ExecutedRoutedEventArgs e)
@@ -834,7 +831,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
             var selectedCatalogs = _currentComposers
                 .SelectMany(c => c.CompositionCatalogs)
-                .Where(cc => cc.Prefix == (string)CompositionCatalogPrefixListBox.SelectedItem);
+                .Where(cc => cc == CompositionCatalogPrefixListBox.SelectedItem);
 
             var selectedCatalogNumbers = selectedCatalogs
                 .SelectMany(cc => cc.CatalogNumbers)
@@ -909,6 +906,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
                 newCompositionCatalog.Prefix = droppedString;
                 newCompositionCatalog.Composer = _currentComposers[i];
 
+                App.DataProvider.CompositionCatalogs.Add(newCompositionCatalog);
                 _currentComposers[i].CompositionCatalogs.Add(newCompositionCatalog);
                 newCompositionCatalogs[i] = newCompositionCatalog;
             }
@@ -931,10 +929,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
                 return;
             }
 
-            var catalogNumber = _currentComposition.CatalogNumbers
-                .FirstOrDefault(cn => cn.CompositionCatalog.Prefix == (string)CompositionCatalogPrefixListBox.SelectedItem);
-
-            CompositionCatalogNumberTextBox.Text = catalogNumber == null ? null : catalogNumber.Number;
+            CompositionCatalogNumberTextBox.Text = _currentComposition.CatalogNumbers.FirstOrDefault(cn => cn.CompositionCatalog == CompositionCatalogPrefixListBox.SelectedItem)?.Number;
         }
 
         private void CompositionDeleteCommand_Executed(object sender, ExecutedRoutedEventArgs e)

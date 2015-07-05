@@ -87,22 +87,42 @@ namespace NathanHarrenstein.MusicDb
             modelBuilder.Entity<Composer>()
                 .HasMany(e => e.Influences)
                 .WithMany(e => e.Influenced)
-                .Map(m => m.ToTable("composer_influence", "music_test").MapRightKey("influence_id"));
+                .Map(m =>
+                {
+                    m.MapLeftKey("composer_id");
+                    m.MapRightKey("influence_id");
+                    m.ToTable("composer_influence", "music_test");
+                });
 
             modelBuilder.Entity<Composer>()
                 .HasMany(e => e.Nationalities)
                 .WithMany(e => e.Composers)
-                .Map(m => m.ToTable("composer_nationality", "music_test"));
+                .Map(m =>
+                {
+                    m.MapLeftKey("composer_id");
+                    m.MapRightKey("nationality_id");
+                    m.ToTable("composer_nationality", "music_test");
+                });
 
             modelBuilder.Entity<Composer>()
                 .HasMany(e => e.CompositionCollections)
                 .WithMany(e => e.Composers)
-                .Map(m => m.ToTable("composition_collection_composer", "music_test").MapRightKey("composer_id"));
+                .Map(m =>
+                {
+                    m.MapLeftKey("composer_id");
+                    m.MapRightKey("composition_collection_id");
+                    m.ToTable("composition_collection_composer", "music_test");
+                });
 
             modelBuilder.Entity<Composer>()
                 .HasMany(e => e.Compositions)
                 .WithMany(e => e.Composers)
-                .Map(m => m.ToTable("composition_composer", "music_test").MapRightKey("composer_id"));
+                .Map(m =>
+                {
+                    m.MapLeftKey("composer_id");
+                    m.MapRightKey("composition_id");
+                    m.ToTable("composition_composer", "music_test");
+                });
 
             modelBuilder.Entity<ComposerLink>()
                 .Property(e => e.URL)
@@ -181,7 +201,12 @@ namespace NathanHarrenstein.MusicDb
             modelBuilder.Entity<Era>()
                 .HasMany(e => e.Composers)
                 .WithMany(e => e.Eras)
-                .Map(m => m.ToTable("composer_era", "music_test"));
+                .Map(m =>
+                {
+                    m.MapLeftKey("era_id");
+                    m.MapRightKey("composer_id");
+                    m.ToTable("composer_era", "music_test");
+                });
 
             modelBuilder.Entity<Location>()
                 .Property(e => e.Name)
@@ -223,7 +248,12 @@ namespace NathanHarrenstein.MusicDb
             modelBuilder.Entity<Performer>()
                 .HasMany(e => e.Recordings)
                 .WithMany(e => e.Performers)
-                .Map(m => m.ToTable("recording_performer", "music_test"));
+                .Map(m =>
+                {
+                    m.MapLeftKey("recording_id");
+                    m.MapRightKey("performer_id");
+                    m.ToTable("recording_performer", "music_test");
+                });
 
             modelBuilder.Entity<Recording>()
                 .Property(e => e.Dates)

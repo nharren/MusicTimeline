@@ -21,10 +21,10 @@ namespace NathanHarrenstein.MusicDb
         public int CompositionCatalogID { get; set; }
 
         [Column("composition_collection_id", TypeName = "usmallint")]
-        public int CompositionCollectionID { get; set; }
+        public int? CompositionCollectionID { get; set; }
 
         [Column("composition_id", TypeName = "umediumint")]
-        public int CompositionID { get; set; }
+        public int? CompositionID { get; set; }
 
         public virtual CompositionCatalog CompositionCatalog { get; set; }
 
