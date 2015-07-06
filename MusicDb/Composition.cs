@@ -40,7 +40,7 @@ namespace NathanHarrenstein.MusicDb
         public bool IsPopular { get; set; }
 
         [Column("composition_collection_id", TypeName = "usmallint")]
-        public int CompositionCollectionID { get; set; }
+        public int? CompositionCollectionID { get; set; }
 
         [SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CatalogNumber> CatalogNumbers { get; set; }

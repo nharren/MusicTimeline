@@ -93,6 +93,7 @@
     <Compile Include="Extensions\EnumerableExtensions.cs" />
     <Compile Include="Input\DelegateCommand.cs" />
     <Compile Include="Comparers\NaturalComparer.cs" />
+    <Compile Include="Utilities\AccessibilityUtility.cs" />
     <Compile Include="Utilities\BindingUtility.cs" />
     <Compile Include="Utilities\ComposerImageUtility.cs" />
     <Compile Include="Models\ComposerEvent.cs" />

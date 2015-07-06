@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.EDTF;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace NathanHarrenstein.Timeline
 {
@@ -14,8 +15,10 @@ namespace NathanHarrenstein.Timeline
         public static readonly DependencyProperty EventHeightProperty = DependencyProperty.Register("EventHeight", typeof(double), typeof(Timeline), new PropertyMetadata(26d));
         public static readonly DependencyProperty EventsProperty = DependencyProperty.Register("Events", typeof(IList), typeof(Timeline));
         public static readonly DependencyProperty EventTemplatesProperty = DependencyProperty.Register("EventTemplates", typeof(IList), typeof(Timeline));
+        public static readonly DependencyProperty LineStrokeProperty = DependencyProperty.Register("LineStroke", typeof(Brush), typeof(Timeline), new PropertyMetadata(Brushes.Black));
         public static readonly DependencyProperty ResolutionProperty = DependencyProperty.Register("Resolution", typeof(TimeResolution), typeof(Timeline));
         public static readonly DependencyProperty RulerProperty = DependencyProperty.Register("Ruler", typeof(TimeRuler), typeof(Timeline));
+        public static readonly DependencyProperty TimeForegroundProperty = DependencyProperty.Register("TimeForeground", typeof(Brush), typeof(Timeline), new PropertyMetadata(Brushes.Black));
 
         static Timeline()
         {
@@ -102,6 +105,19 @@ namespace NathanHarrenstein.Timeline
             }
         }
 
+        public Brush LineStroke
+        {
+            get
+            {
+                return (Brush)GetValue(LineStrokeProperty);
+            }
+
+            set
+            {
+                SetValue(LineStrokeProperty, value);
+            }
+        }
+
         public TimeResolution Resolution
         {
             get
@@ -123,6 +139,19 @@ namespace NathanHarrenstein.Timeline
             set
             {
                 SetValue(RulerProperty, value);
+            }
+        }
+
+        public Brush TimeForeground
+        {
+            get
+            {
+                return (Brush)GetValue(TimeForegroundProperty);
+            }
+
+            set
+            {
+                SetValue(TimeForegroundProperty, value);
             }
         }
     }

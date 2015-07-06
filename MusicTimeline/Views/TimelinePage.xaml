@@ -10,7 +10,7 @@
       d:DesignWidth="300"
       mc:Ignorable="d">
     <Grid>
-        <t:Timeline Name="timeline" Background="{StaticResource BackgroundBrush}">
+        <t:Timeline Name="timeline" Background="{StaticResource BackgroundBrush}" LineStroke="#FF333333" TimeForeground="White">
             <t:Timeline.EraTemplates>
                 <DataTemplate DataType="{x:Type m:MusicEra}">
                     <Grid Background="{Binding Background}">

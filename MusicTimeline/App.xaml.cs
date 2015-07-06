@@ -1,4 +1,5 @@
 ﻿using NathanHarrenstein.MusicDb;
+using NathanHarrenstein.MusicTimeline.Utilities;
 using System;
 using System.Windows;
 
@@ -10,6 +11,8 @@ namespace NathanHarrenstein.MusicTimeline
 
         protected override void OnStartup(StartupEventArgs e)
         {
+            AccessibilityUtility.AllowAccessibilityShortcutKeys(false);
+
             DataProvider = new DataProvider();
 
             base.OnStartup(e);
@@ -17,6 +20,8 @@ namespace NathanHarrenstein.MusicTimeline
 
         protected override void OnExit(ExitEventArgs e)
         {
+            AccessibilityUtility.AllowAccessibilityShortcutKeys(true);
+
             DataProvider.Dispose();
 
             base.OnExit(e);
