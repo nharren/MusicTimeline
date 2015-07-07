@@ -234,6 +234,8 @@ namespace NathanHarrenstein.Timeline
                     var guideline = new Line();
                     guideline.Y2 = availableSize.Height;
                     guideline.StrokeThickness = 1;
+                    guideline.UseLayoutRounding = true;
+                    guideline.SnapsToDevicePixels = true;
 
                     switch (Resolution)
                     {

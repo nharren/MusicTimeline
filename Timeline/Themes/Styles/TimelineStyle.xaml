@@ -40,9 +40,9 @@
                                               Grid.RowSpan="2"
                                               Dates="{TemplateBinding Dates}"
                                               IsHitTestVisible="False"
-                                              MajorBrush="#FF333333"
+                                              MajorBrush="#FF393939"
                                               MajorFrequency="10"
-                                              MinorBrush="#FF333333"
+                                              MinorBrush="#FF393939"
                                               Resolution="{TemplateBinding Resolution}"
                                               Ruler="{TemplateBinding Ruler}" />
                             <l:EventPanel Grid.Row="2"

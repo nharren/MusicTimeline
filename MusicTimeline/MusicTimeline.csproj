@@ -52,14 +52,6 @@
     <Reference Include="Luminescence.Xiph">
       <HintPath>..\packages\Luminescence.Xiph.2.4.1.0\lib\net40\Luminescence.Xiph.dll</HintPath>
     </Reference>
-    <Reference Include="MySql.Data, Version=6.9.6.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\MySql.Data.6.9.6\lib\net45\MySql.Data.dll</HintPath>
-    </Reference>
-    <Reference Include="MySql.Data.Entity.EF6, Version=6.9.6.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\MySql.Data.Entity.6.9.6\lib\net45\MySql.Data.Entity.EF6.dll</HintPath>
-    </Reference>
     <Reference Include="presentationframework.aero2" />
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -194,7 +186,7 @@
       <Name>LibraryDb</Name>
     </ProjectReference>
     <ProjectReference Include="..\MusicDb\MusicDb.csproj">
-      <Project>{0151a74e-334f-4e5f-95f7-eeff670ca036}</Project>
+      <Project>{2877b6ce-c279-462a-8414-92b234642d37}</Project>
       <Name>MusicDb</Name>
     </ProjectReference>
     <ProjectReference Include="..\Timeline\Timeline.csproj">
@@ -1651,7 +1643,9 @@
   <ItemGroup>
     <Resource Include="Resources\Flags\32\Futunan.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="Resources\Background\NoiseOverlay.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

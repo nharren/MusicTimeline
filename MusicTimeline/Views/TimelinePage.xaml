@@ -9,8 +9,11 @@
       d:DesignHeight="300"
       d:DesignWidth="300"
       mc:Ignorable="d">
-    <Grid>
-        <t:Timeline Name="timeline" Background="{StaticResource BackgroundBrush}" LineStroke="#FF333333" TimeForeground="White">
+    <Grid Background="{StaticResource BackgroundBrush}">
+        <t:Timeline Name="timeline" LineStroke="#FF333333" TimeForeground="White">
+            <t:Timeline.Background>
+                <ImageBrush TileMode="Tile" Viewport="0, 0, 325, 168" Opacity="0.25" ViewportUnits="Absolute" ImageSource="\Resources\Background\NoiseOverlay.png" />
+            </t:Timeline.Background>
             <t:Timeline.EraTemplates>
                 <DataTemplate DataType="{x:Type m:MusicEra}">
                     <Grid Background="{Binding Background}">

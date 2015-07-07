@@ -47,7 +47,6 @@ namespace NathanHarrenstein.MusicTimeline.Initializers
 
             inputPage.ComposerBirthLocationAutoCompleteBox.StringSelector = stringSelector;
             inputPage.ComposerDeathLocationAutoCompleteBox.StringSelector = stringSelector;
-            inputPage.RecordingLocationAutoCompleteBox.StringSelector = stringSelector;
         }
 
         private static void InitializeAutoCompleteBoxSuggestionTemplates(InputPage inputPage)
@@ -56,7 +55,6 @@ namespace NathanHarrenstein.MusicTimeline.Initializers
 
             inputPage.ComposerBirthLocationAutoCompleteBox.SuggestionTemplate = suggestionTemplate;
             inputPage.ComposerDeathLocationAutoCompleteBox.SuggestionTemplate = suggestionTemplate;
-            inputPage.RecordingLocationAutoCompleteBox.SuggestionTemplate = suggestionTemplate;
         }
 
         private static void InitializeDataSources()
@@ -76,7 +74,6 @@ namespace NathanHarrenstein.MusicTimeline.Initializers
             inputPage.ComposerEraListBox.ItemsSource = App.DataProvider.Eras.Local;
             inputPage.ComposerBirthLocationAutoCompleteBox.Suggestions = App.DataProvider.Locations.Local;
             inputPage.ComposerDeathLocationAutoCompleteBox.Suggestions = App.DataProvider.Locations.Local;
-            inputPage.RecordingLocationAutoCompleteBox.Suggestions = App.DataProvider.Locations.Local;
         }
     }
 }

@@ -1,59 +1,45 @@
+using System.Collections.ObjectModel;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace NathanHarrenstein.MusicDb
 {
-    using System;
-    using System.Collections.Generic;
-    using System.ComponentModel.DataAnnotations;
-    using System.ComponentModel.DataAnnotations.Schema;
-    using System.Data.Entity.Spatial;
-    using System.Diagnostics.CodeAnalysis;
-
-    [Table("music_test.composition")]
+    [Table("Composition")]
     public partial class Composition
     {
-        [SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Composition()
         {
-            CatalogNumbers = new HashSet<CatalogNumber>();
-            Movements = new HashSet<Movement>();
-            Recordings = new HashSet<Recording>();
-            Composers = new HashSet<Composer>();
+            CatalogNumbers = new ObservableCollection<CatalogNumber>();
+            Movements = new ObservableCollection<Movement>();
+            Recordings = new ObservableCollection<Recording>();
+            Composers = new ObservableCollection<Composer>();
         }
 
-        [Column("id", TypeName = "umediumint")]
-        public int ID { get; set; }
+        public virtual ObservableCollection<CatalogNumber> CatalogNumbers { get; set; }
 
-        [Required]
-        [StringLength(100)]
-        [Column("name")]
-        public string Name { get; set; }
-
-        [Required]
-        [StringLength(50)]
-        [Column("dates")]
-        public string Dates { get; set; }
-
-        [StringLength(50)]
-        [Column("nickname")]
-        public string Nickname { get; set; }
-
-        [Column("is_popular")]
-        public bool IsPopular { get; set; }
-
-        [Column("composition_collection_id", TypeName = "usmallint")]
-        public int? CompositionCollectionID { get; set; }
-
-        [SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CatalogNumber> CatalogNumbers { get; set; }
+        public virtual ObservableCollection<Composer> Composers { get; set; }
 
         public virtual CompositionCollection CompositionCollection { get; set; }
 
-        [SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Movement> Movements { get; set; }
+        public short? CompositionCollectionID { get; set; }
 
-        [SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Recording> Recordings { get; set; }
+        [Required]
+        [StringLength(50)]
+        public string Dates { get; set; }
 
-        [SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Composer> Composers { get; set; }
+        public int ID { get; set; }
+
+        public bool IsPopular { get; set; }
+
+        public virtual ObservableCollection<Movement> Movements { get; set; }
+
+        [Required]
+        [StringLength(100)]
+        public string Name { get; set; }
+
+        [StringLength(50)]
+        public string Nickname { get; set; }
+
+        public virtual ObservableCollection<Recording> Recordings { get; set; }
     }
 }

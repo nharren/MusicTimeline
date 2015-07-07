@@ -1,35 +1,34 @@
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace NathanHarrenstein.MusicDb
 {
-    [Table("music_test.composition_collection")]
+    [Table("CompositionCollection")]
     public partial class CompositionCollection
     {
         public CompositionCollection()
         {
-            CatalogNumbers = new HashSet<CatalogNumber>();
-            Compositions = new HashSet<Composition>();
-            Recordings = new HashSet<Recording>();
-            Composers = new HashSet<Composer>();
+            CatalogNumbers = new ObservableCollection<CatalogNumber>();
+            Compositions = new ObservableCollection<Composition>();
+            Recordings = new ObservableCollection<Recording>();
+            Composers = new ObservableCollection<Composer>();
         }
 
-        public virtual ICollection<CatalogNumber> CatalogNumbers { get; set; }
-        public virtual ICollection<Composer> Composers { get; set; }
-        public virtual ICollection<Composition> Compositions { get; set; }
+        public virtual ObservableCollection<CatalogNumber> CatalogNumbers { get; set; }
 
-        [Column("id", TypeName = "usmallint")]
-        public int ID { get; set; }
+        public virtual ObservableCollection<Composer> Composers { get; set; }
 
-        [Column("is_popular")]
+        public virtual ObservableCollection<Composition> Compositions { get; set; }
+
+        public short ID { get; set; }
+
         public bool IsPopular { get; set; }
 
         [Required]
         [StringLength(50)]
-        [Column("name")]
         public string Name { get; set; }
 
-        public virtual ICollection<Recording> Recordings { get; set; }
+        public virtual ObservableCollection<Recording> Recordings { get; set; }
     }
 }
