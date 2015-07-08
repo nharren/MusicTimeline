@@ -1,9 +1,9 @@
-using System.Collections.ObjectModel;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace NathanHarrenstein.MusicDb
+namespace NathanHarrenstein.MusicDB
 {
+    using System.Collections.ObjectModel;
+    using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
+
     [Table("Recording")]
     public partial class Recording
     {

@@ -1,8 +1,9 @@
-﻿using NathanHarrenstein.MusicDb;
+﻿using NathanHarrenstein.MusicDB;
 using NathanHarrenstein.MusicTimeline.Input;
 using NathanHarrenstein.MusicTimeline.Models;
 using NathanHarrenstein.MusicTimeline.Providers;
 using NathanHarrenstein.MusicTimeline.Utilities;
+using NathanHarrenstein.MusicTimeline.Views;
 using NathanHarrenstein.Timeline;
 using System;
 using System.Collections;
@@ -28,7 +29,23 @@ namespace NathanHarrenstein.MusicTimeline.Initializers
             timeline.Ruler = GetRuler();
             timeline.Resolution = TimeResolution.Decade;
             timeline.EventHeight = 60;
-            timeline.Events = GetEvents((IList<MusicEra>)timeline.Eras);
+            timeline.Events = GetEvents((IList<MusicEra>)timeline.Eras, timeline);
+            timeline.Loaded += (o, e) =>
+            {
+                var horizontalOffset = Application.Current.Properties["HorizontalOffset"] as double?;
+
+                if (horizontalOffset != null)
+                {
+                    timeline.HorizontalOffset = horizontalOffset.Value;
+                }
+
+                var verticalOffset = Application.Current.Properties["HorizontalOffset"] as double?;
+
+                if (verticalOffset != null)
+                {
+                    timeline.VerticalOffset = verticalOffset.Value;
+                }
+            };
         }
 
         private static string GetBorn(Composer composer)
@@ -41,15 +58,15 @@ namespace NathanHarrenstein.MusicTimeline.Initializers
             return ExtendedDateTimeInterval.Parse(composer.Dates).Start.ToString();
         }
 
-        private static DelegateCommand GetCommand(Composer composer)
+        private static DelegateCommand GetCommand(Composer composer, Timeline.Timeline timeline)
         {
             Action<object> command = o =>
             {
                 Application.Current.Properties["SelectedComposer"] = composer;
+                Application.Current.Properties["HorizontalOffset"] = timeline.HorizontalOffset;
+                Application.Current.Properties["VerticalOffset"] = timeline.VerticalOffset;
 
-                var frame = (Frame)Application.Current.MainWindow.FindName("Frame");
-
-                frame.Navigate(new Uri(@"pack://application:,,,/Views/ComposerPage.xaml"));
+                ((Frame)System.Windows.Application.Current.MainWindow.FindName("Frame")).Navigate(new ComposerPage());
             };
 
             return new DelegateCommand(command);
@@ -110,7 +127,7 @@ namespace NathanHarrenstein.MusicTimeline.Initializers
             return eras;
         }
 
-        private static IList GetEvents(IList<MusicEra> musicEras)
+        private static IList GetEvents(IList<MusicEra> musicEras, Timeline.Timeline timeline)
         {
             var eventList = new List<ComposerEvent>();
             var composers = App.DataProvider.Composers.ToList();
@@ -148,7 +165,7 @@ namespace NathanHarrenstein.MusicTimeline.Initializers
                     background = composerEras[0].Background;
                 }
 
-                var composerEvent = new ComposerEvent(NameUtility.ToFirstLast(composer.Name), ExtendedDateTimeInterval.Parse(composer.Dates), GetBorn(composer), GetDied(composer), composer, background, Brushes.White, GetThumbnail(composer), GetFlags(composer), composerEras, GetCommand(composer), null);
+                var composerEvent = new ComposerEvent(NameUtility.ToFirstLast(composer.Name), ExtendedDateTimeInterval.Parse(composer.Dates), GetBorn(composer), GetDied(composer), composer, background, Brushes.White, GetThumbnail(composer), GetFlags(composer), composerEras, GetCommand(composer, timeline), null);
 
                 eventList.Add(composerEvent);
             }

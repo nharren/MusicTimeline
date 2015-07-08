@@ -1,8 +1,8 @@
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace NathanHarrenstein.MusicDb
+namespace NathanHarrenstein.MusicDB
 {
+    using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
+
     [Table("ComposerImage")]
     public partial class ComposerImage
     {
@@ -10,6 +10,7 @@ namespace NathanHarrenstein.MusicDb
 
         public short ComposerID { get; set; }
 
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public short ID { get; set; }
 
         [Required]

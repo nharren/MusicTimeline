@@ -1,4 +1,4 @@
-﻿using NathanHarrenstein.MusicDb;
+﻿using NathanHarrenstein.MusicDB;
 using NathanHarrenstein.MusicTimeline.Providers;
 using System.Linq;
 

@@ -1,4 +1,4 @@
-﻿using NathanHarrenstein.MusicDb;
+﻿using NathanHarrenstein.MusicDB;
 
 namespace NathanHarrenstein.MusicTimeline.Controls
 {

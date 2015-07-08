@@ -1,4 +1,4 @@
-﻿using NathanHarrenstein.MusicDb;
+﻿using NathanHarrenstein.MusicDB;
 using NathanHarrenstein.MusicTimeline.Converters;
 using NathanHarrenstein.MusicTimeline.Extensions;
 using NathanHarrenstein.MusicTimeline.Initializers;
@@ -363,7 +363,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
         public void LoadRecordingSection()
         {
-            RecordingPathTextBox.Text = LibraryDb.DataProvider.Get(_currentRecording.ID).First();
+            RecordingPathTextBox.Text = LibraryDB.DataProvider.Get(_currentRecording.ID).First();
             RecordingPerformerListBox.SetBinding(ItemsControl.ItemsSourceProperty, BindingUtility.Create(App.DataProvider.Performers.Local, null, "Name"));
             RecordingAlbumAutoCompleteBox.Text = _currentRecording.Album?.Name;
             RecordingTrackNumberBox.SetBinding(TextBox.TextProperty, BindingUtility.Create(_currentRecording, "TrackNumber"));
@@ -411,6 +411,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
                 else
                 {
                     var location = new Location();
+                    location.ID = App.DataProvider.Locations.Local.Count + 1;
                     location.Name = ComposerBirthLocationAutoCompleteBox.Text;
                     App.DataProvider.Locations.Add(location);
                     composer.BirthLocation = location;
@@ -1157,7 +1158,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
                 File.Copy(recordingPath, importPath);
             }
 
-            LibraryDb.DataProvider.Add(recordingId, importPath);
+            LibraryDB.DataProvider.Add(recordingId, importPath);
 
             _currentRecording = new Recording();
             _currentRecording.ID = recordingId;
@@ -1300,7 +1301,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
-            ((Frame)Application.Current.MainWindow.FindName("Frame")).GoBack();
+            ((Frame)System.Windows.Application.Current.MainWindow.FindName("Frame")).GoBack();
         }
 
         private void SubmitButton_Click(object sender, RoutedEventArgs e)
@@ -1312,7 +1313,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
             App.DataProvider = new DataProvider();
 
-            ((Frame)Application.Current.MainWindow.FindName("Frame")).Navigate(new Uri(@"pack://application:,,,/Views/TimelinePage.xaml"));
+            ((Frame)System.Windows.Application.Current.MainWindow.FindName("Frame")).Navigate(new Uri(@"pack://application:,,,/Views/TimelinePage.xaml"));
         }
 
         #endregion Status and Button Section Events

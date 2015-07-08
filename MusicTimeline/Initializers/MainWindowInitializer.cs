@@ -28,8 +28,8 @@ namespace NathanHarrenstein.MusicTimeline.Initializers
 
                 if (result == true)
                 {
-                    Application.Current.Properties.Add("FilesOpened", openFileDialog.FileNames);
-                    Application.Current.Properties.Add("FileIndex", 0);
+                    System.Windows.Application.Current.Properties.Add("FilesOpened", openFileDialog.FileNames);
+                    System.Windows.Application.Current.Properties.Add("FileIndex", 0);
 
                     var frame = (Frame)mainWindow.FindName("Frame");
 
@@ -50,8 +50,8 @@ namespace NathanHarrenstein.MusicTimeline.Initializers
 
                 if (result == System.Windows.Forms.DialogResult.OK)
                 {
-                    Application.Current.Properties.Add("FilesOpened", Directory.GetFiles(openFileDialog.SelectedPath, "*.flac", SearchOption.AllDirectories));
-                    Application.Current.Properties.Add("FileIndex", 0);
+                    System.Windows.Application.Current.Properties.Add("FilesOpened", Directory.GetFiles(openFileDialog.SelectedPath, "*.flac", SearchOption.AllDirectories));
+                    System.Windows.Application.Current.Properties.Add("FileIndex", 0);
 
                     var frame = (Frame)mainWindow.FindName("Frame");
 
@@ -66,7 +66,7 @@ namespace NathanHarrenstein.MusicTimeline.Initializers
         {
             Action<object> exit = o =>
             {
-                Application.Current.Shutdown();
+                System.Windows.Application.Current.Shutdown();
             };
 
             return new DelegateCommand(exit);

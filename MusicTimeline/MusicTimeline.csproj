@@ -181,13 +181,13 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\LibraryDb\LibraryDb.csproj">
+    <ProjectReference Include="..\LibraryDb\LibraryDB.csproj">
       <Project>{0ba043e6-3d96-4d32-8a2e-c54de859d59f}</Project>
-      <Name>LibraryDb</Name>
+      <Name>LibraryDB</Name>
     </ProjectReference>
-    <ProjectReference Include="..\MusicDb\MusicDb.csproj">
-      <Project>{2877b6ce-c279-462a-8414-92b234642d37}</Project>
-      <Name>MusicDb</Name>
+    <ProjectReference Include="..\MusicDb\MusicDB.csproj">
+      <Project>{1f805a11-8f8d-4f83-b44a-cec052e33778}</Project>
+      <Name>MusicDB</Name>
     </ProjectReference>
     <ProjectReference Include="..\Timeline\Timeline.csproj">
       <Project>{29f6b562-eed2-4ec5-9316-a6994a96e82d}</Project>

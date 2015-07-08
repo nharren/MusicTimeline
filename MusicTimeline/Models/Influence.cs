@@ -1,4 +1,4 @@
-﻿using NathanHarrenstein.MusicDb;
+﻿using NathanHarrenstein.MusicDB;
 using System.Windows.Input;
 
 namespace NathanHarrenstein.MusicTimeline.Models

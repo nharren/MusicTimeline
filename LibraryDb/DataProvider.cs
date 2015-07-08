@@ -1,7 +1,5 @@
-namespace LibraryDb
+namespace NathanHarrenstein.LibraryDB
 {
-    using System;
-    using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity;
     using System.Linq;
 
@@ -13,13 +11,6 @@ namespace LibraryDb
         }
 
         public virtual DbSet<Recording> Recordings { get; set; }
-
-        protected override void OnModelCreating(DbModelBuilder modelBuilder)
-        {
-            modelBuilder.Entity<Recording>()
-                .Property(e => e.FilePath)
-                .IsUnicode(false);
-        }
 
         public static void Add(int mdbid, string path)
         {
@@ -60,6 +51,13 @@ namespace LibraryDb
             {
                 return dataProvider.Recordings.Any(r => r.FilePath == path);
             }
+        }
+
+        protected override void OnModelCreating(DbModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Recording>()
+                .Property(e => e.FilePath)
+                .IsUnicode(false);
         }
     }
 }

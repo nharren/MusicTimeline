@@ -9,7 +9,7 @@
                     <Border Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}">
-                        <l:PanGrid Background="Transparent" FocusVisualStyle="{x:Null}">
+                        <l:PanGrid x:Name="PART_PanGrid" Background="Transparent" FocusVisualStyle="{x:Null}">
                             <Grid.RowDefinitions>
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition Height="Auto" />
@@ -49,6 +49,8 @@
                                           Dates="{TemplateBinding Dates}"
                                           EventHeight="{TemplateBinding EventHeight}"
                                           EventSpacing="1"
+                                          HorizontalOffset="{Binding HorizontalOffset, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                          VerticalOffset="{Binding VerticalOffset, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                           EventTemplates="{TemplateBinding EventTemplates}"
                                           Events="{TemplateBinding Events}"
                                           Resolution="{TemplateBinding Resolution}"

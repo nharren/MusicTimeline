@@ -17,9 +17,40 @@ namespace NathanHarrenstein.Timeline
         public static readonly DependencyProperty ResolutionProperty = DependencyProperty.Register("Resolution", typeof(TimeResolution), typeof(EventPanel));
         public static readonly DependencyProperty RulerProperty = DependencyProperty.Register("Ruler", typeof(TimeRuler), typeof(EventPanel));
 
+        public double HorizontalOffset
+        {
+            get
+            {
+                return (double)GetValue(HorizontalOffsetProperty);
+            }
+
+            set
+            {
+                SetValue(HorizontalOffsetProperty, value);
+            }
+        }
+
+        public static readonly DependencyProperty HorizontalOffsetProperty = DependencyProperty.Register("HorizontalOffset", typeof(double), typeof(EventPanel));
+
+        public double VerticalOffset
+        {
+            get
+            {
+                return (double)GetValue(VerticalOffsetProperty);
+            }
+
+            set
+            {
+                SetValue(VerticalOffsetProperty, value);
+            }
+        }
+
+        public static readonly DependencyProperty VerticalOffsetProperty = DependencyProperty.Register("VerticalOffset", typeof(double), typeof(EventPanel));
+
+
+
+
         private FrameworkElement[] _cache;
-        private double _horizontalOffset;
-        private double _verticalOffset;
         private bool _hasViewChanged = true;
         private List<int> _previouslyVisibleCacheIndexes = new List<int>();
         private List<int> _visibleCacheIndexes = new List<int>();
@@ -89,18 +120,6 @@ namespace NathanHarrenstein.Timeline
             }
         }
 
-        public double HorizontalOffset
-        {
-            get
-            {
-                return _horizontalOffset;
-            }
-            set
-            {
-                _horizontalOffset = value;
-            }
-        }
-
         public TimeResolution Resolution
         {
             get
@@ -122,18 +141,6 @@ namespace NathanHarrenstein.Timeline
             set
             {
                 SetValue(RulerProperty, value);
-            }
-        }
-
-        public double VerticalOffset
-        {
-            get
-            {
-                return _verticalOffset;
-            }
-            set
-            {
-                _verticalOffset = value;
             }
         }
 

@@ -1,5 +1,5 @@
 ﻿using Luminescence.Xiph;
-using NathanHarrenstein.MusicDb;
+using NathanHarrenstein.MusicDB;
 using NathanHarrenstein.MusicTimeline.Utilities;
 using NathanHarrenstein.MusicTimeline.Views;
 using System;

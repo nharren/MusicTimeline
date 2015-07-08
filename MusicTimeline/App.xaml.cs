@@ -1,11 +1,11 @@
-﻿using NathanHarrenstein.MusicDb;
+﻿using NathanHarrenstein.MusicDB;
 using NathanHarrenstein.MusicTimeline.Utilities;
 using System;
 using System.Windows;
 
 namespace NathanHarrenstein.MusicTimeline
 {
-    public partial class App : Application
+    public partial class App : System.Windows.Application
     {
         public static DataProvider DataProvider;
 

@@ -1,9 +1,9 @@
-using System.Collections.ObjectModel;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace NathanHarrenstein.MusicDb
+namespace NathanHarrenstein.MusicDB
 {
+    using System.Collections.ObjectModel;
+    using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
+
     [Table("Composition")]
     public partial class Composition
     {
@@ -27,6 +27,7 @@ namespace NathanHarrenstein.MusicDb
         [StringLength(50)]
         public string Dates { get; set; }
 
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int ID { get; set; }
 
         public bool IsPopular { get; set; }

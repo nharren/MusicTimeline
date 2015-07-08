@@ -1,9 +1,9 @@
-using System.Collections.ObjectModel;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace NathanHarrenstein.MusicDb
+namespace NathanHarrenstein.MusicDB
 {
+    using System.Collections.ObjectModel;
+    using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
+
     [Table("Composer")]
     public partial class Composer
     {
@@ -22,17 +22,13 @@ namespace NathanHarrenstein.MusicDb
 
         public string Biography { get; set; }
 
-        public virtual Location BirthLocation { get; set; }
-
         public int? BirthLocationID { get; set; }
 
-        public virtual ObservableCollection<Composer> Influences { get; set; }
+        public virtual Location BirthLocation { get; set; }
 
         public virtual ObservableCollection<ComposerImage> ComposerImages { get; set; }
 
         public virtual ObservableCollection<ComposerLink> ComposerLinks { get; set; }
-
-        public virtual ObservableCollection<Composer> Influenced { get; set; }
 
         public virtual ObservableCollection<CompositionCatalog> CompositionCatalogs { get; set; }
 
@@ -44,13 +40,18 @@ namespace NathanHarrenstein.MusicDb
         [StringLength(50)]
         public string Dates { get; set; }
 
-        public virtual Location DeathLocation { get; set; }
-
         public int? DeathLocationID { get; set; }
+
+        public virtual Location DeathLocation { get; set; }
 
         public virtual ObservableCollection<Era> Eras { get; set; }
 
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public short ID { get; set; }
+
+        public virtual ObservableCollection<Composer> Influenced { get; set; }
+
+        public virtual ObservableCollection<Composer> Influences { get; set; }
 
         public bool IsPopular { get; set; }
 

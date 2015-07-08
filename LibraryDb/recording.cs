@@ -1,4 +1,4 @@
-namespace LibraryDb
+namespace NathanHarrenstein.LibraryDB
 {
     using System;
     using System.Collections.Generic;

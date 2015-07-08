@@ -1,9 +1,9 @@
-using System.Collections.ObjectModel;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace NathanHarrenstein.MusicDb
+namespace NathanHarrenstein.MusicDB
 {
+    using System.Collections.ObjectModel;
+    using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
+
     [Table("Location")]
     public partial class Location
     {
@@ -18,6 +18,7 @@ namespace NathanHarrenstein.MusicDb
 
         public virtual ObservableCollection<Composer> DeathLocationComposers { get; set; }
 
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int ID { get; set; }
 
         [Required]

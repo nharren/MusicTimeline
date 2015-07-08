@@ -1,7 +1,7 @@
-using System.Data.Entity;
-
-namespace NathanHarrenstein.MusicDb
+namespace NathanHarrenstein.MusicDB
 {
+    using System.Data.Entity;
+
     public partial class DataProvider : DbContext
     {
         public DataProvider()

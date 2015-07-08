@@ -3,7 +3,7 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:c="clr-namespace:NathanHarrenstein.MusicTimeline.Controls"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-      xmlns:db="clr-namespace:NathanHarrenstein.MusicDb;assembly=MusicDb"
+      xmlns:db="clr-namespace:NathanHarrenstein.MusicDB;assembly=MusicDB"
       xmlns:m="clr-namespace:NathanHarrenstein.MusicTimeline.Models"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:t="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2"

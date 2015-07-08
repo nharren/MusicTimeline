@@ -1,4 +1,4 @@
-﻿using NathanHarrenstein.MusicDb;
+﻿using NathanHarrenstein.MusicDB;
 using NathanHarrenstein.MusicTimeline.Controls;
 using NathanHarrenstein.MusicTimeline.Models;
 using NathanHarrenstein.MusicTimeline.Providers;
@@ -17,7 +17,7 @@ namespace NathanHarrenstein.MusicTimeline.Initializers
     {
         public static void Initialize(ComposerPage composerPage)
         {
-            var composer = (Composer)App.Current.Properties["SelectedComposer"];
+            var composer = (Composer)Application.Current.Properties["SelectedComposer"];
 
             composerPage.ComposerImages = GetComposerImages(composer);
             composerPage.Flags = GetFlags(composer);
@@ -40,7 +40,7 @@ namespace NathanHarrenstein.MusicTimeline.Initializers
         {
             if (composer.BirthLocation != null)
             {
-                return string.Format("{0}; {1}", ExtendedDateTimeInterval.Parse(composer.Dates).Start, composer.BirthLocation.Name);
+                return $"{ExtendedDateTimeInterval.Parse(composer.Dates).Start}; {composer.BirthLocation.Name}";
             }
 
             return ExtendedDateTimeInterval.Parse(composer.Dates).Start.ToString();
@@ -60,7 +60,7 @@ namespace NathanHarrenstein.MusicTimeline.Initializers
         {
             if (composer.DeathLocation != null)
             {
-                return string.Format("{0}; {1}", ExtendedDateTimeInterval.Parse(composer.Dates).End, composer.DeathLocation.Name);
+                return $"{ExtendedDateTimeInterval.Parse(composer.Dates).End}; {composer.DeathLocation.Name}";
             }
 
             return ExtendedDateTimeInterval.Parse(composer.Dates).End.ToString();

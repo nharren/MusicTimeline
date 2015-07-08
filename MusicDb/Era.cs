@@ -1,9 +1,9 @@
-using System.Collections.ObjectModel;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace NathanHarrenstein.MusicDb
+namespace NathanHarrenstein.MusicDB
 {
+    using System.Collections.ObjectModel;
+    using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
+
     [Table("Era")]
     public partial class Era
     {
@@ -18,6 +18,7 @@ namespace NathanHarrenstein.MusicDb
         [StringLength(9)]
         public string Dates { get; set; }
 
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public short ID { get; set; }
 
         [Required]

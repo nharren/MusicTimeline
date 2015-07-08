@@ -1,9 +1,9 @@
-using System.Collections.ObjectModel;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace NathanHarrenstein.MusicDb
+namespace NathanHarrenstein.MusicDB
 {
+    using System.Collections.ObjectModel;
+    using System.ComponentModel.DataAnnotations;
+    using System.ComponentModel.DataAnnotations.Schema;
+
     [Table("CompositionCollection")]
     public partial class CompositionCollection
     {
@@ -21,6 +21,7 @@ namespace NathanHarrenstein.MusicDb
 
         public virtual ObservableCollection<Composition> Compositions { get; set; }
 
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public short ID { get; set; }
 
         public bool IsPopular { get; set; }
