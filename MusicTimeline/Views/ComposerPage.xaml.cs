@@ -1,5 +1,5 @@
 ﻿using NathanHarrenstein.MusicTimeline.Initializers;
-using NathanHarrenstein.MusicTimeline.Models;
+using NathanHarrenstein.MusicTimeline.ViewModels;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
@@ -25,7 +25,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
         public string Died { get; set; }
 
-        public IEnumerable<Flag> Flags { get; set; }
+        public IEnumerable<FlagViewModel> Flags { get; set; }
 
         public Visibility HasInfluenced { get; set; }
 
@@ -33,13 +33,13 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
         public string HeaderText { get; set; }
 
-        public IEnumerable<Influence> Influenced { get; set; }
+        public IEnumerable<ComposerInfluenceViewModel> Influenced { get; set; }
 
-        public IEnumerable<Influence> Influences { get; set; }
+        public IEnumerable<ComposerInfluenceViewModel> Influences { get; set; }
 
         public Visibility LinksVisibility { get; set; }
 
-        public IEnumerable<Link> Links { get; set; }
+        public IEnumerable<ComposerLinkViewModel> Links { get; set; }
 
         public string Nationality { get; set; }
 

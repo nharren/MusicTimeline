@@ -1,6 +1,6 @@
 ﻿using NathanHarrenstein.MusicDB;
 using NathanHarrenstein.MusicTimeline.Input;
-using NathanHarrenstein.MusicTimeline.Models;
+using NathanHarrenstein.MusicTimeline.ViewModels;
 using NathanHarrenstein.MusicTimeline.Providers;
 using NathanHarrenstein.MusicTimeline.Utilities;
 using NathanHarrenstein.MusicTimeline.Views;
@@ -29,7 +29,7 @@ namespace NathanHarrenstein.MusicTimeline.Initializers
             timeline.Ruler = GetRuler();
             timeline.Resolution = TimeResolution.Decade;
             timeline.EventHeight = 60;
-            timeline.Events = GetEvents((IList<MusicEra>)timeline.Eras, timeline);
+            timeline.Events = GetEvents((IList<ComposerEraViewModel>)timeline.Eras, timeline);
             timeline.Loaded += (o, e) =>
             {
                 var horizontalOffset = Application.Current.Properties["HorizontalOffset"] as double?;
@@ -82,9 +82,9 @@ namespace NathanHarrenstein.MusicTimeline.Initializers
             return ExtendedDateTimeInterval.Parse(composer.Dates).End.ToString();
         }
 
-        private static List<MusicEra> GetEras()
+        private static List<ComposerEraViewModel> GetEras()
         {
-            var eras = new List<MusicEra>();
+            var eras = new List<ComposerEraViewModel>();
 
             foreach (var era in App.DataProvider.Eras)
             {
@@ -119,7 +119,7 @@ namespace NathanHarrenstein.MusicTimeline.Initializers
                     background = new SolidColorBrush(Color.FromRgb(219, 109, 138));            // #FFDB6D8A
                 }
 
-                var musicEra = new MusicEra(era.Name, ExtendedDateTimeInterval.Parse(era.Dates), background, Brushes.White);
+                var musicEra = new ComposerEraViewModel(era.Name, ExtendedDateTimeInterval.Parse(era.Dates), background, Brushes.White);
 
                 eras.Add(musicEra);
             }
@@ -127,15 +127,15 @@ namespace NathanHarrenstein.MusicTimeline.Initializers
             return eras;
         }
 
-        private static IList GetEvents(IList<MusicEra> musicEras, Timeline.Timeline timeline)
+        private static IList GetEvents(IList<ComposerEraViewModel> musicEras, Timeline.Timeline timeline)
         {
-            var eventList = new List<ComposerEvent>();
+            var eventList = new List<ComposerEventViewModel>();
             var composers = App.DataProvider.Composers.ToList();
 
             foreach (var composer in composers)
             {
                 var background = (Brush)null;
-                var composerEras = new List<MusicEra>();
+                var composerEras = new List<ComposerEraViewModel>();
                 var eras = composer.Eras.ToList();
 
                 foreach (var era in eras)
@@ -160,12 +160,16 @@ namespace NathanHarrenstein.MusicTimeline.Initializers
                         ((LinearGradientBrush)background).GradientStops.Add(new GradientStop(composerEras[i].Background.Color, i / (composerEraCount - 1)));
                     }
                 }
-                else
+                else if (composerEraCount == 1)
                 {
                     background = composerEras[0].Background;
                 }
+                else
+                {
+                    background = Brushes.Black;
+                }
 
-                var composerEvent = new ComposerEvent(NameUtility.ToFirstLast(composer.Name), ExtendedDateTimeInterval.Parse(composer.Dates), GetBorn(composer), GetDied(composer), composer, background, Brushes.White, GetThumbnail(composer), GetFlags(composer), composerEras, GetCommand(composer, timeline), null);
+                var composerEvent = new ComposerEventViewModel(NameUtility.ToFirstLast(composer.Name), ExtendedDateTimeInterval.Parse(composer.Dates), GetBorn(composer), GetDied(composer), composer, background, Brushes.White, GetThumbnail(composer), GetFlags(composer), composerEras, GetCommand(composer, timeline), null);
 
                 eventList.Add(composerEvent);
             }
@@ -173,7 +177,7 @@ namespace NathanHarrenstein.MusicTimeline.Initializers
             return eventList.OrderBy(e => e.Dates.Earliest()).ToList();
         }
 
-        private static List<Flag> GetFlags(Composer composer)
+        private static List<FlagViewModel> GetFlags(Composer composer)
         {
             return composer.Nationalities
                 .Select(n => FlagProvider.GetFlag(n.Name, FlagSize.Small))

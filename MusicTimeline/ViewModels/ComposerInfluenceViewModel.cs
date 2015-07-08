@@ -1,9 +1,9 @@
 ﻿using NathanHarrenstein.MusicDB;
 using System.Windows.Input;
 
-namespace NathanHarrenstein.MusicTimeline.Models
+namespace NathanHarrenstein.MusicTimeline.ViewModels
 {
-    public class Influence
+    public class ComposerInfluenceViewModel
     {
         public ICommand Click
         {

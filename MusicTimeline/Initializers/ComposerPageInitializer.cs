@@ -1,6 +1,6 @@
 ﻿using NathanHarrenstein.MusicDB;
 using NathanHarrenstein.MusicTimeline.Controls;
-using NathanHarrenstein.MusicTimeline.Models;
+using NathanHarrenstein.MusicTimeline.ViewModels;
 using NathanHarrenstein.MusicTimeline.Providers;
 using NathanHarrenstein.MusicTimeline.Utilities;
 using NathanHarrenstein.MusicTimeline.Views;
@@ -66,22 +66,22 @@ namespace NathanHarrenstein.MusicTimeline.Initializers
             return ExtendedDateTimeInterval.Parse(composer.Dates).End.ToString();
         }
 
-        private static IEnumerable<Flag> GetFlags(Composer composer)
+        private static IEnumerable<FlagViewModel> GetFlags(Composer composer)
         {
             return composer.Nationalities.Select(n => FlagProvider.GetFlag(n.Name, FlagSize.Large));
         }
 
-        private static IEnumerable<Influence> GetInfluenced(Composer composer)
+        private static IEnumerable<ComposerInfluenceViewModel> GetInfluenced(Composer composer)
         {
             return composer.Influenced.Select(i => InfluenceDataProvider.GetInfluenceData(i));
         }
 
-        private static IEnumerable<Influence> GetInfluences(Composer composer)
+        private static IEnumerable<ComposerInfluenceViewModel> GetInfluences(Composer composer)
         {
             return composer.Influences.Select(i => InfluenceDataProvider.GetInfluenceData(i));
         }
 
-        private static IEnumerable<Link> GetLinks(Composer composer)
+        private static IEnumerable<ComposerLinkViewModel> GetLinks(Composer composer)
         {
             return composer.ComposerLinks.Select(cl => LinkProvider.GetLink(cl.URL));
         }

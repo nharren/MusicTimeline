@@ -177,12 +177,11 @@ namespace NathanHarrenstein.Timeline
         {
             if (_hasViewChanged)
             {
-                // In determining the number of guidelines to display, it must be kept in mind that
-                // the spacings between the lines might be variable depending on the
-                // current time unit. For instance, if the timeline is measured in months, then the
-                // lines will not be equally spaced apart because a month is anywhere from 28 to 31 days.
-                // The solution is to produce lines one at a time while the total accumulated width is
-                // less than the viewport width.
+                // In determining the labels to display, it must be kept in mind that the spacings between 
+                // the labels might be variable depending on the current time unit. For instance, if the 
+                // timeline is measured in months, then the labels will not be equally spaced apart because 
+                // a month is anywhere from 28 to 31 days. The solution is to produce labels one at a time
+                // while the total accumulated width is less than the viewport width.
                 //
                 // 1. First we first convert the current horizontal offset into a TimeSpan, and add
                 // that to the timeline's start time to get the time of the viewport's left edge. This
@@ -191,9 +190,9 @@ namespace NathanHarrenstein.Timeline
                 // unit is an hour. Therefore, we must round up to the nearest unit.
                 //
                 // 2. The difference between the rounded date and the precise date is the time between
-                // the start of the viewport and the initial line. Converting this TimeSpan into pixels
-                // will yield the x position of the initial line relative to the viewport's left edge.
-                // We can store this value along with the line number for use during the arranging process.
+                // the start of the viewport and the initial label. Converting this TimeSpan into pixels
+                // will yield the x position of the initial label relative to the viewport's left edge.
+                // We can store this value along with the label number for use during the arranging process.
                 //
                 // 3. Now we can create a label, add it to the panel, and measure it.
                 //
@@ -221,35 +220,35 @@ namespace NathanHarrenstein.Timeline
                 switch (Resolution)
                 {
                     case TimeResolution.Century:
-                        labelTime = new ExtendedDateTime(viewportLeftTime.Year - viewportLeftTime.Year % 100 + 100);
+                        labelTime = new ExtendedDateTime(viewportLeftTime.Year - viewportLeftTime.Year % 100);
                         break;
 
                     case TimeResolution.Decade:
-                        labelTime = new ExtendedDateTime(viewportLeftTime.Year - viewportLeftTime.Year % 10 + 10);
+                        labelTime = new ExtendedDateTime(viewportLeftTime.Year - viewportLeftTime.Year % 10);
                         break;
 
                     case TimeResolution.Year:
-                        labelTime = viewportLeftTime.ToPrecision(ExtendedDateTimePrecision.Year, true);
+                        labelTime = viewportLeftTime.ToPrecision(ExtendedDateTimePrecision.Year, false);
                         break;
 
                     case TimeResolution.Month:
-                        labelTime = viewportLeftTime.ToPrecision(ExtendedDateTimePrecision.Month, true);
+                        labelTime = viewportLeftTime.ToPrecision(ExtendedDateTimePrecision.Month, false);
                         break;
 
                     case TimeResolution.Day:
-                        labelTime = viewportLeftTime.ToPrecision(ExtendedDateTimePrecision.Day, true);
+                        labelTime = viewportLeftTime.ToPrecision(ExtendedDateTimePrecision.Day, false);
                         break;
 
                     case TimeResolution.Hour:
-                        labelTime = viewportLeftTime.ToPrecision(ExtendedDateTimePrecision.Hour, true);
+                        labelTime = viewportLeftTime.ToPrecision(ExtendedDateTimePrecision.Hour, false);
                         break;
 
                     case TimeResolution.Minute:
-                        labelTime = viewportLeftTime.ToPrecision(ExtendedDateTimePrecision.Minute, true);
+                        labelTime = viewportLeftTime.ToPrecision(ExtendedDateTimePrecision.Minute, false);
                         break;
 
                     case TimeResolution.Second:
-                        labelTime = viewportLeftTime.ToPrecision(ExtendedDateTimePrecision.Second, true);
+                        labelTime = viewportLeftTime.ToPrecision(ExtendedDateTimePrecision.Second, false);
                         break;
 
                     default:

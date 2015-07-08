@@ -1,8 +1,8 @@
 ﻿using System.Windows.Media.Imaging;
 
-namespace NathanHarrenstein.MusicTimeline.Models
+namespace NathanHarrenstein.MusicTimeline.ViewModels
 {
-    public class Flag
+    public class FlagViewModel
     {
         public BitmapImage Image { get; set; }
 

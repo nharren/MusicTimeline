@@ -1,18 +1,16 @@
-﻿using NathanHarrenstein.MusicDB;
-using NathanHarrenstein.MusicTimeline.Providers;
+﻿using NathanHarrenstein.MusicTimeline.Input;
 using System;
-using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Globalization;
-using System.Linq;
 using System.Windows.Data;
 
 namespace NathanHarrenstein.MusicTimeline.Converters
 {
-    internal class ComposerLinkConverter : IValueConverter
+    public class UrlToCommandConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return ((ObservableCollection<ComposerLink>)value).Select(cl => LinkProvider.GetLink(cl.URL));
+            return new DelegateCommand(o => Process.Start((string)value));
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

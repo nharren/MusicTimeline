@@ -1,16 +1,15 @@
-﻿using NathanHarrenstein.MusicDB;
-using System.IO;
+﻿using System.IO;
 using System.Windows.Media.Imaging;
 
 namespace NathanHarrenstein.MusicTimeline.Utilities
 {
-    internal static class ComposerImageUtility
+    internal static class ImageUtility
     {
-        internal static BitmapImage ToBitmapImage(ComposerImage composerImage)
+        internal static BitmapImage FromBytes(byte[] bytes)
         {
             var bitmapImage = new BitmapImage();
             bitmapImage.BeginInit();
-            bitmapImage.StreamSource = new MemoryStream(composerImage.Image);
+            bitmapImage.StreamSource = new MemoryStream(bytes);
             bitmapImage.EndInit();
 
             return bitmapImage;

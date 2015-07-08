@@ -82,17 +82,22 @@
     <Compile Include="Controls\PanningScrollViewer.cs" />
     <Compile Include="Controls\TreeView.cs" />
     <Compile Include="Controls\TreeViewItem.cs" />
+    <Compile Include="Converters\BytesToImageConverter.cs" />
+    <Compile Include="Converters\UrlToCommandConverter.cs" />
+    <Compile Include="Converters\UrlToIconConverter.cs" />
+    <Compile Include="Converters\UrlToTitleConverter.cs" />
     <Compile Include="Extensions\EnumerableExtensions.cs" />
     <Compile Include="Input\DelegateCommand.cs" />
     <Compile Include="Comparers\NaturalComparer.cs" />
     <Compile Include="Utilities\AccessibilityUtility.cs" />
     <Compile Include="Utilities\BindingUtility.cs" />
-    <Compile Include="Utilities\ComposerImageUtility.cs" />
-    <Compile Include="Models\ComposerEvent.cs" />
-    <Compile Include="Models\MusicEra.cs" />
+    <Compile Include="Utilities\ImageUtility.cs" />
+    <Compile Include="ViewModels\ComposerEventViewModel.cs" />
+    <Compile Include="ViewModels\ComposerEraViewModel.cs" />
     <Compile Include="Utilities\FileUtility.cs" />
     <Compile Include="Converters\ComposerLinkConverter.cs" />
     <Compile Include="Initializers\InputPageInitializer.cs" />
+    <Compile Include="ViewModels\ComposerImageViewModel.cs" />
     <Compile Include="Views\InputPage.xaml.cs">
       <DependentUpon>InputPage.xaml</DependentUpon>
     </Compile>
@@ -103,7 +108,7 @@
     </Compile>
     <Compile Include="Controls\CompositionCollectionTreeViewItem.cs" />
     <Compile Include="Controls\CompositionTreeViewItem.cs" />
-    <Compile Include="Models\Flag.cs" />
+    <Compile Include="ViewModels\FlagViewModel.cs" />
     <Compile Include="Initializers\MainWindowInitializer.cs" />
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -111,12 +116,12 @@
     <Compile Include="Controls\MovementTreeViewItem.cs" />
     <Compile Include="Providers\InfluenceDataProvider.cs" />
     <Compile Include="Providers\LinkProvider.cs" />
-    <Compile Include="Models\Influence.cs" />
+    <Compile Include="ViewModels\ComposerInfluenceViewModel.cs" />
     <Compile Include="Providers\FlagProvider.cs" />
     <Compile Include="Views\ComposerPage.xaml.cs">
       <DependentUpon>ComposerPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Models\Link.cs" />
+    <Compile Include="ViewModels\ComposerLinkViewModel.cs" />
     <Compile Include="Providers\CompositionCollectionTreeViewItemProvider.cs" />
     <Compile Include="Providers\CompositionTreeViewItemProvider.cs" />
     <Compile Include="Providers\MovementTreeViewItemProvider.cs" />

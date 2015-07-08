@@ -2,16 +2,16 @@
 using System.EDTF;
 using System.Windows.Media;
 
-namespace NathanHarrenstein.MusicTimeline.Models
+namespace NathanHarrenstein.MusicTimeline.ViewModels
 {
-    public class MusicEra : ITimelineEra
+    public class ComposerEraViewModel : ITimelineEra
     {
         private readonly SolidColorBrush _background;
         private readonly ExtendedDateTimeInterval _dates;
         private readonly SolidColorBrush _foreground;
         private readonly string _label;
 
-        public MusicEra(string label, ExtendedDateTimeInterval dates, SolidColorBrush background, SolidColorBrush foreground)
+        public ComposerEraViewModel(string label, ExtendedDateTimeInterval dates, SolidColorBrush background, SolidColorBrush foreground)
         {
             _dates = dates;
             _background = background;

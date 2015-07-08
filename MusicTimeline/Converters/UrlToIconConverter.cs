@@ -1,24 +1,17 @@
-﻿using NathanHarrenstein.MusicTimeline.Input;
-using NathanHarrenstein.MusicTimeline.ViewModels;
-using NathanHarrenstein.MusicTimeline.Utilities;
+﻿using NathanHarrenstein.MusicTimeline.Utilities;
 using System;
-using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Net;
-using System.Text.RegularExpressions;
+using System.Windows.Data;
 
-namespace NathanHarrenstein.MusicTimeline.Providers
+namespace NathanHarrenstein.MusicTimeline.Converters
 {
-    public static class LinkProvider
+    public class UrlToIconConverter : IValueConverter
     {
-        public static ComposerLinkViewModel GetLink(string url)
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return new ComposerLinkViewModel(url, GetTitle(url), GetIcon(url), new DelegateCommand(o => Process.Start(url)));
-        }
-
-        private static string GetIcon(string url)
-        {
-            var linkUri = new Uri(url);
+            var linkUri = new Uri((string)value);
             var localIconPath = Path.Combine(Environment.CurrentDirectory, "Resources/Favicons/" + linkUri.Host + ".ico");
             var localIconUri = new Uri(localIconPath);
 
@@ -49,12 +42,9 @@ namespace NathanHarrenstein.MusicTimeline.Providers
             }
         }
 
-        private static string GetTitle(string link)
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            WebClient x = new WebClient();
-            string source = x.DownloadString(link);
-
-            return Regex.Match(source, @"\<title\b[^>]*\>\s*(?<Title>[\s\S]*?)\</title\>", RegexOptions.IgnoreCase).Groups["Title"].Value;
+            throw new NotImplementedException();
         }
     }
 }

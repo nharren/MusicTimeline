@@ -14,41 +14,10 @@ namespace NathanHarrenstein.Timeline
         public static readonly DependencyProperty EventSpacingProperty = DependencyProperty.Register("EventSpacing", typeof(double), typeof(EventPanel));
         public static readonly DependencyProperty EventsProperty = DependencyProperty.Register("Events", typeof(IReadOnlyList<ITimelineEvent>), typeof(EventPanel));
         public static readonly DependencyProperty EventTemplatesProperty = DependencyProperty.Register("EventTemplates", typeof(List<DataTemplate>), typeof(EventPanel));
+        public static readonly DependencyProperty HorizontalOffsetProperty = DependencyProperty.Register("HorizontalOffset", typeof(double), typeof(EventPanel));
         public static readonly DependencyProperty ResolutionProperty = DependencyProperty.Register("Resolution", typeof(TimeResolution), typeof(EventPanel));
         public static readonly DependencyProperty RulerProperty = DependencyProperty.Register("Ruler", typeof(TimeRuler), typeof(EventPanel));
-
-        public double HorizontalOffset
-        {
-            get
-            {
-                return (double)GetValue(HorizontalOffsetProperty);
-            }
-
-            set
-            {
-                SetValue(HorizontalOffsetProperty, value);
-            }
-        }
-
-        public static readonly DependencyProperty HorizontalOffsetProperty = DependencyProperty.Register("HorizontalOffset", typeof(double), typeof(EventPanel));
-
-        public double VerticalOffset
-        {
-            get
-            {
-                return (double)GetValue(VerticalOffsetProperty);
-            }
-
-            set
-            {
-                SetValue(VerticalOffsetProperty, value);
-            }
-        }
-
         public static readonly DependencyProperty VerticalOffsetProperty = DependencyProperty.Register("VerticalOffset", typeof(double), typeof(EventPanel));
-
-
-
 
         private FrameworkElement[] _cache;
         private bool _hasViewChanged = true;
@@ -120,6 +89,19 @@ namespace NathanHarrenstein.Timeline
             }
         }
 
+        public double HorizontalOffset
+        {
+            get
+            {
+                return (double)GetValue(HorizontalOffsetProperty);
+            }
+
+            set
+            {
+                SetValue(HorizontalOffsetProperty, value);
+            }
+        }
+
         public TimeResolution Resolution
         {
             get
@@ -141,6 +123,19 @@ namespace NathanHarrenstein.Timeline
             set
             {
                 SetValue(RulerProperty, value);
+            }
+        }
+
+        public double VerticalOffset
+        {
+            get
+            {
+                return (double)GetValue(VerticalOffsetProperty);
+            }
+
+            set
+            {
+                SetValue(VerticalOffsetProperty, value);
             }
         }
 

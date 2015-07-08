@@ -1,6 +1,6 @@
 ﻿using NathanHarrenstein.MusicDB;
 using NathanHarrenstein.MusicTimeline.Input;
-using NathanHarrenstein.MusicTimeline.Models;
+using NathanHarrenstein.MusicTimeline.ViewModels;
 using NathanHarrenstein.MusicTimeline.Views;
 using System;
 using System.Windows;
@@ -11,9 +11,9 @@ namespace NathanHarrenstein.MusicTimeline.Providers
 {
     public static class InfluenceDataProvider
     {
-        public static Influence GetInfluenceData(Composer composer)
+        public static ComposerInfluenceViewModel GetInfluenceData(Composer composer)
         {
-            var influence = new Influence();
+            var influence = new ComposerInfluenceViewModel();
             influence.Composer = composer;
             influence.Name = composer.Name;
             influence.Click = GetClickCommand(composer);

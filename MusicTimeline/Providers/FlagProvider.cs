@@ -1,4 +1,4 @@
-﻿using NathanHarrenstein.MusicTimeline.Models;
+﻿using NathanHarrenstein.MusicTimeline.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Windows.Media.Imaging;
@@ -12,9 +12,9 @@ namespace NathanHarrenstein.MusicTimeline.Providers
         private static readonly Dictionary<string, BitmapImage> smallImageDictionary = new Dictionary<string, BitmapImage>();
         private static readonly Dictionary<string, BitmapImage> largeImageDictionary = new Dictionary<string, BitmapImage>();
 
-        public static Flag GetFlag(string nationality, FlagSize flagSize)
+        public static FlagViewModel GetFlag(string nationality, FlagSize flagSize)
         {
-            var flag = new Flag();
+            var flag = new FlagViewModel();
             flag.Image = GetImage(nationality, flagSize);
             flag.Nationality = nationality;
 

@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Windows.Input;
 
-namespace NathanHarrenstein.MusicTimeline.Models
+namespace NathanHarrenstein.MusicTimeline.ViewModels
 {
-    public class Link
+    public class ComposerLinkViewModel
     {
         private readonly string _faviconUrl;
         private readonly string _title;
         private readonly ICommand _clickCommand;
         private readonly string _url;
 
-        public Link(string url, string title, string faviconUrl, ICommand clickCommand)
+        public ComposerLinkViewModel(string url, string title, string faviconUrl, ICommand clickCommand)
         {
             _url = url;
             _title = title;

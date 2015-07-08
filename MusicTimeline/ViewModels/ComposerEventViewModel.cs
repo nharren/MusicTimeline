@@ -6,9 +6,9 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
-namespace NathanHarrenstein.MusicTimeline.Models
+namespace NathanHarrenstein.MusicTimeline.ViewModels
 {
-    public class ComposerEvent : ITimelineEvent
+    public class ComposerEventViewModel : ITimelineEvent
     {
         private readonly Brush _background;
         private readonly string _born;
@@ -16,14 +16,14 @@ namespace NathanHarrenstein.MusicTimeline.Models
         private readonly Composer _composer;
         private readonly ExtendedDateTimeInterval _dates;
         private readonly string _died;
-        private readonly IEnumerable<MusicEra> _eras;
-        private readonly IEnumerable<Flag> _flags;
+        private readonly IEnumerable<ComposerEraViewModel> _eras;
+        private readonly IEnumerable<FlagViewModel> _flags;
         private readonly Brush _foreground;
         private readonly BitmapImage _image;
         private readonly string _label;
         private readonly ICommand _playPopularCommand;
 
-        public ComposerEvent(string label, ExtendedDateTimeInterval dates, string born, string died, Composer composer, Brush background, Brush foreground, BitmapImage image, IEnumerable<Flag> flags, IEnumerable<MusicEra> eras, ICommand clickCommand, ICommand playPopularCommand)
+        public ComposerEventViewModel(string label, ExtendedDateTimeInterval dates, string born, string died, Composer composer, Brush background, Brush foreground, BitmapImage image, IEnumerable<FlagViewModel> flags, IEnumerable<ComposerEraViewModel> eras, ICommand clickCommand, ICommand playPopularCommand)
         {
             _dates = dates;
             _born = born;
@@ -87,7 +87,7 @@ namespace NathanHarrenstein.MusicTimeline.Models
             }
         }
 
-        public IEnumerable<MusicEra> Eras
+        public IEnumerable<ComposerEraViewModel> Eras
         {
             get
             {
@@ -95,7 +95,7 @@ namespace NathanHarrenstein.MusicTimeline.Models
             }
         }
 
-        public IEnumerable<Flag> Flags
+        public IEnumerable<FlagViewModel> Flags
         {
             get
             {
