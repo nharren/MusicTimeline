@@ -447,7 +447,11 @@ namespace NathanHarrenstein.MusicTimeline.Views
                 }
                 else
                 {
-                    composer.DeathLocation = new Location { Name = ComposerDeathLocationAutoCompleteBox.Text };
+                    ar location = new Location();
+                    location.ID = App.DataProvider.Locations.Local.Count + 1;
+                    location.Name = ComposerDeathLocationAutoCompleteBox.Text;
+                    App.DataProvider.Locations.Add(location);
+                    composer.DeathLocation = location;
                 }
             }
             else                                                                                                                                                                                                           // New location does exist.
@@ -522,6 +526,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
                 var composer = (Composer)ComposerListBox.SelectedItem;
 
                 var composerImage = new ComposerImage();
+                composerImage.ID = (short)(App.DataProvider.ComposerImages.Local.Count + 1);
                 composerImage.Composer = composer;
                 composerImage.Image = FileUtility.GetFile(imagePath);
 
@@ -587,6 +592,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
                     var webResponse = WebRequest.Create(data).GetResponse();
 
                     var composerLink = new ComposerLink();
+                    composerLink.ID = (short)(App.DataProvider.ComposerLinks.Local.Count + 1);
                     composerLink.Composer = (Composer)ComposerListBox.SelectedItem;
                     composerLink.URL = data;
 
@@ -610,6 +616,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
                 if (composerName != null)
                 {
                     var composer = new Composer();
+                    composer.ID = (short)(App.DataProvider.Composers.Local.Count + 1);
                     composer.Name = composerName;
 
                     App.DataProvider.Composers.Add(composer);
@@ -722,6 +729,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
                 foreach (var catalog in selectedCatalogs)
                 {
                     var catalogNumber = new CatalogNumber();
+                    catalogNumber.ID = (short)(App.DataProvider.CatalogNumbers.Local.Count + 1);
                     catalogNumber.CompositionCatalog = catalog;
                     catalogNumber.CompositionCollection = _currentCompositionCollection;
 
@@ -778,6 +786,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
                 for (int i = 0; i < _currentComposers.Count; i++)
                 {
                     var newCompositionCatalog = new CompositionCatalog();
+                    newCompositionCatalog.ID = (short)(App.DataProvider.CompositionCatalogs.Local.Count + 1);
                     newCompositionCatalog.Prefix = droppedString;
                     newCompositionCatalog.Composer = _currentComposers[i];
 
@@ -823,6 +832,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
                 }
 
                 _currentCompositionCollection = new CompositionCollection();
+                _currentCompositionCollection.ID = (short)(App.DataProvider.CompositionCollections.Local.Count + 1);
                 _currentCompositionCollection.Name = droppedString;
                 _currentCompositionCollection.Composers = _currentComposers;
 
@@ -872,6 +882,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
                 foreach (var catalog in selectedCatalogs)
                 {
                     var catalogNumber = new CatalogNumber();
+                    catalogNumber.ID = (short)(App.DataProvider.CatalogNumbers.Local.Count + 1);
                     catalogNumber.CompositionCatalog = catalog;
                     catalogNumber.Composition = _currentComposition;
 
@@ -931,6 +942,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
             for (int i = 0; i < _currentComposers.Count; i++)
             {
                 var newCompositionCatalog = new CompositionCatalog();
+                newCompositionCatalog.ID = (short)(App.DataProvider.CompositionCatalogs.Local.Count + 1);
                 newCompositionCatalog.Prefix = droppedString;
                 newCompositionCatalog.Composer = _currentComposers[i];
 
@@ -985,6 +997,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
                 if (_currentComposition == null)
                 {
                     _currentComposition = new Composition();
+                    _currentComposition.ID = App.DataProvider.Compositions.Local.Count + 1;
                     _currentComposition.Name = compositionName;
                     App.DataProvider.Compositions.Add(_currentComposition);
                 }
@@ -1001,6 +1014,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
                 if (_currentComposition == null)
                 {
                     _currentComposition = new Composition();
+                    _currentComposition.ID = App.DataProvider.Compositions.Local.Count + 1;
                     _currentComposition.Name = compositionName;
                     App.DataProvider.Compositions.Add(_currentComposition);
                 }
@@ -1043,6 +1057,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
                 if (movementName != null)
                 {
                     _currentMovement = new Movement();
+                    _currentMovement.ID = App.DataProvider.Movements.Local.Count + 1;
                     _currentMovement.Name = movementName;
                     _currentMovement.Composition = _currentComposition;
 
@@ -1094,6 +1109,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
                 else
                 {
                     var album = new Album();
+                    album.ID = (short)(App.DataProvider.Albums.Local.Count + 1);
                     album.Name = RecordingAlbumAutoCompleteBox.Text;
                     album.Recordings.Add(_currentRecording);
 
@@ -1211,6 +1227,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
             if (RecordingPerformerListBox.IsEnabled)
             {
                 var performer = (Performer)RecordingPerformerListBox.SelectedItem;
+                performer.ID = App.DataProvider.Performers.Local.Count + 1;
 
                 _currentRecording.Performers.Remove(performer);
                 performer.Recordings.Remove(_currentRecording);
@@ -1271,6 +1288,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
             if (location == null)
             {
                 location = new Location();
+                location.ID = App.DataProvider.Compositions.Local.Count + 1;
                 location.Name = locationName;
                 App.DataProvider.Locations.Local.Add(location);
             }
@@ -1284,6 +1302,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
             if (RecordingLocationListBox.IsEnabled)
             {
                 var location = (Location)RecordingLocationListBox.SelectedItem;
+                _currentComposition.ID = App.DataProvider.Compositions.Local.Count + 1;
 
                 _currentRecording.Locations.Remove(location);
                 location.Recordings.Remove(_currentRecording);
@@ -1301,7 +1320,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
-            ((Frame)System.Windows.Application.Current.MainWindow.FindName("Frame")).GoBack();
+            ((Frame)Application.Current.MainWindow.FindName("Frame")).GoBack();
         }
 
         private void SubmitButton_Click(object sender, RoutedEventArgs e)
@@ -1313,7 +1332,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
             App.DataProvider = new DataProvider();
 
-            ((Frame)System.Windows.Application.Current.MainWindow.FindName("Frame")).Navigate(new Uri(@"pack://application:,,,/Views/TimelinePage.xaml"));
+            ((Frame)Application.Current.MainWindow.FindName("Frame")).Navigate(new Uri(@"pack://application:,,,/Views/TimelinePage.xaml"));
         }
 
         #endregion Status and Button Section Events
