@@ -41,8 +41,9 @@
     <ApplicationIcon>Resources\AppIcon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EDTF">
-      <HintPath>..\..\..\..\Documents\GitHub\ExtendedDateTimeFormat\src\EDTF\bin\Debug\EDTF.dll</HintPath>
+    <Reference Include="EDTF, Version=1.0.5669.23842, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\EDTF.1.0.5669.23842\lib\net45\EDTF.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>

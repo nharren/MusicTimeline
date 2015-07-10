@@ -33,8 +33,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EDTF">
-      <HintPath>..\..\..\..\Documents\GitHub\ExtendedDateTimeFormat\src\EDTF\bin\Debug\EDTF.dll</HintPath>
+    <Reference Include="EDTF, Version=1.0.5669.23842, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\EDTF.1.0.5669.23842\lib\net45\EDTF.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -83,6 +84,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
