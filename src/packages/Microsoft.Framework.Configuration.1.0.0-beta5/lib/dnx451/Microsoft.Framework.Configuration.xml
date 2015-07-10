@@ -1,0 +1,55 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Microsoft.Framework.Configuration</name>
+    </assembly>
+    <members>
+        <member name="M:Microsoft.Framework.Configuration.ConfigurationBuilder.Add(Microsoft.Framework.Configuration.IConfigurationSource)">
+            <summary>
+            Adds a new configuration source.
+            </summary>
+            <param name="configurationSource">The configuration source to add.</param>
+            <returns>The same configuration source.</returns>
+        </member>
+        <member name="M:Microsoft.Framework.Configuration.ConfigurationBuilder.Add(Microsoft.Framework.Configuration.IConfigurationSource,System.Boolean)">
+            <summary>
+            Adds a new configuration source.
+            </summary>
+            <param name="configurationSource">The configuration source to add.</param>
+            <param name="load">If true, the configuration source's <see cref="M:Microsoft.Framework.Configuration.IConfigurationSource.Load"/> method will
+             be called.</param>
+            <returns>The same configuration source.</returns>
+            <remarks>This method is intended only for test scenarios.</remarks>
+        </member>
+        <member name="P:Microsoft.Framework.Configuration.Resources.Error_InvalidReload">
+            <summary>
+            Reload can only be called on top-level configuration element
+            </summary>
+        </member>
+        <member name="M:Microsoft.Framework.Configuration.Resources.FormatError_InvalidReload">
+            <summary>
+            Reload can only be called on top-level configuration element
+            </summary>
+        </member>
+        <member name="P:Microsoft.Framework.Configuration.Resources.Error_MissingBasePath">
+            <summary>
+            Unable to resolve path '{0}'; construct this {1} with a non-null {2}.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Framework.Configuration.Resources.FormatError_MissingBasePath(System.Object,System.Object,System.Object)">
+            <summary>
+            Unable to resolve path '{0}'; construct this {1} with a non-null {2}.
+            </summary>
+        </member>
+        <member name="P:Microsoft.Framework.Configuration.Resources.Error_NoSources">
+            <summary>
+            A configuration source is not registered. Please register one before setting a value.
+            </summary>
+        </member>
+        <member name="M:Microsoft.Framework.Configuration.Resources.FormatError_NoSources">
+            <summary>
+            A configuration source is not registered. Please register one before setting a value.
+            </summary>
+        </member>
+    </members>
+</doc>
