@@ -524,7 +524,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
             if (imageExtension == ".jpg" || imageExtension == ".png" || imageExtension == ".gif" || imageExtension == ".jpeg")
             {
                 var composerImage = new ComposerImage();
-                composerImage.ID = (short)(App.DataProvider.ComposerImages.Count() + 1);
+                composerImage.ID = (short)(App.DataProvider.ComposerImages.Local.Count + 1);
                 composerImage.Composer = _selectedComposers[0];
                 composerImage.Image = FileUtility.GetFile(imagePath);
 
@@ -576,7 +576,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
                     var webResponse = WebRequest.Create(data).GetResponse();
 
                     var composerLink = new ComposerLink();
-                    composerLink.ID = (short)(App.DataProvider.ComposerLinks.Count() + 1);
+                    composerLink.ID = (short)(App.DataProvider.ComposerLinks.Local.Count + 1);
                     composerLink.Composer = _selectedComposers[0];
                     composerLink.URL = data;
 
@@ -599,7 +599,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
                 if (composerName != null)
                 {
                     var composer = new Composer();
-                    composer.ID = (short)(App.DataProvider.Composers.Count() + 1);
+                    composer.ID = (short)(App.DataProvider.Composers.Local.Count + 1);
                     composer.Name = composerName;
 
                     App.DataProvider.Composers.Add(composer);
@@ -710,7 +710,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
                 foreach (var catalog in selectedCatalogs)
                 {
                     var catalogNumber = new CatalogNumber();
-                    catalogNumber.ID = (short)(App.DataProvider.CatalogNumbers.Count() + 1);
+                    catalogNumber.ID = (short)(App.DataProvider.CatalogNumbers.Local.Count + 1);
                     catalogNumber.CompositionCatalog = catalog;
                     catalogNumber.CompositionCollection = _selectedCompositionCollection;
 
@@ -767,7 +767,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
                 for (int i = 0; i < _selectedComposers.Count; i++)
                 {
                     var newCompositionCatalog = new CompositionCatalog();
-                    newCompositionCatalog.ID = (short)(App.DataProvider.CompositionCatalogs.Count() + 1);
+                    newCompositionCatalog.ID = (short)(App.DataProvider.CompositionCatalogs.Local.Count + 1);
                     newCompositionCatalog.Prefix = droppedString;
                     newCompositionCatalog.Composer = _selectedComposers[i];
 
@@ -813,7 +813,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
                 }
 
                 _selectedCompositionCollection = new CompositionCollection();
-                _selectedCompositionCollection.ID = (short)(App.DataProvider.CompositionCollections.Count() + 1);
+                _selectedCompositionCollection.ID = (short)(App.DataProvider.CompositionCollections.Local.Count + 1);
                 _selectedCompositionCollection.Name = droppedString;
                 _selectedCompositionCollection.Composers = _selectedComposers;
 
@@ -863,7 +863,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
                 foreach (var catalog in selectedCatalogs)
                 {
                     var catalogNumber = new CatalogNumber();
-                    catalogNumber.ID = (short)(App.DataProvider.CatalogNumbers.Count() + 1);
+                    catalogNumber.ID = (short)(App.DataProvider.CatalogNumbers.Local.Count + 1);
                     catalogNumber.CompositionCatalog = catalog;
                     catalogNumber.Composition = _selectedComposition;
 
@@ -923,7 +923,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
             for (int i = 0; i < _selectedComposers.Count; i++)
             {
                 var newCompositionCatalog = new CompositionCatalog();
-                newCompositionCatalog.ID = (short)(App.DataProvider.CompositionCatalogs.Count() + 1);
+                newCompositionCatalog.ID = (short)(App.DataProvider.CompositionCatalogs.Local.Count + 1);
                 newCompositionCatalog.Prefix = droppedString;
                 newCompositionCatalog.Composer = _selectedComposers[i];
 
@@ -978,7 +978,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
                 if (_selectedComposition == null)
                 {
                     _selectedComposition = new Composition();
-                    _selectedComposition.ID = App.DataProvider.Compositions.Count() + 1;
+                    _selectedComposition.ID = App.DataProvider.Compositions.Local.Count + 1;
                     _selectedComposition.Name = compositionName;
                     App.DataProvider.Compositions.Add(_selectedComposition);
                 }
@@ -995,7 +995,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
                 if (_selectedComposition == null)
                 {
                     _selectedComposition = new Composition();
-                    _selectedComposition.ID = App.DataProvider.Compositions.Count() + 1;
+                    _selectedComposition.ID = App.DataProvider.Compositions.Local.Count + 1;
                     _selectedComposition.Name = compositionName;
                     App.DataProvider.Compositions.Add(_selectedComposition);
                 }
@@ -1038,7 +1038,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
                 if (movementName != null)
                 {
                     _selectedMovement = new Movement();
-                    _selectedMovement.ID = App.DataProvider.Movements.Count() + 1;
+                    _selectedMovement.ID = App.DataProvider.Movements.Local.Count + 1;
                     _selectedMovement.Name = movementName;
                     _selectedMovement.Composition = _selectedComposition;
 
@@ -1090,7 +1090,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
                 else
                 {
                     var album = new Album();
-                    album.ID = (short)(App.DataProvider.Albums.Count() + 1);
+                    album.ID = (short)(App.DataProvider.Albums.Local.Count + 1);
                     album.Name = RecordingAlbumAutoCompleteBox.Text;
                     album.Recordings.Add(_selectedRecording);
 
@@ -1122,7 +1122,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
                 return;
             }
 
-            var recordingId = App.DataProvider.Recordings.Count();
+            var recordingId = App.DataProvider.Recordings.Local.Count;
 
             var importPathBuilder = new StringBuilder(Environment.GetFolderPath(Environment.SpecialFolder.MyMusic))
                 .Append("\\")
@@ -1208,7 +1208,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
             if (RecordingPerformerListBox.IsEnabled)
             {
                 var performer = (Performer)RecordingPerformerListBox.SelectedItem;
-                performer.ID = App.DataProvider.Performers.Count() + 1;
+                performer.ID = App.DataProvider.Performers.Local.Count + 1;
 
                 _selectedRecording.Performers.Remove(performer);
                 performer.Recordings.Remove(_selectedRecording);
@@ -1239,7 +1239,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
             if (performer == null)
             {
                 performer = new Performer();
-                performer.ID = App.DataProvider.Performers.Count() + 1;
+                performer.ID = App.DataProvider.Performers.Local.Count + 1;
                 performer.Name = performerName;
                 App.DataProvider.Performers.Local.Add(performer);
             }
@@ -1269,7 +1269,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
             if (location == null)
             {
                 location = new Location();
-                location.ID = App.DataProvider.Compositions.Count() + 1;
+                location.ID = App.DataProvider.Compositions.Local.Count + 1;
                 location.Name = locationName;
                 App.DataProvider.Locations.Local.Add(location);
             }
@@ -1283,7 +1283,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
             if (RecordingLocationListBox.IsEnabled)
             {
                 var location = (Location)RecordingLocationListBox.SelectedItem;
-                _selectedComposition.ID = App.DataProvider.Compositions.Count() + 1;
+                _selectedComposition.ID = App.DataProvider.Compositions.Local.Count + 1;
 
                 _selectedRecording.Locations.Remove(location);
                 location.Recordings.Remove(_selectedRecording);
@@ -1301,6 +1301,9 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
+            App.DataProvider.Dispose();
+            App.DataProvider = new DataProvider();
+
             ((Frame)Application.Current.MainWindow.FindName("Frame")).GoBack();
         }
 

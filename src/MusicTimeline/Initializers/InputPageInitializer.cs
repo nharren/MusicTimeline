@@ -59,12 +59,20 @@ namespace NathanHarrenstein.MusicTimeline.Initializers
 
         private static void InitializeDataSources()
         {
+            App.DataProvider.Albums.Load();
+            App.DataProvider.CatalogNumbers.Load();
+            App.DataProvider.ComposerImages.Load();
+            App.DataProvider.ComposerLinks.Load();
             App.DataProvider.Composers.Load();
-            App.DataProvider.Nationalities.Load();
+            App.DataProvider.CompositionCatalogs.Load();
+            App.DataProvider.CompositionCollections.Load();
+            App.DataProvider.Compositions.Load();
             App.DataProvider.Eras.Load();
             App.DataProvider.Locations.Load();
-            App.DataProvider.Recordings.Load();
+            App.DataProvider.Movements.Load();
+            App.DataProvider.Nationalities.Load();
             App.DataProvider.Performers.Load();
+            App.DataProvider.Recordings.Load();
         }
 
         private static void InitializeListBoxes(InputPage inputPage)
