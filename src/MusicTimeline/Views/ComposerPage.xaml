@@ -45,7 +45,7 @@
                         Click="BackButton_Click"
                         Content="&#xE2A4;"
                         Cursor="Hand"
-                        FontFamily="Segoe UI Symbol"
+                        FontFamily="pack://application:,,,/Resources/Fonts/#Segoe UI Symbol"
                         FontSize="43"
                         Foreground="#FFDFE0E6">
                     <Button.Template>
