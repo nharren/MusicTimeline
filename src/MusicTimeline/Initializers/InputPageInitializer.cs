@@ -59,20 +59,20 @@ namespace NathanHarrenstein.MusicTimeline.Initializers
 
         private static void InitializeDataSources()
         {
-            App.DataProvider.Albums.Load();
-            App.DataProvider.CatalogNumbers.Load();
-            App.DataProvider.ComposerImages.Load();
-            App.DataProvider.ComposerLinks.Load();
-            App.DataProvider.Composers.Load();
-            App.DataProvider.CompositionCatalogs.Load();
-            App.DataProvider.CompositionCollections.Load();
-            App.DataProvider.Compositions.Load();
-            App.DataProvider.Eras.Load();
-            App.DataProvider.Locations.Load();
-            App.DataProvider.Movements.Load();
-            App.DataProvider.Nationalities.Load();
-            App.DataProvider.Performers.Load();
-            App.DataProvider.Recordings.Load();
+            App.DataProvider.Albums.LoadAsync();
+            App.DataProvider.CatalogNumbers.LoadAsync();
+            App.DataProvider.Composers.LoadAsync();
+            App.DataProvider.ComposerImages.LoadAsync();
+            App.DataProvider.ComposerLinks.LoadAsync();
+            App.DataProvider.CompositionCatalogs.LoadAsync();
+            App.DataProvider.CompositionCollections.LoadAsync();
+            App.DataProvider.Compositions.LoadAsync();
+            App.DataProvider.Eras.LoadAsync();
+            App.DataProvider.Locations.LoadAsync();
+            App.DataProvider.Movements.LoadAsync();
+            App.DataProvider.Nationalities.LoadAsync();
+            App.DataProvider.Performers.LoadAsync();
+            App.DataProvider.Recordings.LoadAsync();
         }
 
         private static void InitializeListBoxes(InputPage inputPage)
