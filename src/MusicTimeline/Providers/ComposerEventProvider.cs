@@ -1,10 +1,7 @@
 ﻿using NathanHarrenstein.MusicDB;
 using NathanHarrenstein.MusicTimeline.Input;
-using NathanHarrenstein.MusicTimeline.ViewModels;
-using NathanHarrenstein.MusicTimeline.Providers;
 using NathanHarrenstein.MusicTimeline.Utilities;
-using NathanHarrenstein.MusicTimeline.Views;
-using NathanHarrenstein.Timeline;
+using NathanHarrenstein.MusicTimeline.ViewModels;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -12,125 +9,20 @@ using System.EDTF;
 using System.IO;
 using System.Linq;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 
-namespace NathanHarrenstein.MusicTimeline.Initializers
+namespace NathanHarrenstein.MusicTimeline.Providers
 {
-    public static class TimelineInitializer
+    public static class ComposerEventProvider
     {
         private static Dictionary<int, BitmapImage> ThumbnailDictionary = new Dictionary<int, BitmapImage>();
 
-        public static void Initialize(Timeline.Timeline timeline)
-        {
-            timeline.Dates = new ExtendedDateTimeInterval(new ExtendedDateTime(1000, 1, 1), ExtendedDateTime.Now);
-            timeline.Eras = GetEras();
-            timeline.Ruler = GetRuler();
-            timeline.Resolution = TimeResolution.Decade;
-            timeline.EventHeight = 60;
-            timeline.Events = GetEvents((IList<ComposerEraViewModel>)timeline.Eras, timeline);
-            timeline.Loaded += (o, e) =>
-            {
-                var horizontalOffset = Application.Current.Properties["HorizontalOffset"] as double?;
-
-                if (horizontalOffset != null)
-                {
-                    timeline.HorizontalOffset = horizontalOffset.Value;
-                }
-
-                var verticalOffset = Application.Current.Properties["VerticalOffset"] as double?;
-
-                if (verticalOffset != null)
-                {
-                    timeline.VerticalOffset = verticalOffset.Value;
-                }
-            };
-        }
-
-        private static string GetBorn(Composer composer)
-        {
-            if (composer.BirthLocation != null)
-            {
-                return $"{ExtendedDateTimeInterval.Parse(composer.Dates).Start}; {composer.BirthLocation.Name}";
-            }
-
-            return ExtendedDateTimeInterval.Parse(composer.Dates).Start.ToString();
-        }
-
-        private static DelegateCommand GetCommand(Composer composer, Timeline.Timeline timeline)
-        {
-            Action<object> command = o =>
-            {
-                Application.Current.Properties["SelectedComposer"] = composer;
-                Application.Current.Properties["HorizontalOffset"] = timeline.HorizontalOffset;
-                Application.Current.Properties["VerticalOffset"] = timeline.VerticalOffset;
-
-                ((Frame)Application.Current.MainWindow.FindName("Frame")).Navigate(new Uri("pack://application:,,,/Views/ComposerPage.xaml"));
-            };
-
-            return new DelegateCommand(command);
-        }
-
-        private static string GetDied(Composer composer)
-        {
-            if (composer.DeathLocation != null)
-            {
-                return $"{ExtendedDateTimeInterval.Parse(composer.Dates).End}; {composer.DeathLocation.Name}";
-            }
-
-            return ExtendedDateTimeInterval.Parse(composer.Dates).End.ToString();
-        }
-
-        private static List<ComposerEraViewModel> GetEras()
-        {
-            var eras = new List<ComposerEraViewModel>();
-
-            foreach (var era in App.DataProvider.Eras)
-            {
-                var background = (SolidColorBrush)null;
-
-                if (era.Name == "Medieval")
-                {
-                    background = new SolidColorBrush(Color.FromRgb(153, 153, 153));            // #FF999999
-                }
-                else if (era.Name == "Renaissance")
-                {
-                    background = new SolidColorBrush(Color.FromRgb(155, 128, 181));            // #FF9B80B5
-                }
-                else if (era.Name == "Baroque")
-                {
-                    background = new SolidColorBrush(Color.FromRgb(204, 77, 77));              // #FFCC4D4D
-                }
-                else if (era.Name == "Classical")
-                {
-                    background = new SolidColorBrush(Color.FromRgb(51, 151, 193));             // #FF3397C1
-                }
-                else if (era.Name == "Romantic")
-                {
-                    background = new SolidColorBrush(Color.FromRgb(69, 168, 90));              // #FF45A85A
-                }
-                else if (era.Name == "20th Century")
-                {
-                    background = new SolidColorBrush(Color.FromRgb(205, 173, 74));             // #FFCDAD4A
-                }
-                else if (era.Name == "21st Century")
-                {
-                    background = new SolidColorBrush(Color.FromRgb(219, 109, 138));            // #FFDB6D8A
-                }
-
-                var musicEra = new ComposerEraViewModel(era.Name, ExtendedDateTimeInterval.Parse(era.Dates), background, Brushes.White);
-
-                eras.Add(musicEra);
-            }
-
-            return eras;
-        }
-
-        private static IList GetEvents(IList<ComposerEraViewModel> musicEras, Timeline.Timeline timeline)
+        public static IList GetComposerEvents(DataProvider dataProvider, IList<ComposerEraViewModel> musicEras, Timeline.Timeline timeline)
         {
             var eventList = new List<ComposerEventViewModel>();
-            var composers = App.DataProvider.Composers.ToList();
+            var composers = dataProvider.Composers.ToList();
 
             foreach (var composer in composers)
             {
@@ -169,7 +61,17 @@ namespace NathanHarrenstein.MusicTimeline.Initializers
                     background = Brushes.Black;
                 }
 
-                var composerEvent = new ComposerEventViewModel(NameUtility.ToFirstLast(composer.Name), ExtendedDateTimeInterval.Parse(composer.Dates), GetBorn(composer), GetDied(composer), composer, background, Brushes.White, GetThumbnail(composer), GetFlags(composer), composerEras, GetCommand(composer, timeline), null);
+                var composerEvent = new ComposerEventViewModel(
+                    NameUtility.ToFirstLast(composer.Name),
+                    ExtendedDateTimeInterval.Parse(composer.Dates),
+                    GetBorn(composer),
+                    GetDied(composer),
+                    composer,
+                    background,
+                    Brushes.White,
+                    GetThumbnail(composer),
+                    composerEras,
+                    GetCommand(composer, timeline), null);
 
                 eventList.Add(composerEvent);
             }
@@ -177,21 +79,38 @@ namespace NathanHarrenstein.MusicTimeline.Initializers
             return eventList.OrderBy(e => e.Dates.Earliest()).ToList();
         }
 
-        private static List<FlagViewModel> GetFlags(Composer composer)
+        private static string GetBorn(Composer composer)
         {
-            return composer.Nationalities
-                .Select(n => FlagProvider.GetFlag(n.Name, FlagSize.Small))
-                .DefaultIfEmpty(FlagProvider.GetFlag(null, FlagSize.Small))
-                .ToList();
+            if (composer.BirthLocation != null)
+            {
+                return $"{ExtendedDateTimeInterval.Parse(composer.Dates).Start}; {composer.BirthLocation.Name}";
+            }
+
+            return ExtendedDateTimeInterval.Parse(composer.Dates).Start.ToString();
         }
 
-        private static TimeRuler GetRuler()
+        private static DelegateCommand GetCommand(Composer composer, Timeline.Timeline timeline)
         {
-            var timeRuler = new TimeRuler();
-            timeRuler.TimeRulerUnit = TimeRulerUnit.Day;
-            timeRuler.TimeUnitWidth = 0.04109589041;
+            Action<object> command = o =>
+            {
+                Application.Current.Properties["SelectedComposer"] = composer.Name;
+                Application.Current.Properties["HorizontalOffset"] = timeline.HorizontalOffset;
+                Application.Current.Properties["VerticalOffset"] = timeline.VerticalOffset;
 
-            return timeRuler;
+                ((NavigationWindow)Application.Current.MainWindow).Navigate(new Uri("pack://application:,,,/Views/ComposerPage.xaml"));
+            };
+
+            return new DelegateCommand(command);
+        }
+
+        private static string GetDied(Composer composer)
+        {
+            if (composer.DeathLocation != null)
+            {
+                return $"{ExtendedDateTimeInterval.Parse(composer.Dates).End}; {composer.DeathLocation.Name}";
+            }
+
+            return ExtendedDateTimeInterval.Parse(composer.Dates).End.ToString();
         }
 
         private static BitmapImage GetThumbnail(Composer composer)

@@ -12,11 +12,16 @@ namespace NathanHarrenstein.MusicTimeline.Views
 {
     public partial class ComposerPage : Page
     {
+        private DataProvider _dataProvider;
+
         public ComposerPage()
         {
             InitializeComponent();
 
-            var composer = Application.Current.Properties["SelectedComposer"] as Composer;
+            _dataProvider = new DataProvider();
+
+            var composerName = Application.Current.Properties["SelectedComposer"] as string;
+            var composer = _dataProvider.Composers.FirstOrDefault(c => c.Name == composerName);
 
             if (composer != null)
             {
@@ -79,6 +84,11 @@ namespace NathanHarrenstein.MusicTimeline.Views
             var composer = (Composer)button.DataContext;
 
             LoadComposer(composer);
+        }
+
+        private void Page_Unloaded(object sender, RoutedEventArgs e)
+        {
+            _dataProvider.Dispose();
         }
     }
 }

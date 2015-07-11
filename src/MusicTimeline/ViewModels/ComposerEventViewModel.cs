@@ -17,13 +17,12 @@ namespace NathanHarrenstein.MusicTimeline.ViewModels
         private readonly ExtendedDateTimeInterval _dates;
         private readonly string _died;
         private readonly IEnumerable<ComposerEraViewModel> _eras;
-        private readonly IEnumerable<FlagViewModel> _flags;
         private readonly Brush _foreground;
         private readonly BitmapImage _image;
         private readonly string _label;
         private readonly ICommand _playPopularCommand;
 
-        public ComposerEventViewModel(string label, ExtendedDateTimeInterval dates, string born, string died, Composer composer, Brush background, Brush foreground, BitmapImage image, IEnumerable<FlagViewModel> flags, IEnumerable<ComposerEraViewModel> eras, ICommand clickCommand, ICommand playPopularCommand)
+        public ComposerEventViewModel(string label, ExtendedDateTimeInterval dates, string born, string died, Composer composer, Brush background, Brush foreground, BitmapImage image, IEnumerable<ComposerEraViewModel> eras, ICommand clickCommand, ICommand playPopularCommand)
         {
             _dates = dates;
             _born = born;
@@ -33,7 +32,6 @@ namespace NathanHarrenstein.MusicTimeline.ViewModels
             _foreground = foreground;
             _label = label;
             _image = image;
-            _flags = flags;
             _eras = eras;
             _clickCommand = clickCommand;
             _playPopularCommand = playPopularCommand;
@@ -92,14 +90,6 @@ namespace NathanHarrenstein.MusicTimeline.ViewModels
             get
             {
                 return _eras;
-            }
-        }
-
-        public IEnumerable<FlagViewModel> Flags
-        {
-            get
-            {
-                return _flags;
             }
         }
 

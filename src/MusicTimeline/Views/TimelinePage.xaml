@@ -5,11 +5,34 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:t="clr-namespace:NathanHarrenstein.Timeline;assembly=Timeline"
       xmlns:vm="clr-namespace:NathanHarrenstein.MusicTimeline.ViewModels"
+      xmlns:db="clr-namespace:NathanHarrenstein.MusicDB;assembly=MusicDB"
+      xmlns:cv="clr-namespace:NathanHarrenstein.MusicTimeline.Converters"
       Title="TimelinePage"
       d:DesignHeight="300"
       d:DesignWidth="300"
-      mc:Ignorable="d">
-    <Grid Background="{StaticResource BackgroundBrush}">
+      mc:Ignorable="d"
+      Unloaded="page_Unloaded"
+      Name="page">
+    <Page.Resources>
+        <cv:NationalityToImageConverter x:Key="NationalityToImageConverter" />
+    </Page.Resources>
+    <DockPanel Background="{StaticResource BackgroundBrush}">
+        <Menu DockPanel.Dock="Top">
+            <MenuItem Header="File">
+                <MenuItem Command="{Binding ManageDataCommand, ElementName=page}" Header="Manage Data" />
+                <Separator />
+                <MenuItem Command="{Binding CloseCommand, ElementName=page}" Header="Close" />
+            </MenuItem>
+            <MenuItem Header="Go To">
+                <MenuItem Command="{Binding GoToCommand, ElementName=page}" CommandParameter="1000" Header="Medieval" />
+                <MenuItem Command="{Binding GoToCommand, ElementName=page}" CommandParameter="1400" Header="Renaissance" />
+                <MenuItem Command="{Binding GoToCommand, ElementName=page}" CommandParameter="1600" Header="Baroque" />
+                <MenuItem Command="{Binding GoToCommand, ElementName=page}" CommandParameter="1730" Header="Classical" />
+                <MenuItem Command="{Binding GoToCommand, ElementName=page}" CommandParameter="1815" Header="Romantic" />
+                <MenuItem Command="{Binding GoToCommand, ElementName=page}" CommandParameter="1900" Header="20th Century" />
+                <MenuItem Command="{Binding GoToCommand, ElementName=page}" CommandParameter="2000" Header="21th Century" />
+            </MenuItem>
+        </Menu>
         <t:Timeline Name="timeline"
                     LineStroke="#FF333333"
                     TimeForeground="White">
@@ -67,19 +90,19 @@
                                             <TextBlock FontSize="14"
                                                        FontWeight="SemiBold"
                                                        Text="{Binding Label}" />
-                                            <ItemsControl ItemsSource="{Binding Flags}">
+                                            <ItemsControl ItemsSource="{Binding Composer.Nationalities}">
                                                 <ItemsControl.ItemsPanel>
                                                     <ItemsPanelTemplate>
                                                         <StackPanel Orientation="Horizontal" />
                                                     </ItemsPanelTemplate>
                                                 </ItemsControl.ItemsPanel>
                                                 <ItemsControl.ItemTemplate>
-                                                    <DataTemplate>
+                                                    <DataTemplate DataType="{x:Type db:Nationality}">
                                                         <Image Width="16"
                                                                Height="16"
                                                                Margin="5,0,0,0"
                                                                SnapsToDevicePixels="True"
-                                                               Source="{Binding Image}"
+                                                               Source="{Binding Name, Converter={StaticResource NationalityToImageConverter}}"
                                                                UseLayoutRounding="True" />
                                                     </DataTemplate>
                                                 </ItemsControl.ItemTemplate>
@@ -137,5 +160,5 @@
                 </DataTemplate>
             </t:Timeline.EventTemplates>
         </t:Timeline>
-    </Grid>
+    </DockPanel>
 </Page>

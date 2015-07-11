@@ -1,58 +1,12 @@
-﻿using NathanHarrenstein.MusicTimeline.Initializers;
-using System.Windows;
-using System.Windows.Input;
+﻿using System.Windows.Navigation;
 
 namespace NathanHarrenstein.MusicTimeline.Views
 {
-    public partial class MainWindow : Window
+    public partial class MainWindow : NavigationWindow
     {
-        public static readonly DependencyProperty CloseCommandProperty = DependencyProperty.Register("CloseCommand", typeof(ICommand), typeof(MainWindow));
-        public static readonly DependencyProperty GoToCommandProperty = DependencyProperty.Register("GoToCommand", typeof(ICommand), typeof(MainWindow));
-        public static readonly DependencyProperty ManageDataCommandProperty = DependencyProperty.Register("ManageDataCommand", typeof(ICommand), typeof(MainWindow));
         public MainWindow()
         {
             InitializeComponent();
-
-            MainWindowInitializer.Initialize(this);
-        }
-
-        public ICommand CloseCommand
-        {
-            get
-            {
-                return (ICommand)GetValue(CloseCommandProperty);
-            }
-
-            set
-            {
-                SetValue(CloseCommandProperty, value);
-            }
-        }
-
-        public ICommand GoToCommand
-        {
-            get
-            {
-                return (ICommand)GetValue(GoToCommandProperty);
-            }
-
-            set
-            {
-                SetValue(GoToCommandProperty, value);
-            }
-        }
-
-        public ICommand ManageDataCommand
-        {
-            get
-            {
-                return (ICommand)GetValue(ManageDataCommandProperty);
-            }
-
-            set
-            {
-                SetValue(ManageDataCommandProperty, value);
-            }
         }
     }
 }

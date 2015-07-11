@@ -95,29 +95,26 @@
     <Compile Include="Input\DelegateCommand.cs" />
     <Compile Include="Comparers\NaturalComparer.cs" />
     <Compile Include="Logger.cs" />
+    <Compile Include="Providers\ComposerEraProvider.cs" />
+    <Compile Include="Providers\ComposerEventProvider.cs" />
     <Compile Include="Utilities\AccessibilityUtility.cs" />
     <Compile Include="Utilities\BindingUtility.cs" />
     <Compile Include="Utilities\ImageUtility.cs" />
     <Compile Include="ViewModels\ComposerEventViewModel.cs" />
     <Compile Include="ViewModels\ComposerEraViewModel.cs" />
     <Compile Include="Utilities\FileUtility.cs" />
-    <Compile Include="Initializers\InputPageInitializer.cs" />
     <Compile Include="Views\InputPage.xaml.cs">
       <DependentUpon>InputPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Initializers\TimelineInitializer.cs" />
     <Compile Include="Views\TimelinePage.xaml.cs">
       <DependentUpon>TimelinePage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\CompositionCollectionTreeViewItem.cs" />
     <Compile Include="Controls\CompositionTreeViewItem.cs" />
-    <Compile Include="ViewModels\FlagViewModel.cs" />
-    <Compile Include="Initializers\MainWindowInitializer.cs" />
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\MovementTreeViewItem.cs" />
-    <Compile Include="Providers\FlagProvider.cs" />
     <Compile Include="Views\ComposerPage.xaml.cs">
       <DependentUpon>ComposerPage.xaml</DependentUpon>
     </Compile>
@@ -174,6 +171,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="App.config" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -181,11 +179,6 @@
     </None>
     <AppDesigner Include="Properties\" />
     <Resource Include="Resources\Fonts\seguisym.ttf" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\..\..\..\..\Desktop\App Configs\Nathan\App.config">
-      <Link>App.config</Link>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\LibraryDb\LibraryDB.csproj">
