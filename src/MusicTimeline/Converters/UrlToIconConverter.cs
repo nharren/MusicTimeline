@@ -29,7 +29,7 @@ namespace NathanHarrenstein.MusicTimeline.Converters
                 var client = new WebClient();
                 var webIconPath = "http://" + linkUri.Host + "/favicon.ico";
 
-                var favicon = FileUtility.GetFile(webIconPath);
+                var favicon = FileUtility.GetImage(webIconPath);
 
                 if (favicon == null)
                 {

@@ -6,7 +6,7 @@ namespace NathanHarrenstein.MusicTimeline.Utilities
 {
     internal static class FileUtility
     {
-        internal static byte[] GetFile(string filePath)
+        internal static byte[] GetImage(string filePath)
         {
             Uri fileUri = null;
 
@@ -24,7 +24,7 @@ namespace NathanHarrenstein.MusicTimeline.Utilities
             }
             else
             {
-                if (WebFileExists(filePath))
+                if (IsWebImage(filePath))
                 {
                     using (var webClient = new WebClient() { Proxy = null })
                     {
@@ -36,7 +36,26 @@ namespace NathanHarrenstein.MusicTimeline.Utilities
             return null;
         }
 
-        internal static bool WebFileExists(string url)
+        internal static bool WebsiteExists(string url)
+        {
+            WebRequest webRequest = WebRequest.Create(url);
+            WebResponse webResponse;
+
+            try
+            {
+                webResponse = webRequest.GetResponse();
+            }
+            catch (WebException e)
+            {
+                Logger.Log(e.ToString(), "MusicTimeline.log");
+
+                return false;
+            }
+
+            return true;
+        }
+
+        internal static bool IsWebImage(string url)
         {
             var request = (HttpWebRequest)WebRequest.Create(url);
             request.Method = "HEAD";
@@ -44,15 +63,20 @@ namespace NathanHarrenstein.MusicTimeline.Utilities
             HttpWebResponse response = null;
 
             var result = true;
+            string contentType = null;
 
             try
             {
                 response = (HttpWebResponse)request.GetResponse();
 
                 result = response.StatusCode == HttpStatusCode.OK;
+
+                contentType = response.ContentType;
             }
-            catch (WebException)
+            catch (WebException e)
             {
+                Logger.Log(e.ToString(), "MusicTimeline.log");
+
                 result = false;
             }
             finally
@@ -63,7 +87,7 @@ namespace NathanHarrenstein.MusicTimeline.Utilities
                 }
             }
 
-            return result;
+            return result && contentType.StartsWith("image");
         }
 
         internal static bool HasLine(Stream file, string line)

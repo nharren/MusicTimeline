@@ -5,6 +5,7 @@ using NathanHarrenstein.MusicTimeline.ViewModels;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.EDTF;
 using System.IO;
 using System.Linq;
@@ -22,9 +23,9 @@ namespace NathanHarrenstein.MusicTimeline.Providers
         public static IList GetComposerEvents(DataProvider dataProvider, IList<ComposerEraViewModel> musicEras, Timeline.Timeline timeline)
         {
             var eventList = new List<ComposerEventViewModel>();
-            var composers = dataProvider.Composers.ToList();
+            dataProvider.Composers.Load();
 
-            foreach (var composer in composers)
+            foreach (var composer in dataProvider.Composers.Local)
             {
                 var background = (Brush)null;
                 var composerEras = new List<ComposerEraViewModel>();
