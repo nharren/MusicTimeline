@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Net;
+using System.Net.Security;
 
 namespace NathanHarrenstein.MusicTimeline.Utilities
 {
@@ -38,6 +39,7 @@ namespace NathanHarrenstein.MusicTimeline.Utilities
 
         internal static bool WebsiteExists(string url)
         {
+            ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback((a,b,c,d) => true);
             WebRequest webRequest = WebRequest.Create(url);
             WebResponse webResponse;
 
