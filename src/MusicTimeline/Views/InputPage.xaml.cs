@@ -548,7 +548,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
         {
             if (ComposerImageListBox.IsEnabled)
             {
-                _selectedComposers[0].ComposerImages.Remove((ComposerImage)ComposerImageListBox.SelectedItem);
+                _dataProvider.ComposerImages.Remove((ComposerImage)ComposerImageListBox.SelectedItem);
             }
         }
 
@@ -577,8 +577,28 @@ namespace NathanHarrenstein.MusicTimeline.Views
                     return;
                 }
 
+                short id = 1;
+                var composerImageIds = _dataProvider.ComposerImages
+                    .Select(ci => ci.ID)
+                    .Concat(_dataProvider.ComposerImages.Local
+                        .Select(lci => lci.ID))
+                    .OrderBy(i => i)
+                    .ToArray();
+
+                foreach (var cid in composerImageIds)
+                {
+                    if (cid == id || id == composerImageIds.Length)
+                    {
+                        id++;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+
                 var composerImage = new ComposerImage();
-                composerImage.ID = (short)(_dataProvider.ComposerImages.Count() + _dataProvider.ComposerImages.Local.Count + 1);
+                composerImage.ID = id;
                 composerImage.Composer = _selectedComposers[0];
                 composerImage.Image = imageBytes;
 
@@ -610,7 +630,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
         {
             if (ComposerLinkListBox.IsEnabled)
             {
-                _selectedComposers[0].ComposerLinks.Remove((ComposerLink)ComposerLinkListBox.SelectedItem);
+                _dataProvider.ComposerLinks.Remove((ComposerLink)ComposerLinkListBox.SelectedItem);
             }
         }
 
@@ -1007,6 +1027,10 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
         private void CompositionDeleteCommand_Executed(object sender, ExecutedRoutedEventArgs e)
         {
+            if (CompositionListBox.IsEnabled)
+            {
+                _dataProvider.Compositions.Remove(_selectedComposition);
+            }
         }
 
         private void CompositionListBox_Drop(object sender, DragEventArgs e)
@@ -1116,7 +1140,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
         {
             if (MovementListBox.IsEnabled)
             {
-                _dataProvider.Movements.Local.Remove((Movement)MovementListBox.SelectedItem);
+                _dataProvider.Movements.Remove((Movement)MovementListBox.SelectedItem);
             }
         }
 
@@ -1260,14 +1284,12 @@ namespace NathanHarrenstein.MusicTimeline.Views
             if (RecordingPerformerListBox.IsEnabled)
             {
                 var performer = (Performer)RecordingPerformerListBox.SelectedItem;
-                performer.ID = _dataProvider.Performers.Local.Count + 1;
 
-                _selectedRecording.Performers.Remove(performer);
                 performer.Recordings.Remove(_selectedRecording);
 
                 if (performer.Recordings.Count == 0)
                 {
-                    _dataProvider.Performers.Local.Remove(performer);
+                    _dataProvider.Performers.Remove(performer);
                 }
             }
         }
@@ -1335,9 +1357,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
             if (RecordingLocationListBox.IsEnabled)
             {
                 var location = (Location)RecordingLocationListBox.SelectedItem;
-                _selectedComposition.ID = _dataProvider.Compositions.Local.Count + 1;
 
-                _selectedRecording.Locations.Remove(location);
                 location.Recordings.Remove(_selectedRecording);
 
                 if (location.Recordings.Count == 0 && location.BirthLocationComposers.Count == 0 && location.DeathLocationComposers.Count == 0)

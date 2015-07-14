@@ -2,6 +2,7 @@
 using System.IO;
 using System.Net;
 using System.Net.Security;
+using System.Windows;
 
 namespace NathanHarrenstein.MusicTimeline.Utilities
 {
@@ -25,11 +26,22 @@ namespace NathanHarrenstein.MusicTimeline.Utilities
             }
             else
             {
-                if (IsWebImage(filePath))
+                using (var webClient = new WebClient() { Proxy = null })
                 {
-                    using (var webClient = new WebClient() { Proxy = null })
+                    webClient.Proxy = null;
+                    webClient.Headers.Add("Content-Type", "image");
+
+                    try
                     {
                         return webClient.DownloadData(filePath);
+                    }
+                    catch (WebException e)
+                    {
+                        MessageBox.Show(e.Message);
+                    }
+                    catch
+                    {
+
                     }
                 }
             }
@@ -55,41 +67,6 @@ namespace NathanHarrenstein.MusicTimeline.Utilities
             }
 
             return true;
-        }
-
-        internal static bool IsWebImage(string url)
-        {
-            var request = (HttpWebRequest)WebRequest.Create(url);
-            request.Method = "HEAD";
-
-            HttpWebResponse response = null;
-
-            var result = true;
-            string contentType = null;
-
-            try
-            {
-                response = (HttpWebResponse)request.GetResponse();
-
-                result = response.StatusCode == HttpStatusCode.OK;
-
-                contentType = response.ContentType;
-            }
-            catch (WebException e)
-            {
-                Logger.Log(e.ToString(), "MusicTimeline.log");
-
-                result = false;
-            }
-            finally
-            {
-                if (response != null)
-                {
-                    response.Close();
-                }
-            }
-
-            return result && contentType.StartsWith("image");
         }
 
         internal static bool HasLine(Stream file, string line)

@@ -18,6 +18,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
         public static readonly DependencyProperty CloseCommandProperty = DependencyProperty.Register("CloseCommand", typeof(ICommand), typeof(TimelinePage));
         public static readonly DependencyProperty GoToCommandProperty = DependencyProperty.Register("GoToCommand", typeof(ICommand), typeof(TimelinePage));
         public static readonly DependencyProperty ManageDataCommandProperty = DependencyProperty.Register("ManageDataCommand", typeof(ICommand), typeof(TimelinePage));
+        public static readonly DependencyProperty RebuildThumbnailCacheCommandProperty = DependencyProperty.Register("RebuildThumbnailCacheCommand", typeof(ICommand), typeof(TimelinePage));
         private DataProvider _dataProvider;
 
         public TimelinePage()
@@ -65,6 +66,19 @@ namespace NathanHarrenstein.MusicTimeline.Views
             }
         }
 
+        public ICommand RebuildThumbnailCacheCommand
+        {
+            get
+            {
+                return (ICommand)GetValue(RebuildThumbnailCacheCommandProperty);
+            }
+
+            set
+            {
+                SetValue(RebuildThumbnailCacheCommandProperty, value);
+            }
+        }
+
         public void Initialize()
         {
             _dataProvider = new DataProvider();
@@ -72,6 +86,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
             ManageDataCommand = GetManageDataCommand();
             CloseCommand = GetCloseCommand();
             GoToCommand = GetGoToCommand();
+            RebuildThumbnailCacheCommand = GetRebuildThumbnailCacheCommand();
 
             timeline.Dates = new ExtendedDateTimeInterval(new ExtendedDateTime(1000, 1, 1), ExtendedDateTime.Now);
             timeline.Eras = ComposerEraProvider.GetEras(_dataProvider);
@@ -97,20 +112,25 @@ namespace NathanHarrenstein.MusicTimeline.Views
             };
         }
 
-        private ICommand GetCloseCommand()
+        private ICommand GetRebuildThumbnailCacheCommand()
         {
             return new DelegateCommand(o =>
             {
-                Application.Current.Shutdown();
+                foreach (var composer in _dataProvider.Composers)
+                {
+                    ComposerEventProvider.CreateThumbnail(composer);
+                }
+
+                Application.Current.Properties["HorizontalOffset"] = timeline.HorizontalOffset;
+                Application.Current.Properties["VerticalOffset"] = timeline.VerticalOffset;
+
+                NavigationService.Refresh();
             });
         }
 
-        private ICommand GetManageDataCommand()
+        private ICommand GetCloseCommand()
         {
-            return new DelegateCommand(o =>
-            {
-                NavigationService.Navigate(new Uri(@"pack://application:,,,/Views/InputPage.xaml", UriKind.Absolute));
-            });
+            return new DelegateCommand(o => Application.Current.Shutdown());
         }
 
         private ICommand GetGoToCommand()
@@ -120,6 +140,14 @@ namespace NathanHarrenstein.MusicTimeline.Views
                 var year = new ExtendedDateTime(int.Parse((string)o));
 
                 timeline.HorizontalOffset = timeline.Ruler.ToPixels(timeline.Dates.Earliest(), year);
+            });
+        }
+
+        private ICommand GetManageDataCommand()
+        {
+            return new DelegateCommand(o =>
+            {
+                NavigationService.Navigate(new Uri(@"pack://application:,,,/Views/InputPage.xaml", UriKind.Absolute));
             });
         }
 

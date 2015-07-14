@@ -136,18 +136,24 @@ namespace NathanHarrenstein.MusicTimeline.Providers
             if (File.Exists(thumbnailPath))                                                              // Cache and return thumbnail from file.
             {
                 thumbnail = new BitmapImage();
-                thumbnail.CacheOption = BitmapCacheOption.OnLoad;
                 thumbnail.BeginInit();
                 thumbnail.DecodePixelHeight = 50;
-                thumbnail.UriSource = thumbnailUri;
+                thumbnail.StreamSource = new MemoryStream(File.ReadAllBytes(thumbnailPath));
                 thumbnail.EndInit();
                 thumbnail.Freeze();
-
+ 
                 ThumbnailDictionary[composer.ID] = thumbnail;
 
                 return thumbnail;
             }
 
+            return CreateThumbnail(composer);
+        }
+
+        internal static BitmapImage CreateThumbnail(Composer composer)
+        {
+            BitmapImage thumbnail = null;
+            var thumbnailPath = $@"{Environment.CurrentDirectory}\Resources\Thumbnails\{composer.ID}.jpg";
             var image = composer.ComposerImages.Select(ci => ci.Image).FirstOrDefault();
 
             if (image != null)                                                                          // Create, cache, and return a thumbnail from a composer image.
@@ -164,7 +170,7 @@ namespace NathanHarrenstein.MusicTimeline.Providers
                 encoder.QualityLevel = 95;
                 encoder.Frames.Add(BitmapFrame.Create(thumbnail));
 
-                using (var stream = new FileStream(thumbnailPath, FileMode.CreateNew))
+                using (var stream = new FileStream(thumbnailPath, FileMode.Create))
                 {
                     encoder.Save(stream);
                 }
@@ -176,15 +182,14 @@ namespace NathanHarrenstein.MusicTimeline.Providers
             else if (!ThumbnailDictionary.TryGetValue(0, out thumbnail))
             {
                 thumbnailPath = $@"{Environment.CurrentDirectory}\Resources\Thumbnails\0.jpg";
-                thumbnailUri = new Uri(thumbnailPath, UriKind.Absolute);
+                var thumbnailUri = new Uri(thumbnailPath, UriKind.Absolute);
 
                 if (File.Exists(thumbnailPath))                                                                // Cache and return default thumbnail from file.
                 {
                     thumbnail = new BitmapImage();
-                    thumbnail.CacheOption = BitmapCacheOption.OnLoad;
                     thumbnail.BeginInit();
                     thumbnail.DecodePixelHeight = 50;
-                    thumbnail.UriSource = thumbnailUri;
+                    thumbnail.StreamSource = new MemoryStream(File.ReadAllBytes(thumbnailPath));
                     thumbnail.EndInit();
                     thumbnail.Freeze();
 
@@ -194,13 +199,11 @@ namespace NathanHarrenstein.MusicTimeline.Providers
                 }
                 else                                                                                            // Create, cache and return default thumbnail from file.
                 {
-                    var defaultUri = new Uri("pack://application:,,,/Resources/Composers/Unknown.jpg", UriKind.Absolute);
-
                     thumbnail = new BitmapImage();
                     thumbnail.CacheOption = BitmapCacheOption.OnLoad;
                     thumbnail.BeginInit();
                     thumbnail.DecodePixelHeight = 50;
-                    thumbnail.UriSource = defaultUri;
+                    thumbnail.StreamSource = Application.GetResourceStream(new Uri("pack://application:,,,/Resources/Composers/Unknown.jpg", UriKind.Absolute)).Stream;
                     thumbnail.EndInit();
                     thumbnail.Freeze();
 

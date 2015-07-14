@@ -23,6 +23,9 @@
                 <Separator />
                 <MenuItem Command="{Binding CloseCommand, ElementName=page}" Header="Close" />
             </MenuItem>
+            <MenuItem Header="Tools">
+                <MenuItem Command="{Binding RebuildThumbnailCacheCommand, ElementName=page}" Header="Rebuild Thumbnail Cache" />
+            </MenuItem>
             <MenuItem Header="Go To">
                 <MenuItem Command="{Binding GoToCommand, ElementName=page}" CommandParameter="1000" Header="Medieval" />
                 <MenuItem Command="{Binding GoToCommand, ElementName=page}" CommandParameter="1400" Header="Renaissance" />
