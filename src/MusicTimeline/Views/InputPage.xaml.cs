@@ -1,6 +1,7 @@
 ﻿using Luminescence.Xiph;
 using NathanHarrenstein.MusicDB;
 using NathanHarrenstein.MusicTimeline.Extensions;
+using NathanHarrenstein.MusicTimeline.Providers;
 using NathanHarrenstein.MusicTimeline.Utilities;
 using System;
 using System.Collections.Generic;
@@ -69,7 +70,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
         private void InitializeDataSources()
         {
-            _dataProvider.Composers.Load();          
+            _dataProvider.Composers.Load();
             _dataProvider.Eras.Load();
             _dataProvider.Locations.Load();
             _dataProvider.Nationalities.Load();
@@ -559,53 +560,11 @@ namespace NathanHarrenstein.MusicTimeline.Views
                 return;
             }
 
-            var imagePath = (string)e.Data.GetData(DataFormats.UnicodeText);
+            var composerImage = ComposerImageProvider.GetComposerImage(_selectedComposers[0], (string)e.Data.GetData(DataFormats.UnicodeText), _dataProvider);
 
-            if (imagePath == null)
-            {
-                return;
-            }
+            _selectedComposers[0].ComposerImages.Add(composerImage);
 
-            var imageExtension = Path.GetExtension(imagePath);
-
-            if (imageExtension == ".jpg" || imageExtension == ".png" || imageExtension == ".gif" || imageExtension == ".jpeg")
-            {
-                var imageBytes = FileUtility.GetImage(imagePath);
-
-                if (imageBytes == null)
-                {
-                    return;
-                }
-
-                short id = 1;
-                var composerImageIds = _dataProvider.ComposerImages
-                    .Select(ci => ci.ID)
-                    .Concat(_dataProvider.ComposerImages.Local
-                        .Select(lci => lci.ID))
-                    .OrderBy(i => i)
-                    .ToArray();
-
-                foreach (var cid in composerImageIds)
-                {
-                    if (cid == id || id == composerImageIds.Length)
-                    {
-                        id++;
-                    }
-                    else
-                    {
-                        break;
-                    }
-                }
-
-                var composerImage = new ComposerImage();
-                composerImage.ID = id;
-                composerImage.Composer = _selectedComposers[0];
-                composerImage.Image = imageBytes;
-
-                _selectedComposers[0].ComposerImages.Add(composerImage);
-
-                ComposerImageListBox.SelectedIndex = _selectedComposers[0].ComposerImages.Count - 1;
-            }
+            ComposerImageListBox.SelectedIndex = _selectedComposers[0].ComposerImages.Count - 1;
         }
 
         private void ComposerInfluenceDeleteCommand_Executed(object sender, ExecutedRoutedEventArgs e)
@@ -1198,7 +1157,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
                 return;
             }
 
-            var recordingId =_dataProvider.Recordings.Count() + _dataProvider.Recordings.Local.Count + 1;
+            var recordingId = _dataProvider.Recordings.Count() + _dataProvider.Recordings.Local.Count + 1;
 
             var importPathBuilder = new StringBuilder(Environment.GetFolderPath(Environment.SpecialFolder.MyMusic))
                 .Append("\\")

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NathanHarrenstein.Timeline.Input;
+using System;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
@@ -12,6 +13,7 @@ namespace NathanHarrenstein.Timeline
         private const int CornerZoneSize = 150;
         private const int PanInterval = 30;
         private const int SideZoneSize = 75;
+
         private Timer blTimer;
         private Timer brTimer;
         private Timer bTimer;
@@ -31,7 +33,12 @@ namespace NathanHarrenstein.Timeline
 
             mouseHook = new MouseHook();
             mouseHook.StartMouseHook();
-            mouseHook.MouseHorizontalWheel += mouseHook_MouseHorizontalWheel;
+            mouseHook.MouseHorizontalWheel += mouseHook_MouseHorizontalWheel;          
+        }
+
+        ~PanGrid()
+        {
+            mouseHook.Dispose();
         }
 
         private Point Origin

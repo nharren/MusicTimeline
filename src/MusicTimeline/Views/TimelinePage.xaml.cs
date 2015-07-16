@@ -137,9 +137,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
         {
             return new DelegateCommand(o =>
             {
-                var year = new ExtendedDateTime(int.Parse((string)o));
-
-                timeline.HorizontalOffset = timeline.Ruler.ToPixels(timeline.Dates.Earliest(), year);
+                timeline.HorizontalOffset = timeline.Ruler.ToPixels(timeline.Dates.Earliest(), new ExtendedDateTime(int.Parse((string)o)));
             });
         }
 
