@@ -9,16 +9,6 @@ namespace NathanHarrenstein.MusicTimeline.Providers
     {
         public static ComposerImage GetComposerImage(Composer composer, string imagePath, DataProvider dataProvider)
         {
-            var imageExtension = Path.GetExtension(imagePath);
-
-            if (imageExtension != ".jpg"
-                && imageExtension != ".png"
-                && imageExtension != ".gif"
-                && imageExtension != ".jpeg")
-            {
-                return null;
-            }
-
             var imageBytes = FileUtility.GetImage(imagePath);
 
             if (imageBytes == null)

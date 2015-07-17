@@ -555,16 +555,17 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
         private void ComposerImageListBox_Drop(object sender, DragEventArgs e)
         {
-            if (!ComposerImageListBox.IsEnabled)
+            if (ComposerImageListBox.IsEnabled)
             {
-                return;
+                var composerImage = ComposerImageProvider.GetComposerImage(_selectedComposers[0], (string)e.Data.GetData(DataFormats.UnicodeText), _dataProvider);
+
+                if (composerImage != null)
+                {
+                    _selectedComposers[0].ComposerImages.Add(composerImage);
+
+                    ComposerImageListBox.SelectedIndex = _selectedComposers[0].ComposerImages.Count - 1;
+                }
             }
-
-            var composerImage = ComposerImageProvider.GetComposerImage(_selectedComposers[0], (string)e.Data.GetData(DataFormats.UnicodeText), _dataProvider);
-
-            _selectedComposers[0].ComposerImages.Add(composerImage);
-
-            ComposerImageListBox.SelectedIndex = _selectedComposers[0].ComposerImages.Count - 1;
         }
 
         private void ComposerInfluenceDeleteCommand_Executed(object sender, ExecutedRoutedEventArgs e)
