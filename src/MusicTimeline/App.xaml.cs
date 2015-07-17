@@ -1,5 +1,4 @@
-﻿using NathanHarrenstein.MusicTimeline.Utilities;
-using System;
+﻿using System;
 using System.Windows;
 
 namespace NathanHarrenstein.MusicTimeline
@@ -8,8 +7,6 @@ namespace NathanHarrenstein.MusicTimeline
     {
         protected override void OnExit(ExitEventArgs e)
         {
-            AccessibilityUtility.AllowAccessibilityShortcutKeys(true);
-
             base.OnExit(e);
         }
 
@@ -17,7 +14,7 @@ namespace NathanHarrenstein.MusicTimeline
         {
             AppDomain.CurrentDomain.UnhandledException += CurrentDomain_UnhandledException;
 
-            AccessibilityUtility.AllowAccessibilityShortcutKeys(false);
+            Logger.Reset("MusicTimeline.log");
 
             base.OnStartup(e);
         }

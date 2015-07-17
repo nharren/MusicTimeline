@@ -98,7 +98,6 @@
     <Compile Include="Providers\ComposerEraProvider.cs" />
     <Compile Include="Providers\ComposerEventProvider.cs" />
     <Compile Include="Providers\ComposerImageProvider.cs" />
-    <Compile Include="Utilities\AccessibilityUtility.cs" />
     <Compile Include="Utilities\BindingUtility.cs" />
     <Compile Include="Utilities\ImageUtility.cs" />
     <Compile Include="ViewModels\ComposerEventViewModel.cs" />
