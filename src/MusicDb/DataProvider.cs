@@ -7,6 +7,7 @@ namespace NathanHarrenstein.MusicDB
         public DataProvider()
             : base("name=DataProvider")
         {
+            Database.SetInitializer<DataProvider>(null); // Turn off migrations.
         }
 
         public virtual DbSet<Album> Albums { get; set; }

@@ -118,10 +118,11 @@ namespace NathanHarrenstein.Timeline.Input
             public IntPtr dwExtraInfo;
         }
 
+        [StructLayout(LayoutKind.Sequential)]
         private struct MOUSEHOOKSTRUCTEX
         {
-            public int mouseData;
             public MOUSEHOOKSTRUCT MOUSEHOOKSTRUCT;
+            public int mouseData;         
         }
 
         [StructLayout(LayoutKind.Sequential)]
