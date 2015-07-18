@@ -13,6 +13,7 @@ namespace NathanHarrenstein.Timeline
         public static readonly DependencyProperty ErasProperty = DependencyProperty.Register("Eras", typeof(IList), typeof(Timeline));
         public static readonly DependencyProperty EraTemplatesProperty = DependencyProperty.Register("EraTemplates", typeof(IList), typeof(Timeline));
         public static readonly DependencyProperty EventHeightProperty = DependencyProperty.Register("EventHeight", typeof(double), typeof(Timeline), new PropertyMetadata(26d));
+        public static readonly DependencyProperty EventSpacingProperty = DependencyProperty.Register("EventSpacing", typeof(double), typeof(Timeline), new PropertyMetadata(1d));
         public static readonly DependencyProperty EventsProperty = DependencyProperty.Register("Events", typeof(IList), typeof(Timeline));
         public static readonly DependencyProperty EventTemplatesProperty = DependencyProperty.Register("EventTemplates", typeof(IList), typeof(Timeline));
         public static readonly DependencyProperty HorizontalOffsetProperty = DependencyProperty.Register("HorizontalOffset", typeof(double), typeof(Timeline));
@@ -95,6 +96,19 @@ namespace NathanHarrenstein.Timeline
             }
         }
 
+        public double EventSpacing
+        {
+            get
+            {
+                return (double)GetValue(EventSpacingProperty);
+            }
+
+            set
+            {
+                SetValue(EventSpacingProperty, value);
+            }
+        }
+
         public IList EventTemplates
         {
             get
@@ -115,7 +129,7 @@ namespace NathanHarrenstein.Timeline
             }
             set
             {
-               var panGrid = Template.FindName("PART_PanGrid", this) as PanGrid;
+                var panGrid = Template.FindName("PART_PanGrid", this) as PanGrid;
 
                 if (panGrid != null)
                 {
@@ -186,7 +200,7 @@ namespace NathanHarrenstein.Timeline
 
                 if (panGrid != null)
                 {
-                    panGrid.Pan(new Vector(0, value));
+                    panGrid.Pan(new Vector(0, value - VerticalOffset));
                 }
             }
         }

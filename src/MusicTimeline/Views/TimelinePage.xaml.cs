@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.EDTF;
 using System.Windows;
 using System.Windows.Controls;
+using System.Linq;
 using System.Windows.Input;
 using System.Windows.Navigation;
 
@@ -137,7 +138,28 @@ namespace NathanHarrenstein.MusicTimeline.Views
         {
             return new DelegateCommand(o =>
             {
-                timeline.HorizontalOffset = timeline.Ruler.ToPixels(timeline.Dates.Earliest(), new ExtendedDateTime(int.Parse((string)o)));
+                var eraQuery = _dataProvider.Eras.First(e => e.Name == (string)o);
+
+                var composersSortedByDate = _dataProvider.Composers.ToArray()
+                    .Select(c => Tuple.Create(ExtendedDateTimeInterval.Parse(c.Dates).Earliest(), c))
+                    .OrderBy(t => t.Item1);
+
+                var index = 0;
+
+                foreach (var composer in composersSortedByDate)
+                {
+                    if (composer.Item2.Eras.Contains(eraQuery))
+                    {
+                        timeline.HorizontalOffset = timeline.Ruler.ToPixels(timeline.Dates.Earliest(), composer.Item1);
+                        timeline.VerticalOffset = index * (timeline.EventHeight + timeline.EventSpacing);
+
+                        return;
+                    }
+
+                    index++;
+                }
+                
+                timeline.HorizontalOffset = timeline.Ruler.ToPixels(timeline.Dates.Earliest(), ExtendedDateTimeInterval.Parse(eraQuery.Dates).Earliest());
             });
         }
 

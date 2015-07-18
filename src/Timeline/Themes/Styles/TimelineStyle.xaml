@@ -48,7 +48,7 @@
                             <l:EventPanel Grid.Row="2"
                                           Dates="{TemplateBinding Dates}"
                                           EventHeight="{TemplateBinding EventHeight}"
-                                          EventSpacing="1"
+                                          EventSpacing="{TemplateBinding EventSpacing}"
                                           HorizontalOffset="{Binding HorizontalOffset, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                           VerticalOffset="{Binding VerticalOffset, RelativeSource={RelativeSource TemplatedParent}, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                           EventTemplates="{TemplateBinding EventTemplates}"

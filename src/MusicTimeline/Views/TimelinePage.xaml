@@ -27,13 +27,13 @@
                 <MenuItem Command="{Binding RebuildThumbnailCacheCommand, ElementName=page}" Header="Rebuild Thumbnail Cache" />
             </MenuItem>
             <MenuItem Header="Go To">
-                <MenuItem Command="{Binding GoToCommand, ElementName=page}" CommandParameter="1000" Header="Medieval" />
-                <MenuItem Command="{Binding GoToCommand, ElementName=page}" CommandParameter="1400" Header="Renaissance" />
-                <MenuItem Command="{Binding GoToCommand, ElementName=page}" CommandParameter="1600" Header="Baroque" />
-                <MenuItem Command="{Binding GoToCommand, ElementName=page}" CommandParameter="1730" Header="Classical" />
-                <MenuItem Command="{Binding GoToCommand, ElementName=page}" CommandParameter="1815" Header="Romantic" />
-                <MenuItem Command="{Binding GoToCommand, ElementName=page}" CommandParameter="1900" Header="20th Century" />
-                <MenuItem Command="{Binding GoToCommand, ElementName=page}" CommandParameter="2000" Header="21th Century" />
+                <MenuItem Command="{Binding GoToCommand, ElementName=page}" CommandParameter="Medieval" Header="Medieval" />
+                <MenuItem Command="{Binding GoToCommand, ElementName=page}" CommandParameter="Renaissance" Header="Renaissance" />
+                <MenuItem Command="{Binding GoToCommand, ElementName=page}" CommandParameter="Baroque" Header="Baroque" />
+                <MenuItem Command="{Binding GoToCommand, ElementName=page}" CommandParameter="Classical" Header="Classical" />
+                <MenuItem Command="{Binding GoToCommand, ElementName=page}" CommandParameter="Romantic" Header="Romantic" />
+                <MenuItem Command="{Binding GoToCommand, ElementName=page}" CommandParameter="20th Century" Header="20th Century" />
+                <MenuItem Command="{Binding GoToCommand, ElementName=page}" CommandParameter="21st Century" Header="21st Century" />
             </MenuItem>
         </Menu>
         <t:Timeline Name="timeline"
