@@ -6,6 +6,7 @@ using System.EDTF;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Navigation;
 
 namespace NathanHarrenstein.MusicTimeline.Views
@@ -89,6 +90,46 @@ namespace NathanHarrenstein.MusicTimeline.Views
         private void Page_Unloaded(object sender, RoutedEventArgs e)
         {
             _dataProvider.Dispose();
+        }
+
+        private void TogglePlayPause_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+
+        }
+
+        private void TogglePlayPause_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+
+        }
+
+        private void PreviousTrack_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+
+        }
+
+        private void PreviousTrack_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+
+        }
+
+        private void NextTrack_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+
+        }
+
+        private void NextTrack_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+
+        }
+
+        private void MuteVolume_CanExecute(object sender, CanExecuteRoutedEventArgs e)
+        {
+
+        }
+
+        private void MuteVolume_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+
         }
     }
 }

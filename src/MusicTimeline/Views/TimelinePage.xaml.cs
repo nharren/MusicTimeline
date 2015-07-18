@@ -145,6 +145,9 @@ namespace NathanHarrenstein.MusicTimeline.Views
         {
             return new DelegateCommand(o =>
             {
+                Application.Current.Properties["HorizontalOffset"] = timeline.HorizontalOffset;
+                Application.Current.Properties["VerticalOffset"] = timeline.VerticalOffset;
+
                 NavigationService.Navigate(new Uri(@"pack://application:,,,/Views/InputPage.xaml", UriKind.Absolute));
             });
         }
