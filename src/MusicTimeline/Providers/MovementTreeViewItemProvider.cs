@@ -1,5 +1,6 @@
 ﻿using NathanHarrenstein.MusicDB;
 using NathanHarrenstein.MusicTimeline.Controls;
+using NathanHarrenstein.MusicTimeline.Converters;
 using System;
 using System.Windows;
 
@@ -13,7 +14,7 @@ namespace NathanHarrenstein.MusicTimeline.Providers
 
             movementTreeViewItem.Movement = movement;
             movementTreeViewItem.Parent = parent;
-            movementTreeViewItem.Header = movement.Name;
+            movementTreeViewItem.Header = $"{DecimalToRomanConverter.DecimalToRoman(movement.Number)}. {movement.Name}";
             movementTreeViewItem.IsExpanded = new Nullable<bool>(false);
             // movementTreeViewItem.Command = GetCommand(movement);                                                    REQUIREMENTS: Set Audio Directory; Retrieve ID from track.
             movementTreeViewItem.StarVisibility = movement.IsPopular ? Visibility.Visible : Visibility.Collapsed;

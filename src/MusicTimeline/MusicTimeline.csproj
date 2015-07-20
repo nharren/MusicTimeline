@@ -102,7 +102,7 @@
     <Compile Include="Controls\PanningScrollViewer.cs" />
     <Compile Include="Controls\TreeView.cs" />
     <Compile Include="Controls\TreeViewItem.cs" />
-    <Compile Include="Converters\BytesToImageConverter.cs" />
+    <Compile Include="Converters\BytesToBitmapConverter.cs" />
     <Compile Include="Converters\NationalityToImageConverter.cs" />
     <Compile Include="Converters\TimeSpanToSecondsConverter.cs" />
     <Compile Include="Converters\UrlToCommandConverter.cs" />
@@ -116,7 +116,7 @@
     <Compile Include="Providers\ComposerEventProvider.cs" />
     <Compile Include="Providers\ComposerImageProvider.cs" />
     <Compile Include="Utilities\BindingUtility.cs" />
-    <Compile Include="Utilities\ImageUtility.cs" />
+    <Compile Include="Converters\DecimalToRomanConverter.cs" />
     <Compile Include="Utilities\WikiUtility.cs" />
     <Compile Include="ViewModels\ComposerEventViewModel.cs" />
     <Compile Include="ViewModels\ComposerEraViewModel.cs" />

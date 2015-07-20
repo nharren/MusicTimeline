@@ -392,7 +392,7 @@
         <DataTemplate x:Key="SuggestionTemplate" DataType="{x:Type db:Location}">
             <TextBlock Text="{Binding Name}" />
         </DataTemplate>
-        <cv:BytesToImageConverter x:Key="BytesToImageConverter" />
+        <cv:BytesToBitmapConverter x:Key="BytesToBitmapConverter" />
         <cv:UrlToCommandConverter x:Key="UrlToCommandConverter" />
         <cv:UrlToIconConverter x:Key="UrlToIconConverter" />
         <cv:UrlToTitleConverter x:Key="UrlToTitleConverter" />
@@ -598,7 +598,7 @@
                                            Grid.ColumnSpan="2"
                                            DataContext="{TemplateBinding SelectedItem}"
                                            Source="{Binding Image,
-                                                            Converter={StaticResource BytesToImageConverter}, IsAsync=True}">
+                                                            Converter={StaticResource BytesToBitmapConverter}, IsAsync=True}">
                                         <Image.ContextMenu>
                                             <ContextMenu>
                                                 <MenuItem Command="{x:Static ApplicationCommands.Delete}" />
@@ -623,7 +623,7 @@
                                        MaxWidth="30"
                                        Cursor="Hand"
                                        Source="{Binding Image,
-                                                        Converter={StaticResource BytesToImageConverter}}" />
+                                                        Converter={StaticResource BytesToBitmapConverter}}" />
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>
