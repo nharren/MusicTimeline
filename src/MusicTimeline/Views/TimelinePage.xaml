@@ -16,17 +16,17 @@
     <Page.Resources>
         <cv:NationalityToImageConverter x:Key="NationalityToImageConverter" />
     </Page.Resources>
+    <Page.InputBindings>
+        <KeyBinding Command="{Binding FullScreenCommand, ElementName=page}" Key="F11" />
+    </Page.InputBindings>
     <DockPanel Background="{StaticResource BackgroundBrush}">
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="File">
                 <MenuItem Command="{Binding ManageDataCommand, ElementName=page}" Header="Manage Data" />
                 <Separator />
                 <MenuItem Command="{Binding CloseCommand, ElementName=page}" Header="Close" />
-            </MenuItem>
-            <MenuItem Header="Tools">
-                <MenuItem Command="{Binding RebuildThumbnailCacheCommand, ElementName=page}" Header="Rebuild Thumbnail Cache" />
-            </MenuItem>
-            <MenuItem Header="Go To">
+            </MenuItem>           
+            <MenuItem Header="Go">
                 <MenuItem Command="{Binding GoToCommand, ElementName=page}" CommandParameter="Medieval" Header="Medieval" />
                 <MenuItem Command="{Binding GoToCommand, ElementName=page}" CommandParameter="Renaissance" Header="Renaissance" />
                 <MenuItem Command="{Binding GoToCommand, ElementName=page}" CommandParameter="Baroque" Header="Baroque" />
@@ -34,6 +34,12 @@
                 <MenuItem Command="{Binding GoToCommand, ElementName=page}" CommandParameter="Romantic" Header="Romantic" />
                 <MenuItem Command="{Binding GoToCommand, ElementName=page}" CommandParameter="20th Century" Header="20th Century" />
                 <MenuItem Command="{Binding GoToCommand, ElementName=page}" CommandParameter="21st Century" Header="21st Century" />
+            </MenuItem>
+            <MenuItem Header="View">
+                <MenuItem Command="{Binding FullScreenCommand, ElementName=page}" Header="Full Screen" />
+            </MenuItem>
+            <MenuItem Header="Tools">
+                <MenuItem Command="{Binding RebuildThumbnailCacheCommand, ElementName=page}" Header="Rebuild Thumbnail Cache" />
             </MenuItem>
         </Menu>
         <t:Timeline Name="timeline"

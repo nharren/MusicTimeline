@@ -397,15 +397,15 @@
         <cv:UrlToIconConverter x:Key="UrlToIconConverter" />
         <cv:UrlToTitleConverter x:Key="UrlToTitleConverter" />
     </Page.Resources>
-    
+
     <ScrollViewer HorizontalScrollBarVisibility="Auto">
         <ScrollViewer.Background>
-                <ImageBrush ImageSource="pack://application:,,,/Resources/Background/NoiseOverlay.png"
+            <ImageBrush ImageSource="pack://application:,,,/Resources/Background/NoiseOverlay.png"
                             Opacity="0.25"
                             TileMode="Tile"
                             Viewport="0, 0, 325, 168"
                             ViewportUnits="Absolute" />
-            </ScrollViewer.Background>
+        </ScrollViewer.Background>
         <Border Width="942"
                 HorizontalAlignment="Center"
                 Background="{StaticResource ShellBrush}">
@@ -929,7 +929,7 @@
                             <DataTemplate>
                                 <TextBlock FontSize="14.667"
                                            Foreground="#FFC8CDD1"
-                                           Text="{Binding Prefix}">
+                                           Text="{Binding}">
                                     <TextBlock.ContextMenu>
                                         <ContextMenu>
                                             <MenuItem Command="{x:Static ApplicationCommands.Delete}" />
@@ -1072,7 +1072,7 @@
                             <DataTemplate>
                                 <TextBlock FontSize="14.667"
                                            Foreground="#FFC8CDD1"
-                                           Text="{Binding Prefix}">
+                                           Text="{Binding}">
                                     <TextBlock.ContextMenu>
                                         <ContextMenu>
                                             <MenuItem Command="{x:Static ApplicationCommands.Delete}" />
@@ -1179,15 +1179,36 @@
                         </ListBox.CommandBindings>
                         <ListBox.ItemTemplate>
                             <DataTemplate DataType="{x:Type db:Movement}">
-                                <TextBlock FontSize="14.667"
+                                <StackPanel Orientation="Horizontal">
+                                    <TextBlock FontSize="14.667"
+                                           Foreground="#FFC8CDD1"
+                                           Text="{Binding Number}">
+                                        <TextBlock.ContextMenu>
+                                            <ContextMenu>
+                                                <MenuItem Command="{x:Static ApplicationCommands.Delete}" />
+                                            </ContextMenu>
+                                        </TextBlock.ContextMenu>
+                                    </TextBlock>
+
+                                    <TextBlock FontSize="14.667"
+                                           Foreground="#FFC8CDD1"
+                                           Text=". ">
+                                        <TextBlock.ContextMenu>
+                                            <ContextMenu>
+                                                <MenuItem Command="{x:Static ApplicationCommands.Delete}" />
+                                            </ContextMenu>
+                                        </TextBlock.ContextMenu>
+                                    </TextBlock>
+                                    <TextBlock FontSize="14.667"
                                            Foreground="#FFC8CDD1"
                                            Text="{Binding Name}">
-                                    <TextBlock.ContextMenu>
-                                        <ContextMenu>
-                                            <MenuItem Command="{x:Static ApplicationCommands.Delete}" />
-                                        </ContextMenu>
-                                    </TextBlock.ContextMenu>
-                                </TextBlock>
+                                        <TextBlock.ContextMenu>
+                                            <ContextMenu>
+                                                <MenuItem Command="{x:Static ApplicationCommands.Delete}" />
+                                            </ContextMenu>
+                                        </TextBlock.ContextMenu>
+                                    </TextBlock>
+                                </StackPanel>
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>

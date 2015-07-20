@@ -167,7 +167,7 @@ namespace NathanHarrenstein.Timeline
             {
                 var child = Children[i];
 
-                child.Arrange(new Rect(_labelOffsets[i], finalSize.Height / 4, child.DesiredSize.Width, child.DesiredSize.Height));
+                child.Arrange(new Rect(_labelOffsets[i], (finalSize.Height - child.DesiredSize.Height) / 2, child.DesiredSize.Width, child.DesiredSize.Height));
             }
 
             return finalSize;

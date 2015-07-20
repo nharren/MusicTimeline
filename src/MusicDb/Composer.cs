@@ -18,6 +18,7 @@ namespace NathanHarrenstein.MusicDB
             Nationalities = new ObservableCollection<Nationality>();
             CompositionCollections = new ObservableCollection<CompositionCollection>();
             Compositions = new ObservableCollection<Composition>();
+            Samples = new ObservableCollection<Sample>();
         }
 
         public string Biography { get; set; }
@@ -35,6 +36,8 @@ namespace NathanHarrenstein.MusicDB
         public virtual ObservableCollection<CompositionCollection> CompositionCollections { get; set; }
 
         public virtual ObservableCollection<Composition> Compositions { get; set; }
+
+        public virtual ObservableCollection<Sample> Samples { get; set; }
 
         [Required]
         [StringLength(50)]

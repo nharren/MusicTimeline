@@ -96,13 +96,13 @@ namespace NathanHarrenstein.Timeline.Input
             return CallNextHookEx(IntPtr.Zero, code, wParam, ref lParam);
         }
 
-        private void StopMouseHook(bool ThrowExceptionOnError)
+        private void StopMouseHook(bool throwExceptionOnError)
         {
             if (hHook != IntPtr.Zero)
             {
                 var successful = UnhookWindowsHookEx(hHook);
 
-                if (!successful && ThrowExceptionOnError)
+                if (!successful && throwExceptionOnError)
                 {
                     throw new Win32Exception(Marshal.GetLastWin32Error());
                 }

@@ -8,6 +8,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:v="clr-namespace:NathanHarrenstein.MusicTimeline.Views"
       xmlns:db="clr-namespace:NathanHarrenstein.MusicDB;assembly=MusicDB"
+      xmlns:w="clr-namespace:TheArtOfDev.HtmlRenderer.WPF;assembly=HtmlRenderer.WPF"
       Title="ComposerPage"
       Background="{StaticResource BackgroundBrush}"
       FontFamily="Cambria"
@@ -15,8 +16,7 @@
       UseLayoutRounding="True"
       d:DesignHeight="600"
       d:DesignWidth="800"
-      mc:Ignorable="d"
-      Unloaded="Page_Unloaded">
+      mc:Ignorable="d">
     <Page.Resources>
         <cv:BytesToImageConverter x:Key="BytesToImageConverter" />
         <cv:NationalityToImageConverter x:Key="NationalityToImageConverter" />
@@ -101,17 +101,18 @@
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="20" />
                         <ColumnDefinition />
-                        <ColumnDefinition Width="50" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="50" />
                     </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition />
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="10" />
-                        <RowDefinition Height="Auto" />
+                <Grid.RowDefinitions>
+                    <RowDefinition />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="10" />
+                    <RowDefinition Height="Auto" />
                     <RowDefinition Height="Auto" />
                     <RowDefinition />
-                    </Grid.RowDefinitions>
-                    <ToggleButton Grid.Row="1" Cursor="Hand" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="{StaticResource ForegroundBrush}" FontSize="20" Command="MediaCommands.TogglePlayPause">
+                </Grid.RowDefinitions>
+                <ToggleButton Name="PlayPauseToggleButton" Grid.Row="1" Cursor="Hand" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="{StaticResource ForegroundBrush}" FontSize="20" Command="MediaCommands.TogglePlayPause">
                         <ToggleButton.Template>
                             <ControlTemplate TargetType="{x:Type ToggleButton}">
                                 <Grid>
@@ -174,7 +175,7 @@
                                         </VisualStateGroup>
                                     </VisualStateManager.VisualStateGroups>
                                     <Ellipse Name="PlayPauseBackground" Fill="#444444" Stroke="#888888" StrokeThickness="1" />
-                                    <TextBlock Name="PlayPauseContent" Margin="4" Text="&#xE102;" FontFamily="pack://application:,,,/Resources/Fonts/#Segoe UI Symbol" />
+                                    <TextBlock Name="PlayPauseContent" Margin="4" FontFamily="pack://application:,,,/Resources/Fonts/#Segoe UI Symbol" />
                                 </Grid>
                             </ControlTemplate>
                         </ToggleButton.Template>
@@ -327,7 +328,7 @@
                                 </ControlTemplate>
                             </ToggleButton.Template>
                         </ToggleButton>
-                        <Slider Margin="5,2,0,0">
+                        <Slider Name="VolumeSlider" Margin="5,2,0,0" Minimum="0" Maximum="1" Value="1" ValueChanged="VolumeSlider_ValueChanged">
                             <Slider.Template>
                                 <ControlTemplate TargetType="{x:Type Slider}">
                                     <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
@@ -485,15 +486,16 @@
                             </Slider.Template>
                         </Slider>
                     </DockPanel>
-                    <StackPanel Grid.Column="6" Grid.RowSpan="2" VerticalAlignment="Bottom">
-                        <TextBlock Text="Title" FontSize="16" FontFamily="Segoe UI Semibold" VerticalAlignment="Bottom" />
-                        <TextBlock Text="Artist" FontSize="12" FontFamily="Segoe UI" Foreground="#FFBBBBBB" VerticalAlignment="Top" />
+                    <StackPanel Grid.Column="6" Grid.RowSpan="2" Grid.ColumnSpan="2" VerticalAlignment="Bottom">
+                        <TextBlock Name="NowPlayingTitleTextBlock" FontSize="16" FontFamily="Segoe UI Semibold" VerticalAlignment="Bottom" />
+                        <TextBlock Name="NowPlayingArtistTextBlock" FontSize="12" FontFamily="Segoe UI" Foreground="#FFBBBBBB" VerticalAlignment="Top" />
                     </StackPanel>
-                    <Slider x:Name="slider" Grid.Column="6" Grid.Row="4" VerticalAlignment="Top" />
-                </Grid>
+                    <Slider Name="ProgressSlider" Grid.Column="6" Grid.Row="4" Thumb.DragStarted="ProgressSlider_DragStarted" Thumb.DragCompleted="ProgressSlider_DragCompleted" ValueChanged="ProgressSlider_ValueChanged" />
+                <TextBlock Name="ProgressStatus" Grid.Column="7" Grid.Row="4" />
+            </Grid>
             </Grid>
             <!--  Body  -->
-        <ScrollViewer Grid.Row="1">
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
             <ScrollViewer.Resources>
                 <Style TargetType="ScrollBar">
                     <Style.Triggers>
@@ -680,16 +682,8 @@
                     </StackPanel>
                 </StackPanel>
                 <!--  Center Column  -->
-                <StackPanel Grid.Column="1" Margin="30,0,30,0">
-                    <!--  Biography  -->
-                    <TextBlock Margin="0,0,0,8"
-                               FontSize="18"
-                               FontWeight="Bold"
-                               Text="Biography" />
-                    <TextBlock Name="BiographyTextBlock"
-                               FontSize="16"
-                               TextWrapping="Wrap" />
-                </StackPanel>
+                <w:HtmlPanel Grid.Column="1" Margin="30,0" Background="Transparent" Foreground="{StaticResource ForegroundBrush}" Name="BiographyHtmlPanel" />
+
                 <!--  Right Column  -->
                 <Grid Grid.Column="2">
                     <Grid.RowDefinitions>

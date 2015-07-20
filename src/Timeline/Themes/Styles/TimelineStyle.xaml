@@ -30,6 +30,7 @@
                                          Height="24"
                                          Dates="{TemplateBinding Dates}"
                                          FontFamily="Calibri"
+                                         Background="#33222222"
                                          FontSize="12"
                                          Foreground="{TemplateBinding TimeForeground}"
                                          IsHitTestVisible="False"

@@ -82,6 +82,7 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <DependentUpon>Library.mdf</DependentUpon>
     </Content>
+    <None Include="Scripts\v1_InitialVersion.sql" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5">

@@ -38,6 +38,8 @@ namespace NathanHarrenstein.MusicDB
 
         public virtual DbSet<Recording> Recordings { get; set; }
 
+        public virtual DbSet<Sample> Samples { get; set; }
+
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Composer>()
@@ -53,6 +55,12 @@ namespace NathanHarrenstein.MusicDB
             modelBuilder.Entity<Composer>()
                 .HasMany(e => e.CompositionCatalogs)
                 .WithRequired(e => e.Composer)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<Composer>()
+                .HasMany(e => e.Samples)
+                .WithRequired(e => e.Composer)
+                .HasForeignKey(e => e.ComposerID)
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<Composer>()
@@ -109,6 +117,8 @@ namespace NathanHarrenstein.MusicDB
                 .HasMany(e => e.Recordings)
                 .WithMany(e => e.Performers)
                 .Map(m => m.ToTable("RecordingPerformer").MapLeftKey("PerformerID").MapRightKey("RecordingID"));
+
+            
         }
     }
 }

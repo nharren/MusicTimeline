@@ -11,6 +11,7 @@ using System.Windows.Controls;
 using System.Linq;
 using System.Windows.Input;
 using System.Windows.Navigation;
+using NathanHarrenstein.MusicTimeline.Utilities;
 
 namespace NathanHarrenstein.MusicTimeline.Views
 {
@@ -27,6 +28,23 @@ namespace NathanHarrenstein.MusicTimeline.Views
             InitializeComponent();
             Initialize();
         }
+
+        public ICommand FullScreenCommand
+        {
+            get
+            {
+                return (ICommand)GetValue(FullScreenCommandProperty);
+            }
+
+            set
+            {
+                SetValue(FullScreenCommandProperty, value);
+            }
+        }
+
+        public static readonly DependencyProperty FullScreenCommandProperty = DependencyProperty.Register("FullScreenCommand", typeof(ICommand), typeof(TimelinePage));
+
+
 
         public ICommand CloseCommand
         {
@@ -88,6 +106,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
             CloseCommand = GetCloseCommand();
             GoToCommand = GetGoToCommand();
             RebuildThumbnailCacheCommand = GetRebuildThumbnailCacheCommand();
+            FullScreenCommand = GetFullScreenCommand();
 
             timeline.Dates = new ExtendedDateTimeInterval(new ExtendedDateTime(1000, 1, 1), ExtendedDateTime.Now);
             timeline.Eras = ComposerEraProvider.GetEras(_dataProvider);
@@ -111,6 +130,23 @@ namespace NathanHarrenstein.MusicTimeline.Views
                     timeline.VerticalOffset = verticalOffset.Value;
                 }
             };
+        }
+
+        private ICommand GetFullScreenCommand()
+        {
+            return new DelegateCommand(o =>
+            {
+                if (Application.Current.MainWindow.WindowStyle == WindowStyle.None)
+                {
+                    Application.Current.MainWindow.WindowStyle = WindowStyle.SingleBorderWindow;
+                }
+                else
+                {
+                    Application.Current.MainWindow.WindowState = WindowState.Normal;
+                    Application.Current.MainWindow.WindowStyle = WindowStyle.None;
+                    Application.Current.MainWindow.WindowState = WindowState.Maximized;
+                }
+            });
         }
 
         private ICommand GetRebuildThumbnailCacheCommand()
