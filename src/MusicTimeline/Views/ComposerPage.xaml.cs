@@ -1,6 +1,6 @@
 ﻿using NathanHarrenstein.MusicDB;
-using NathanHarrenstein.MusicTimeline.Controls;
 using NathanHarrenstein.MusicTimeline.Builders;
+using NathanHarrenstein.MusicTimeline.Controls;
 using NathanHarrenstein.MusicTimeline.Utilities;
 using NAudio.Flac;
 using NAudio.Wave;
@@ -12,7 +12,10 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Markup;
+using System.Windows.Media;
 using System.Windows.Navigation;
 using System.Windows.Threading;
 
@@ -54,6 +57,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
             if (_player != null)
             {
+                _player.Stop();
                 _player.Dispose();
             }
 
@@ -191,7 +195,52 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
         private void LoadComposer(Composer composer)
         {
-            BiographyHtmlPanel.Text = "<style> * { color: #E4E8EC; font-family: Cambria; } p { margin: 0em 0em 1em 0em; } </style>" + composer.Biography + "</span>";
+            var section = (Section)XamlReader.Parse(composer.Biography);
+
+            var defaultFontSize = TextElement.GetFontSize(BiographyFlowDocumentScrollViewer);
+            var headers = section.Blocks.Where(b => b.Tag != null);
+
+            foreach (var header in headers)
+            {
+                header.FontWeight = FontWeights.Bold;
+
+                switch ((string)header.Tag)
+                {
+                    case "h1":
+                        header.FontSize = defaultFontSize * 2;
+                        break;
+
+                    case "h2":
+                        header.FontSize = defaultFontSize * 1.5;
+                        break;
+
+                    case "h3":
+                        header.FontSize = defaultFontSize * 1.17;
+                        break;
+
+                    case "h4":
+                        break;
+
+                    case "h5":
+                        header.FontSize = defaultFontSize * 0.83;
+                        break;
+
+                    case "h6":
+                        header.FontSize = defaultFontSize * 0.67;
+                        break;
+
+                    default:
+                        break;
+                }
+            }
+
+            var flowdocument = new FlowDocument();
+            flowdocument.FontFamily = new FontFamily("Cambria");
+            flowdocument.TextAlignment = TextAlignment.Left;
+            flowdocument.Blocks.Add(section);
+
+            BiographyFlowDocumentScrollViewer.Document = flowdocument;
+
             BornTextBlock.Text = GetBorn(composer);
             ComposerImagesListBox.ItemsSource = composer.ComposerImages;
             ComposerNameTextBlock.Text = NameUtility.ToFirstLast(composer.Name);

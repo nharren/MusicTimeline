@@ -8,7 +8,6 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:v="clr-namespace:NathanHarrenstein.MusicTimeline.Views"
       xmlns:db="clr-namespace:NathanHarrenstein.MusicDB;assembly=MusicDB"
-      xmlns:w="clr-namespace:TheArtOfDev.HtmlRenderer.WPF;assembly=HtmlRenderer.WPF"
       Title="ComposerPage"
       Background="{StaticResource BackgroundBrush}"
       FontFamily="Cambria"
@@ -43,13 +42,13 @@
             <RowDefinition Height="120" />
             <RowDefinition />
         </Grid.RowDefinitions>
-            <Grid>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="120" />
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="3*" />
-                    <ColumnDefinition Width="2*" />
-                </Grid.ColumnDefinitions>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="120" />
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="3*" />
+                <ColumnDefinition Width="2*" />
+            </Grid.ColumnDefinitions>
             <Grid Background="#222222" Opacity="0.25" Grid.ColumnSpan="4" />
             <Button    Margin="0,-3,0,0"
                         HorizontalAlignment="Center"
@@ -60,50 +59,50 @@
                         FontFamily="pack://application:,,,/Resources/Fonts/#Segoe UI Symbol"
                         FontSize="43"
                         Foreground="#FFDFE0E6">
-                    <Button.Template>
-                        <ControlTemplate TargetType="{x:Type Button}">
-                            <Grid Margin="{TemplateBinding Margin}">
-                                <ContentPresenter />
-                            </Grid>
-                        </ControlTemplate>
-                    </Button.Template>
-                </Button>
-                <TextBlock Name="ComposerNameTextBlock"
+                <Button.Template>
+                    <ControlTemplate TargetType="{x:Type Button}">
+                        <Grid Margin="{TemplateBinding Margin}">
+                            <ContentPresenter />
+                        </Grid>
+                    </ControlTemplate>
+                </Button.Template>
+            </Button>
+            <TextBlock Name="ComposerNameTextBlock"
                        Grid.Column="1"
                        Margin="0,-1,0,0"
                        VerticalAlignment="Center"
                        FontSize="38" />
-                <ItemsControl Name="ComposerFlagsItemsControl"
+            <ItemsControl Name="ComposerFlagsItemsControl"
                           Grid.Column="2">
-                    <ItemsControl.ItemsPanel>
-                        <ItemsPanelTemplate>
-                            <StackPanel Height="120" Orientation="Horizontal" />
-                        </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate DataType="{x:Type db:Nationality}">
-                            <Image Width="32"
+                <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <StackPanel Height="120" Orientation="Horizontal" />
+                    </ItemsPanelTemplate>
+                </ItemsControl.ItemsPanel>
+                <ItemsControl.ItemTemplate>
+                    <DataTemplate DataType="{x:Type db:Nationality}">
+                        <Image Width="32"
                                    Height="32"
                                Margin="15,0,0,0"
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center"
                                    Source="{Binding Name, Converter={StaticResource NationalityToImageConverter}}"
                                    ToolTip="{Binding Name}" />
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl>
-                <Grid Grid.Column="3">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="5" />
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="5" />
-                        <ColumnDefinition Width="Auto" />
-                        <ColumnDefinition Width="20" />
-                        <ColumnDefinition />
+                    </DataTemplate>
+                </ItemsControl.ItemTemplate>
+            </ItemsControl>
+            <Grid Grid.Column="3">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="5" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="5" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="20" />
+                    <ColumnDefinition />
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="50" />
-                    </Grid.ColumnDefinitions>
+                </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition />
                     <RowDefinition Height="Auto" />
@@ -113,39 +112,178 @@
                     <RowDefinition />
                 </Grid.RowDefinitions>
                 <ToggleButton Name="PlayPauseToggleButton" Grid.Row="1" Cursor="Hand" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="{StaticResource ForegroundBrush}" FontSize="20" Command="MediaCommands.TogglePlayPause">
+                    <ToggleButton.Template>
+                        <ControlTemplate TargetType="{x:Type ToggleButton}">
+                            <Grid>
+                                <VisualStateManager.VisualStateGroups>
+                                    <VisualStateGroup x:Name="CommonStates">
+                                        <VisualState x:Name="Normal"/>
+                                        <VisualState x:Name="MouseOver">
+                                            <VisualState.Storyboard>
+                                                <Storyboard Duration="0">
+                                                    <ObjectAnimationUsingKeyFrames Duration="0" Storyboard.TargetName="PlayPauseBackground" Storyboard.TargetProperty="Stroke">
+                                                        <DiscreteObjectKeyFrame KeyTime="0">
+                                                            <DiscreteObjectKeyFrame.Value>
+                                                                <SolidColorBrush Color="#DDDDDD" />
+                                                            </DiscreteObjectKeyFrame.Value>
+                                                        </DiscreteObjectKeyFrame>
+                                                    </ObjectAnimationUsingKeyFrames>
+                                                    <ObjectAnimationUsingKeyFrames Duration="0" Storyboard.TargetName="PlayPauseBackground" Storyboard.TargetProperty="Fill">
+                                                        <DiscreteObjectKeyFrame KeyTime="0">
+                                                            <DiscreteObjectKeyFrame.Value>
+                                                                <SolidColorBrush Color="#555555" />
+                                                            </DiscreteObjectKeyFrame.Value>
+                                                        </DiscreteObjectKeyFrame>
+                                                    </ObjectAnimationUsingKeyFrames>
+                                                    <ObjectAnimationUsingKeyFrames Duration="0" Storyboard.TargetName="PlayPauseContent" Storyboard.TargetProperty="Foreground">
+                                                        <DiscreteObjectKeyFrame KeyTime="0">
+                                                            <DiscreteObjectKeyFrame.Value>
+                                                                <SolidColorBrush Color="#FFFFFF" />
+                                                            </DiscreteObjectKeyFrame.Value>
+                                                        </DiscreteObjectKeyFrame>
+                                                    </ObjectAnimationUsingKeyFrames>
+                                                </Storyboard>
+                                            </VisualState.Storyboard>
+                                        </VisualState>
+                                        <VisualState x:Name="Pressed" />
+                                        <VisualState x:Name="Disabled" />
+                                    </VisualStateGroup>
+                                    <VisualStateGroup x:Name="CheckStates">
+                                        <VisualState x:Name="Checked">
+                                            <VisualState.Storyboard>
+                                                <Storyboard Duration="0">
+                                                    <StringAnimationUsingKeyFrames Duration="0" Storyboard.TargetName="PlayPauseContent" Storyboard.TargetProperty="Text">
+                                                        <DiscreteStringKeyFrame KeyTime="0" Value="&#xE103;" />
+                                                    </StringAnimationUsingKeyFrames>
+                                                </Storyboard>
+                                            </VisualState.Storyboard>
+                                        </VisualState>
+                                        <VisualState x:Name="Unchecked">
+                                            <VisualState.Storyboard>
+                                                <Storyboard Duration="0">
+                                                    <StringAnimationUsingKeyFrames Duration="0" Storyboard.TargetName="PlayPauseContent" Storyboard.TargetProperty="Text">
+                                                        <DiscreteStringKeyFrame KeyTime="0" Value="&#xE102;" />
+                                                    </StringAnimationUsingKeyFrames>
+                                                </Storyboard>
+                                            </VisualState.Storyboard>
+                                        </VisualState>
+                                    </VisualStateGroup>
+                                    <VisualStateGroup x:Name="FocusStates">
+                                        <VisualState x:Name="Focused" />
+                                        <VisualState x:Name="Unfocused" />
+                                    </VisualStateGroup>
+                                </VisualStateManager.VisualStateGroups>
+                                <Ellipse Name="PlayPauseBackground" Fill="#444444" Stroke="#888888" StrokeThickness="1" />
+                                <TextBlock Name="PlayPauseContent" Margin="4" FontFamily="pack://application:,,,/Resources/Fonts/#Segoe UI Symbol" />
+                            </Grid>
+                        </ControlTemplate>
+                    </ToggleButton.Template>
+                </ToggleButton>
+                <Button Grid.Column="2" Grid.Row="1" Cursor="Hand" HorizontalAlignment="Center" VerticalAlignment="Bottom" Command="MediaCommands.PreviousTrack">
+                    <Button.Template>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <Grid>
+                                <VisualStateManager.VisualStateGroups>
+                                    <VisualStateGroup x:Name="CommonStates">
+                                        <VisualState x:Name="Normal"/>
+                                        <VisualState x:Name="MouseOver">
+                                            <VisualState.Storyboard>
+                                                <Storyboard Duration="0">
+                                                    <ObjectAnimationUsingKeyFrames Duration="0" Storyboard.TargetName="SkipBackBackground" Storyboard.TargetProperty="Stroke">
+                                                        <DiscreteObjectKeyFrame KeyTime="0">
+                                                            <DiscreteObjectKeyFrame.Value>
+                                                                <SolidColorBrush Color="#DDDDDD" />
+                                                            </DiscreteObjectKeyFrame.Value>
+                                                        </DiscreteObjectKeyFrame>
+                                                    </ObjectAnimationUsingKeyFrames>
+                                                    <ObjectAnimationUsingKeyFrames Duration="0" Storyboard.TargetName="SkipBackBackground" Storyboard.TargetProperty="Fill">
+                                                        <DiscreteObjectKeyFrame KeyTime="0">
+                                                            <DiscreteObjectKeyFrame.Value>
+                                                                <SolidColorBrush Color="#555555" />
+                                                            </DiscreteObjectKeyFrame.Value>
+                                                        </DiscreteObjectKeyFrame>
+                                                    </ObjectAnimationUsingKeyFrames>
+                                                    <ObjectAnimationUsingKeyFrames Duration="0" Storyboard.TargetName="SkipBackContent" Storyboard.TargetProperty="Foreground">
+                                                        <DiscreteObjectKeyFrame KeyTime="0">
+                                                            <DiscreteObjectKeyFrame.Value>
+                                                                <SolidColorBrush Color="#FFFFFF" />
+                                                            </DiscreteObjectKeyFrame.Value>
+                                                        </DiscreteObjectKeyFrame>
+                                                    </ObjectAnimationUsingKeyFrames>
+                                                </Storyboard>
+                                            </VisualState.Storyboard>
+                                        </VisualState>
+                                        <VisualState x:Name="Pressed" />
+                                        <VisualState x:Name="Disabled" />
+                                    </VisualStateGroup>
+                                    <VisualStateGroup x:Name="FocusStates">
+                                        <VisualState x:Name="Focused" />
+                                        <VisualState x:Name="Unfocused" />
+                                    </VisualStateGroup>
+                                </VisualStateManager.VisualStateGroups>
+                                <Ellipse Name="SkipBackBackground" Fill="#444444" Stroke="#888888" StrokeThickness="1" />
+                                <TextBlock Name="SkipBackContent" Margin="4" Text="&#xE100;" Foreground="{StaticResource ForegroundBrush}" FontSize="13" FontFamily="pack://application:,,,/Resources/Fonts/#Segoe UI Symbol" />
+                            </Grid>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+                <Button Grid.Column="4" Grid.Row="1" Cursor="Hand" HorizontalAlignment="Center" VerticalAlignment="Bottom" Command="MediaCommands.NextTrack">
+                    <Button.Template>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <Grid>
+                                <VisualStateManager.VisualStateGroups>
+                                    <VisualStateGroup x:Name="CommonStates">
+                                        <VisualState x:Name="Normal"/>
+                                        <VisualState x:Name="MouseOver">
+                                            <VisualState.Storyboard>
+                                                <Storyboard Duration="0">
+                                                    <ObjectAnimationUsingKeyFrames Duration="0" Storyboard.TargetName="SkipForwardBackground" Storyboard.TargetProperty="Stroke">
+                                                        <DiscreteObjectKeyFrame KeyTime="0">
+                                                            <DiscreteObjectKeyFrame.Value>
+                                                                <SolidColorBrush Color="#DDDDDD" />
+                                                            </DiscreteObjectKeyFrame.Value>
+                                                        </DiscreteObjectKeyFrame>
+                                                    </ObjectAnimationUsingKeyFrames>
+                                                    <ObjectAnimationUsingKeyFrames Duration="0" Storyboard.TargetName="SkipForwardBackground" Storyboard.TargetProperty="Fill">
+                                                        <DiscreteObjectKeyFrame KeyTime="0">
+                                                            <DiscreteObjectKeyFrame.Value>
+                                                                <SolidColorBrush Color="#555555" />
+                                                            </DiscreteObjectKeyFrame.Value>
+                                                        </DiscreteObjectKeyFrame>
+                                                    </ObjectAnimationUsingKeyFrames>
+                                                    <ObjectAnimationUsingKeyFrames Duration="0" Storyboard.TargetName="SkipForwardContent" Storyboard.TargetProperty="Foreground">
+                                                        <DiscreteObjectKeyFrame KeyTime="0">
+                                                            <DiscreteObjectKeyFrame.Value>
+                                                                <SolidColorBrush Color="#FFFFFF" />
+                                                            </DiscreteObjectKeyFrame.Value>
+                                                        </DiscreteObjectKeyFrame>
+                                                    </ObjectAnimationUsingKeyFrames>
+                                                </Storyboard>
+                                            </VisualState.Storyboard>
+                                        </VisualState>
+                                        <VisualState x:Name="Pressed" />
+                                        <VisualState x:Name="Disabled" />
+                                    </VisualStateGroup>
+                                    <VisualStateGroup x:Name="FocusStates">
+                                        <VisualState x:Name="Focused" />
+                                        <VisualState x:Name="Unfocused" />
+                                    </VisualStateGroup>
+                                </VisualStateManager.VisualStateGroups>
+                                <Ellipse Name="SkipForwardBackground" Fill="#444444" Stroke="#888888" StrokeThickness="1" />
+                                <TextBlock Name="SkipForwardContent" Margin="4" Text="&#xE101;" Foreground="{StaticResource ForegroundBrush}" FontSize="13" FontFamily="pack://application:,,,/Resources/Fonts/#Segoe UI Symbol" />
+                            </Grid>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+                <DockPanel Grid.ColumnSpan="5" Grid.Row="4">
+                    <ToggleButton DockPanel.Dock="Left" Cursor="Hand" Foreground="{StaticResource ForegroundBrush}" Command="MediaCommands.MuteVolume">
                         <ToggleButton.Template>
                             <ControlTemplate TargetType="{x:Type ToggleButton}">
                                 <Grid>
                                     <VisualStateManager.VisualStateGroups>
                                         <VisualStateGroup x:Name="CommonStates">
                                             <VisualState x:Name="Normal"/>
-                                            <VisualState x:Name="MouseOver">
-                                                <VisualState.Storyboard>
-                                                    <Storyboard Duration="0">
-                                                        <ObjectAnimationUsingKeyFrames Duration="0" Storyboard.TargetName="PlayPauseBackground" Storyboard.TargetProperty="Stroke">
-                                                            <DiscreteObjectKeyFrame KeyTime="0">
-                                                                <DiscreteObjectKeyFrame.Value>
-                                                                    <SolidColorBrush Color="#DDDDDD" />
-                                                                </DiscreteObjectKeyFrame.Value>
-                                                            </DiscreteObjectKeyFrame>
-                                                        </ObjectAnimationUsingKeyFrames>
-                                                        <ObjectAnimationUsingKeyFrames Duration="0" Storyboard.TargetName="PlayPauseBackground" Storyboard.TargetProperty="Fill">
-                                                            <DiscreteObjectKeyFrame KeyTime="0">
-                                                                <DiscreteObjectKeyFrame.Value>
-                                                                    <SolidColorBrush Color="#555555" />
-                                                                </DiscreteObjectKeyFrame.Value>
-                                                            </DiscreteObjectKeyFrame>
-                                                        </ObjectAnimationUsingKeyFrames>
-                                                        <ObjectAnimationUsingKeyFrames Duration="0" Storyboard.TargetName="PlayPauseContent" Storyboard.TargetProperty="Foreground">
-                                                            <DiscreteObjectKeyFrame KeyTime="0">
-                                                                <DiscreteObjectKeyFrame.Value>
-                                                                    <SolidColorBrush Color="#FFFFFF" />
-                                                                </DiscreteObjectKeyFrame.Value>
-                                                            </DiscreteObjectKeyFrame>
-                                                        </ObjectAnimationUsingKeyFrames>
-                                                    </Storyboard>
-                                                </VisualState.Storyboard>
-                                            </VisualState>
+                                            <VisualState x:Name="MouseOver" />
                                             <VisualState x:Name="Pressed" />
                                             <VisualState x:Name="Disabled" />
                                         </VisualStateGroup>
@@ -153,18 +291,28 @@
                                             <VisualState x:Name="Checked">
                                                 <VisualState.Storyboard>
                                                     <Storyboard Duration="0">
-                                                        <StringAnimationUsingKeyFrames Duration="0" Storyboard.TargetName="PlayPauseContent" Storyboard.TargetProperty="Text">
-                                                            <DiscreteStringKeyFrame KeyTime="0" Value="&#xE103;" />
+                                                        <StringAnimationUsingKeyFrames Duration="0" Storyboard.TargetName="MuteContent" Storyboard.TargetProperty="Text">
+                                                            <DiscreteStringKeyFrame KeyTime="0" Value="&#xE198;" />
                                                         </StringAnimationUsingKeyFrames>
+                                                        <ObjectAnimationUsingKeyFrames Duration="0" Storyboard.TargetName="MuteContent" Storyboard.TargetProperty="Foreground">
+                                                            <DiscreteObjectKeyFrame KeyTime="0">
+                                                                <DiscreteObjectKeyFrame.Value>
+                                                                    <SolidColorBrush Color="Red" />
+                                                                </DiscreteObjectKeyFrame.Value>
+                                                            </DiscreteObjectKeyFrame>
+                                                        </ObjectAnimationUsingKeyFrames>
                                                     </Storyboard>
                                                 </VisualState.Storyboard>
                                             </VisualState>
                                             <VisualState x:Name="Unchecked">
                                                 <VisualState.Storyboard>
                                                     <Storyboard Duration="0">
-                                                        <StringAnimationUsingKeyFrames Duration="0" Storyboard.TargetName="PlayPauseContent" Storyboard.TargetProperty="Text">
-                                                            <DiscreteStringKeyFrame KeyTime="0" Value="&#xE102;" />
+                                                        <StringAnimationUsingKeyFrames Duration="0" Storyboard.TargetName="MuteContent" Storyboard.TargetProperty="Text">
+                                                            <DiscreteStringKeyFrame KeyTime="0" Value="&#xE15D;" />
                                                         </StringAnimationUsingKeyFrames>
+                                                        <ObjectAnimationUsingKeyFrames Duration="0" Storyboard.TargetName="MuteContent" Storyboard.TargetProperty="Foreground">
+                                                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource ForegroundBrush}" />
+                                                        </ObjectAnimationUsingKeyFrames>
                                                     </Storyboard>
                                                 </VisualState.Storyboard>
                                             </VisualState>
@@ -174,327 +322,177 @@
                                             <VisualState x:Name="Unfocused" />
                                         </VisualStateGroup>
                                     </VisualStateManager.VisualStateGroups>
-                                    <Ellipse Name="PlayPauseBackground" Fill="#444444" Stroke="#888888" StrokeThickness="1" />
-                                    <TextBlock Name="PlayPauseContent" Margin="4" FontFamily="pack://application:,,,/Resources/Fonts/#Segoe UI Symbol" />
+                                    <TextBlock Name="MuteContent" FontFamily="pack://application:,,,/Resources/Fonts/#Segoe UI Symbol" />
                                 </Grid>
                             </ControlTemplate>
                         </ToggleButton.Template>
                     </ToggleButton>
-                    <Button Grid.Column="2" Grid.Row="1" Cursor="Hand" HorizontalAlignment="Center" VerticalAlignment="Bottom" Command="MediaCommands.PreviousTrack">
-                        <Button.Template>
-                            <ControlTemplate TargetType="{x:Type Button}">
-                                <Grid>
-                                    <VisualStateManager.VisualStateGroups>
-                                        <VisualStateGroup x:Name="CommonStates">
-                                            <VisualState x:Name="Normal"/>
-                                            <VisualState x:Name="MouseOver">
-                                                <VisualState.Storyboard>
-                                                    <Storyboard Duration="0">
-                                                        <ObjectAnimationUsingKeyFrames Duration="0" Storyboard.TargetName="SkipBackBackground" Storyboard.TargetProperty="Stroke">
-                                                            <DiscreteObjectKeyFrame KeyTime="0">
-                                                                <DiscreteObjectKeyFrame.Value>
-                                                                    <SolidColorBrush Color="#DDDDDD" />
-                                                                </DiscreteObjectKeyFrame.Value>
-                                                            </DiscreteObjectKeyFrame>
-                                                        </ObjectAnimationUsingKeyFrames>
-                                                        <ObjectAnimationUsingKeyFrames Duration="0" Storyboard.TargetName="SkipBackBackground" Storyboard.TargetProperty="Fill">
-                                                            <DiscreteObjectKeyFrame KeyTime="0">
-                                                                <DiscreteObjectKeyFrame.Value>
-                                                                    <SolidColorBrush Color="#555555" />
-                                                                </DiscreteObjectKeyFrame.Value>
-                                                            </DiscreteObjectKeyFrame>
-                                                        </ObjectAnimationUsingKeyFrames>
-                                                        <ObjectAnimationUsingKeyFrames Duration="0" Storyboard.TargetName="SkipBackContent" Storyboard.TargetProperty="Foreground">
-                                                            <DiscreteObjectKeyFrame KeyTime="0">
-                                                                <DiscreteObjectKeyFrame.Value>
-                                                                    <SolidColorBrush Color="#FFFFFF" />
-                                                                </DiscreteObjectKeyFrame.Value>
-                                                            </DiscreteObjectKeyFrame>
-                                                        </ObjectAnimationUsingKeyFrames>
-                                                    </Storyboard>
-                                                </VisualState.Storyboard>
-                                            </VisualState>
-                                            <VisualState x:Name="Pressed" />
-                                            <VisualState x:Name="Disabled" />
-                                        </VisualStateGroup>
-                                        <VisualStateGroup x:Name="FocusStates">
-                                            <VisualState x:Name="Focused" />
-                                            <VisualState x:Name="Unfocused" />
-                                        </VisualStateGroup>
-                                    </VisualStateManager.VisualStateGroups>
-                                    <Ellipse Name="SkipBackBackground" Fill="#444444" Stroke="#888888" StrokeThickness="1" />
-                                    <TextBlock Name="SkipBackContent" Margin="4" Text="&#xE100;" Foreground="{StaticResource ForegroundBrush}" FontSize="13" FontFamily="pack://application:,,,/Resources/Fonts/#Segoe UI Symbol" />
-                                </Grid>
-                            </ControlTemplate>
-                        </Button.Template>
-                    </Button>
-                    <Button Grid.Column="4" Grid.Row="1" Cursor="Hand" HorizontalAlignment="Center" VerticalAlignment="Bottom" Command="MediaCommands.NextTrack">
-                        <Button.Template>
-                            <ControlTemplate TargetType="{x:Type Button}">
-                                <Grid>
-                                    <VisualStateManager.VisualStateGroups>
-                                        <VisualStateGroup x:Name="CommonStates">
-                                            <VisualState x:Name="Normal"/>
-                                            <VisualState x:Name="MouseOver">
-                                                <VisualState.Storyboard>
-                                                    <Storyboard Duration="0">
-                                                        <ObjectAnimationUsingKeyFrames Duration="0" Storyboard.TargetName="SkipForwardBackground" Storyboard.TargetProperty="Stroke">
-                                                            <DiscreteObjectKeyFrame KeyTime="0">
-                                                                <DiscreteObjectKeyFrame.Value>
-                                                                    <SolidColorBrush Color="#DDDDDD" />
-                                                                </DiscreteObjectKeyFrame.Value>
-                                                            </DiscreteObjectKeyFrame>
-                                                        </ObjectAnimationUsingKeyFrames>
-                                                        <ObjectAnimationUsingKeyFrames Duration="0" Storyboard.TargetName="SkipForwardBackground" Storyboard.TargetProperty="Fill">
-                                                            <DiscreteObjectKeyFrame KeyTime="0">
-                                                                <DiscreteObjectKeyFrame.Value>
-                                                                    <SolidColorBrush Color="#555555" />
-                                                                </DiscreteObjectKeyFrame.Value>
-                                                            </DiscreteObjectKeyFrame>
-                                                        </ObjectAnimationUsingKeyFrames>
-                                                        <ObjectAnimationUsingKeyFrames Duration="0" Storyboard.TargetName="SkipForwardContent" Storyboard.TargetProperty="Foreground">
-                                                            <DiscreteObjectKeyFrame KeyTime="0">
-                                                                <DiscreteObjectKeyFrame.Value>
-                                                                    <SolidColorBrush Color="#FFFFFF" />
-                                                                </DiscreteObjectKeyFrame.Value>
-                                                            </DiscreteObjectKeyFrame>
-                                                        </ObjectAnimationUsingKeyFrames>
-                                                    </Storyboard>
-                                                </VisualState.Storyboard>
-                                            </VisualState>
-                                            <VisualState x:Name="Pressed" />
-                                            <VisualState x:Name="Disabled" />
-                                        </VisualStateGroup>
-                                        <VisualStateGroup x:Name="FocusStates">
-                                            <VisualState x:Name="Focused" />
-                                            <VisualState x:Name="Unfocused" />
-                                        </VisualStateGroup>
-                                    </VisualStateManager.VisualStateGroups>
-                                    <Ellipse Name="SkipForwardBackground" Fill="#444444" Stroke="#888888" StrokeThickness="1" />
-                                    <TextBlock Name="SkipForwardContent" Margin="4" Text="&#xE101;" Foreground="{StaticResource ForegroundBrush}" FontSize="13" FontFamily="pack://application:,,,/Resources/Fonts/#Segoe UI Symbol" />
-                                </Grid>
-                            </ControlTemplate>
-                        </Button.Template>
-                    </Button>
-                    <DockPanel Grid.ColumnSpan="5" Grid.Row="4">
-                        <ToggleButton DockPanel.Dock="Left" Cursor="Hand" Foreground="{StaticResource ForegroundBrush}" Command="MediaCommands.MuteVolume">
-                            <ToggleButton.Template>
-                                <ControlTemplate TargetType="{x:Type ToggleButton}">
+                    <Slider Name="VolumeSlider" Margin="5,2,0,0" Minimum="0" Maximum="1" Value="1" ValueChanged="VolumeSlider_ValueChanged">
+                        <Slider.Template>
+                            <ControlTemplate TargetType="{x:Type Slider}">
+                                <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
                                     <Grid>
-                                        <VisualStateManager.VisualStateGroups>
-                                            <VisualStateGroup x:Name="CommonStates">
-                                                <VisualState x:Name="Normal"/>
-                                                <VisualState x:Name="MouseOver" />
-                                                <VisualState x:Name="Pressed" />
-                                                <VisualState x:Name="Disabled" />
-                                            </VisualStateGroup>
-                                            <VisualStateGroup x:Name="CheckStates">
-                                                <VisualState x:Name="Checked">
-                                                    <VisualState.Storyboard>
-                                                        <Storyboard Duration="0">
-                                                            <StringAnimationUsingKeyFrames Duration="0" Storyboard.TargetName="MuteContent" Storyboard.TargetProperty="Text">
-                                                                <DiscreteStringKeyFrame KeyTime="0" Value="&#xE198;" />
-                                                            </StringAnimationUsingKeyFrames>
-                                                            <ObjectAnimationUsingKeyFrames Duration="0" Storyboard.TargetName="MuteContent" Storyboard.TargetProperty="Foreground">
-                                                                <DiscreteObjectKeyFrame KeyTime="0">
-                                                                    <DiscreteObjectKeyFrame.Value>
-                                                                        <SolidColorBrush Color="Red" />
-                                                                    </DiscreteObjectKeyFrame.Value>
-                                                                </DiscreteObjectKeyFrame>
-                                                            </ObjectAnimationUsingKeyFrames>
-                                                        </Storyboard>
-                                                    </VisualState.Storyboard>
-                                                </VisualState>
-                                                <VisualState x:Name="Unchecked">
-                                                    <VisualState.Storyboard>
-                                                        <Storyboard Duration="0">
-                                                            <StringAnimationUsingKeyFrames Duration="0" Storyboard.TargetName="MuteContent" Storyboard.TargetProperty="Text">
-                                                                <DiscreteStringKeyFrame KeyTime="0" Value="&#xE15D;" />
-                                                            </StringAnimationUsingKeyFrames>
-                                                            <ObjectAnimationUsingKeyFrames Duration="0" Storyboard.TargetName="MuteContent" Storyboard.TargetProperty="Foreground">
-                                                                <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource ForegroundBrush}" />
-                                                            </ObjectAnimationUsingKeyFrames>
-                                                        </Storyboard>
-                                                    </VisualState.Storyboard>
-                                                </VisualState>
-                                            </VisualStateGroup>
-                                            <VisualStateGroup x:Name="FocusStates">
-                                                <VisualState x:Name="Focused" />
-                                                <VisualState x:Name="Unfocused" />
-                                            </VisualStateGroup>
-                                        </VisualStateManager.VisualStateGroups>
-                                        <TextBlock Name="MuteContent" FontFamily="pack://application:,,,/Resources/Fonts/#Segoe UI Symbol" />
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto"/>
+                                            <RowDefinition Height="Auto" MinHeight="{TemplateBinding MinHeight}"/>
+                                            <RowDefinition Height="Auto"/>
+                                        </Grid.RowDefinitions>
+                                        <TickBar x:Name="TopTick" Fill="{TemplateBinding Foreground}" Height="4" Margin="0,0,0,2" Placement="Top" Grid.Row="0" Visibility="Collapsed"/>
+                                        <TickBar x:Name="BottomTick" Fill="{TemplateBinding Foreground}" Height="4" Margin="0,2,0,0" Placement="Bottom" Grid.Row="2" Visibility="Collapsed"/>
+                                        <Border x:Name="TrackBackground" BorderBrush="#FFD6D6D6" BorderThickness="1" Background="#FFE7EAEA" Height="3" Margin="5,0" Grid.Row="1" VerticalAlignment="Center">
+                                            <Canvas Margin="-6,-1">
+                                                <Rectangle x:Name="PART_SelectionRange" Fill="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" Height="4" Visibility="Hidden"/>
+                                            </Canvas>
+                                        </Border>
+                                        <Track x:Name="PART_Track" Grid.Row="1">
+                                            <Track.DecreaseRepeatButton>
+                                                <RepeatButton Command="Slider.DecreaseLarge">
+                                                    <RepeatButton.Style>
+                                                        <Style TargetType="{x:Type RepeatButton}">
+                                                            <Setter Property="OverridesDefaultStyle" Value="True"/>
+                                                            <Setter Property="Background" Value="Transparent"/>
+                                                            <Setter Property="Focusable" Value="False"/>
+                                                            <Setter Property="IsTabStop" Value="False"/>
+                                                            <Setter Property="Template">
+                                                                <Setter.Value>
+                                                                    <ControlTemplate TargetType="{x:Type RepeatButton}">
+                                                                        <Rectangle Fill="{TemplateBinding Background}" Height="{TemplateBinding Height}" Width="{TemplateBinding Width}"/>
+                                                                    </ControlTemplate>
+                                                                </Setter.Value>
+                                                            </Setter>
+                                                        </Style>
+                                                    </RepeatButton.Style>
+                                                </RepeatButton>
+                                            </Track.DecreaseRepeatButton>
+                                            <Track.IncreaseRepeatButton>
+                                                <RepeatButton Command="Slider.IncreaseLarge">
+                                                    <RepeatButton.Style>
+                                                        <Style TargetType="{x:Type RepeatButton}">
+                                                            <Setter Property="OverridesDefaultStyle" Value="True"/>
+                                                            <Setter Property="Background" Value="Transparent"/>
+                                                            <Setter Property="Focusable" Value="False"/>
+                                                            <Setter Property="IsTabStop" Value="False"/>
+                                                            <Setter Property="Template">
+                                                                <Setter.Value>
+                                                                    <ControlTemplate TargetType="{x:Type RepeatButton}">
+                                                                        <Rectangle Fill="{TemplateBinding Background}" Height="{TemplateBinding Height}" Width="{TemplateBinding Width}"/>
+                                                                    </ControlTemplate>
+                                                                </Setter.Value>
+                                                            </Setter>
+                                                        </Style>
+                                                    </RepeatButton.Style>
+                                                </RepeatButton>
+                                            </Track.IncreaseRepeatButton>
+                                            <Track.Thumb>
+                                                <Thumb x:Name="Thumb" Focusable="False" Height="10" OverridesDefaultStyle="True" VerticalAlignment="Center" Width="11">
+                                                    <Thumb.Template>
+                                                        <ControlTemplate TargetType="{x:Type Thumb}">
+                                                            <Grid HorizontalAlignment="Center" UseLayoutRounding="True" VerticalAlignment="Center">
+                                                                <Path x:Name="grip" Fill="#FFF0F0F0" Stretch="Fill" SnapsToDevicePixels="True" Stroke="#FFACACAC" StrokeThickness="1" UseLayoutRounding="True" VerticalAlignment="Center">
+                                                                    <Path.Data>
+                                                                        <EllipseGeometry RadiusX="5" RadiusY="5" />
+                                                                    </Path.Data>
+                                                                </Path>
+                                                            </Grid>
+                                                            <ControlTemplate.Triggers>
+                                                                <Trigger Property="IsMouseOver" Value="True">
+                                                                    <Setter Property="Fill" TargetName="grip" Value="#FFDCECFC"/>
+                                                                    <Setter Property="Stroke" TargetName="grip" Value="#FF7EB4EA"/>
+                                                                </Trigger>
+                                                                <Trigger Property="IsDragging" Value="True">
+                                                                    <Setter Property="Fill" TargetName="grip" Value="#FFDAECFC"/>
+                                                                    <Setter Property="Stroke" TargetName="grip" Value="#FF569DE5"/>
+                                                                </Trigger>
+                                                                <Trigger Property="IsEnabled" Value="False">
+                                                                    <Setter Property="Fill" TargetName="grip" Value="#FFF0F0F0"/>
+                                                                    <Setter Property="Stroke" TargetName="grip" Value="#FFD9D9D9"/>
+                                                                </Trigger>
+                                                            </ControlTemplate.Triggers>
+                                                        </ControlTemplate>
+                                                    </Thumb.Template>
+                                                </Thumb>
+                                            </Track.Thumb>
+                                        </Track>
                                     </Grid>
-                                </ControlTemplate>
-                            </ToggleButton.Template>
-                        </ToggleButton>
-                        <Slider Name="VolumeSlider" Margin="5,2,0,0" Minimum="0" Maximum="1" Value="1" ValueChanged="VolumeSlider_ValueChanged">
-                            <Slider.Template>
-                                <ControlTemplate TargetType="{x:Type Slider}">
-                                    <Border x:Name="border" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" Background="{TemplateBinding Background}" SnapsToDevicePixels="True">
-                                        <Grid>
-                                            <Grid.RowDefinitions>
-                                                <RowDefinition Height="Auto"/>
-                                                <RowDefinition Height="Auto" MinHeight="{TemplateBinding MinHeight}"/>
-                                                <RowDefinition Height="Auto"/>
-                                            </Grid.RowDefinitions>
-                                            <TickBar x:Name="TopTick" Fill="{TemplateBinding Foreground}" Height="4" Margin="0,0,0,2" Placement="Top" Grid.Row="0" Visibility="Collapsed"/>
-                                            <TickBar x:Name="BottomTick" Fill="{TemplateBinding Foreground}" Height="4" Margin="0,2,0,0" Placement="Bottom" Grid.Row="2" Visibility="Collapsed"/>
-                                            <Border x:Name="TrackBackground" BorderBrush="#FFD6D6D6" BorderThickness="1" Background="#FFE7EAEA" Height="3" Margin="5,0" Grid.Row="1" VerticalAlignment="Center">
-                                                <Canvas Margin="-6,-1">
-                                                    <Rectangle x:Name="PART_SelectionRange" Fill="{DynamicResource {x:Static SystemColors.HighlightBrushKey}}" Height="4" Visibility="Hidden"/>
-                                                </Canvas>
-                                            </Border>
-                                            <Track x:Name="PART_Track" Grid.Row="1">
-                                                <Track.DecreaseRepeatButton>
-                                                    <RepeatButton Command="Slider.DecreaseLarge">
-                                                        <RepeatButton.Style>
-                                                            <Style TargetType="{x:Type RepeatButton}">
-                                                                <Setter Property="OverridesDefaultStyle" Value="True"/>
-                                                                <Setter Property="Background" Value="Transparent"/>
-                                                                <Setter Property="Focusable" Value="False"/>
-                                                                <Setter Property="IsTabStop" Value="False"/>
-                                                                <Setter Property="Template">
-                                                                    <Setter.Value>
-                                                                        <ControlTemplate TargetType="{x:Type RepeatButton}">
-                                                                            <Rectangle Fill="{TemplateBinding Background}" Height="{TemplateBinding Height}" Width="{TemplateBinding Width}"/>
-                                                                        </ControlTemplate>
-                                                                    </Setter.Value>
-                                                                </Setter>
-                                                            </Style>
-                                                        </RepeatButton.Style>
-                                                    </RepeatButton>
-                                                </Track.DecreaseRepeatButton>
-                                                <Track.IncreaseRepeatButton>
-                                                    <RepeatButton Command="Slider.IncreaseLarge">
-                                                        <RepeatButton.Style>
-                                                            <Style TargetType="{x:Type RepeatButton}">
-                                                                <Setter Property="OverridesDefaultStyle" Value="True"/>
-                                                                <Setter Property="Background" Value="Transparent"/>
-                                                                <Setter Property="Focusable" Value="False"/>
-                                                                <Setter Property="IsTabStop" Value="False"/>
-                                                                <Setter Property="Template">
-                                                                    <Setter.Value>
-                                                                        <ControlTemplate TargetType="{x:Type RepeatButton}">
-                                                                            <Rectangle Fill="{TemplateBinding Background}" Height="{TemplateBinding Height}" Width="{TemplateBinding Width}"/>
-                                                                        </ControlTemplate>
-                                                                    </Setter.Value>
-                                                                </Setter>
-                                                            </Style>
-                                                        </RepeatButton.Style>
-                                                    </RepeatButton>
-                                                </Track.IncreaseRepeatButton>
-                                                <Track.Thumb>
-                                                    <Thumb x:Name="Thumb" Focusable="False" Height="10" OverridesDefaultStyle="True" VerticalAlignment="Center" Width="11">
-                                                        <Thumb.Template>
-                                                            <ControlTemplate TargetType="{x:Type Thumb}">
-                                                                <Grid HorizontalAlignment="Center" UseLayoutRounding="True" VerticalAlignment="Center">
-                                                                    <Path x:Name="grip" Fill="#FFF0F0F0" Stretch="Fill" SnapsToDevicePixels="True" Stroke="#FFACACAC" StrokeThickness="1" UseLayoutRounding="True" VerticalAlignment="Center">
-                                                                        <Path.Data>
-                                                                            <EllipseGeometry RadiusX="5" RadiusY="5" />
-                                                                        </Path.Data>
-                                                                    </Path>
-                                                                </Grid>
-                                                                <ControlTemplate.Triggers>
-                                                                    <Trigger Property="IsMouseOver" Value="True">
-                                                                        <Setter Property="Fill" TargetName="grip" Value="#FFDCECFC"/>
-                                                                        <Setter Property="Stroke" TargetName="grip" Value="#FF7EB4EA"/>
-                                                                    </Trigger>
-                                                                    <Trigger Property="IsDragging" Value="True">
-                                                                        <Setter Property="Fill" TargetName="grip" Value="#FFDAECFC"/>
-                                                                        <Setter Property="Stroke" TargetName="grip" Value="#FF569DE5"/>
-                                                                    </Trigger>
-                                                                    <Trigger Property="IsEnabled" Value="False">
-                                                                        <Setter Property="Fill" TargetName="grip" Value="#FFF0F0F0"/>
-                                                                        <Setter Property="Stroke" TargetName="grip" Value="#FFD9D9D9"/>
-                                                                    </Trigger>
-                                                                </ControlTemplate.Triggers>
-                                                            </ControlTemplate>
-                                                        </Thumb.Template>
-                                                    </Thumb>
-                                                </Track.Thumb>
-                                            </Track>
-                                        </Grid>
-                                    </Border>
-                                    <ControlTemplate.Triggers>
-                                        <Trigger Property="TickPlacement" Value="TopLeft">
-                                            <Setter Property="Visibility" TargetName="TopTick" Value="Visible"/>
-                                            <Setter Property="Template" TargetName="Thumb">
-                                                <Setter.Value>
-                                                    <ControlTemplate TargetType="{x:Type Thumb}">
-                                                        <Grid HorizontalAlignment="Center" UseLayoutRounding="True" VerticalAlignment="Center">
-                                                            <Path x:Name="grip" Data="M0,6C0,6 5.5,0 5.5,0 5.5,0 11,6 11,6 11,6 11,18 11,18 11,18 0,18 0,18 0,18 0,6 0,6z" Fill="#FFF0F0F0" Stretch="Fill" SnapsToDevicePixels="True" Stroke="#FFACACAC" StrokeThickness="1" UseLayoutRounding="True" VerticalAlignment="Center"/>
-                                                        </Grid>
-                                                        <ControlTemplate.Triggers>
-                                                            <Trigger Property="IsMouseOver" Value="True">
-                                                                <Setter Property="Fill" TargetName="grip" Value="#FFDCECFC"/>
-                                                                <Setter Property="Stroke" TargetName="grip" Value="#FF7EB4EA"/>
-                                                            </Trigger>
-                                                            <Trigger Property="IsDragging" Value="True">
-                                                                <Setter Property="Fill" TargetName="grip" Value="#FFDAECFC"/>
-                                                                <Setter Property="Stroke" TargetName="grip" Value="#FF569DE5"/>
-                                                            </Trigger>
-                                                            <Trigger Property="IsEnabled" Value="False">
-                                                                <Setter Property="Fill" TargetName="grip" Value="#FFF0F0F0"/>
-                                                                <Setter Property="Stroke" TargetName="grip" Value="#FFD9D9D9"/>
-                                                            </Trigger>
-                                                        </ControlTemplate.Triggers>
-                                                    </ControlTemplate>
-                                                </Setter.Value>
-                                            </Setter>
-                                            <Setter Property="Margin" TargetName="TrackBackground" Value="5,2,5,0"/>
-                                        </Trigger>
-                                        <Trigger Property="TickPlacement" Value="BottomRight">
-                                            <Setter Property="Visibility" TargetName="BottomTick" Value="Visible"/>
-                                            <Setter Property="Template" TargetName="Thumb">
-                                                <Setter.Value>
-                                                    <ControlTemplate TargetType="{x:Type Thumb}">
-                                                        <Grid HorizontalAlignment="Center" UseLayoutRounding="True" VerticalAlignment="Center">
-                                                            <Path x:Name="grip" Data="M0,12C0,12 5.5,18 5.5,18 5.5,18 11,12 11,12 11,12 11,0 11,0 11,0 0,0 0,0 0,0 0,12 0,12z" Fill="#FFF0F0F0" Stretch="Fill" SnapsToDevicePixels="True" Stroke="#FFACACAC" StrokeThickness="1" UseLayoutRounding="True" VerticalAlignment="Center"/>
-                                                        </Grid>
-                                                        <ControlTemplate.Triggers>
-                                                            <Trigger Property="IsMouseOver" Value="True">
-                                                                <Setter Property="Fill" TargetName="grip" Value="#FFDCECFC"/>
-                                                                <Setter Property="Stroke" TargetName="grip" Value="#FF7EB4EA"/>
-                                                            </Trigger>
-                                                            <Trigger Property="IsDragging" Value="True">
-                                                                <Setter Property="Fill" TargetName="grip" Value="#FFDAECFC"/>
-                                                                <Setter Property="Stroke" TargetName="grip" Value="#FF569DE5"/>
-                                                            </Trigger>
-                                                            <Trigger Property="IsEnabled" Value="False">
-                                                                <Setter Property="Fill" TargetName="grip" Value="#FFF0F0F0"/>
-                                                                <Setter Property="Stroke" TargetName="grip" Value="#FFD9D9D9"/>
-                                                            </Trigger>
-                                                        </ControlTemplate.Triggers>
-                                                    </ControlTemplate>
-                                                </Setter.Value>
-                                            </Setter>
-                                            <Setter Property="Margin" TargetName="TrackBackground" Value="5,0,5,2"/>
-                                        </Trigger>
-                                        <Trigger Property="TickPlacement" Value="Both">
-                                            <Setter Property="Visibility" TargetName="TopTick" Value="Visible"/>
-                                            <Setter Property="Visibility" TargetName="BottomTick" Value="Visible"/>
-                                        </Trigger>
-                                        <Trigger Property="IsSelectionRangeEnabled" Value="True">
-                                            <Setter Property="Visibility" TargetName="PART_SelectionRange" Value="Visible"/>
-                                        </Trigger>
-                                        <Trigger Property="IsKeyboardFocused" Value="True">
-                                            <Setter Property="Foreground" TargetName="Thumb" Value="Blue"/>
-                                        </Trigger>
-                                    </ControlTemplate.Triggers>
-                                </ControlTemplate>
-                            </Slider.Template>
-                        </Slider>
-                    </DockPanel>
-                    <StackPanel Grid.Column="6" Grid.RowSpan="2" Grid.ColumnSpan="2" VerticalAlignment="Bottom">
-                        <TextBlock Name="NowPlayingTitleTextBlock" FontSize="16" FontFamily="Segoe UI Semibold" VerticalAlignment="Bottom" />
-                        <TextBlock Name="NowPlayingArtistTextBlock" FontSize="12" FontFamily="Segoe UI" Foreground="#FFBBBBBB" VerticalAlignment="Top" />
-                    </StackPanel>
-                    <Slider Name="ProgressSlider" Grid.Column="6" Grid.Row="4" Thumb.DragStarted="ProgressSlider_DragStarted" Thumb.DragCompleted="ProgressSlider_DragCompleted" ValueChanged="ProgressSlider_ValueChanged" />
+                                </Border>
+                                <ControlTemplate.Triggers>
+                                    <Trigger Property="TickPlacement" Value="TopLeft">
+                                        <Setter Property="Visibility" TargetName="TopTick" Value="Visible"/>
+                                        <Setter Property="Template" TargetName="Thumb">
+                                            <Setter.Value>
+                                                <ControlTemplate TargetType="{x:Type Thumb}">
+                                                    <Grid HorizontalAlignment="Center" UseLayoutRounding="True" VerticalAlignment="Center">
+                                                        <Path x:Name="grip" Data="M0,6C0,6 5.5,0 5.5,0 5.5,0 11,6 11,6 11,6 11,18 11,18 11,18 0,18 0,18 0,18 0,6 0,6z" Fill="#FFF0F0F0" Stretch="Fill" SnapsToDevicePixels="True" Stroke="#FFACACAC" StrokeThickness="1" UseLayoutRounding="True" VerticalAlignment="Center"/>
+                                                    </Grid>
+                                                    <ControlTemplate.Triggers>
+                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                            <Setter Property="Fill" TargetName="grip" Value="#FFDCECFC"/>
+                                                            <Setter Property="Stroke" TargetName="grip" Value="#FF7EB4EA"/>
+                                                        </Trigger>
+                                                        <Trigger Property="IsDragging" Value="True">
+                                                            <Setter Property="Fill" TargetName="grip" Value="#FFDAECFC"/>
+                                                            <Setter Property="Stroke" TargetName="grip" Value="#FF569DE5"/>
+                                                        </Trigger>
+                                                        <Trigger Property="IsEnabled" Value="False">
+                                                            <Setter Property="Fill" TargetName="grip" Value="#FFF0F0F0"/>
+                                                            <Setter Property="Stroke" TargetName="grip" Value="#FFD9D9D9"/>
+                                                        </Trigger>
+                                                    </ControlTemplate.Triggers>
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                        <Setter Property="Margin" TargetName="TrackBackground" Value="5,2,5,0"/>
+                                    </Trigger>
+                                    <Trigger Property="TickPlacement" Value="BottomRight">
+                                        <Setter Property="Visibility" TargetName="BottomTick" Value="Visible"/>
+                                        <Setter Property="Template" TargetName="Thumb">
+                                            <Setter.Value>
+                                                <ControlTemplate TargetType="{x:Type Thumb}">
+                                                    <Grid HorizontalAlignment="Center" UseLayoutRounding="True" VerticalAlignment="Center">
+                                                        <Path x:Name="grip" Data="M0,12C0,12 5.5,18 5.5,18 5.5,18 11,12 11,12 11,12 11,0 11,0 11,0 0,0 0,0 0,0 0,12 0,12z" Fill="#FFF0F0F0" Stretch="Fill" SnapsToDevicePixels="True" Stroke="#FFACACAC" StrokeThickness="1" UseLayoutRounding="True" VerticalAlignment="Center"/>
+                                                    </Grid>
+                                                    <ControlTemplate.Triggers>
+                                                        <Trigger Property="IsMouseOver" Value="True">
+                                                            <Setter Property="Fill" TargetName="grip" Value="#FFDCECFC"/>
+                                                            <Setter Property="Stroke" TargetName="grip" Value="#FF7EB4EA"/>
+                                                        </Trigger>
+                                                        <Trigger Property="IsDragging" Value="True">
+                                                            <Setter Property="Fill" TargetName="grip" Value="#FFDAECFC"/>
+                                                            <Setter Property="Stroke" TargetName="grip" Value="#FF569DE5"/>
+                                                        </Trigger>
+                                                        <Trigger Property="IsEnabled" Value="False">
+                                                            <Setter Property="Fill" TargetName="grip" Value="#FFF0F0F0"/>
+                                                            <Setter Property="Stroke" TargetName="grip" Value="#FFD9D9D9"/>
+                                                        </Trigger>
+                                                    </ControlTemplate.Triggers>
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                        <Setter Property="Margin" TargetName="TrackBackground" Value="5,0,5,2"/>
+                                    </Trigger>
+                                    <Trigger Property="TickPlacement" Value="Both">
+                                        <Setter Property="Visibility" TargetName="TopTick" Value="Visible"/>
+                                        <Setter Property="Visibility" TargetName="BottomTick" Value="Visible"/>
+                                    </Trigger>
+                                    <Trigger Property="IsSelectionRangeEnabled" Value="True">
+                                        <Setter Property="Visibility" TargetName="PART_SelectionRange" Value="Visible"/>
+                                    </Trigger>
+                                    <Trigger Property="IsKeyboardFocused" Value="True">
+                                        <Setter Property="Foreground" TargetName="Thumb" Value="Blue"/>
+                                    </Trigger>
+                                </ControlTemplate.Triggers>
+                            </ControlTemplate>
+                        </Slider.Template>
+                    </Slider>
+                </DockPanel>
+                <StackPanel Grid.Column="6" Grid.RowSpan="2" Grid.ColumnSpan="2" VerticalAlignment="Bottom">
+                    <TextBlock Name="NowPlayingTitleTextBlock" FontSize="16" FontFamily="Segoe UI Semibold" VerticalAlignment="Bottom" />
+                    <TextBlock Name="NowPlayingArtistTextBlock" FontSize="12" FontFamily="Segoe UI" Foreground="#FFBBBBBB" VerticalAlignment="Top" />
+                </StackPanel>
+                <Slider Name="ProgressSlider" Grid.Column="6" Grid.Row="4" Thumb.DragStarted="ProgressSlider_DragStarted" Thumb.DragCompleted="ProgressSlider_DragCompleted" ValueChanged="ProgressSlider_ValueChanged" />
                 <TextBlock Name="ProgressStatus" Grid.Column="7" Grid.Row="4" />
             </Grid>
-            </Grid>
-            <!--  Body  -->
+        </Grid>
         <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
             <ScrollViewer.Resources>
                 <Style TargetType="ScrollBar">
@@ -644,7 +642,6 @@
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
-                        <!--  Links  -->
                         <TextBlock Margin="0,15,0,5"
                                    FontSize="16"
                                    FontWeight="Bold"
@@ -655,7 +652,7 @@
                                       Name="LinksItemControl">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate DataType="{x:Type db:ComposerLink}">
-                                    <Button Command="{Binding URL, Converter={StaticResource UrlToCommandConverter}}">
+                                    <Button Command="{Binding URL, Converter={StaticResource UrlToCommandConverter}, IsAsync=True}">
                                         <Button.Template>
                                             <ControlTemplate>
                                                 <Grid>
@@ -664,8 +661,8 @@
                                                            Margin="0,0,10,0"
                                                            Cursor="Hand"
                                                            SnapsToDevicePixels="True"
-                                                           Source="{Binding URL, Converter={StaticResource UrlToIconConverter}}"
-                                                           ToolTip="{Binding URL, Converter={StaticResource UrlToTitleConverter}}"
+                                                           Source="{Binding URL, Converter={StaticResource UrlToIconConverter}, IsAsync=True}"
+                                                           ToolTip="{Binding URL, Converter={StaticResource UrlToTitleConverter}, IsAsync=True}"
                                                            UseLayoutRounding="True" />
                                                 </Grid>
                                             </ControlTemplate>
@@ -681,16 +678,12 @@
                         </ItemsControl>
                     </StackPanel>
                 </StackPanel>
-                <!--  Center Column  -->
-                <w:HtmlPanel Grid.Column="1" Margin="30,0" Background="Transparent" Foreground="{StaticResource ForegroundBrush}" Name="BiographyHtmlPanel" />
-
-                <!--  Right Column  -->
+                <FlowDocumentScrollViewer VerticalScrollBarVisibility="Disabled" HorizontalScrollBarVisibility="Disabled" Grid.Column="1" Margin="30,0" TextElement.Foreground="{StaticResource ForegroundBrush}" Name="BiographyFlowDocumentScrollViewer" />
                 <Grid Grid.Column="2">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
-                    <!--  Compositions  -->
                     <TextBlock Margin="0,0,0,4"
                                FontSize="18"
                                FontWeight="Bold"
