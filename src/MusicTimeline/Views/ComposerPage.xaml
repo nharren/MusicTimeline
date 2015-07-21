@@ -32,7 +32,7 @@
     <!--  Root  -->
     <Grid>
         <Grid.Background>
-            <ImageBrush ImageSource="pack://application:,,,/Resources/Background/NoiseOverlay.png"
+            <ImageBrush ImageSource="{StaticResource BackgroundImage}"
                             Opacity="0.25"
                             TileMode="Tile"
                             Viewport="0, 0, 325, 168"
@@ -490,7 +490,7 @@
                     <TextBlock Name="NowPlayingArtistTextBlock" FontSize="12" FontFamily="Segoe UI" Foreground="#FFBBBBBB" VerticalAlignment="Top" />
                 </StackPanel>
                 <Slider Name="ProgressSlider" Grid.Column="6" Grid.Row="4" Thumb.DragStarted="ProgressSlider_DragStarted" Thumb.DragCompleted="ProgressSlider_DragCompleted" ValueChanged="ProgressSlider_ValueChanged" />
-                <TextBlock Name="ProgressStatus" Grid.Column="7" Grid.Row="4" />
+                <TextBlock Name="ProgressStatus" Grid.Column="7" Grid.Row="4" VerticalAlignment="Center" />
             </Grid>
         </Grid>
         <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">

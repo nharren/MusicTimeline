@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.EDTF;
 using System.IO;
 using System.Linq;
+using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -30,6 +31,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
         private FlacReader _stream;
         private DispatcherTimer _timer;
         private float _volume;
+        private bool _isWaiting;
 
         public ComposerPage()
         {
@@ -45,7 +47,15 @@ namespace NathanHarrenstein.MusicTimeline.Views
                 LoadComposer(composer);
             }
 
-            PlaySamples(composer);
+            var timer = new DispatcherTimer(DispatcherPriority.Background);
+            timer.Interval = TimeSpan.FromSeconds(5);
+            timer.Tick += (o, c) =>
+            {
+                PlaySamples(composer);
+                timer.Stop();
+            };
+
+            timer.Start();            
         }
 
         ~ComposerPage()
@@ -91,8 +101,40 @@ namespace NathanHarrenstein.MusicTimeline.Views
                 return;
             }
 
-            if (_player.PlaybackState == PlaybackState.Stopped)
+            if (_player.PlaybackState == PlaybackState.Stopped && !_isWaiting)
             {
+                if (_currentItem.Next != null)
+                {
+                    _isWaiting = true;
+
+                    if (_player != null)
+                    {
+                        _player.Dispose();
+                    }
+
+                    if (_stream != null)
+                    {
+                        _stream.Dispose();
+                    }
+
+                    _currentItem = _currentItem.Next;
+
+                    Load();
+                   
+                    var timer = new Timer(3000);
+
+                    timer.Elapsed += (o, c) =>
+                    {                       
+                        _player.Play();
+                        timer.Stop();
+                        _isWaiting = false;
+                    };
+
+                    timer.Start();
+
+                    return;
+                }
+
                 _timer.Stop();
                 _stream.Seek(0, SeekOrigin.Begin);
                 ProgressSlider.Value = _stream.CurrentTime.Ticks;
@@ -307,6 +349,9 @@ namespace NathanHarrenstein.MusicTimeline.Views
             _currentItem = _currentItem.Next;
 
             Load();
+
+            _player.Play();
+            PlayPauseToggleButton.IsChecked = true;
         }
 
         private void PlaySamples(Composer composer)
@@ -357,6 +402,9 @@ namespace NathanHarrenstein.MusicTimeline.Views
             _currentItem = _currentItem.Previous;
 
             Load();
+
+            _player.Play();
+            PlayPauseToggleButton.IsChecked = true;
         }
 
         private void ProgressSlider_DragCompleted(object sender, DragCompletedEventArgs e)

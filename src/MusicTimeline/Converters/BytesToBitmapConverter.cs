@@ -14,12 +14,7 @@ namespace NathanHarrenstein.MusicTimeline.Converters
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            var bitmapImage = new BitmapImage();
-            bitmapImage.BeginInit();
-            bitmapImage.StreamSource = new MemoryStream((byte[])value);
-            bitmapImage.EndInit();
-
-            return bitmapImage;
+            return BytesToBitmap((byte[])value);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
@@ -35,18 +30,9 @@ namespace NathanHarrenstein.MusicTimeline.Converters
             }
 
             var image = new BitmapImage();
-
-            using (var memoryStream = new MemoryStream(bytes))
-            {
-                memoryStream.Position = 0;
-                image.BeginInit();
-                image.CreateOptions = BitmapCreateOptions.PreservePixelFormat;
-                image.CacheOption = BitmapCacheOption.OnLoad;
-                image.UriSource = null;
-                image.StreamSource = memoryStream;
-                image.EndInit();
-            }
-
+            image.BeginInit();
+            image.StreamSource = new MemoryStream(bytes);
+            image.EndInit();
             image.Freeze();
 
             return image;

@@ -1,23 +1,24 @@
 ﻿using NathanHarrenstein.MusicDB;
-using NathanHarrenstein.MusicTimeline.Input;
 using NathanHarrenstein.MusicTimeline.Builders;
+using NathanHarrenstein.MusicTimeline.Input;
 using NathanHarrenstein.MusicTimeline.ViewModels;
 using NathanHarrenstein.Timeline;
 using System;
 using System.Collections.Generic;
 using System.EDTF;
+using System.IO;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Linq;
 using System.Windows.Input;
 using System.Windows.Navigation;
-using NathanHarrenstein.MusicTimeline.Utilities;
 
 namespace NathanHarrenstein.MusicTimeline.Views
 {
     public partial class TimelinePage : Page
     {
         public static readonly DependencyProperty CloseCommandProperty = DependencyProperty.Register("CloseCommand", typeof(ICommand), typeof(TimelinePage));
+        public static readonly DependencyProperty FullScreenCommandProperty = DependencyProperty.Register("FullScreenCommand", typeof(ICommand), typeof(TimelinePage));
         public static readonly DependencyProperty GoToCommandProperty = DependencyProperty.Register("GoToCommand", typeof(ICommand), typeof(TimelinePage));
         public static readonly DependencyProperty ManageDataCommandProperty = DependencyProperty.Register("ManageDataCommand", typeof(ICommand), typeof(TimelinePage));
         public static readonly DependencyProperty RebuildThumbnailCacheCommandProperty = DependencyProperty.Register("RebuildThumbnailCacheCommand", typeof(ICommand), typeof(TimelinePage));
@@ -27,6 +28,24 @@ namespace NathanHarrenstein.MusicTimeline.Views
         {
             InitializeComponent();
             Initialize();
+        }
+
+        ~TimelinePage()
+        {
+            _dataProvider.Dispose();
+        }
+
+        public ICommand CloseCommand
+        {
+            get
+            {
+                return (ICommand)GetValue(CloseCommandProperty);
+            }
+
+            set
+            {
+                SetValue(CloseCommandProperty, value);
+            }
         }
 
         public ICommand FullScreenCommand
@@ -39,23 +58,6 @@ namespace NathanHarrenstein.MusicTimeline.Views
             set
             {
                 SetValue(FullScreenCommandProperty, value);
-            }
-        }
-
-        public static readonly DependencyProperty FullScreenCommandProperty = DependencyProperty.Register("FullScreenCommand", typeof(ICommand), typeof(TimelinePage));
-
-
-
-        public ICommand CloseCommand
-        {
-            get
-            {
-                return (ICommand)GetValue(CloseCommandProperty);
-            }
-
-            set
-            {
-                SetValue(CloseCommandProperty, value);
             }
         }
 
@@ -132,6 +134,11 @@ namespace NathanHarrenstein.MusicTimeline.Views
             };
         }
 
+        private ICommand GetCloseCommand()
+        {
+            return new DelegateCommand(o => Application.Current.Shutdown());
+        }
+
         private ICommand GetFullScreenCommand()
         {
             return new DelegateCommand(o =>
@@ -147,27 +154,6 @@ namespace NathanHarrenstein.MusicTimeline.Views
                     Application.Current.MainWindow.WindowState = WindowState.Maximized;
                 }
             });
-        }
-
-        private ICommand GetRebuildThumbnailCacheCommand()
-        {
-            return new DelegateCommand(o =>
-            {
-                foreach (var composer in _dataProvider.Composers)
-                {
-                    ComposerEventProvider.CreateThumbnail(composer);
-                }
-
-                Application.Current.Properties["HorizontalOffset"] = timeline.HorizontalOffset;
-                Application.Current.Properties["VerticalOffset"] = timeline.VerticalOffset;
-
-                NavigationService.Refresh();
-            });
-        }
-
-        private ICommand GetCloseCommand()
-        {
-            return new DelegateCommand(o => Application.Current.Shutdown());
         }
 
         private ICommand GetGoToCommand()
@@ -194,7 +180,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
                     index++;
                 }
-                
+
                 timeline.HorizontalOffset = timeline.Ruler.ToPixels(timeline.Dates.Earliest(), ExtendedDateTimeInterval.Parse(eraQuery.Dates).Earliest());
             });
         }
@@ -210,9 +196,20 @@ namespace NathanHarrenstein.MusicTimeline.Views
             });
         }
 
-        private void page_Unloaded(object sender, RoutedEventArgs e)
+        private ICommand GetRebuildThumbnailCacheCommand()
         {
-            _dataProvider.Dispose();
+            return new DelegateCommand(o =>
+            {
+                foreach (var composer in _dataProvider.Composers)
+                {
+                    ComposerEventProvider.CreateThumbnail(composer);
+                }
+
+                Application.Current.Properties["HorizontalOffset"] = timeline.HorizontalOffset;
+                Application.Current.Properties["VerticalOffset"] = timeline.VerticalOffset;
+
+                NavigationService.Refresh();
+            });
         }
     }
 }

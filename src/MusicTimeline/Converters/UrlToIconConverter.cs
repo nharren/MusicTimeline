@@ -15,9 +15,9 @@ namespace NathanHarrenstein.MusicTimeline.Converters
             var localIconPath = Path.Combine(Environment.CurrentDirectory, "Resources/Favicons/" + linkUri.Host + ".ico");
             var localIconUri = new Uri(localIconPath);
 
-            if (!Directory.Exists("Resources/Favicons"))
+            if (!Directory.Exists(Path.Combine(Environment.CurrentDirectory, "Resources/Favicons/")))
             {
-                Directory.CreateDirectory("Resources/Favicons");
+                Directory.CreateDirectory(Path.Combine(Environment.CurrentDirectory, "Resources/Favicons/"));
             }
 
             if (File.Exists(localIconPath))

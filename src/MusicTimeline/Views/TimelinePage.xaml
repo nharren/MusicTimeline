@@ -11,7 +11,6 @@
       d:DesignHeight="300"
       d:DesignWidth="300"
       mc:Ignorable="d"
-      Unloaded="page_Unloaded"
       Name="page">
     <Page.Resources>
         <cv:NationalityToImageConverter x:Key="NationalityToImageConverter" />
@@ -46,7 +45,7 @@
                     LineStroke="#FF333333"
                     TimeForeground="White">
             <t:Timeline.Background>
-                <ImageBrush ImageSource="pack://application:,,,/Resources/Background/NoiseOverlay.png"
+                <ImageBrush ImageSource="{StaticResource BackgroundImage}"
                             Opacity="0.25"
                             TileMode="Tile"
                             Viewport="0, 0, 325, 168"
@@ -68,12 +67,7 @@
                             Background="{Binding Background}"
                             CornerRadius="5"
                             Cursor="Hand">
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition />
-                                <ColumnDefinition Width="Auto" />
-                            </Grid.ColumnDefinitions>
-                            <Button Command="{Binding ClickCommand}"
+                        <Button Command="{Binding ClickCommand}"
                                     Focusable="False"
                                     FontFamily="Cambria"
                                     Foreground="White">
@@ -111,7 +105,7 @@
                                                                Height="16"
                                                                Margin="5,0,0,0"
                                                                SnapsToDevicePixels="True"
-                                                               Source="{Binding Name, Converter={StaticResource NationalityToImageConverter}}"
+                                                               Source="{Binding Name, Converter={StaticResource NationalityToImageConverter}, IsAsync=True}"
                                                                UseLayoutRounding="True" />
                                                     </DataTemplate>
                                                 </ItemsControl.ItemTemplate>
@@ -128,43 +122,6 @@
                                     </StackPanel>
                                 </Grid>
                             </Button>
-                            <Button x:Name="playPopularButton"
-                                    Grid.Column="1"
-                                    Command="{Binding PlayPopularCommand}"
-                                    Focusable="False"
-                                    Padding="5"
-                                    Visibility="Collapsed">
-                                <Button.Template>
-                                    <ControlTemplate TargetType="{x:Type Button}">
-                                        <ControlTemplate.Triggers>
-                                            <Trigger Property="IsEnabled" Value="False">
-                                                <Setter Property="Visibility" Value="Collapsed" />
-                                            </Trigger>
-                                        </ControlTemplate.Triggers>
-                                        <Grid Background="Transparent">
-                                            <Ellipse Width="30"
-                                                     Height="30"
-                                                     Margin="0,0,15,0"
-                                                     Fill="Transparent"
-                                                     Stroke="White"
-                                                     StrokeThickness="3" />
-                                            <Polygon Width="11.25"
-                                                     Height="15"
-                                                     Margin="0,0,12,0"
-                                                     Fill="White"
-                                                     StrokeThickness="0">
-                                                <Polygon.Points>
-                                                    <Point X="0" Y="0" />
-                                                    <Point X="11.25" Y="7.5" />
-                                                    <Point X="0" Y="15" />
-                                                    <Point X="0" Y="0" />
-                                                </Polygon.Points>
-                                            </Polygon>
-                                        </Grid>
-                                    </ControlTemplate>
-                                </Button.Template>
-                            </Button>
-                        </Grid>
                     </Border>
                 </DataTemplate>
             </t:Timeline.EventTemplates>
