@@ -4,7 +4,7 @@ using NathanHarrenstein.MusicTimeline.Converters;
 using System;
 using System.Windows;
 
-namespace NathanHarrenstein.MusicTimeline.Providers
+namespace NathanHarrenstein.MusicTimeline.Builders
 {
     public static class MovementTreeViewItemProvider
     {

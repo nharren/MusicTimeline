@@ -1,6 +1,6 @@
 ﻿using NathanHarrenstein.MusicDB;
 using NathanHarrenstein.MusicTimeline.Input;
-using NathanHarrenstein.MusicTimeline.Providers;
+using NathanHarrenstein.MusicTimeline.Builders;
 using NathanHarrenstein.MusicTimeline.ViewModels;
 using NathanHarrenstein.Timeline;
 using System;

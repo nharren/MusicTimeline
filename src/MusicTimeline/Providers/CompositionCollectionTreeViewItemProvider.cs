@@ -2,7 +2,7 @@
 using NathanHarrenstein.MusicTimeline.Controls;
 using System.Windows;
 
-namespace NathanHarrenstein.MusicTimeline.Providers
+namespace NathanHarrenstein.MusicTimeline.Builders
 {
     public static class CompositionCollectionTreeViewItemProvider
     {

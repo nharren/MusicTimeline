@@ -1,6 +1,6 @@
 ﻿using NathanHarrenstein.MusicDB;
 using NathanHarrenstein.MusicTimeline.Controls;
-using NathanHarrenstein.MusicTimeline.Providers;
+using NathanHarrenstein.MusicTimeline.Builders;
 using NathanHarrenstein.MusicTimeline.Utilities;
 using NAudio.Flac;
 using NAudio.Wave;

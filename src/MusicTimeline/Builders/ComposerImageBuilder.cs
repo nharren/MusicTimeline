@@ -1,13 +1,12 @@
 ﻿using NathanHarrenstein.MusicDB;
 using NathanHarrenstein.MusicTimeline.Utilities;
-using System.IO;
 using System.Linq;
 
-namespace NathanHarrenstein.MusicTimeline.Providers
+namespace NathanHarrenstein.MusicTimeline.Builders
 {
-    public static class ComposerImageProvider
+    public static class ComposerImageBuilder
     {
-        public static ComposerImage GetComposerImage(Composer composer, string imagePath, DataProvider dataProvider)
+        public static ComposerImage Build(Composer composer, string imagePath, DataProvider dataProvider)
         {
             var imageBytes = FileUtility.GetImage(imagePath);
 
@@ -26,20 +25,19 @@ namespace NathanHarrenstein.MusicTimeline.Providers
 
         private static short GenerateID(DataProvider dataProvider)
         {
-            short id = 1;
+            short newID = 1;
 
-            var composerImageIds = dataProvider.ComposerImages
-                .Select(ci => ci.ID)
+            var usedIds = dataProvider.ComposerImages
+                .Select(entity => entity.ID)
                 .Concat(dataProvider.ComposerImages.Local
-                    .Select(lci => lci.ID))
-                .OrderBy(i => i)
-                .ToArray();
+                    .Select(entity => entity.ID))
+                .OrderBy(id => id);
 
-            foreach (var cid in composerImageIds)
+            foreach (var usedID in usedIds)
             {
-                if (cid == id || id == composerImageIds.Length)
+                if (newID == usedID)
                 {
-                    id++;
+                    newID++;
                 }
                 else
                 {
@@ -47,7 +45,7 @@ namespace NathanHarrenstein.MusicTimeline.Providers
                 }
             }
 
-            return id;
+            return newID;
         }
     }
 }

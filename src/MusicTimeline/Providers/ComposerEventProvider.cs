@@ -14,7 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 
-namespace NathanHarrenstein.MusicTimeline.Providers
+namespace NathanHarrenstein.MusicTimeline.Builders
 {
     public static class ComposerEventProvider
     {

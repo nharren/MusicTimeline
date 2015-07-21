@@ -1,5 +1,5 @@
 ﻿using NathanHarrenstein.MusicDB;
-using NathanHarrenstein.MusicTimeline.Providers;
+using NathanHarrenstein.MusicTimeline.Builders;
 using System.Linq;
 
 namespace NathanHarrenstein.MusicTimeline.Controls

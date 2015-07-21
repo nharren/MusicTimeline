@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.EDTF;
 using System.Windows.Media;
 
-namespace NathanHarrenstein.MusicTimeline.Providers
+namespace NathanHarrenstein.MusicTimeline.Builders
 {
     public static class ComposerEraProvider
     {
