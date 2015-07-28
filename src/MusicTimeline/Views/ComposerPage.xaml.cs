@@ -9,7 +9,6 @@ using System.Collections.Generic;
 using System.EDTF;
 using System.IO;
 using System.Linq;
-using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -18,26 +17,26 @@ using System.Windows.Input;
 using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Navigation;
-using System.Windows.Threading;
 
 namespace NathanHarrenstein.MusicTimeline.Views
 {
-    public partial class ComposerPage : Page
+    public partial class ComposerPage : Page, IDisposable
     {
-        private LinkedListNode<object> _currentItem;
+        private AudioPlayer _audioPlayer;
         private DataProvider _dataProvider;
-        private bool _isDraggingProgressSlider;
-        private WaveOut _player;
-        private FlacReader _stream;
-        private DispatcherTimer _timer;
-        private float _volume;
-        private bool _isWaiting;
-
+        private bool _disposed;
+        private Dictionary<ISampleProvider, Sample> _sampleDictionary;
         public ComposerPage()
         {
             InitializeComponent();
 
             _dataProvider = new DataProvider();
+            _sampleDictionary = new Dictionary<ISampleProvider, Sample>();
+            _audioPlayer = new AudioPlayer();
+            _audioPlayer.CurrentTimeChanged += AudioPlayer_CurrentTimeChanged;
+            _audioPlayer.TotalTimeChanged += AudioPlayer_TotalTimeChanged;
+            _audioPlayer.TrackChanged += AudioPlayer_TrackChanged;
+            _audioPlayer.PlaybackStateChanged += AudioPlayer_PlaybackStateChanged;
 
             var composerName = Application.Current.Properties["SelectedComposer"] as string;
             var composer = _dataProvider.Composers.FirstOrDefault(c => c.Name == composerName);
@@ -46,32 +45,44 @@ namespace NathanHarrenstein.MusicTimeline.Views
             {
                 LoadComposer(composer);
             }
+        }
 
-            var timer = new DispatcherTimer(DispatcherPriority.Background);
-            timer.Interval = TimeSpan.FromSeconds(5);
-            timer.Tick += (o, c) =>
+        private void AudioPlayer_PlaybackStateChanged(object sender, PlaybackStateChangedEventArgs e)
+        {
+            if (e.NewState == PlaybackState.Playing)
             {
-                PlaySamples(composer);
-                timer.Stop();
-            };
-
-            timer.Start();            
+                PlayPauseToggleButton.IsChecked = true;
+            }
+            else
+            {
+                PlayPauseToggleButton.IsChecked = false;
+            }
         }
 
         ~ComposerPage()
         {
-            if (_stream != null)
-            {
-                _stream.Dispose();
-            }
+            Dispose(false);
+        }
 
-            if (_player != null)
+        public void Dispose()
+        {
+            if (!_disposed)
             {
-                _player.Stop();
-                _player.Dispose();
+                Dispose(true);
+                GC.SuppressFinalize(this);
+                _disposed = true;
+            }
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                // clean up managed resources
             }
 
             _dataProvider.Dispose();
+            _audioPlayer.Dispose();
         }
 
         private static string GetBorn(Composer composer)
@@ -94,61 +105,20 @@ namespace NathanHarrenstein.MusicTimeline.Views
             return ExtendedDateTimeInterval.Parse(composer.Dates).End.ToString();
         }
 
-        private void _timer_Tick(object sender, EventArgs e)
+        private void AudioPlayer_CurrentTimeChanged(object sender, TimeChangedEventArgs e)
         {
-            if (_isDraggingProgressSlider)
-            {
-                return;
-            }
+            ProgressSlider.Value = e.NewTime.Value.Ticks;
+        }
 
-            if (_player.PlaybackState == PlaybackState.Stopped && !_isWaiting)
-            {
-                if (_currentItem.Next != null)
-                {
-                    _isWaiting = true;
+        private void AudioPlayer_TotalTimeChanged(object sender, TimeChangedEventArgs e)
+        {
+            ProgressSlider.Maximum = e.NewTime.Value.Ticks;
+        }
 
-                    if (_player != null)
-                    {
-                        _player.Dispose();
-                    }
-
-                    if (_stream != null)
-                    {
-                        _stream.Dispose();
-                    }
-
-                    _currentItem = _currentItem.Next;
-
-                    Load();
-                   
-                    var timer = new Timer(3000);
-
-                    timer.Elapsed += (o, c) =>
-                    {                       
-                        _player.Play();
-                        timer.Stop();
-                        _isWaiting = false;
-                    };
-
-                    timer.Start();
-
-                    return;
-                }
-
-                _timer.Stop();
-                _stream.Seek(0, SeekOrigin.Begin);
-                ProgressSlider.Value = _stream.CurrentTime.Ticks;
-                PlayPauseToggleButton.IsChecked = false;
-
-                return;
-            }
-
-            if (_player.PlaybackState == PlaybackState.Paused)
-            {
-                return;
-            }
-
-            ProgressSlider.Value = _stream.CurrentTime.Ticks;
+        private void AudioPlayer_TrackChanged(object sender, TrackChangedEventArgs e)
+        {
+            NowPlayingTitleTextBlock.Text = _sampleDictionary[_audioPlayer.CurrentPlaylistItem.Value].Title;
+            NowPlayingArtistTextBlock.Text = _sampleDictionary[_audioPlayer.CurrentPlaylistItem.Value].Artists;
         }
 
         private void BackButton_Click(object sender, RoutedEventArgs e)
@@ -164,75 +134,6 @@ namespace NathanHarrenstein.MusicTimeline.Views
             var composer = (Composer)button.DataContext;
 
             LoadComposer(composer);
-        }
-
-        private string GetNowPlayingArtist(object item)
-        {
-            if (item is Sample)
-            {
-                return ((Sample)item).Artists;
-            }
-            else if (item is LibraryDB.Recording)
-            {
-                return string.Join(", ", _dataProvider.Recordings.Find(((LibraryDB.Recording)item).MDBID).Performers.Select(p => p.Name));
-            }
-
-            return null;
-        }
-
-        private string GetNowPlayingTitle(object item)
-        {
-            if (item is Sample)
-            {
-                return ((Sample)item).Title;
-            }
-            else if (item is LibraryDB.Recording)
-            {
-                var recording = _dataProvider.Recordings.Find(((LibraryDB.Recording)item).MDBID);
-
-                if (recording.CompositionCollection != null)
-                {
-                    return recording.CompositionCollection.Name;
-                }
-                else if (recording.Composition != null)
-                {
-                    return recording.Composition.Name;
-                }
-                else
-                {
-                    return $"{recording.Composition.Name}: {recording.Movement.Number}. {recording.Movement.Name}";
-                }
-            }
-
-            return null;
-        }
-
-        private void Load()
-        {
-            byte[] bytes = null;
-
-            if (_currentItem.Value is Sample)
-            {
-                bytes = ((Sample)_currentItem.Value).Audio;
-            }
-            else if (_currentItem.Value is LibraryDB.Recording)
-            {
-                bytes = File.ReadAllBytes(((LibraryDB.Recording)_currentItem.Value).FilePath);
-            }
-
-            if (_stream != null)
-            {
-                _stream.Dispose();
-            }
-
-            _stream = new FlacReader(new MemoryStream(bytes));
-            _player = new WaveOut { DesiredLatency = 200 };
-            _player.Init(_stream);
-
-            ProgressSlider.Maximum = _stream.TotalTime.Ticks;
-
-            NowPlayingTitleTextBlock.Text = GetNowPlayingTitle(_currentItem.Value);
-            NowPlayingArtistTextBlock.Text = GetNowPlayingArtist(_currentItem.Value);
         }
 
         private void LoadComposer(Composer composer)
@@ -300,122 +201,117 @@ namespace NathanHarrenstein.MusicTimeline.Views
                     .Select(c => CompositionTreeViewItemProvider.GetCompositionTreeViewItem(c, null)))
                 .OrderBy(tvi => tvi.Header);
             ComposerImagesListBox.SelectedIndex = 0;
+
+            //if (composer.Name == "Bach, Johann Sebastian")
+            //{
+            //    var sample1 = new Sample();
+            //    sample1.ID = 6;
+            //    sample1.Title = "Cello Suite No. 1 in G major, BWV 1007: I. Prelude";
+            //    sample1.Artists = "Yo-Yo Ma";
+            //    sample1.Audio = File.ReadAllBytes(@"C:\Users\Nathan\Desktop\Samples\Bach\01 Suite No. 1, Prelude (Sample).flac");
+            //    composer.Samples.Add(sample1);
+
+            //    var sample2 = new Sample();
+            //    sample2.ID = 7;
+            //    sample2.Title = "Passacaglia and Fugue in C minor, BWV 582";
+            //    sample2.Artists = "E. Power Biggs";
+            //    sample2.Audio = File.ReadAllBytes(@"C:\Users\Nathan\Desktop\Samples\Bach\(01) - Bach - Passacaglia and Fugue in C minor, BWV 582 (E. Power Biggs, pedal harpsichord) (Sample).flac");
+            //    composer.Samples.Add(sample2);
+
+            //    var sample3 = new Sample();
+            //    sample3.ID = 8;
+            //    sample3.Title = "Violin Partita No. 2 in D minor, BWV 1004: V. Ciaccona";
+            //    sample3.Artists = "John Holloway";
+            //    sample3.Audio = File.ReadAllBytes(@"C:\Users\Nathan\Desktop\Samples\Bach\05. Violin Partita No. 2 in D minor, BWV 1004- V. Ciaccona (Sample).flac");
+            //    composer.Samples.Add(sample3);
+
+            //    var sample4 = new Sample();
+            //    sample4.ID = 9;
+            //    sample4.Title = "Harpsichord Concerto No. 1 in D minor, BWV 1052: I. Allegro";
+            //    sample4.Artists = "Trevor Pinnock; The English Concert";
+            //    sample4.Audio = File.ReadAllBytes(@"C:\Users\Nathan\Desktop\Samples\Bach\01. Harpsichord Concerto No. 1 in D minor, BWV 1052- I. Allegro (Sample).flac");
+            //    composer.Samples.Add(sample4);
+
+            //    var sample5 = new Sample();
+            //    sample5.ID = 10;
+            //    sample5.Title = "Prelude and Fugue No. 1 in C major, BWV 846: I. Prelude";
+            //    sample5.Artists = "Sviatoslav Richter";
+            //    sample5.Audio = File.ReadAllBytes(@"C:\Users\Nathan\Desktop\Samples\Bach\01. Prelude and Fugue No. 1 in C major, BWV 846- I. Prelude (Sample).flac");
+            //    composer.Samples.Add(sample5);
+            //}
+
+            //_dataProvider.SaveChanges();
+
+
+            foreach (var sample in composer.Samples)
+            {
+                var flacReader = new FlacReader(new MemoryStream(sample.Audio));
+
+                _sampleDictionary[flacReader] = sample;
+
+                _audioPlayer.AddToPlaylist(flacReader);
+            }
+
+            _audioPlayer.Play();
         }
 
         private void MuteVolume_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            e.CanExecute = _player != null;
+            e.CanExecute = _audioPlayer != null;
         }
 
         private void MuteVolume_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            if (_player.Volume > 0)
-            {
-                _volume = _player.Volume;
-
-                _player.Volume = 0;
-            }
-            else
-            {
-                _player.Volume = _volume;
-            }
+            _audioPlayer.ToggleMute();
         }
 
         private void NextTrack_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            if (_currentItem != null)
+            if (_audioPlayer != null)
             {
-                e.CanExecute = _currentItem.Next != null;
+                e.CanExecute = _audioPlayer.CanSkipForward();
             }
         }
 
         private void NextTrack_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            if (_currentItem.Next == null)
+            if (_audioPlayer != null)
             {
-                return;
+                _audioPlayer.SkipForward();
+                _audioPlayer.Play();
+
+                PlayPauseToggleButton.IsChecked = true;
             }
-
-            if (_player != null)
-            {
-                _player.Dispose();
-            }
-
-            if (_stream != null)
-            {
-                _stream.Dispose();
-            }
-
-            _currentItem = _currentItem.Next;
-
-            Load();
-
-            _player.Play();
-            PlayPauseToggleButton.IsChecked = true;
-        }
-
-        private void PlaySamples(Composer composer)
-        {
-            _currentItem = new LinkedList<object>(composer.Samples).First;
-
-            if (_currentItem == null)
-            {
-                return;
-            }
-
-            Load();
-
-            _timer = new DispatcherTimer();
-            _timer.Interval = new TimeSpan(1);
-            _timer.Tick += _timer_Tick;
-            _timer.Start();
-
-            _player.Play();
-            PlayPauseToggleButton.IsChecked = true;
         }
 
         private void PreviousTrack_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            if (_currentItem != null)
+            if (_audioPlayer != null)
             {
-                e.CanExecute = _currentItem.Previous != null;
+                e.CanExecute = _audioPlayer.CanSkipBack();
             }
         }
 
         private void PreviousTrack_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            if (_currentItem.Previous == null)
+            if (_audioPlayer != null)
             {
-                return;
+                _audioPlayer.SkipBack();
+                _audioPlayer.Play();
+
+                PlayPauseToggleButton.IsChecked = true;
             }
-
-            if (_player != null)
-            {
-                _player.Dispose();
-            }
-
-            if (_stream != null)
-            {
-                _stream.Dispose();
-            }
-
-            _currentItem = _currentItem.Previous;
-
-            Load();
-
-            _player.Play();
-            PlayPauseToggleButton.IsChecked = true;
         }
 
         private void ProgressSlider_DragCompleted(object sender, DragCompletedEventArgs e)
         {
-            _isDraggingProgressSlider = false;
-            _stream.CurrentTime = new TimeSpan((long)ProgressSlider.Value);
+            _audioPlayer.CurrentTime = new TimeSpan((long)ProgressSlider.Value);
+            _audioPlayer.Play();
         }
 
-        private void ProgressSlider_DragStarted(object sender, DragStartedEventArgs e)
+        private void ProgressSlider_DragStarted(object sender, RoutedEventArgs e)
         {
-            _isDraggingProgressSlider = true;
+            _audioPlayer.Stop();
         }
 
         private void ProgressSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -425,38 +321,31 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
         private void TogglePlayPause_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            e.CanExecute = _player != null;
+            e.CanExecute = _audioPlayer != null;
         }
 
         private void TogglePlayPause_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            if (_player.PlaybackState == PlaybackState.Playing)
+            if (_audioPlayer.PlaybackState == PlaybackState.Playing)
             {
-                _player.Pause();
+                _audioPlayer.Pause();
                 PlayPauseToggleButton.IsChecked = false;
 
                 return;
             }
-            else if (_player.PlaybackState == PlaybackState.Stopped)
-            {
-                _timer = new DispatcherTimer();
-                _timer.Interval = new TimeSpan(1);
-                _timer.Tick += _timer_Tick;
-                _timer.Start();
-            }
 
-            _player.Play();
+            _audioPlayer.Play();
             PlayPauseToggleButton.IsChecked = true;
         }
 
         private void VolumeSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            if (_player == null)
+            if (_audioPlayer == null)
             {
                 return;
             }
 
-            _player.Volume = (float)e.NewValue;
+            _audioPlayer.Volume = (float)e.NewValue;
         }
     }
 }

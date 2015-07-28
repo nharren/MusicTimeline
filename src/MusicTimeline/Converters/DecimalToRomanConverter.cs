@@ -45,7 +45,7 @@ namespace NathanHarrenstein.MusicTimeline.Converters
             return RomanToDecimal((string)value);
         }
 
-        public static  string DecimalToRoman(int number)
+        public static string DecimalToRoman(int number)
         {
             var roman = new StringBuilder();
 

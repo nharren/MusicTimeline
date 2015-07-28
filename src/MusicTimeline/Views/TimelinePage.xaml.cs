@@ -1,10 +1,12 @@
 ﻿using NathanHarrenstein.MusicDB;
 using NathanHarrenstein.MusicTimeline.Builders;
+using NathanHarrenstein.MusicTimeline.Converters;
 using NathanHarrenstein.MusicTimeline.Input;
 using NathanHarrenstein.MusicTimeline.ViewModels;
 using NathanHarrenstein.Timeline;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.EDTF;
 using System.IO;
 using System.Linq;
@@ -27,7 +29,11 @@ namespace NathanHarrenstein.MusicTimeline.Views
         public TimelinePage()
         {
             InitializeComponent();
-            Initialize();
+
+            if (!DesignerProperties.GetIsInDesignMode(this))
+            {
+                Initialize();
+            }         
         }
 
         ~TimelinePage()
@@ -116,22 +122,24 @@ namespace NathanHarrenstein.MusicTimeline.Views
             timeline.Resolution = TimeResolution.Decade;
             timeline.EventHeight = 60;
             timeline.Events = ComposerEventProvider.GetComposerEvents(_dataProvider, (IList<ComposerEraViewModel>)timeline.Eras, timeline);
-            timeline.Loaded += (o, e) =>
+            timeline.Loaded += Timeline_Loaded;
+        }
+
+        private void Timeline_Loaded(object sender, RoutedEventArgs e)
+        {
+            var horizontalOffset = Application.Current.Properties["HorizontalOffset"] as double?;
+
+            if (horizontalOffset != null)
             {
-                var horizontalOffset = Application.Current.Properties["HorizontalOffset"] as double?;
+                timeline.HorizontalOffset = horizontalOffset.Value;
+            }
 
-                if (horizontalOffset != null)
-                {
-                    timeline.HorizontalOffset = horizontalOffset.Value;
-                }
+            var verticalOffset = Application.Current.Properties["VerticalOffset"] as double?;
 
-                var verticalOffset = Application.Current.Properties["VerticalOffset"] as double?;
-
-                if (verticalOffset != null)
-                {
-                    timeline.VerticalOffset = verticalOffset.Value;
-                }
-            };
+            if (verticalOffset != null)
+            {
+                timeline.VerticalOffset = verticalOffset.Value;
+            }
         }
 
         private ICommand GetCloseCommand()
@@ -200,10 +208,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
         {
             return new DelegateCommand(o =>
             {
-                foreach (var composer in _dataProvider.Composers)
-                {
-                    ComposerEventProvider.CreateThumbnail(composer);
-                }
+                ComposerToThumbnailConverter.ClearThumbnailCache();
 
                 Application.Current.Properties["HorizontalOffset"] = timeline.HorizontalOffset;
                 Application.Current.Properties["VerticalOffset"] = timeline.VerticalOffset;

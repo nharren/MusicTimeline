@@ -1,22 +1,23 @@
 ﻿<Page x:Class="NathanHarrenstein.MusicTimeline.Views.TimelinePage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:cv="clr-namespace:NathanHarrenstein.MusicTimeline.Converters"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:db="clr-namespace:NathanHarrenstein.MusicDB;assembly=MusicDB"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:t="clr-namespace:NathanHarrenstein.Timeline;assembly=Timeline"
       xmlns:vm="clr-namespace:NathanHarrenstein.MusicTimeline.ViewModels"
-      xmlns:db="clr-namespace:NathanHarrenstein.MusicDB;assembly=MusicDB"
-      xmlns:cv="clr-namespace:NathanHarrenstein.MusicTimeline.Converters"
+      Name="page"
       Title="TimelinePage"
       d:DesignHeight="300"
       d:DesignWidth="300"
-      mc:Ignorable="d"
-      Name="page">
+      mc:Ignorable="d">
     <Page.Resources>
         <cv:NationalityToImageConverter x:Key="NationalityToImageConverter" />
+        <cv:ComposerToThumbnailConverter x:Key="ComposerToThumbnailConverter" />
     </Page.Resources>
     <Page.InputBindings>
-        <KeyBinding Command="{Binding FullScreenCommand, ElementName=page}" Key="F11" />
+        <KeyBinding Key="F11" Command="{Binding FullScreenCommand, ElementName=page}" />
     </Page.InputBindings>
     <DockPanel Background="{StaticResource BackgroundBrush}">
         <Menu DockPanel.Dock="Top">
@@ -24,15 +25,36 @@
                 <MenuItem Command="{Binding ManageDataCommand, ElementName=page}" Header="Manage Data" />
                 <Separator />
                 <MenuItem Command="{Binding CloseCommand, ElementName=page}" Header="Close" />
-            </MenuItem>           
+            </MenuItem>
             <MenuItem Header="Go">
-                <MenuItem Command="{Binding GoToCommand, ElementName=page}" CommandParameter="Medieval" Header="Medieval" />
-                <MenuItem Command="{Binding GoToCommand, ElementName=page}" CommandParameter="Renaissance" Header="Renaissance" />
-                <MenuItem Command="{Binding GoToCommand, ElementName=page}" CommandParameter="Baroque" Header="Baroque" />
-                <MenuItem Command="{Binding GoToCommand, ElementName=page}" CommandParameter="Classical" Header="Classical" />
-                <MenuItem Command="{Binding GoToCommand, ElementName=page}" CommandParameter="Romantic" Header="Romantic" />
-                <MenuItem Command="{Binding GoToCommand, ElementName=page}" CommandParameter="20th Century" Header="20th Century" />
-                <MenuItem Command="{Binding GoToCommand, ElementName=page}" CommandParameter="21st Century" Header="21st Century" />
+                <MenuItem Command="{Binding GoToCommand,
+                                            ElementName=page}"
+                          CommandParameter="Medieval"
+                          Header="Medieval" />
+                <MenuItem Command="{Binding GoToCommand,
+                                            ElementName=page}"
+                          CommandParameter="Renaissance"
+                          Header="Renaissance" />
+                <MenuItem Command="{Binding GoToCommand,
+                                            ElementName=page}"
+                          CommandParameter="Baroque"
+                          Header="Baroque" />
+                <MenuItem Command="{Binding GoToCommand,
+                                            ElementName=page}"
+                          CommandParameter="Classical"
+                          Header="Classical" />
+                <MenuItem Command="{Binding GoToCommand,
+                                            ElementName=page}"
+                          CommandParameter="Romantic"
+                          Header="Romantic" />
+                <MenuItem Command="{Binding GoToCommand,
+                                            ElementName=page}"
+                          CommandParameter="20th Century"
+                          Header="20th Century" />
+                <MenuItem Command="{Binding GoToCommand,
+                                            ElementName=page}"
+                          CommandParameter="21st Century"
+                          Header="21st Century" />
             </MenuItem>
             <MenuItem Header="View">
                 <MenuItem Command="{Binding FullScreenCommand, ElementName=page}" Header="Full Screen" />
@@ -68,60 +90,64 @@
                             CornerRadius="5"
                             Cursor="Hand">
                         <Button Command="{Binding ClickCommand}"
-                                    Focusable="False"
-                                    FontFamily="Cambria"
-                                    Foreground="White">
-                                <Button.Template>
-                                    <ControlTemplate TargetType="{x:Type Button}">
-                                        <Border Background="Transparent" Padding="7,5,0,5">
-                                            <Grid>
-                                                <ContentPresenter />
-                                            </Grid>
-                                        </Border>
-                                    </ControlTemplate>
-                                </Button.Template>
-                                <Grid>
-                                    <Grid.ColumnDefinitions>
-                                        <ColumnDefinition Width="Auto" />
-                                        <ColumnDefinition />
-                                    </Grid.ColumnDefinitions>
-                                    <Image SnapsToDevicePixels="True"
-                                           Source="{Binding Image}"
-                                           UseLayoutRounding="True" />
-                                    <StackPanel Grid.Column="1" Margin="10,0,0,0">
-                                        <StackPanel Margin="0,1,0,2" Orientation="Horizontal">
-                                            <TextBlock FontSize="14"
-                                                       FontWeight="SemiBold"
-                                                       Text="{Binding Label}" />
-                                            <ItemsControl ItemsSource="{Binding Composer.Nationalities}">
-                                                <ItemsControl.ItemsPanel>
-                                                    <ItemsPanelTemplate>
-                                                        <StackPanel Orientation="Horizontal" />
-                                                    </ItemsPanelTemplate>
-                                                </ItemsControl.ItemsPanel>
-                                                <ItemsControl.ItemTemplate>
-                                                    <DataTemplate DataType="{x:Type db:Nationality}">
-                                                        <Image Width="16"
-                                                               Height="16"
-                                                               Margin="5,0,0,0"
-                                                               SnapsToDevicePixels="True"
-                                                               Source="{Binding Name, Converter={StaticResource NationalityToImageConverter}, IsAsync=True}"
-                                                               UseLayoutRounding="True" />
-                                                    </DataTemplate>
-                                                </ItemsControl.ItemTemplate>
-                                            </ItemsControl>
-                                        </StackPanel>
-                                        <StackPanel Orientation="Horizontal">
-                                            <TextBlock FontSize="12" Text="Born: " />
-                                            <TextBlock FontSize="12" Text="{Binding Born}" />
-                                        </StackPanel>
-                                        <StackPanel Orientation="Horizontal">
-                                            <TextBlock FontSize="12" Text="Died: " />
-                                            <TextBlock FontSize="12" Text="{Binding Died}" />
-                                        </StackPanel>
+                                Focusable="False"
+                                FontFamily="Cambria"
+                                Foreground="White">
+                            <Button.Template>
+                                <ControlTemplate TargetType="{x:Type Button}">
+                                    <Border Background="Transparent" Padding="7,5,0,5">
+                                        <Grid>
+                                            <ContentPresenter />
+                                        </Grid>
+                                    </Border>
+                                </ControlTemplate>
+                            </Button.Template>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition />
+                                </Grid.ColumnDefinitions>
+                                <Image SnapsToDevicePixels="True"
+                                       Source="{Binding Composer,
+                                                        Converter={StaticResource ComposerToThumbnailConverter},
+                                                        IsAsync=True}"
+                                       UseLayoutRounding="True" />
+                                <StackPanel Grid.Column="1" Margin="10,0,0,0">
+                                    <StackPanel Margin="0,1,0,2" Orientation="Horizontal">
+                                        <TextBlock FontSize="14"
+                                                   FontWeight="SemiBold"
+                                                   Text="{Binding Label}" />
+                                        <ItemsControl ItemsSource="{Binding Composer.Nationalities}">
+                                            <ItemsControl.ItemsPanel>
+                                                <ItemsPanelTemplate>
+                                                    <StackPanel Orientation="Horizontal" />
+                                                </ItemsPanelTemplate>
+                                            </ItemsControl.ItemsPanel>
+                                            <ItemsControl.ItemTemplate>
+                                                <DataTemplate DataType="{x:Type db:Nationality}">
+                                                    <Image Width="16"
+                                                           Height="16"
+                                                           Margin="5,0,0,0"
+                                                           SnapsToDevicePixels="True"
+                                                           Source="{Binding Name,
+                                                                            Converter={StaticResource NationalityToImageConverter},
+                                                                            IsAsync=True}"
+                                                           UseLayoutRounding="True" />
+                                                </DataTemplate>
+                                            </ItemsControl.ItemTemplate>
+                                        </ItemsControl>
                                     </StackPanel>
-                                </Grid>
-                            </Button>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock FontSize="12" Text="Born: " />
+                                        <TextBlock FontSize="12" Text="{Binding Born}" />
+                                    </StackPanel>
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock FontSize="12" Text="Died: " />
+                                        <TextBlock FontSize="12" Text="{Binding Died}" />
+                                    </StackPanel>
+                                </StackPanel>
+                            </Grid>
+                        </Button>
                     </Border>
                 </DataTemplate>
             </t:Timeline.EventTemplates>

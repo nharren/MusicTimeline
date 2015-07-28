@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>NathanHarrenstein.MusicTimeline</RootNamespace>
     <AssemblyName>MusicTimeline</AssemblyName>
-    <TargetFrameworkVersion>v4.5.1</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
@@ -88,6 +88,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AudioPlayer.cs" />
     <Compile Include="Builders\AlbumBuilder.cs" />
     <Compile Include="Builders\CatalogNumberBuilder.cs" />
     <Compile Include="Builders\ComposerBuilder.cs" />
@@ -106,6 +107,7 @@
     <Compile Include="Controls\TreeView.cs" />
     <Compile Include="Controls\TreeViewItem.cs" />
     <Compile Include="Converters\BytesToBitmapConverter.cs" />
+    <Compile Include="Converters\ComposerToThumbnailConverter.cs" />
     <Compile Include="Converters\NationalityToImageConverter.cs" />
     <Compile Include="Converters\TimeSpanToSecondsConverter.cs" />
     <Compile Include="Converters\UrlToCommandConverter.cs" />
@@ -115,9 +117,12 @@
     <Compile Include="Input\DelegateCommand.cs" />
     <Compile Include="Comparers\NaturalComparer.cs" />
     <Compile Include="Logger.cs" />
+    <Compile Include="PlaybackStateChangedEventArgs.cs" />
     <Compile Include="Providers\ComposerEraProvider.cs" />
     <Compile Include="Providers\ComposerEventProvider.cs" />
     <Compile Include="Builders\ComposerImageBuilder.cs" />
+    <Compile Include="TimeChangedEventArgs.cs" />
+    <Compile Include="TrackChangedEventArgs.cs" />
     <Compile Include="Utilities\BindingUtility.cs" />
     <Compile Include="Converters\DecimalToRomanConverter.cs" />
     <Compile Include="Utilities\BiographyUtility.cs" />
@@ -197,24 +202,6 @@
     </None>
     <AppDesigner Include="Properties\" />
     <Resource Include="Resources\Fonts\seguisym.ttf" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\HtmlToXamlConverter\HtmlToXamlConverter.csproj">
-      <Project>{e1f3f7a0-5fe8-447d-b2ee-065b770b0712}</Project>
-      <Name>HtmlToXamlConverter</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\LibraryDb\LibraryDB.csproj">
-      <Project>{0ba043e6-3d96-4d32-8a2e-c54de859d59f}</Project>
-      <Name>LibraryDB</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\MusicDb\MusicDB.csproj">
-      <Project>{1f805a11-8f8d-4f83-b44a-cec052e33778}</Project>
-      <Name>MusicDB</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\Timeline\Timeline.csproj">
-      <Project>{29f6b562-eed2-4ec5-9316-a6994a96e82d}</Project>
-      <Name>Timeline</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\Favicons\Default.ico">
@@ -1671,7 +1658,24 @@
   <ItemGroup>
     <Resource Include="Resources\AppIcon.ico" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\HtmlToXamlConverter\HtmlToXamlConverter.csproj">
+      <Project>{e1f3f7a0-5fe8-447d-b2ee-065b770b0712}</Project>
+      <Name>HtmlToXamlConverter</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LibraryDb\LibraryDB.csproj">
+      <Project>{0ba043e6-3d96-4d32-8a2e-c54de859d59f}</Project>
+      <Name>LibraryDB</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\MusicDb\MusicDB.csproj">
+      <Project>{1f805a11-8f8d-4f83-b44a-cec052e33778}</Project>
+      <Name>MusicDB</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Timeline\Timeline.csproj">
+      <Project>{29f6b562-eed2-4ec5-9316-a6994a96e82d}</Project>
+      <Name>Timeline</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

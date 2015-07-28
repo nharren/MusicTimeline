@@ -2,7 +2,6 @@
 using NathanHarrenstein.MusicDB;
 using NathanHarrenstein.MusicTimeline.Builders;
 using NathanHarrenstein.MusicTimeline.Extensions;
-using NathanHarrenstein.MusicTimeline.Builders;
 using NathanHarrenstein.MusicTimeline.Utilities;
 using System;
 using System.Collections.Generic;
@@ -10,10 +9,8 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Data.Entity;
 using System.Data.Entity.Core;
-using System.Data.Entity.Core.Objects;
 using System.IO;
 using System.Linq;
-using System.Net;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -460,8 +457,8 @@ namespace NathanHarrenstein.MusicTimeline.Views
                 else
                 {
                     var location = LocationBuilder.Build(ComposerBirthLocationAutoCompleteBox.Text, _dataProvider);
-                   _dataProvider.Locations.Add(location);
-                   composer.BirthLocation = location;
+                    _dataProvider.Locations.Add(location);
+                    composer.BirthLocation = location;
                 }
             }
             else                                                                                                                                                                                                           // New location does exist.
@@ -474,8 +471,6 @@ namespace NathanHarrenstein.MusicTimeline.Views
                 composer.BirthLocation = birthLocationQuery;
             }
         }
-
-        
 
         private void ComposerDeathLocationAutoCompleteBox_LostFocus(object sender, RoutedEventArgs e)
         {
