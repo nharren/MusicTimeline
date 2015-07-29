@@ -3,6 +3,10 @@ using NathanHarrenstein.MusicTimeline.ViewModels;
 using System.Collections.Generic;
 using System.EDTF;
 using System.Windows.Media;
+using System;
+using System.Data.Entity;
+using System.Linq;
+using System.Windows;
 
 namespace NathanHarrenstein.MusicTimeline.Builders
 {
@@ -10,9 +14,10 @@ namespace NathanHarrenstein.MusicTimeline.Builders
     {
         public static List<ComposerEraViewModel> GetEras(DataProvider dataProvider)
         {
-            var eras = new List<ComposerEraViewModel>();
+            var eras = dataProvider.Eras.ToList();
+            var composerEraViewModels = new List<ComposerEraViewModel>();
 
-            foreach (var era in dataProvider.Eras)
+            foreach (var era in eras)
             {
                 var background = (SolidColorBrush)null;
 
@@ -47,10 +52,42 @@ namespace NathanHarrenstein.MusicTimeline.Builders
 
                 var musicEra = new ComposerEraViewModel(era.Name, ExtendedDateTimeInterval.Parse(era.Dates), background, Brushes.White);
 
-                eras.Add(musicEra);
+                composerEraViewModels.Add(musicEra);
             }
 
-            return eras;
+            Process(composerEraViewModels);
+
+            return composerEraViewModels;
+        }
+
+        private static void Process(IList<ComposerEraViewModel> composerEraViewModels)
+        {
+            var count = composerEraViewModels.Count;
+
+            for (int i = 0; i < count - 1; i++)
+            {
+                var era1StartDate = composerEraViewModels[i].Dates.Earliest();
+                var era1EndDate = composerEraViewModels[i].Dates.Latest();
+                
+                var era2StartDate = composerEraViewModels[i + 1].Dates.Earliest();
+                var era2EndDate = composerEraViewModels[i + 1].Dates.Latest();
+
+                if (era2StartDate < era1EndDate)
+                {
+                    var transitionBrush = new LinearGradientBrush();
+                    transitionBrush.StartPoint = new Point(0, 0.5);
+                    transitionBrush.EndPoint = new Point(1, 0.5);
+                    transitionBrush.GradientStops.Add(new GradientStop(((SolidColorBrush)composerEraViewModels[i].Background).Color, 0));
+                    transitionBrush.GradientStops.Add(new GradientStop(((SolidColorBrush)composerEraViewModels[i + 1].Background).Color, 1));
+
+                    var transitionEra = new ComposerEraViewModel(null, new ExtendedDateTimeInterval(era2StartDate, era1EndDate), transitionBrush, Brushes.White);
+
+                    composerEraViewModels[i].Dates = new ExtendedDateTimeInterval(era1StartDate, era2StartDate);
+                    composerEraViewModels[i + 1].Dates = new ExtendedDateTimeInterval(era1EndDate, era2EndDate);
+
+                    composerEraViewModels.Add(transitionEra);
+                }
+            }
         }
     }
 }

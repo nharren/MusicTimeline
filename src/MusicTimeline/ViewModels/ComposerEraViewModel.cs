@@ -6,12 +6,12 @@ namespace NathanHarrenstein.MusicTimeline.ViewModels
 {
     public class ComposerEraViewModel : ITimelineEra
     {
-        private readonly SolidColorBrush _background;
-        private readonly ExtendedDateTimeInterval _dates;
+        private readonly Brush _background;
+        private ExtendedDateTimeInterval _dates;
         private readonly SolidColorBrush _foreground;
         private readonly string _label;
 
-        public ComposerEraViewModel(string label, ExtendedDateTimeInterval dates, SolidColorBrush background, SolidColorBrush foreground)
+        public ComposerEraViewModel(string label, ExtendedDateTimeInterval dates, Brush background, SolidColorBrush foreground)
         {
             _dates = dates;
 
@@ -25,7 +25,7 @@ namespace NathanHarrenstein.MusicTimeline.ViewModels
             _label = label;
         }
 
-        public SolidColorBrush Background
+        public Brush Background
         {
             get
             {
@@ -38,6 +38,11 @@ namespace NathanHarrenstein.MusicTimeline.ViewModels
             get
             {
                 return _dates;
+            }
+
+            set
+            {
+                _dates = value;
             }
         }
 

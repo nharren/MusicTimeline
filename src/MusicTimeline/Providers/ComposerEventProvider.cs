@@ -46,7 +46,7 @@ namespace NathanHarrenstein.MusicTimeline.Builders
 
                     for (int i = 0; i < composerEraCount; i++)
                     {
-                        ((LinearGradientBrush)background).GradientStops.Add(new GradientStop(composerEras[i].Background.Color, i / (composerEraCount - 1)));
+                        ((LinearGradientBrush)background).GradientStops.Add(new GradientStop(((SolidColorBrush)composerEras[i].Background).Color, i / (composerEraCount - 1)));
                     }
                 }
                 else if (composerEraCount == 1)

@@ -857,7 +857,9 @@
                                           HorizontalScrollBarVisibility="Disabled"
                                           TextElement.Foreground="{StaticResource ForegroundBrush}"
                                           VerticalScrollBarVisibility="Disabled">
-                    <FlowDocument Name="BiographyFlowDocument" FontFamily="Cambria" TextAlignment="Left" />
+                    <FlowDocument Name="BiographyFlowDocument"
+                                  FontFamily="Cambria"
+                                  TextAlignment="Left" />
                 </FlowDocumentScrollViewer>
                 <Grid Grid.Column="2">
                     <Grid.RowDefinitions>

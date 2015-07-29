@@ -75,7 +75,7 @@
             </t:Timeline.Background>
             <t:Timeline.EraTemplates>
                 <DataTemplate DataType="{x:Type vm:ComposerEraViewModel}">
-                    <Grid Background="{Binding Background}">
+                    <Grid Background="{Binding Background}" SnapsToDevicePixels="True">
                         <TextBlock Margin="15,0,0,0"
                                    VerticalAlignment="Center"
                                    Foreground="{Binding Foreground}"
