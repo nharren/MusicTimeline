@@ -1,4 +1,5 @@
-﻿using Luminescence.Xiph;
+﻿using HTMLConverter;
+using Luminescence.Xiph;
 using NathanHarrenstein.MusicDB;
 using NathanHarrenstein.MusicTimeline.Builders;
 using NathanHarrenstein.MusicTimeline.Extensions;
@@ -604,6 +605,12 @@ namespace NathanHarrenstein.MusicTimeline.Views
                     var composerLink = ComposerLinkBuilder.Build(url, _selectedComposers[0], _dataProvider);
                     _selectedComposers[0].ComposerLinks.Add(composerLink);
                     ComposerLinkListBox.SelectedItem = composerLink;
+
+                    if (url.Contains("wikipedia"))
+                    {
+                        _selectedComposers[0].Biography =  BiographyUtility.CleanXaml(HtmlToXamlConverter.ConvertHtmlToXaml(WikiUtility.GetHTML(url), false));
+                        ComposerBiographyTextBox.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
+                    }
                 }
                 catch
                 {

@@ -234,10 +234,14 @@ namespace NathanHarrenstein.MusicTimeline
             {
                 if (disposing)
                 {
-                    // TODO: dispose managed state (managed objects).
+                    // Dispose any managed objects.
                 }
 
-                _waveOutEvent.Dispose();
+                if (_waveOutEvent != null)
+                {
+                    _waveOutEvent.Dispose();
+                }
+               
                 _currentPlaylistItem = null;
 
                 foreach (var playlistItem in _playlist)

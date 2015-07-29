@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.EDTF;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -39,7 +40,10 @@ namespace NathanHarrenstein.MusicTimeline.Views
             _audioPlayer.PlaybackStateChanged += AudioPlayer_PlaybackStateChanged;
 
             var composerName = Application.Current.Properties["SelectedComposer"] as string;
-            var composer = _dataProvider.Composers.FirstOrDefault(c => c.Name == composerName);
+
+            var composer = _dataProvider.Composers
+                .AsNoTracking()
+                .FirstOrDefault(c => c.Name == composerName);
 
             if (composer != null)
             {
@@ -49,14 +53,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
         private void AudioPlayer_PlaybackStateChanged(object sender, PlaybackStateChangedEventArgs e)
         {
-            if (e.NewState == PlaybackState.Playing)
-            {
-                PlayPauseToggleButton.IsChecked = true;
-            }
-            else
-            {
-                PlayPauseToggleButton.IsChecked = false;
-            }
+            PlayPauseToggleButton.IsChecked = e.NewState == PlaybackState.Playing ? true : false;
         }
 
         ~ComposerPage()
@@ -138,51 +135,53 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
         private void LoadComposer(Composer composer)
         {
-            var section = (Section)XamlReader.Parse(composer.Biography);
-
-            var defaultFontSize = TextElement.GetFontSize(BiographyFlowDocumentScrollViewer);
-            var headers = section.Blocks.Where(b => b.Tag != null);
-
-            foreach (var header in headers)
+            if (composer.Biography != null)
             {
-                header.FontWeight = FontWeights.Bold;
+                var parserContext = new ParserContext();
+                parserContext.XmlnsDictionary.Add("", "http://schemas.microsoft.com/winfx/2006/xaml/presentation");
+                parserContext.XmlSpace = "preserve";
 
-                switch ((string)header.Tag)
+                var section = (Section)XamlReader.Load(new MemoryStream(Encoding.UTF8.GetBytes(composer.Biography)), parserContext);
+
+                var defaultFontSize = TextElement.GetFontSize(this);
+                var headers = section.Blocks.Where(b => b.Tag != null);
+
+                foreach (var header in headers)
                 {
-                    case "h1":
-                        header.FontSize = defaultFontSize * 2;
-                        break;
+                    header.FontWeight = FontWeights.Bold;
 
-                    case "h2":
-                        header.FontSize = defaultFontSize * 1.5;
-                        break;
+                    switch ((string)header.Tag)
+                    {
+                        case "h1":
+                            header.FontSize = defaultFontSize * 2;
+                            break;
 
-                    case "h3":
-                        header.FontSize = defaultFontSize * 1.17;
-                        break;
+                        case "h2":
+                            header.FontSize = defaultFontSize * 1.5;
+                            break;
 
-                    case "h4":
-                        break;
+                        case "h3":
+                            header.FontSize = defaultFontSize * 1.17;
+                            break;
 
-                    case "h5":
-                        header.FontSize = defaultFontSize * 0.83;
-                        break;
+                        case "h4":
+                            break;
 
-                    case "h6":
-                        header.FontSize = defaultFontSize * 0.67;
-                        break;
+                        case "h5":
+                            header.FontSize = defaultFontSize * 0.83;
+                            break;
 
-                    default:
-                        break;
+                        case "h6":
+                            header.FontSize = defaultFontSize * 0.67;
+                            break;
+
+                        default:
+                            break;
+                    }
                 }
+
+                BiographyFlowDocument.Blocks.Add(section);
             }
-
-            var flowdocument = new FlowDocument();
-            flowdocument.FontFamily = new FontFamily("Cambria");
-            flowdocument.TextAlignment = TextAlignment.Left;
-            flowdocument.Blocks.Add(section);
-
-            BiographyFlowDocumentScrollViewer.Document = flowdocument;
 
             BornTextBlock.Text = GetBorn(composer);
             ComposerImagesListBox.ItemsSource = composer.ComposerImages;
@@ -252,7 +251,10 @@ namespace NathanHarrenstein.MusicTimeline.Views
                 _audioPlayer.AddToPlaylist(flacReader);
             }
 
-            _audioPlayer.Play();
+            if (_audioPlayer.Playlist.Count > 0)
+            {
+                _audioPlayer.Play();
+            }
         }
 
         private void MuteVolume_CanExecute(object sender, CanExecuteRoutedEventArgs e)

@@ -56,6 +56,7 @@
                                           Events="{TemplateBinding Events}"
                                           Resolution="{TemplateBinding Resolution}"
                                           Ruler="{TemplateBinding Ruler}"
+                                          PreloadDistance="500"
                                           TextBlock.FontFamily="Cambria"
                                           TextBlock.FontSize="14"
                                           TextBlock.Foreground="Black" />

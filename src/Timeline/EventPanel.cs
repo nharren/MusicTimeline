@@ -21,6 +21,7 @@ namespace NathanHarrenstein.Timeline
 
         private FrameworkElement[] _cache;
         private bool _hasViewChanged = true;
+        private double _preloadDistance;
         private List<int> _previouslyVisibleCacheIndexes = new List<int>();
         private List<int> _visibleCacheIndexes = new List<int>();
 
@@ -78,7 +79,7 @@ namespace NathanHarrenstein.Timeline
             }
         }
 
-        public List<DataTemplate> EventTemplates                                                            // We store the templates in this property as opposed to using a global DataTemplate so that the content is not automatically generated. The DataTemplates are applied only when needed, and the generated content is then stored in the cache.
+        public List<DataTemplate> EventTemplates // We store the templates in this property as opposed to using a global DataTemplate so that the content is not automatically generated. The DataTemplates are applied only when needed, and the generated content is then stored in the cache.
         {
             get
             {
@@ -100,6 +101,19 @@ namespace NathanHarrenstein.Timeline
             set
             {
                 SetValue(HorizontalOffsetProperty, value);
+            }
+        }
+
+        public double PreloadDistance
+        {
+            get
+            {
+                return _preloadDistance;
+            }
+
+            set
+            {
+                _preloadDistance = value;
             }
         }
 
@@ -252,11 +266,11 @@ namespace NathanHarrenstein.Timeline
                 _cache = new FrameworkElement[Events.Count];
             }
 
-            var viewportLeftTime = Dates.Earliest() + Ruler.ToTimeSpan(HorizontalOffset);
-            var viewportRightTime = viewportLeftTime + Ruler.ToTimeSpan(availableSize.Width);
+            var viewportLeftTime = Dates.Earliest() + Ruler.ToTimeSpan(Math.Max(0d, HorizontalOffset - _preloadDistance));
+            var viewportRightTime = viewportLeftTime + Ruler.ToTimeSpan(availableSize.Width + _preloadDistance * 2);
 
-            var lowestPossibleIndex = (int)(VerticalOffset / (EventHeight + EventSpacing));
-            var highestPossibleIndex = (int)((VerticalOffset + availableSize.Height) / (EventHeight + EventSpacing));
+            var lowestPossibleIndex = (int)(Math.Max(VerticalOffset - _preloadDistance,0) / (EventHeight + EventSpacing));
+            var highestPossibleIndex = Math.Min((int)((VerticalOffset + availableSize.Height + _preloadDistance) / (EventHeight + EventSpacing)), Events.Count - 1);
 
             for (int i = lowestPossibleIndex; i <= highestPossibleIndex; i++)
             {

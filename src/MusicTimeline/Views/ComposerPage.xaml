@@ -708,7 +708,8 @@
                                     <Image Name="selectedImage"
                                            DataContext="{TemplateBinding SelectedItem}"
                                            Source="{Binding Image,
-                                                            Converter={StaticResource BytesToBitmapConverter}, IsAsync=True}" />
+                                                            Converter={StaticResource BytesToBitmapConverter},
+                                                            IsAsync=True}" />
                                     <Border Grid.Row="1"
                                             MinWidth="{Binding ActualWidth,
                                                                ElementName=selectedImage}"
@@ -740,7 +741,8 @@
                                        MaxWidth="30"
                                        Cursor="Hand"
                                        Source="{Binding Image,
-                                                        Converter={StaticResource BytesToBitmapConverter}, IsAsync=True}" />
+                                                        Converter={StaticResource BytesToBitmapConverter},
+                                                        IsAsync=True}" />
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>
@@ -830,9 +832,11 @@
                                                            Cursor="Hand"
                                                            SnapsToDevicePixels="True"
                                                            Source="{Binding URL,
-                                                                            Converter={StaticResource UrlToIconConverter},IsAsync=True}"
+                                                                            Converter={StaticResource UrlToIconConverter},
+                                                                            IsAsync=True}"
                                                            ToolTip="{Binding URL,
-                                                                             Converter={StaticResource UrlToTitleConverter}, IsAsync=True}"
+                                                                             Converter={StaticResource UrlToTitleConverter},
+                                                                             IsAsync=True}"
                                                            UseLayoutRounding="True" />
                                                 </Grid>
                                             </ControlTemplate>
@@ -848,12 +852,13 @@
                         </ItemsControl>
                     </StackPanel>
                 </StackPanel>
-                <FlowDocumentScrollViewer Name="BiographyFlowDocumentScrollViewer"
-                                          Grid.Column="1"
+                <FlowDocumentScrollViewer Grid.Column="1"
                                           Margin="30,0"
                                           HorizontalScrollBarVisibility="Disabled"
                                           TextElement.Foreground="{StaticResource ForegroundBrush}"
-                                          VerticalScrollBarVisibility="Disabled" />
+                                          VerticalScrollBarVisibility="Disabled">
+                    <FlowDocument Name="BiographyFlowDocument" FontFamily="Cambria" TextAlignment="Left" />
+                </FlowDocumentScrollViewer>
                 <Grid Grid.Column="2">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />

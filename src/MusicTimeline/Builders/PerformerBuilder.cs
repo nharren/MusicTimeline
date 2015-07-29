@@ -19,9 +19,10 @@ namespace NathanHarrenstein.MusicTimeline.Builders
             int newID = 1;
 
             var usedIds = dataProvider.Performers
+                .AsEnumerable()
+                .Concat(dataProvider.Performers.Local)
                 .Select(entity => entity.ID)
-                .Concat(dataProvider.Performers.Local
-                    .Select(entity => entity.ID))
+                .Distinct()
                 .OrderBy(id => id);
 
             foreach (var usedID in usedIds)
