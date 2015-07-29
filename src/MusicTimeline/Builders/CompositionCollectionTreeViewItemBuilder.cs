@@ -4,9 +4,9 @@ using System.Windows;
 
 namespace NathanHarrenstein.MusicTimeline.Builders
 {
-    public static class CompositionCollectionTreeViewItemProvider
+    public static class CompositionCollectionTreeViewItemBuilder
     {
-        public static CompositionCollectionTreeViewItem GetCompositionCollectionTreeViewItem(CompositionCollection compositionCollection, TreeViewItemBase parent)
+        public static CompositionCollectionTreeViewItem Build(CompositionCollection compositionCollection, TreeViewItemBase parent)
         {
             var compositionCollectionTreeViewItem = new CompositionCollectionTreeViewItem();
 

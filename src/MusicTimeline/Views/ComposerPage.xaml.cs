@@ -195,9 +195,9 @@ namespace NathanHarrenstein.MusicTimeline.Views
             LinksItemControl.ItemsSource = composer.ComposerLinks;
             LinksItemControl.Visibility = LinksTextBlock.Visibility = composer.ComposerLinks.Count > 0 ? Visibility.Visible : Visibility.Collapsed;
             TreeView.Children = composer.CompositionCollections
-                .Select<CompositionCollection, Controls.TreeViewItem>(cc => CompositionCollectionTreeViewItemProvider.GetCompositionCollectionTreeViewItem(cc, null))
+                .Select<CompositionCollection, Controls.TreeViewItem>(cc => CompositionCollectionTreeViewItemBuilder.Build(cc, null))
                 .Concat(composer.Compositions
-                    .Select(c => CompositionTreeViewItemProvider.GetCompositionTreeViewItem(c, null)))
+                    .Select(c => CompositionTreeViewItemBuilder.Build(c, null)))
                 .OrderBy(tvi => tvi.Header);
             ComposerImagesListBox.SelectedIndex = 0;
 

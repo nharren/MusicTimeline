@@ -2,22 +2,18 @@
 using NathanHarrenstein.MusicTimeline.ViewModels;
 using System.Collections.Generic;
 using System.EDTF;
-using System.Windows.Media;
-using System;
-using System.Data.Entity;
-using System.Linq;
 using System.Windows;
+using System.Windows.Media;
 
 namespace NathanHarrenstein.MusicTimeline.Builders
 {
-    public static class ComposerEraProvider
+    public static class ComposerEraViewModelBuilder
     {
-        public static List<ComposerEraViewModel> GetEras(DataProvider dataProvider)
+        public static List<ComposerEraViewModel> Build(IList<Era> eraList)
         {
-            var eras = dataProvider.Eras.ToList();
             var composerEraViewModels = new List<ComposerEraViewModel>();
 
-            foreach (var era in eras)
+            foreach (var era in eraList)
             {
                 var background = (SolidColorBrush)null;
 
@@ -68,7 +64,7 @@ namespace NathanHarrenstein.MusicTimeline.Builders
             {
                 var era1StartDate = composerEraViewModels[i].Dates.Earliest();
                 var era1EndDate = composerEraViewModels[i].Dates.Latest();
-                
+
                 var era2StartDate = composerEraViewModels[i + 1].Dates.Earliest();
                 var era2EndDate = composerEraViewModels[i + 1].Dates.Latest();
 

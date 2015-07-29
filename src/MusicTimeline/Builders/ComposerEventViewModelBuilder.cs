@@ -3,26 +3,22 @@ using NathanHarrenstein.MusicTimeline.Input;
 using NathanHarrenstein.MusicTimeline.Utilities;
 using NathanHarrenstein.MusicTimeline.ViewModels;
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.EDTF;
-using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 
 namespace NathanHarrenstein.MusicTimeline.Builders
 {
-    public static class ComposerEventProvider
-    {       
-        public static IList GetComposerEvents(DataProvider dataProvider, IList<ComposerEraViewModel> musicEras, Timeline.Timeline timeline)
+    public static class ComposerEventViewModelBuilder
+    {
+        public static List<ComposerEventViewModel> Build(IEnumerable<Composer> composers, IEnumerable<ComposerEraViewModel> musicEras, Timeline.Timeline timeline)
         {
             var eventList = new List<ComposerEventViewModel>();
 
-            foreach (var composer in dataProvider.Composers)
+            foreach (var composer in composers)
             {
                 var background = (Brush)null;
                 var composerEras = new List<ComposerEraViewModel>();
@@ -112,7 +108,5 @@ namespace NathanHarrenstein.MusicTimeline.Builders
 
             return ExtendedDateTimeInterval.Parse(composer.Dates).End.ToString();
         }
-
-        
     }
 }

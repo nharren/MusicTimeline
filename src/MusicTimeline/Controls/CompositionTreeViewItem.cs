@@ -25,7 +25,7 @@ namespace NathanHarrenstein.MusicTimeline.Controls
         {
             Children = Composition.Movements
                 .OrderBy(m => m.Number)
-                .Select(m => MovementTreeViewItemProvider.GetMovementTreeViewItem(m, this));
+                .Select(m => MovementTreeViewItemBuilder.Build(m, this));
         }
 
         protected override void UnloadChildren()

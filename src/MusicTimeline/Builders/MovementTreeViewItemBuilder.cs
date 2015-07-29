@@ -6,9 +6,9 @@ using System.Windows;
 
 namespace NathanHarrenstein.MusicTimeline.Builders
 {
-    public static class MovementTreeViewItemProvider
+    public static class MovementTreeViewItemBuilder
     {
-        public static MovementTreeViewItem GetMovementTreeViewItem(Movement movement, TreeViewItemBase parent)
+        public static MovementTreeViewItem Build(Movement movement, TreeViewItemBase parent)
         {
             var movementTreeViewItem = new MovementTreeViewItem();
 

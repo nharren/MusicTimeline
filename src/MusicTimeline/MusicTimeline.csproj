@@ -118,8 +118,8 @@
     <Compile Include="Comparers\NaturalComparer.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="PlaybackStateChangedEventArgs.cs" />
-    <Compile Include="Providers\ComposerEraProvider.cs" />
-    <Compile Include="Providers\ComposerEventProvider.cs" />
+    <Compile Include="Builders\ComposerEraViewModelBuilder.cs" />
+    <Compile Include="Builders\ComposerEventViewModelBuilder.cs" />
     <Compile Include="Builders\ComposerImageBuilder.cs" />
     <Compile Include="TimeChangedEventArgs.cs" />
     <Compile Include="TrackChangedEventArgs.cs" />
@@ -145,9 +145,9 @@
     <Compile Include="Views\ComposerPage.xaml.cs">
       <DependentUpon>ComposerPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Providers\CompositionCollectionTreeViewItemProvider.cs" />
-    <Compile Include="Providers\CompositionTreeViewItemProvider.cs" />
-    <Compile Include="Providers\MovementTreeViewItemProvider.cs" />
+    <Compile Include="Builders\CompositionCollectionTreeViewItemBuilder.cs" />
+    <Compile Include="Builders\CompositionTreeViewItemBuilder.cs" />
+    <Compile Include="Builders\MovementTreeViewItemBuilder.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
