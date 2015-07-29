@@ -278,28 +278,30 @@ namespace NathanHarrenstein.Timeline
 
                 if (timelineEvent.Dates.Latest() >= viewportLeftTime && timelineEvent.Dates.Earliest() < viewportRightTime)
                 {
-                    FrameworkElement eventControl = null;
+                    FrameworkElement eventFrameworkElement = null;
 
                     if (_cache[i] == null)
                     {
                         var eventType = timelineEvent.GetType();
                         var template = EventTemplates.FirstOrDefault(et => (Type)et.DataType == eventType);
 
-                        if (template == null || (eventControl = template.LoadContent() as FrameworkElement) == null)
+                        if (template == null || (eventFrameworkElement = template.LoadContent() as FrameworkElement) == null)
                         {
-                            eventControl = new ContentControl { Content = timelineEvent.ToString() };
+                            var eventContentControl = new ContentControl();
+                            eventContentControl.Content = timelineEvent.ToString();
+                            eventFrameworkElement = eventContentControl;
                         }
 
-                        eventControl.DataContext = timelineEvent;
-                        _cache[i] = eventControl;
+                        eventFrameworkElement.DataContext = timelineEvent;
+                        _cache[i] = eventFrameworkElement;
                     }
                     else
                     {
-                        eventControl = _cache[i];
+                        eventFrameworkElement = _cache[i];
                     }
 
-                    Children.Add(eventControl);
-                    eventControl.Measure(availableSize);
+                    Children.Add(eventFrameworkElement);
+                    eventFrameworkElement.Measure(availableSize);
 
                     _visibleCacheIndexes.Add(i);
 

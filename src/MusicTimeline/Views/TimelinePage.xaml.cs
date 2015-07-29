@@ -118,7 +118,9 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
             timeline.Dates = new ExtendedDateTimeInterval(new ExtendedDateTime(1000, 1, 1), ExtendedDateTime.Now);
             timeline.Eras = ComposerEraProvider.GetEras(_dataProvider);
-            timeline.Ruler = new TimeRuler { TimeRulerUnit = TimeRulerUnit.Day, TimeUnitWidth = 0.04109589041 };
+            timeline.Ruler = new TimeRuler();
+            timeline.Ruler.TimeRulerUnit = TimeRulerUnit.Day;
+            timeline.Ruler.TimeUnitWidth = 0.04109589041;
             timeline.Resolution = TimeResolution.Decade;
             timeline.EventHeight = 60;
             timeline.Events = ComposerEventProvider.GetComposerEvents(_dataProvider, (IList<ComposerEraViewModel>)timeline.Eras, timeline);
