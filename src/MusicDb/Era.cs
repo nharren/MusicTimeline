@@ -6,7 +6,7 @@ namespace NathanHarrenstein.MusicDB
     using System.ComponentModel.DataAnnotations.Schema;
 
     [Table("Era")]
-    public partial class Era : ICloneable
+    public partial class Era
     {
         public Era()
         {
@@ -25,10 +25,5 @@ namespace NathanHarrenstein.MusicDB
         [Required]
         [StringLength(12)]
         public string Name { get; set; }
-
-        public object Clone()
-        {
-            return MemberwiseClone();
-        }
     }
 }
