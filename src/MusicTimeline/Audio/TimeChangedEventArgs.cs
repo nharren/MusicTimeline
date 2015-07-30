@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace NathanHarrenstein.MusicTimeline
+namespace NathanHarrenstein.MusicTimeline.Audio
 {
     public class TimeChangedEventArgs : EventArgs
     {

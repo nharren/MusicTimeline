@@ -1,4 +1,5 @@
 ﻿using NathanHarrenstein.MusicDB;
+using NathanHarrenstein.MusicTimeline.Audio;
 using NathanHarrenstein.MusicTimeline.Builders;
 using NathanHarrenstein.MusicTimeline.Controls;
 using NathanHarrenstein.MusicTimeline.Utilities;
@@ -16,7 +17,6 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Markup;
-using System.Windows.Media;
 using System.Windows.Navigation;
 
 namespace NathanHarrenstein.MusicTimeline.Views
@@ -27,6 +27,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
         private DataProvider _dataProvider;
         private bool _disposed;
         private Dictionary<ISampleProvider, Sample> _sampleDictionary;
+
         public ComposerPage()
         {
             InitializeComponent();
@@ -49,11 +50,6 @@ namespace NathanHarrenstein.MusicTimeline.Views
             {
                 LoadComposer(composer);
             }
-        }
-
-        private void AudioPlayer_PlaybackStateChanged(object sender, PlaybackStateChangedEventArgs e)
-        {
-            PlayPauseToggleButton.IsChecked = e.NewState == PlaybackState.Playing ? true : false;
         }
 
         ~ComposerPage()
@@ -105,6 +101,11 @@ namespace NathanHarrenstein.MusicTimeline.Views
         private void AudioPlayer_CurrentTimeChanged(object sender, TimeChangedEventArgs e)
         {
             ProgressSlider.Value = e.NewTime.Value.Ticks;
+        }
+
+        private void AudioPlayer_PlaybackStateChanged(object sender, PlaybackStateChangedEventArgs e)
+        {
+            PlayPauseToggleButton.IsChecked = e.NewState == PlaybackState.Playing ? true : false;
         }
 
         private void AudioPlayer_TotalTimeChanged(object sender, TimeChangedEventArgs e)
@@ -240,7 +241,6 @@ namespace NathanHarrenstein.MusicTimeline.Views
             //}
 
             //_dataProvider.SaveChanges();
-
 
             foreach (var sample in composer.Samples)
             {

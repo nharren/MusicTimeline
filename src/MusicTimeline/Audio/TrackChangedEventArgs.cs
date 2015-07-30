@@ -1,8 +1,7 @@
-﻿using NAudio.Flac;
-using NAudio.Wave;
+﻿using NAudio.Wave;
 using System;
 
-namespace NathanHarrenstein.MusicTimeline
+namespace NathanHarrenstein.MusicTimeline.Audio
 {
     public class TrackChangedEventArgs : EventArgs
     {

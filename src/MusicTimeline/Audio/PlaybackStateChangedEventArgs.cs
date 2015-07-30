@@ -1,7 +1,7 @@
 ﻿using NAudio.Wave;
 using System;
 
-namespace NathanHarrenstein.MusicTimeline
+namespace NathanHarrenstein.MusicTimeline.Audio
 {
     public class PlaybackStateChangedEventArgs : EventArgs
     {

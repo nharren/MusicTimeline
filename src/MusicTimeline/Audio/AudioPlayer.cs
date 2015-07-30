@@ -8,21 +8,21 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Threading;
 
-namespace NathanHarrenstein.MusicTimeline
+namespace NathanHarrenstein.MusicTimeline.Audio
 {
     public class AudioPlayer : IDisposable
     {
         private readonly LinkedList<FlacReader> _playlist;
+        private Thread _audioProcessingThread;
         private LinkedListNode<FlacReader> _currentPlaylistItem;
         private TimeSpan? _currentTime;
+        private bool _disposedValue = false;
+        private EventWaitHandle _initializationWaitHandle;
         private DispatcherTimer _playbackTimer;
-        private WaveOutEvent _waveOutEvent;
         private TimeSpan? _totalTime;
         private float _volume;
-        private bool _disposedValue = false;
-        private Thread _audioProcessingThread;
-        private EventWaitHandle _initializationWaitHandle;
         private VolumeSampleProvider _volumeSampleProvider;
+        private WaveOutEvent _waveOutEvent;
 
         public AudioPlayer()
         {
@@ -187,7 +187,6 @@ namespace NathanHarrenstein.MusicTimeline
             _waveOutEvent.Play();
 
             OnPlaybackStateChanged(new PlaybackStateChangedEventArgs(oldPlaybackState, PlaybackState.Playing));
-
         }
 
         public void SkipBack()
@@ -221,14 +220,14 @@ namespace NathanHarrenstein.MusicTimeline
 
             _playbackTimer?.Stop();
             _waveOutEvent.Stop();
-            
+
             _currentPlaylistItem.Value.Seek(0, SeekOrigin.Begin);
 
             OnPlaybackStateChanged(new PlaybackStateChangedEventArgs(oldState, PlaybackState.Stopped));
             OnCurrentTimeChanged(new TimeChangedEventArgs(_currentTime, _currentTime = _currentPlaylistItem.Value.CurrentTime));
         }
 
-        public void ToggleMute() 
+        public void ToggleMute()
         {
             if (_volumeSampleProvider == null)
             {
@@ -260,7 +259,7 @@ namespace NathanHarrenstein.MusicTimeline
                 {
                     _waveOutEvent.Dispose();
                 }
-               
+
                 _currentPlaylistItem = null;
 
                 foreach (var playlistItem in _playlist)
@@ -304,6 +303,21 @@ namespace NathanHarrenstein.MusicTimeline
             }
         }
 
+        private void InitializeAudioProccessor()
+        {
+            if (_waveOutEvent != null)
+            {
+                _waveOutEvent.Dispose();
+            }
+
+            _waveOutEvent = new WaveOutEvent();
+            _waveOutEvent.Init(_volumeSampleProvider);
+
+            _initializationWaitHandle.Set();
+
+            OnTotalTimeChanged(new TimeChangedEventArgs(_totalTime, _totalTime = _currentPlaylistItem.Value.TotalTime));
+        }
+
         private void Load(LinkedListNode<FlacReader> playlistItem)
         {
             if (_audioProcessingThread != null)
@@ -321,30 +335,6 @@ namespace NathanHarrenstein.MusicTimeline
             StartAudioProcessingThread();
 
             OnTrackChanged(new TrackChangedEventArgs(oldTrack, _currentPlaylistItem.Value));
-        }
-
-        private void StartAudioProcessingThread()
-        {
-            _audioProcessingThread = new Thread(new ThreadStart(InitializeAudioProccessor));
-            _audioProcessingThread.IsBackground = true;
-            _audioProcessingThread.Priority = ThreadPriority.Highest;
-            _audioProcessingThread.SetApartmentState(ApartmentState.MTA);
-            _audioProcessingThread.Start();
-        }
-
-        private void InitializeAudioProccessor()
-        {
-            if (_waveOutEvent != null)
-            {
-                _waveOutEvent.Dispose();
-            }
-
-            _waveOutEvent = new WaveOutEvent();
-            _waveOutEvent.Init(_volumeSampleProvider);
-
-            _initializationWaitHandle.Set();
-
-            OnTotalTimeChanged(new TimeChangedEventArgs(_totalTime, _totalTime = _currentPlaylistItem.Value.TotalTime));
         }
 
         private void PlaybackTimer_Tick(object sender, EventArgs e)
@@ -365,6 +355,15 @@ namespace NathanHarrenstein.MusicTimeline
             }
 
             OnCurrentTimeChanged(new TimeChangedEventArgs(_currentTime, _currentTime = _currentPlaylistItem.Value.CurrentTime));
+        }
+
+        private void StartAudioProcessingThread()
+        {
+            _audioProcessingThread = new Thread(new ThreadStart(InitializeAudioProccessor));
+            _audioProcessingThread.IsBackground = true;
+            _audioProcessingThread.Priority = ThreadPriority.Highest;
+            _audioProcessingThread.SetApartmentState(ApartmentState.MTA);
+            _audioProcessingThread.Start();
         }
     }
 }
