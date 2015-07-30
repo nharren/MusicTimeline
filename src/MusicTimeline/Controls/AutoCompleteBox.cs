@@ -1,13 +1,10 @@
-﻿using NathanHarrenstein.MusicTimeline.Utilities;
-using System;
+﻿using System;
 using System.Collections;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
-using System.Windows.Data;
 using System.Windows.Input;
-using System.Windows.Media;
 
 namespace NathanHarrenstein.MusicTimeline.Controls
 {
@@ -18,20 +15,14 @@ namespace NathanHarrenstein.MusicTimeline.Controls
         public static readonly RoutedEvent TextChangedEvent = TextBoxBase.TextChangedEvent.AddOwner(typeof(AutoCompleteBox));
         public static readonly DependencyProperty TextProperty = DependencyProperty.Register("Text", typeof(string), typeof(AutoCompleteBox));
         private Func<IEnumerable, IEnumerable> _filter;
+        private ListBox _listBox;
+        private Popup _popup;
         private Func<object, string> _stringSelector;
-        private ListBox _suggestionListBox;
-        private Popup _suggestionPopup;
         private TextBox _textBox;
 
-        public AutoCompleteBox()
+        static AutoCompleteBox()
         {
-            FocusVisualStyle = null;
-
-            InitializeTextBox();
-            InitializeSuggestionListBox();
-            InitializeSuggestionPopup();
-
-            SetBindings();
+            DefaultStyleKeyProperty.OverrideMetadata(typeof(AutoCompleteBox), new FrameworkPropertyMetadata(typeof(AutoCompleteBox)));
         }
 
         public event TextChangedEventHandler TextChanged
@@ -108,56 +99,20 @@ namespace NathanHarrenstein.MusicTimeline.Controls
             }
         }
 
-        protected override int VisualChildrenCount
+        public override void OnApplyTemplate()
         {
-            get
-            {
-                return 1;
-            }
-        }
+            _textBox = (TextBox)Template.FindName("PART_TextBox", this);
+            _textBox.PreviewKeyDown += TextBox_KeyDown;
+            _textBox.LostFocus += TextBox_LostFocus;
+            _textBox.TextChanged += TextBox_TextChanged;
 
-        protected override Size ArrangeOverride(Size arrangeBounds)
-        {
-            _textBox.Arrange(new Rect(arrangeBounds));
+            _popup = (Popup)Template.FindName("PART_Popup", this);
 
-            return base.ArrangeOverride(arrangeBounds);
-        }
+            _listBox = (ListBox)Template.FindName("PART_ListBox", this);
+            _listBox.PreviewKeyDown += ListBox_PreviewKeyDown;
+            _listBox.LostFocus += ListBox_LostFocus;
 
-        protected override Geometry GetLayoutClip(Size layoutSlotSize)
-        {
-            return null;
-        }
-
-        protected override Visual GetVisualChild(int index)
-        {
-            return _textBox;
-        }
-
-        protected override Size MeasureOverride(Size constraint)
-        {
-            _textBox.Measure(constraint);
-            _suggestionListBox.Measure(new Size(constraint.Height, _textBox.DesiredSize.Width));
-
-            return base.MeasureOverride(constraint);
-        }
-
-        protected override void OnInitialized(EventArgs e)
-        {
-            _textBox.BorderThickness = BorderThickness;
-            _textBox.BorderBrush = BorderBrush;
-            _textBox.FontFamily = FontFamily;
-            _textBox.FontSize = FontSize;
-
-            _suggestionListBox.BorderThickness = new Thickness();
-            _suggestionListBox.FontFamily = FontFamily;
-            _suggestionListBox.FontSize = FontSize;
-
-            base.OnInitialized(e);
-        }
-
-        private void _textBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            UpdateSuggestions();
+            base.OnApplyTemplate();
         }
 
         private IEnumerable DefaultFilter(IEnumerable suggestions)
@@ -173,111 +128,75 @@ namespace NathanHarrenstein.MusicTimeline.Controls
             }
         }
 
-        private void InitializeSuggestionListBox()
+        private void ListBox_LostFocus(object sender, RoutedEventArgs e)
         {
-            _suggestionListBox = new ListBox();
-            _suggestionListBox.SelectionMode = SelectionMode.Single;
-            _suggestionListBox.Visibility = Visibility.Collapsed;
-            _suggestionListBox.IsHitTestVisible = false;
-            _suggestionListBox.PreviewKeyDown += listBox_PreviewKeyDown;
-            _suggestionListBox.FocusVisualStyle = null;
-            _suggestionListBox.LostFocus += (o, e) =>
+            if (FocusManager.GetFocusedElement(FocusManager.GetFocusScope(this)) == _textBox)
             {
-                if (FocusManager.GetFocusedElement(FocusManager.GetFocusScope(this)) == _textBox)
-                {
-                    e.Handled = true;
-                }
-            };
-
-            var style = new Style(typeof(ListBoxItem));
-            style.Setters.Add(new Setter(FocusVisualStyleProperty, null));
-            _suggestionListBox.ItemContainerStyle = style;
+                e.Handled = true;
+            }
         }
 
-        private void InitializeSuggestionPopup()
+        private void ListBox_PreviewKeyDown(object sender, KeyEventArgs e)
         {
-            _suggestionPopup = new Popup();
-            _suggestionPopup.AllowsTransparency = true;
-            _suggestionPopup.Child = _suggestionListBox;
-            _suggestionPopup.IsOpen = true;
-            _suggestionPopup.PlacementTarget = _textBox;
-            _suggestionPopup.Placement = PlacementMode.Bottom;
-        }
-
-        private void InitializeTextBox()
-        {
-            _textBox = new TextBox();
-            _textBox.PreviewKeyDown += textBox_KeyDown;
-            _textBox.TextChanged += _textBox_TextChanged;
-            _textBox.LostFocus += (o, e) =>
+            if (e.Key == Key.Up && _listBox.SelectedIndex == 0)
             {
-                if (FocusManager.GetFocusedElement(FocusManager.GetFocusScope(this)) == _suggestionListBox)
-                {
-                    e.Handled = true;
-                }
-            };
-
-            AddVisualChild(_textBox);
-        }
-
-        private void listBox_PreviewKeyDown(object sender, KeyEventArgs e)
-        {
-            if (e.Key == Key.Up && _suggestionListBox.SelectedIndex == 0)
-            {
-                _suggestionListBox.SelectedIndex = -1;
+                _listBox.SelectedIndex = -1;
 
                 Keyboard.Focus(_textBox);
             }
 
             if (e.Key == Key.Enter)
             {
-                _textBox.Text = StringSelector(_suggestionListBox.SelectedItem);
+                _textBox.Text = StringSelector(_listBox.SelectedItem);
 
-                _suggestionListBox.SelectedIndex = -1;
-                _suggestionListBox.Visibility = Visibility.Collapsed;
+                _listBox.SelectedIndex = -1;
+                _popup.IsOpen = false;
 
                 Keyboard.Focus(_textBox);
 
                 _textBox.CaretIndex = _textBox.Text.Length;
             }
+
+            if (e.Key == Key.Down && _listBox.SelectedIndex == _listBox.Items.Count - 1)
+            {
+                e.Handled = true;
+            }            
         }
 
-        private void SetBindings()
-        {
-            _suggestionListBox.SetBinding(ItemsControl.ItemTemplateProperty, BindingUtility.Create(this, "SuggestionTemplate"));
-            var binding = BindingUtility.Create(this, "Text");
-            binding.Mode = BindingMode.TwoWay;
-            binding.UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged;
-            _textBox.SetBinding(TextBox.TextProperty, binding);
-            _suggestionListBox.SetBinding(WidthProperty, BindingUtility.Create(_textBox, "ActualWidth"));
-
-            var backgroundBinding = BindingUtility.Create(this, "Background");
-            _suggestionListBox.SetBinding(BackgroundProperty, backgroundBinding);
-            _textBox.SetBinding(BackgroundProperty, backgroundBinding);
-
-            var foregroundBinding = BindingUtility.Create(this, "Foreground");
-            _suggestionListBox.SetBinding(ForegroundProperty, foregroundBinding);
-            _textBox.SetBinding(ForegroundProperty, foregroundBinding);
-            _textBox.SetBinding(TextBoxBase.CaretBrushProperty, foregroundBinding);
-        }
-
-        private void textBox_KeyDown(object sender, KeyEventArgs e)
+        private void TextBox_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Down)
             {
-                _suggestionListBox.Items.Refresh();         // Necessary for correct behavior when switching focus from TextBox to ListBox using the down arrow key.
+                _listBox.Items.Refresh();         // Necessary for correct behavior when switching focus from TextBox to ListBox using the down arrow key.
 
-                Keyboard.Focus(_suggestionListBox);
+                Keyboard.Focus(_listBox);
             }
             else if (e.Key == Key.Enter)
             {
-                _textBox.Text = StringSelector(_suggestionListBox.SelectedItem);
+                _textBox.Text = StringSelector(_listBox.SelectedItem);
 
                 Text = _textBox.Text;
 
-                _suggestionListBox.SelectedIndex = -1;
-                _suggestionListBox.Visibility = Visibility.Collapsed;
+                _listBox.SelectedIndex = -1;
+                _popup.IsOpen = false;
             }
+        }
+
+        private void TextBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if (FocusManager.GetFocusedElement(FocusManager.GetFocusScope(this)) == _listBox)
+            {
+                e.Handled = true;
+            }
+            else
+            {
+                _popup.IsOpen = false;
+            }
+        }
+
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            UpdateSuggestions();
         }
 
         private void UpdateSuggestions()
@@ -289,25 +208,25 @@ namespace NathanHarrenstein.MusicTimeline.Controls
 
             if (string.IsNullOrEmpty(_textBox.Text))
             {
-                _suggestionListBox.SelectedIndex = -1;
-                _suggestionListBox.Visibility = Visibility.Collapsed;
+                _listBox.SelectedIndex = -1;
+                _popup.IsOpen = false;
 
                 return;
             }
 
             var query = Filter == null ? DefaultFilter(Suggestions) : Filter(Suggestions);
 
-            _suggestionListBox.ItemsSource = query;
+            _listBox.ItemsSource = query;
 
             if (query == null || query.Cast<object>().Count() == 0)
             {
-                _suggestionListBox.SelectedIndex = -1;
-                _suggestionListBox.Visibility = Visibility.Collapsed;
+                _listBox.SelectedIndex = -1;
+                _popup.IsOpen = false;
 
                 return;
             }
 
-            _suggestionListBox.Visibility = Visibility.Visible;
+            _popup.IsOpen = true;
         }
     }
 }

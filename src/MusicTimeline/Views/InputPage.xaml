@@ -396,14 +396,77 @@
         <cv:UrlToCommandConverter x:Key="UrlToCommandConverter" />
         <cv:UrlToIconConverter x:Key="UrlToIconConverter" />
         <cv:UrlToTitleConverter x:Key="UrlToTitleConverter" />
+        <Style BasedOn="{StaticResource FieldStyle}" TargetType="{x:Type c:AutoCompleteBox}">
+            <Style.Setters>
+                <Setter Property="BorderBrush" Value="Black" />
+                <Setter Property="BorderThickness" Value="1" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="{x:Type c:AutoCompleteBox}">
+                            <Grid Name="templateRoot">
+                                <c:DoubleBorderDecorator Style="{StaticResource FieldBorderStyle}">
+                                    <TextBox x:Name="PART_TextBox"
+                                             Background="{TemplateBinding Background}"
+                                             BorderThickness="0"
+                                             CaretBrush="{TemplateBinding Foreground}"
+                                             FontFamily="{TemplateBinding FontFamily}"
+                                             FontSize="{TemplateBinding FontSize}"
+                                             Foreground="{TemplateBinding Foreground}"
+                                             Text="{Binding Text,
+                                                            Mode=TwoWay,
+                                                            RelativeSource={RelativeSource TemplatedParent},
+                                                            UpdateSourceTrigger=PropertyChanged}" />
+                                </c:DoubleBorderDecorator>
+                                <Popup x:Name="PART_Popup"
+                                       AllowsTransparency="True"
+                                       Placement="Bottom">
+                                    <t:SystemDropShadowChrome x:Name="shadow"
+                                              MinWidth="0"
+                                              Color="Transparent">
+                                        <Border Background="{TemplateBinding Background}"
+                                            BorderBrush="{TemplateBinding BorderBrush}"
+                                            BorderThickness="{TemplateBinding BorderThickness}">
+                                            <ListBox x:Name="PART_ListBox"
+                                                 Width="{TemplateBinding ActualWidth}"
+                                                 Background="{TemplateBinding Background}"
+                                                 BorderThickness="0"
+                                                 FocusVisualStyle="{x:Null}"
+                                                 FontFamily="{TemplateBinding FontFamily}"
+                                                 FontSize="{TemplateBinding FontSize}"
+                                                 Foreground="{TemplateBinding Foreground}"
+                                                 IsHitTestVisible="False"
+                                                 ItemTemplate="{TemplateBinding SuggestionTemplate}"
+                                                 SelectionMode="Single">
+                                                <ListBox.ItemContainerStyle>
+                                                    <Style TargetType="{x:Type ListBoxItem}">
+                                                        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+                                                    </Style>
+                                                </ListBox.ItemContainerStyle>
+                                            </ListBox>
+                                        </Border>
+                                    </t:SystemDropShadowChrome>
+                                </Popup>
+                            </Grid>
+                            <ControlTemplate.Triggers>
+                                <Trigger SourceName="PART_Popup" Property="HasDropShadow" Value="True">
+                                    <Setter TargetName="shadow" Property="Margin" Value="0,0,5,5" />
+                                    <Setter TargetName="shadow" Property="Color" Value="#71000000" />
+                                </Trigger>
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style.Setters>
+        </Style>
+
     </Page.Resources>
 
     <ScrollViewer HorizontalScrollBarVisibility="Auto">
         <ScrollViewer.Background>
             <ImageBrush ImageSource="{StaticResource BackgroundImage}"
-                            TileMode="Tile"
-                            Viewport="0, 0, 325, 168"
-                            ViewportUnits="Absolute" />
+                        TileMode="Tile"
+                        Viewport="0, 0, 325, 168"
+                        ViewportUnits="Absolute" />
         </ScrollViewer.Background>
         <Border Width="942"
                 HorizontalAlignment="Center"
@@ -597,7 +660,8 @@
                                            Grid.ColumnSpan="2"
                                            DataContext="{TemplateBinding SelectedItem}"
                                            Source="{Binding Image,
-                                                            Converter={StaticResource BytesToBitmapConverter}, IsAsync=True}">
+                                                            Converter={StaticResource BytesToBitmapConverter},
+                                                            IsAsync=True}">
                                         <Image.ContextMenu>
                                             <ContextMenu>
                                                 <MenuItem Command="{x:Static ApplicationCommands.Delete}" />
@@ -640,28 +704,22 @@
                                Grid.Column="4"
                                Style="{StaticResource FieldHeaderStyle}"
                                Text="Birth Location:" />
-                    <c:DoubleBorderDecorator Grid.Row="14"
-                                             Grid.Column="3"
-                                             Grid.ColumnSpan="2"
-                                             Style="{StaticResource FieldBorderStyle}">
-                        <c:AutoCompleteBox x:Name="ComposerBirthLocationAutoCompleteBox"
-                                           Style="{StaticResource FieldStyle}"
-                                           TabIndex="2"
-                                           LostFocus="ComposerBirthLocationAutoCompleteBox_LostFocus" />
-                    </c:DoubleBorderDecorator>
+                    <c:AutoCompleteBox x:Name="ComposerBirthLocationAutoCompleteBox"
+                                       Grid.Row="14"
+                                       Grid.Column="3"
+                                       Grid.ColumnSpan="2"
+                                       LostFocus="ComposerBirthLocationAutoCompleteBox_LostFocus"
+                                       TabIndex="2" />
                     <TextBlock Grid.Row="16"
                                Grid.Column="4"
                                Style="{StaticResource FieldHeaderStyle}"
                                Text="Death Location:" />
-                    <c:DoubleBorderDecorator Grid.Row="18"
-                                             Grid.Column="3"
-                                             Grid.ColumnSpan="2"
-                                             Style="{StaticResource FieldBorderStyle}">
-                        <c:AutoCompleteBox x:Name="ComposerDeathLocationAutoCompleteBox"
-                                           Style="{StaticResource FieldStyle}"
-                                           TabIndex="3"
-                                           LostFocus="ComposerDeathLocationAutoCompleteBox_LostFocus" />
-                    </c:DoubleBorderDecorator>
+                    <c:AutoCompleteBox x:Name="ComposerDeathLocationAutoCompleteBox"
+                                       Grid.Row="18"
+                                       Grid.Column="3"
+                                       Grid.ColumnSpan="2"
+                                       LostFocus="ComposerDeathLocationAutoCompleteBox_LostFocus"
+                                       TabIndex="3" />
                     <TextBlock Grid.Row="20"
                                Grid.Column="4"
                                Style="{StaticResource FieldHeaderStyle}"
@@ -757,8 +815,10 @@
                         </ListBox.CommandBindings>
                         <ListBox.ItemTemplate>
                             <DataTemplate DataType="{x:Type db:ComposerLink}">
-                                <Button Command="{Binding URL, Converter={StaticResource UrlToCommandConverter}}"
-                                        Content="{Binding URL, Converter={StaticResource UrlToTitleConverter}}"
+                                <Button Command="{Binding URL,
+                                                          Converter={StaticResource UrlToCommandConverter}}"
+                                        Content="{Binding URL,
+                                                          Converter={StaticResource UrlToTitleConverter}}"
                                         FontSize="14.667"
                                         Foreground="#FFC8CDD1">
                                     <Button.ContextMenu>
@@ -774,7 +834,7 @@
                                                     <ColumnDefinition Width="5" />
                                                     <ColumnDefinition />
                                                 </Grid.ColumnDefinitions>
-                                                <Image Source="{Binding URL, Converter={StaticResource UrlToIconConverter},IsAsync=True}" />
+                                                <Image Source="{Binding URL, Converter={StaticResource UrlToIconConverter}, IsAsync=True}" />
                                                 <ContentPresenter Grid.Column="2" />
                                             </Grid>
                                         </ControlTemplate>
@@ -1180,8 +1240,8 @@
                             <DataTemplate DataType="{x:Type db:Movement}">
                                 <StackPanel Orientation="Horizontal">
                                     <TextBlock FontSize="14.667"
-                                           Foreground="#FFC8CDD1"
-                                           Text="{Binding Number}">
+                                               Foreground="#FFC8CDD1"
+                                               Text="{Binding Number}">
                                         <TextBlock.ContextMenu>
                                             <ContextMenu>
                                                 <MenuItem Command="{x:Static ApplicationCommands.Delete}" />
@@ -1190,8 +1250,8 @@
                                     </TextBlock>
 
                                     <TextBlock FontSize="14.667"
-                                           Foreground="#FFC8CDD1"
-                                           Text=". ">
+                                               Foreground="#FFC8CDD1"
+                                               Text=". ">
                                         <TextBlock.ContextMenu>
                                             <ContextMenu>
                                                 <MenuItem Command="{x:Static ApplicationCommands.Delete}" />
@@ -1199,8 +1259,8 @@
                                         </TextBlock.ContextMenu>
                                     </TextBlock>
                                     <TextBlock FontSize="14.667"
-                                           Foreground="#FFC8CDD1"
-                                           Text="{Binding Name}">
+                                               Foreground="#FFC8CDD1"
+                                               Text="{Binding Name}">
                                         <TextBlock.ContextMenu>
                                             <ContextMenu>
                                                 <MenuItem Command="{x:Static ApplicationCommands.Delete}" />
@@ -1391,15 +1451,12 @@
                                Grid.Column="4"
                                Style="{StaticResource FieldHeaderStyle}"
                                Text="Album:" />
-                    <c:DoubleBorderDecorator Grid.Row="10"
-                                             Grid.Column="3"
-                                             Grid.ColumnSpan="5"
-                                             Style="{StaticResource FieldBorderStyle}">
-                        <c:AutoCompleteBox x:Name="RecordingAlbumAutoCompleteBox"
-                                           IsTabStop="False"
-                                           Style="{StaticResource FieldStyle}"
-                                           TextChanged="RecordingAlbumAutoCompleteBox_TextChanged" />
-                    </c:DoubleBorderDecorator>
+                    <c:AutoCompleteBox x:Name="RecordingAlbumAutoCompleteBox"
+                                       Grid.Row="10"
+                                       Grid.Column="3"
+                                       Grid.ColumnSpan="5"
+                                       IsTabStop="False"
+                                       TextChanged="RecordingAlbumAutoCompleteBox_TextChanged" />
                     <TextBlock Grid.Row="12"
                                Grid.Column="4"
                                Style="{StaticResource FieldHeaderStyle}"

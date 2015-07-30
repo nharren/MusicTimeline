@@ -16,7 +16,7 @@
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition />
                             </Grid.RowDefinitions>
-                            <l:BackgroundPanel BackgroundImage="{TemplateBinding BackgroundImage}" Grid.RowSpan="3" />
+                            <l:BackgroundPanel Grid.RowSpan="3" BackgroundImage="{TemplateBinding BackgroundImage}" />
                             <l:EraPanel Grid.Row="0"
                                         Height="26"
                                         Dates="{TemplateBinding Dates}"
