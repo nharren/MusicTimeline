@@ -1,5 +1,6 @@
 ﻿using NAudio.Flac;
 using NAudio.Wave;
+using NAudio.Wave.SampleProviders;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -20,7 +21,8 @@ namespace NathanHarrenstein.MusicTimeline
         private float _volume;
         private bool _disposedValue = false;
         private Thread _audioProcessingThread;
-        private bool _isInitialized;
+        private EventWaitHandle _initializationWaitHandle;
+        private VolumeSampleProvider _volumeSampleProvider;
 
         public AudioPlayer()
         {
@@ -73,6 +75,11 @@ namespace NathanHarrenstein.MusicTimeline
         {
             get
             {
+                if (_waveOutEvent == null)
+                {
+                    throw new InvalidOperationException("The playback state cannot be retrieved until a track has been loaded.");
+                }
+
                 return _waveOutEvent.PlaybackState;
             }
         }
@@ -97,12 +104,22 @@ namespace NathanHarrenstein.MusicTimeline
         {
             get
             {
-                return _waveOutEvent.Volume;
+                if (_volumeSampleProvider == null)
+                {
+                    throw new InvalidOperationException("The volume cannot be set until a track has been loaded.");
+                }
+
+                return _volumeSampleProvider.Volume;
             }
 
             set
             {
-                _waveOutEvent.Volume = value;
+                if (_volumeSampleProvider == null)
+                {
+                    throw new InvalidOperationException("The volume cannot be set until a track has been loaded.");
+                }
+
+                _volumeSampleProvider.Volume = value;
             }
         }
 
@@ -158,10 +175,7 @@ namespace NathanHarrenstein.MusicTimeline
 
         public void Play()
         {
-            while (!_isInitialized)
-            {
-
-            }
+            _initializationWaitHandle.WaitOne();
 
             var oldPlaybackState = PlaybackState;
 
@@ -214,17 +228,22 @@ namespace NathanHarrenstein.MusicTimeline
             OnCurrentTimeChanged(new TimeChangedEventArgs(_currentTime, _currentTime = _currentPlaylistItem.Value.CurrentTime));
         }
 
-        public void ToggleMute()
+        public void ToggleMute() 
         {
-            if (_waveOutEvent.Volume > 0)
+            if (_volumeSampleProvider == null)
             {
-                _volume = _waveOutEvent.Volume;
+                throw new InvalidOperationException("Mute cannot be toggled until a track has been loaded.");
+            }
 
-                _waveOutEvent.Volume = 0;
+            if (_volumeSampleProvider.Volume > 0)
+            {
+                _volume = _volumeSampleProvider.Volume;
+
+                _volumeSampleProvider.Volume = 0;
             }
             else
             {
-                _waveOutEvent.Volume = _volume;
+                _volumeSampleProvider.Volume = _volume;
             }
         }
 
@@ -292,21 +311,21 @@ namespace NathanHarrenstein.MusicTimeline
                 Stop();
             }
 
-            _isInitialized = false;
+            _initializationWaitHandle = new EventWaitHandle(false, EventResetMode.ManualReset);
 
             var oldTrack = _currentPlaylistItem?.Value;
 
             _currentPlaylistItem = playlistItem;
+            _volumeSampleProvider = new VolumeSampleProvider(playlistItem.Value.ToSampleProvider());
 
-            StartAudioProcessingThread(playlistItem.Value);
+            StartAudioProcessingThread();
 
             OnTrackChanged(new TrackChangedEventArgs(oldTrack, _currentPlaylistItem.Value));
         }
 
-        private void StartAudioProcessingThread(FlacReader value)
+        private void StartAudioProcessingThread()
         {
             _audioProcessingThread = new Thread(new ThreadStart(InitializeAudioProccessor));
-            _audioProcessingThread.Name = "AudioProcessingThread";
             _audioProcessingThread.IsBackground = true;
             _audioProcessingThread.Priority = ThreadPriority.Highest;
             _audioProcessingThread.SetApartmentState(ApartmentState.MTA);
@@ -321,10 +340,9 @@ namespace NathanHarrenstein.MusicTimeline
             }
 
             _waveOutEvent = new WaveOutEvent();
-            _waveOutEvent.Volume = 1f;
-            _waveOutEvent.Init(_currentPlaylistItem.Value);
+            _waveOutEvent.Init(_volumeSampleProvider);
 
-            _isInitialized = true;
+            _initializationWaitHandle.Set();
 
             OnTotalTimeChanged(new TimeChangedEventArgs(_totalTime, _totalTime = _currentPlaylistItem.Value.TotalTime));
         }
