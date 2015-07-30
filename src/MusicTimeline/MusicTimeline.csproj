@@ -111,6 +111,7 @@
     <Compile Include="Converters\UrlToIconConverter.cs" />
     <Compile Include="Converters\UrlToTitleConverter.cs" />
     <Compile Include="Extensions\EnumerableExtensions.cs" />
+    <Compile Include="Controls\NonBlockingFlowDocumentScrollViewer.cs" />
     <Compile Include="Input\DelegateCommand.cs" />
     <Compile Include="Comparers\NaturalComparer.cs" />
     <Compile Include="Logger.cs" />

@@ -851,15 +851,15 @@
                         </ItemsControl>
                     </StackPanel>
                 </StackPanel>
-                <FlowDocumentScrollViewer Grid.Column="1"
+                <c:NonBlockingFlowDocumentScrollViewer Grid.Column="1"
                                           Margin="30,0"
-                                          HorizontalScrollBarVisibility="Disabled"
-                                          TextElement.Foreground="{StaticResource ForegroundBrush}"
-                                          VerticalScrollBarVisibility="Disabled">
+                                                       VerticalScrollBarVisibility="Disabled"
+                                                       HorizontalScrollBarVisibility="Disabled"
+                                          TextElement.Foreground="{StaticResource ForegroundBrush}">
                     <FlowDocument Name="BiographyFlowDocument"
                                   FontFamily="Cambria"
                                   TextAlignment="Left" />
-                </FlowDocumentScrollViewer>
+                </c:NonBlockingFlowDocumentScrollViewer>
                 <Grid Grid.Column="2">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
