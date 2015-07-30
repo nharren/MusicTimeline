@@ -61,9 +61,6 @@
       <HintPath>..\packages\NAudio.1.7.3\lib\net35\NAudio.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="NAudio.Flac">
-      <HintPath>..\..\lib\NAudio.Flac.dll</HintPath>
-    </Reference>
     <Reference Include="presentationframework.aero2" />
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -1670,6 +1667,10 @@
     <ProjectReference Include="..\MusicDb\MusicDB.csproj">
       <Project>{1f805a11-8f8d-4f83-b44a-cec052e33778}</Project>
       <Name>MusicDB</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\NAudio.Flac\NAudio.Flac.csproj">
+      <Project>{1bd0fa41-17b8-494c-bd88-5bf5835f6983}</Project>
+      <Name>NAudio.Flac</Name>
     </ProjectReference>
     <ProjectReference Include="..\Timeline\Timeline.csproj">
       <Project>{29f6b562-eed2-4ec5-9316-a6994a96e82d}</Project>
