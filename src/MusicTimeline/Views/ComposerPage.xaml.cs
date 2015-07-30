@@ -197,7 +197,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
             TreeView.Children = composer.CompositionCollections
                 .Select<CompositionCollection, Controls.TreeViewItem>(cc => CompositionCollectionTreeViewItemBuilder.Build(cc, null))
                 .Concat(composer.Compositions
-                    .Select(c => CompositionTreeViewItemBuilder.Build(c, null)))
+                    .Select(c => CompositionTreeViewItemBuilder.GetCompositionTreeViewItem(c, null)))
                 .OrderBy(tvi => tvi.Header);
             ComposerImagesListBox.SelectedIndex = 0;
 

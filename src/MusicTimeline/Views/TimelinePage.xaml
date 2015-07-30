@@ -64,15 +64,9 @@
             </MenuItem>
         </Menu>
         <t:Timeline Name="timeline"
+                    BackgroundImage="{StaticResource BackgroundImage}"
                     LineStroke="#FF333333"
                     TimeForeground="White">
-            <t:Timeline.Background>
-                <ImageBrush ImageSource="{StaticResource BackgroundImage}"
-                            Opacity="0.25"
-                            TileMode="Tile"
-                            Viewport="0, 0, 325, 168"
-                            ViewportUnits="Absolute" />
-            </t:Timeline.Background>
             <t:Timeline.EraTemplates>
                 <DataTemplate DataType="{x:Type vm:ComposerEraViewModel}">
                     <Grid Background="{Binding Background}" SnapsToDevicePixels="True">

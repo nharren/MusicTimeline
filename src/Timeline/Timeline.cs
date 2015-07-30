@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.EDTF;
 using System.Windows;
@@ -9,6 +10,7 @@ namespace NathanHarrenstein.Timeline
 {
     public class Timeline : Control
     {
+        public static readonly DependencyProperty BackgroundImageProperty = DependencyProperty.Register("BackgroundImage", typeof(ImageSource), typeof(Timeline));
         public static readonly DependencyProperty DatesProperty = DependencyProperty.Register("Dates", typeof(ExtendedDateTimeInterval), typeof(Timeline));
         public static readonly DependencyProperty ErasProperty = DependencyProperty.Register("Eras", typeof(IList), typeof(Timeline));
         public static readonly DependencyProperty EraTemplatesProperty = DependencyProperty.Register("EraTemplates", typeof(IList), typeof(Timeline));
@@ -34,6 +36,19 @@ namespace NathanHarrenstein.Timeline
             Events = new List<ITimelineEvent>();
             EventTemplates = new List<DataTemplate>();
             EraTemplates = new List<DataTemplate>();
+        }
+
+        public ImageSource BackgroundImage
+        {
+            get
+            {
+                return (ImageSource)GetValue(BackgroundImageProperty);
+            }
+
+            set
+            {
+                SetValue(BackgroundImageProperty, value);
+            }
         }
 
         public ExtendedDateTimeInterval Dates

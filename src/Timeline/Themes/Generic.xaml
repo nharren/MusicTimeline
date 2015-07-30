@@ -1,7 +1,78 @@
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">   
-    <ResourceDictionary.MergedDictionaries>
-        <ResourceDictionary Source="pack://application:,,,/Timeline;component/Themes/Styles/TimelineStyle.xaml" />
-    </ResourceDictionary.MergedDictionaries>
-    <Style TargetType="{x:Type Rectangle}" />
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:l="clr-namespace:NathanHarrenstein.Timeline">
+    <Style TargetType="{x:Type l:Timeline}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type l:Timeline}">
+                    <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}">
+                        <l:PanGrid x:Name="PART_PanGrid"
+                                   Background="Transparent"
+                                   FocusVisualStyle="{x:Null}">
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="Auto" />
+                                <RowDefinition />
+                            </Grid.RowDefinitions>
+                            <l:BackgroundPanel BackgroundImage="{TemplateBinding BackgroundImage}" Grid.RowSpan="3" />
+                            <l:EraPanel Grid.Row="0"
+                                        Height="26"
+                                        Dates="{TemplateBinding Dates}"
+                                        EraTemplates="{TemplateBinding EraTemplates}"
+                                        Eras="{TemplateBinding Eras}"
+                                        IsHitTestVisible="False"
+                                        Resolution="{TemplateBinding Resolution}"
+                                        Ruler="{TemplateBinding Ruler}"
+                                        TextBlock.FontFamily="Cambria"
+                                        TextBlock.FontSize="14"
+                                        TextBlock.Foreground="Black" />
+
+                            <l:TimePanel Grid.Row="1"
+                                         Height="24"
+                                         Background="#33222222"
+                                         Dates="{TemplateBinding Dates}"
+                                         FontFamily="Calibri"
+                                         FontSize="12"
+                                         Foreground="{TemplateBinding TimeForeground}"
+                                         IsHitTestVisible="False"
+                                         Resolution="{TemplateBinding Resolution}"
+                                         Ruler="{TemplateBinding Ruler}"
+                                         Stroke="{TemplateBinding LineStroke}" />
+                            <l:GuidelinePanel Grid.Row="1"
+                                              Grid.RowSpan="2"
+                                              Dates="{TemplateBinding Dates}"
+                                              IsHitTestVisible="False"
+                                              MajorBrush="#FF393939"
+                                              MajorFrequency="10"
+                                              MinorBrush="#FF393939"
+                                              Resolution="{TemplateBinding Resolution}"
+                                              Ruler="{TemplateBinding Ruler}" />
+                            <l:EventPanel Grid.Row="2"
+                                          Dates="{TemplateBinding Dates}"
+                                          EventHeight="{TemplateBinding EventHeight}"
+                                          EventSpacing="{TemplateBinding EventSpacing}"
+                                          EventTemplates="{TemplateBinding EventTemplates}"
+                                          Events="{TemplateBinding Events}"
+                                          HorizontalOffset="{Binding HorizontalOffset,
+                                                                     RelativeSource={RelativeSource TemplatedParent},
+                                                                     Mode=TwoWay,
+                                                                     UpdateSourceTrigger=PropertyChanged}"
+                                          PreloadDistance="500"
+                                          Resolution="{TemplateBinding Resolution}"
+                                          Ruler="{TemplateBinding Ruler}"
+                                          TextBlock.FontFamily="Cambria"
+                                          TextBlock.FontSize="14"
+                                          TextBlock.Foreground="Black"
+                                          VerticalOffset="{Binding VerticalOffset,
+                                                                   RelativeSource={RelativeSource TemplatedParent},
+                                                                   Mode=TwoWay,
+                                                                   UpdateSourceTrigger=PropertyChanged}" />
+                        </l:PanGrid>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
 </ResourceDictionary>

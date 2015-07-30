@@ -401,7 +401,6 @@
     <ScrollViewer HorizontalScrollBarVisibility="Auto">
         <ScrollViewer.Background>
             <ImageBrush ImageSource="{StaticResource BackgroundImage}"
-                            Opacity="0.25"
                             TileMode="Tile"
                             Viewport="0, 0, 325, 168"
                             ViewportUnits="Absolute" />

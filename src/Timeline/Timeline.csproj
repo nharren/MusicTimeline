@@ -53,6 +53,7 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BackgroundPanel.cs" />
     <Compile Include="Input\MouseHorizontalWheelEventArgs.cs" />
     <Compile Include="Input\MouseHorizontalWheelEventHandler.cs" />
     <Compile Include="Input\MouseHook.cs" />
@@ -94,10 +95,6 @@
     <AppDesigner Include="Properties\" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="Themes\Styles\TimelineStyle.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Themes\Generic.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
