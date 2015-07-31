@@ -28,7 +28,6 @@
                                         TextBlock.FontFamily="Cambria"
                                         TextBlock.FontSize="14"
                                         TextBlock.Foreground="Black" />
-
                             <l:TimePanel Grid.Row="1"
                                          Height="24"
                                          Background="#33222222"

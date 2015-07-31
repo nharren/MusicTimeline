@@ -89,11 +89,11 @@ namespace NathanHarrenstein.MusicTimeline.Builders
         {
             Action<object> command = o =>
             {
-                Application.Current.Properties["SelectedComposer"] = composer.Name;
-                Application.Current.Properties["HorizontalOffset"] = timeline.HorizontalOffset;
-                Application.Current.Properties["VerticalOffset"] = timeline.VerticalOffset;
+                System.Windows.Application.Current.Properties["SelectedComposer"] = composer.Name;
+                System.Windows.Application.Current.Properties["HorizontalOffset"] = timeline.HorizontalOffset;
+                System.Windows.Application.Current.Properties["VerticalOffset"] = timeline.VerticalOffset;
 
-                ((NavigationWindow)Application.Current.MainWindow).Navigate(new Uri("pack://application:,,,/Views/ComposerPage.xaml"));
+                ((NavigationWindow)System.Windows.Application.Current.MainWindow).Navigate(new Uri("pack://application:,,,/Views/ComposerPage.xaml"));
             };
 
             return new DelegateCommand(command);

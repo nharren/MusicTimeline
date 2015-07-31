@@ -86,6 +86,8 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Audio\AudioPlayer.cs" />
+    <Compile Include="Audio\MuteEventArgs.cs" />
+    <Compile Include="Audio\VolumeEventArgs.cs" />
     <Compile Include="Builders\AlbumBuilder.cs" />
     <Compile Include="Builders\CatalogNumberBuilder.cs" />
     <Compile Include="Builders\ComposerBuilder.cs" />
@@ -115,12 +117,12 @@
     <Compile Include="Input\DelegateCommand.cs" />
     <Compile Include="Comparers\NaturalComparer.cs" />
     <Compile Include="Logger.cs" />
-    <Compile Include="Audio\PlaybackStateChangedEventArgs.cs" />
+    <Compile Include="Audio\PlaybackStateEventArgs.cs" />
     <Compile Include="Builders\ComposerEraViewModelBuilder.cs" />
     <Compile Include="Builders\ComposerEventViewModelBuilder.cs" />
     <Compile Include="Builders\ComposerImageBuilder.cs" />
-    <Compile Include="Audio\TimeChangedEventArgs.cs" />
-    <Compile Include="Audio\TrackChangedEventArgs.cs" />
+    <Compile Include="Audio\TimeSpanEventArgs.cs" />
+    <Compile Include="Audio\TrackEventArgs.cs" />
     <Compile Include="Utilities\BindingUtility.cs" />
     <Compile Include="Converters\DecimalToRomanConverter.cs" />
     <Compile Include="Utilities\BiographyUtility.cs" />

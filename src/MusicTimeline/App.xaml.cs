@@ -3,7 +3,7 @@ using System.Windows;
 
 namespace NathanHarrenstein.MusicTimeline
 {
-    public partial class App : Application
+    public partial class Application : System.Windows.Application
     {
         protected override void OnExit(ExitEventArgs e)
         {

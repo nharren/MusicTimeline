@@ -5,8 +5,8 @@ namespace NathanHarrenstein.MusicTimeline.Input
 {
     public sealed class DelegateCommand : ICommand
     {
-        private readonly Predicate<object> canExecute;
-        private readonly Action<object> executeAction;
+        private readonly Predicate<object> _canExecute;
+        private readonly Action<object> _execute;
         private bool canExecuteCache;
 
         public DelegateCommand(Action<object> executeAction)
@@ -16,15 +16,15 @@ namespace NathanHarrenstein.MusicTimeline.Input
 
         public DelegateCommand(Action<object> executeAction, Predicate<object> canExecute)
         {
-            this.executeAction = executeAction;
-            this.canExecute = canExecute;
+            _execute = executeAction;
+            _canExecute = canExecute;
         }
 
         public event EventHandler CanExecuteChanged;
 
         public bool CanExecute(object parameter)
         {
-            bool temp = canExecute(parameter);
+            bool temp = _canExecute(parameter);
 
             if (canExecuteCache != temp)
             {
@@ -41,7 +41,7 @@ namespace NathanHarrenstein.MusicTimeline.Input
 
         public void Execute(object parameter)
         {
-            executeAction(parameter);
+            _execute(parameter);
         }
 
         public void RaiseCanExecuteChanged()

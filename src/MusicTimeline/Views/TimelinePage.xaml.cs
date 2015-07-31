@@ -133,14 +133,14 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
         private void Timeline_Loaded(object sender, RoutedEventArgs e)
         {
-            var horizontalOffset = Application.Current.Properties["HorizontalOffset"] as double?;
+            var horizontalOffset = System.Windows.Application.Current.Properties["HorizontalOffset"] as double?;
 
             if (horizontalOffset != null)
             {
                 timeline.HorizontalOffset = horizontalOffset.Value;
             }
 
-            var verticalOffset = Application.Current.Properties["VerticalOffset"] as double?;
+            var verticalOffset = System.Windows.Application.Current.Properties["VerticalOffset"] as double?;
 
             if (verticalOffset != null)
             {
@@ -150,22 +150,22 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
         private ICommand GetCloseCommand()
         {
-            return new DelegateCommand(o => Application.Current.Shutdown());
+            return new DelegateCommand(o => System.Windows.Application.Current.Shutdown());
         }
 
         private ICommand GetFullScreenCommand()
         {
             return new DelegateCommand(o =>
             {
-                if (Application.Current.MainWindow.WindowStyle == WindowStyle.None)
+                if (System.Windows.Application.Current.MainWindow.WindowStyle == WindowStyle.None)
                 {
-                    Application.Current.MainWindow.WindowStyle = WindowStyle.SingleBorderWindow;
+                    System.Windows.Application.Current.MainWindow.WindowStyle = WindowStyle.SingleBorderWindow;
                 }
                 else
                 {
-                    Application.Current.MainWindow.WindowState = WindowState.Normal;
-                    Application.Current.MainWindow.WindowStyle = WindowStyle.None;
-                    Application.Current.MainWindow.WindowState = WindowState.Maximized;
+                    System.Windows.Application.Current.MainWindow.WindowState = WindowState.Normal;
+                    System.Windows.Application.Current.MainWindow.WindowStyle = WindowStyle.None;
+                    System.Windows.Application.Current.MainWindow.WindowState = WindowState.Maximized;
                 }
             });
         }
@@ -203,8 +203,8 @@ namespace NathanHarrenstein.MusicTimeline.Views
         {
             return new DelegateCommand(o =>
             {
-                Application.Current.Properties["HorizontalOffset"] = timeline.HorizontalOffset;
-                Application.Current.Properties["VerticalOffset"] = timeline.VerticalOffset;
+                System.Windows.Application.Current.Properties["HorizontalOffset"] = timeline.HorizontalOffset;
+                System.Windows.Application.Current.Properties["VerticalOffset"] = timeline.VerticalOffset;
 
                 NavigationService.Navigate(new Uri(@"pack://application:,,,/Views/InputPage.xaml", UriKind.Absolute));
             });
@@ -216,8 +216,8 @@ namespace NathanHarrenstein.MusicTimeline.Views
             {
                 ComposerToThumbnailConverter.ClearThumbnailCache();
 
-                Application.Current.Properties["HorizontalOffset"] = timeline.HorizontalOffset;
-                Application.Current.Properties["VerticalOffset"] = timeline.VerticalOffset;
+                System.Windows.Application.Current.Properties["HorizontalOffset"] = timeline.HorizontalOffset;
+                System.Windows.Application.Current.Properties["VerticalOffset"] = timeline.VerticalOffset;
 
                 NavigationService.Refresh();
             });

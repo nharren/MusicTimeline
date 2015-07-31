@@ -1,9 +1,9 @@
 ﻿<NavigationWindow x:Class="NathanHarrenstein.MusicTimeline.Views.MainWindow"
-        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        x:Name="window"
-        Title="Music Timeline"
-        Icon="pack://application:,,,/Resources/AppIcon.ico"
-        WindowState="Maximized"
-        ShowsNavigationUI="False"
-        Source="TimelinePage.xaml" />
+                  xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                  xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                  x:Name="window"
+                  Title="Music Timeline"
+                  Icon="pack://application:,,,/Resources/AppIcon.ico"
+                  ShowsNavigationUI="False"
+                  Source="TimelinePage.xaml"
+                  WindowState="Maximized" />

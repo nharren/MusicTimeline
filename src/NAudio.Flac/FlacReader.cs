@@ -10,10 +10,9 @@ using NAudio.Wave;
 namespace NAudio.Flac
 {
     /// <summary>
-    ///     Provides a decoder for decoding flac (Free Lostless Audio Codec) data.
+    /// Provides a decoder for FLAC (Free Lossless Audio Codec) data.
     /// </summary>
-    public class FlacReader : WaveStream, IDisposable, ISampleProvider, IWaveProvider
-    
+    public class FlacReader : WaveStream, IDisposable, ISampleProvider, IWaveProvider   
     {
         private readonly Stream _stream;
         private readonly WaveFormat _waveFormat;

@@ -126,7 +126,7 @@ namespace NathanHarrenstein.MusicTimeline.Converters
                     thumbnail.CacheOption = BitmapCacheOption.OnLoad;
                     thumbnail.BeginInit();
                     thumbnail.DecodePixelHeight = 50;
-                    thumbnail.StreamSource = Application.GetResourceStream(new Uri("pack://application:,,,/Resources/Composers/Unknown.jpg", UriKind.Absolute)).Stream;
+                    thumbnail.StreamSource = System.Windows.Application.GetResourceStream(new Uri("pack://application:,,,/Resources/Composers/Unknown.jpg", UriKind.Absolute)).Stream;
                     thumbnail.EndInit();
                     thumbnail.Freeze();
 

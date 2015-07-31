@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 
 namespace NathanHarrenstein.MusicTimeline.Extensions
 {
@@ -8,7 +7,7 @@ namespace NathanHarrenstein.MusicTimeline.Extensions
     {
         internal static IEnumerable<TResult> Common<TSource, TResult>(this IEnumerable<TSource> source, Func<TSource, IEnumerable<TResult>> selector)
         {
-            var collection = new Collection<TResult>();
+            var collection = new List<TResult>();
 
             foreach (var element in source)
             {

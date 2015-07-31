@@ -421,22 +421,22 @@
                                        AllowsTransparency="True"
                                        Placement="Bottom">
                                     <t:SystemDropShadowChrome x:Name="shadow"
-                                              MinWidth="0"
-                                              Color="Transparent">
+                                                              MinWidth="0"
+                                                              Color="Transparent">
                                         <Border Background="{TemplateBinding Background}"
-                                            BorderBrush="{TemplateBinding BorderBrush}"
-                                            BorderThickness="{TemplateBinding BorderThickness}">
+                                                BorderBrush="{TemplateBinding BorderBrush}"
+                                                BorderThickness="{TemplateBinding BorderThickness}">
                                             <ListBox x:Name="PART_ListBox"
-                                                 Width="{TemplateBinding ActualWidth}"
-                                                 Background="{TemplateBinding Background}"
-                                                 BorderThickness="0"
-                                                 FocusVisualStyle="{x:Null}"
-                                                 FontFamily="{TemplateBinding FontFamily}"
-                                                 FontSize="{TemplateBinding FontSize}"
-                                                 Foreground="{TemplateBinding Foreground}"
-                                                 IsHitTestVisible="False"
-                                                 ItemTemplate="{TemplateBinding SuggestionTemplate}"
-                                                 SelectionMode="Single">
+                                                     Width="{TemplateBinding ActualWidth}"
+                                                     Background="{TemplateBinding Background}"
+                                                     BorderThickness="0"
+                                                     FocusVisualStyle="{x:Null}"
+                                                     FontFamily="{TemplateBinding FontFamily}"
+                                                     FontSize="{TemplateBinding FontSize}"
+                                                     Foreground="{TemplateBinding Foreground}"
+                                                     IsHitTestVisible="False"
+                                                     ItemTemplate="{TemplateBinding SuggestionTemplate}"
+                                                     SelectionMode="Single">
                                                 <ListBox.ItemContainerStyle>
                                                     <Style TargetType="{x:Type ListBoxItem}">
                                                         <Setter Property="FocusVisualStyle" Value="{x:Null}" />

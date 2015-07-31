@@ -359,10 +359,12 @@
                     </Button.Template>
                 </Button>
                 <DockPanel Grid.Row="4" Grid.ColumnSpan="5">
-                    <ToggleButton Command="MediaCommands.MuteVolume"
+                    <ToggleButton Name="MuteToggleButton"
+                                  Command="MediaCommands.MuteVolume"
                                   Cursor="Hand"
                                   DockPanel.Dock="Left"
-                                  Foreground="{StaticResource ForegroundBrush}">
+                                  Foreground="{StaticResource ForegroundBrush}"
+                                  IsEnabled="False">
                         <ToggleButton.Template>
                             <ControlTemplate TargetType="{x:Type ToggleButton}">
                                 <Grid>
@@ -423,10 +425,10 @@
                     </ToggleButton>
                     <Slider Name="VolumeSlider"
                             Margin="5,2,0,0"
+                            IsEnabled="False"
                             Maximum="1"
                             Minimum="0"
-                            ValueChanged="VolumeSlider_ValueChanged"
-                            Value="1">
+                            ValueChanged="VolumeSlider_ValueChanged">
                         <Slider.Template>
                             <ControlTemplate TargetType="{x:Type Slider}">
                                 <Border x:Name="border"
@@ -852,10 +854,10 @@
                     </StackPanel>
                 </StackPanel>
                 <c:NonBlockingFlowDocumentScrollViewer Grid.Column="1"
-                                          Margin="30,0"
-                                                       VerticalScrollBarVisibility="Disabled"
+                                                       Margin="30,0"
                                                        HorizontalScrollBarVisibility="Disabled"
-                                          TextElement.Foreground="{StaticResource ForegroundBrush}">
+                                                       TextElement.Foreground="{StaticResource ForegroundBrush}"
+                                                       VerticalScrollBarVisibility="Disabled">
                     <FlowDocument Name="BiographyFlowDocument"
                                   FontFamily="Cambria"
                                   TextAlignment="Left" />

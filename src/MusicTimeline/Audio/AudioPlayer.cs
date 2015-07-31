@@ -1,28 +1,27 @@
-﻿using NAudio.Flac;
+﻿using NAudio.CoreAudioApi;
+using NAudio.CoreAudioApi.Interfaces;
+using NAudio.Flac;
 using NAudio.Wave;
-using NAudio.Wave.SampleProviders;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Threading;
-using System.Windows;
 using System.Windows.Threading;
 
 namespace NathanHarrenstein.MusicTimeline.Audio
 {
-    public class AudioPlayer : IDisposable
+    public class AudioPlayer : IDisposable, IAudioSessionEventsHandler
     {
         private readonly LinkedList<FlacReader> _playlist;
-        private Thread _audioProcessingThread;
+        private AudioSessionControl _audioSessionControl;
         private LinkedListNode<FlacReader> _currentPlaylistItem;
-        private TimeSpan? _currentTime;
-        private bool _disposedValue = false;
+        private bool _disposed;
         private EventWaitHandle _initializationWaitHandle;
+        private MMDevice _multimediaDevice;
         private DispatcherTimer _playbackTimer;
-        private TimeSpan? _totalTime;
-        private float _volume;
-        private VolumeSampleProvider _volumeSampleProvider;
         private WaveOutEvent _waveOutEvent;
+        private Thread _waveOutThread;
 
         public AudioPlayer()
         {
@@ -30,6 +29,9 @@ namespace NathanHarrenstein.MusicTimeline.Audio
             _playbackTimer = new DispatcherTimer();
             _playbackTimer.Interval = new TimeSpan(1);
             _playbackTimer.Tick += PlaybackTimer_Tick;
+
+            _multimediaDevice = GetMultimediaDevice();
+            _multimediaDevice.AudioSessionManager.OnSessionCreated += AudioSessionManager_OnSessionCreated;
         }
 
         ~AudioPlayer()
@@ -37,13 +39,17 @@ namespace NathanHarrenstein.MusicTimeline.Audio
             Dispose(false);
         }
 
-        public event EventHandler<TimeChangedEventArgs> CurrentTimeChanged;
+        public event EventHandler<TimeSpanEventArgs> CurrentTimeChanged;
 
-        public event EventHandler<PlaybackStateChangedEventArgs> PlaybackStateChanged;
+        public event EventHandler<MuteEventArgs> MuteChanged;
 
-        public event EventHandler<TimeChangedEventArgs> TotalTimeChanged;
+        public event EventHandler<PlaybackStateEventArgs> PlaybackStateChanged;
 
-        public event EventHandler<TrackChangedEventArgs> TrackChanged;
+        public event EventHandler<TimeSpanEventArgs> TotalTimeChanged;
+
+        public event EventHandler<TrackEventArgs> TrackChanged;
+
+        public event EventHandler<VolumeEventArgs> VolumeChanged;
 
         public LinkedListNode<FlacReader> CurrentPlaylistItem
         {
@@ -58,16 +64,53 @@ namespace NathanHarrenstein.MusicTimeline.Audio
             }
         }
 
-        public TimeSpan? CurrentTime
+        public TimeSpan CurrentTime
         {
             get
             {
-                return _currentTime;
+                if (_currentPlaylistItem == null || _currentPlaylistItem.Value == null)
+                {
+                    throw new InvalidOperationException("The current time cannot be retrieved until a track has been loaded.");
+                }
+
+                return _currentPlaylistItem.Value.CurrentTime;
             }
 
             set
             {
-                _currentPlaylistItem.Value.CurrentTime = value.Value;
+                if (_currentPlaylistItem == null || _currentPlaylistItem.Value == null)
+                {
+                    throw new InvalidOperationException("The current time cannot be set until a track has been loaded.");
+                }
+
+                _currentPlaylistItem.Value.CurrentTime = value;
+            }
+        }
+
+        public bool Mute
+        {
+            get
+            {
+                if (_audioSessionControl != null)
+                {
+                    return _audioSessionControl.SimpleAudioVolume.Mute;
+                }
+                else
+                {
+                    throw new InvalidOperationException("Mute cannot be retrieved because _audioSessionControl is null.");
+                }
+            }
+
+            set
+            {
+                if (_audioSessionControl != null)
+                {
+                    _audioSessionControl.SimpleAudioVolume.Mute = value;
+                }
+                else
+                {
+                    throw new InvalidOperationException("Mute cannot be retrieved because _audioSessionControl is null.");
+                }
             }
         }
 
@@ -92,11 +135,16 @@ namespace NathanHarrenstein.MusicTimeline.Audio
             }
         }
 
-        public TimeSpan? TotalTime
+        public TimeSpan TotalTime
         {
             get
             {
-                return _totalTime;
+                if (_currentPlaylistItem == null || _currentPlaylistItem.Value == null)
+                {
+                    throw new InvalidOperationException("The total time cannot be retrieved until a track has been loaded.");
+                }
+
+                return _currentPlaylistItem.Value.TotalTime;
             }
         }
 
@@ -104,22 +152,26 @@ namespace NathanHarrenstein.MusicTimeline.Audio
         {
             get
             {
-                if (_volumeSampleProvider == null)
+                if (_audioSessionControl != null)
                 {
-                    throw new InvalidOperationException("The volume cannot be set until a track has been loaded.");
+                    return _audioSessionControl.SimpleAudioVolume.Volume;
                 }
-
-                return _volumeSampleProvider.Volume;
+                else
+                {
+                    throw new InvalidOperationException("The volume cannot be retrieved because _audioSessionControl is null.");
+                }
             }
 
             set
             {
-                if (_volumeSampleProvider == null)
+                if (_audioSessionControl != null)
                 {
-                    throw new InvalidOperationException("The volume cannot be set until a track has been loaded.");
+                    _audioSessionControl.SimpleAudioVolume.Volume = value;
                 }
-
-                _volumeSampleProvider.Volume = value;
+                else
+                {
+                    throw new InvalidOperationException("The volume cannot be set because _audioSessionControl is null.");
+                }
             }
         }
 
@@ -159,6 +211,36 @@ namespace NathanHarrenstein.MusicTimeline.Audio
             GC.SuppressFinalize(this);
         }
 
+        public void OnChannelVolumeChanged(uint channelCount, IntPtr newVolumes, uint channelIndex)
+        {
+        }
+
+        public void OnDisplayNameChanged(string displayName)
+        {
+        }
+
+        public void OnGroupingParamChanged(ref Guid groupingId)
+        {
+        }
+
+        public void OnIconPathChanged(string iconPath)
+        {
+        }
+
+        public void OnSessionDisconnected(AudioSessionDisconnectReason disconnectReason)
+        {
+        }
+
+        public void OnStateChanged(AudioSessionState state)
+        {
+        }
+
+        public void OnVolumeChanged(float volume, bool isMuted)
+        {
+            UpdateVolume();
+            UpdateMute();
+        }
+
         public void Pause()
         {
             if (_waveOutEvent == null)
@@ -166,18 +248,13 @@ namespace NathanHarrenstein.MusicTimeline.Audio
                 return;
             }
 
-            var oldState = _waveOutEvent.PlaybackState;
-
             _waveOutEvent.Pause();
-
-            OnPlaybackStateChanged(new PlaybackStateChangedEventArgs(oldState, PlaybackState.Paused));
+            UpdatePlaybackState();
         }
 
         public void Play()
         {
             _initializationWaitHandle.WaitOne();
-
-            var oldPlaybackState = PlaybackState;
 
             if (!_playbackTimer.IsEnabled)
             {
@@ -185,8 +262,7 @@ namespace NathanHarrenstein.MusicTimeline.Audio
             }
 
             _waveOutEvent.Play();
-
-            OnPlaybackStateChanged(new PlaybackStateChangedEventArgs(oldPlaybackState, PlaybackState.Playing));
+            UpdatePlaybackState();
         }
 
         public void SkipBack()
@@ -216,45 +292,33 @@ namespace NathanHarrenstein.MusicTimeline.Audio
                 return;
             }
 
-            var oldState = _waveOutEvent.PlaybackState;
-
             _playbackTimer?.Stop();
             _waveOutEvent.Stop();
 
             _currentPlaylistItem.Value.Seek(0, SeekOrigin.Begin);
 
-            OnPlaybackStateChanged(new PlaybackStateChangedEventArgs(oldState, PlaybackState.Stopped));
-            OnCurrentTimeChanged(new TimeChangedEventArgs(_currentTime, _currentTime = _currentPlaylistItem.Value.CurrentTime));
+            UpdatePlaybackState();
+            UpdateCurrentTime();
         }
 
-        public void ToggleMute()
+        internal MMDevice GetMultimediaDevice()
         {
-            if (_volumeSampleProvider == null)
+            try
             {
-                throw new InvalidOperationException("Mute cannot be toggled until a track has been loaded.");
-            }
+                MMDeviceEnumerator multimediaDeviceEnumerator = new MMDeviceEnumerator();
 
-            if (_volumeSampleProvider.Volume > 0)
-            {
-                _volume = _volumeSampleProvider.Volume;
-
-                _volumeSampleProvider.Volume = 0;
+                return multimediaDeviceEnumerator.GetDefaultAudioEndpoint(DataFlow.Render, Role.Multimedia);
             }
-            else
+            catch (Exception)
             {
-                _volumeSampleProvider.Volume = _volume;
+                return null;
             }
         }
 
         protected virtual void Dispose(bool disposing)
         {
-            if (!_disposedValue)
+            if (!_disposed)
             {
-                if (disposing)
-                {
-                    // Dispose any managed objects.
-                }
-
                 if (_waveOutEvent != null)
                 {
                     _waveOutEvent.Dispose();
@@ -267,11 +331,11 @@ namespace NathanHarrenstein.MusicTimeline.Audio
                     playlistItem.Dispose();
                 }
 
-                _disposedValue = true;
+                _disposed = true;
             }
         }
 
-        protected virtual void OnCurrentTimeChanged(TimeChangedEventArgs e)
+        protected virtual void OnCurrentTimeChanged(TimeSpanEventArgs e)
         {
             if (CurrentTimeChanged != null)
             {
@@ -279,31 +343,61 @@ namespace NathanHarrenstein.MusicTimeline.Audio
             }
         }
 
-        protected virtual void OnPlaybackStateChanged(PlaybackStateChangedEventArgs e)
+        protected virtual void OnMuteChanged(MuteEventArgs e)
+        {
+            if (MuteChanged != null)
+            {
+                MuteChanged(this, e);
+            }
+        }
+
+        protected virtual void OnPlaybackStateChanged(PlaybackStateEventArgs e)
         {
             if (PlaybackStateChanged != null)
             {
-                Application.Current.Dispatcher.Invoke(() => PlaybackStateChanged(this, e));
+                PlaybackStateChanged(this, e);
             }
         }
 
-        protected virtual void OnTotalTimeChanged(TimeChangedEventArgs e)
+        protected virtual void OnTotalTimeChanged(TimeSpanEventArgs e)
         {
             if (TotalTimeChanged != null)
             {
-                Application.Current.Dispatcher.Invoke(() => TotalTimeChanged(this, e));
+                System.Windows.Application.Current.Dispatcher.Invoke(() => TotalTimeChanged(this, e));
             }
         }
 
-        protected virtual void OnTrackChanged(TrackChangedEventArgs e)
+        protected virtual void OnTrackChanged(TrackEventArgs e)
         {
             if (TrackChanged != null)
             {
-                Application.Current.Dispatcher.Invoke(() => TrackChanged(this, e));
+                System.Windows.Application.Current.Dispatcher.Invoke(() => TrackChanged(this, e));
             }
         }
 
-        private void InitializeAudioProccessor()
+        protected virtual void OnVolumeChanged(VolumeEventArgs e)
+        {
+            if (VolumeChanged != null)
+            {
+                VolumeChanged(this, e);
+            }
+        }
+
+        private void AudioSessionManager_OnSessionCreated(object sender, IAudioSessionControl newSession)
+        {
+            var audioSessionControl = new AudioSessionControl(newSession);
+
+            if (_audioSessionControl == null && audioSessionControl.GetProcessID == Process.GetCurrentProcess().Id)
+            {
+                _audioSessionControl = audioSessionControl;
+                _audioSessionControl.RegisterEventClient(this);
+
+                UpdateVolume();
+                UpdateMute();
+            }
+        }
+
+        private void InitializeWaveOut()
         {
             if (_waveOutEvent != null)
             {
@@ -311,30 +405,25 @@ namespace NathanHarrenstein.MusicTimeline.Audio
             }
 
             _waveOutEvent = new WaveOutEvent();
-            _waveOutEvent.Init(_volumeSampleProvider);
+            _waveOutEvent.Init(_currentPlaylistItem.Value);
 
             _initializationWaitHandle.Set();
 
-            OnTotalTimeChanged(new TimeChangedEventArgs(_totalTime, _totalTime = _currentPlaylistItem.Value.TotalTime));
+            UpdateTotalTime();
         }
 
         private void Load(LinkedListNode<FlacReader> playlistItem)
         {
-            if (_audioProcessingThread != null)
+            if (_waveOutThread != null)
             {
                 Stop();
             }
 
             _initializationWaitHandle = new EventWaitHandle(false, EventResetMode.ManualReset);
-
-            var oldTrack = _currentPlaylistItem?.Value;
-
             _currentPlaylistItem = playlistItem;
-            _volumeSampleProvider = new VolumeSampleProvider(playlistItem.Value.ToSampleProvider());
 
-            StartAudioProcessingThread();
-
-            OnTrackChanged(new TrackChangedEventArgs(oldTrack, _currentPlaylistItem.Value));
+            StartWaveOutThread();
+            UpdateTrackChanged();
         }
 
         private void PlaybackTimer_Tick(object sender, EventArgs e)
@@ -354,16 +443,46 @@ namespace NathanHarrenstein.MusicTimeline.Audio
                 return;
             }
 
-            OnCurrentTimeChanged(new TimeChangedEventArgs(_currentTime, _currentTime = _currentPlaylistItem.Value.CurrentTime));
+            UpdateCurrentTime();
         }
 
-        private void StartAudioProcessingThread()
+        private void StartWaveOutThread()
         {
-            _audioProcessingThread = new Thread(new ThreadStart(InitializeAudioProccessor));
-            _audioProcessingThread.IsBackground = true;
-            _audioProcessingThread.Priority = ThreadPriority.Highest;
-            _audioProcessingThread.SetApartmentState(ApartmentState.MTA);
-            _audioProcessingThread.Start();
+            _waveOutThread = new Thread(new ThreadStart(InitializeWaveOut));
+            _waveOutThread.IsBackground = true;
+            _waveOutThread.Priority = ThreadPriority.Highest;
+            _waveOutThread.SetApartmentState(ApartmentState.MTA);
+            _waveOutThread.Start();
+        }
+
+        private void UpdateCurrentTime()
+        {
+            System.Windows.Application.Current.Dispatcher.Invoke(() => OnCurrentTimeChanged(new TimeSpanEventArgs(_currentPlaylistItem.Value.CurrentTime)));
+        }
+
+        private void UpdateMute()
+        {
+            System.Windows.Application.Current.Dispatcher.Invoke(() => OnMuteChanged(new MuteEventArgs(_audioSessionControl.SimpleAudioVolume.Mute)));
+        }
+
+        private void UpdatePlaybackState()
+        {
+            System.Windows.Application.Current.Dispatcher.Invoke(() => OnPlaybackStateChanged(new PlaybackStateEventArgs(_waveOutEvent.PlaybackState)));
+        }
+
+        private void UpdateTotalTime()
+        {
+            System.Windows.Application.Current.Dispatcher.Invoke(() => OnTotalTimeChanged(new TimeSpanEventArgs(_currentPlaylistItem.Value.TotalTime)));
+        }
+
+        private void UpdateTrackChanged()
+        {
+            System.Windows.Application.Current.Dispatcher.Invoke(() => OnTrackChanged(new TrackEventArgs(_currentPlaylistItem.Value)));
+        }
+
+        private void UpdateVolume()
+        {
+            System.Windows.Application.Current.Dispatcher.Invoke(() => OnVolumeChanged(new VolumeEventArgs(_audioSessionControl.SimpleAudioVolume.Volume)));
         }
     }
 }
