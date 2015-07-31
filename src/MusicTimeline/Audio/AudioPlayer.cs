@@ -18,10 +18,10 @@ namespace NathanHarrenstein.MusicTimeline.Audio
         private LinkedListNode<FlacReader> _currentPlaylistItem;
         private bool _disposed;
         private EventWaitHandle _initializationWaitHandle;
-        private MMDevice _multimediaDevice;
+        private MMDevice _playbackDevice;
         private DispatcherTimer _playbackTimer;
         private WaveOutEvent _waveOutEvent;
-        private Thread _waveOutThread;
+        private Thread _waveOutEventThread;
 
         public AudioPlayer()
         {
@@ -30,8 +30,8 @@ namespace NathanHarrenstein.MusicTimeline.Audio
             _playbackTimer.Interval = new TimeSpan(1);
             _playbackTimer.Tick += PlaybackTimer_Tick;
 
-            _multimediaDevice = GetMultimediaDevice();
-            _multimediaDevice.AudioSessionManager.OnSessionCreated += AudioSessionManager_OnSessionCreated;
+            _playbackDevice = GetPlaybackDevice();
+            _playbackDevice.AudioSessionManager.OnSessionCreated += AudioSessionManager_OnSessionCreated;
         }
 
         ~AudioPlayer()
@@ -301,7 +301,7 @@ namespace NathanHarrenstein.MusicTimeline.Audio
             UpdateCurrentTime();
         }
 
-        internal MMDevice GetMultimediaDevice()
+        internal MMDevice GetPlaybackDevice()
         {
             try
             {
@@ -414,7 +414,7 @@ namespace NathanHarrenstein.MusicTimeline.Audio
 
         private void Load(LinkedListNode<FlacReader> playlistItem)
         {
-            if (_waveOutThread != null)
+            if (_waveOutEventThread != null)
             {
                 Stop();
             }
@@ -448,11 +448,11 @@ namespace NathanHarrenstein.MusicTimeline.Audio
 
         private void StartWaveOutThread()
         {
-            _waveOutThread = new Thread(new ThreadStart(InitializeWaveOut));
-            _waveOutThread.IsBackground = true;
-            _waveOutThread.Priority = ThreadPriority.Highest;
-            _waveOutThread.SetApartmentState(ApartmentState.MTA);
-            _waveOutThread.Start();
+            _waveOutEventThread = new Thread(new ThreadStart(InitializeWaveOut));
+            _waveOutEventThread.IsBackground = true;
+            _waveOutEventThread.Priority = ThreadPriority.Highest;
+            _waveOutEventThread.SetApartmentState(ApartmentState.MTA);
+            _waveOutEventThread.Start();
         }
 
         private void UpdateCurrentTime()
