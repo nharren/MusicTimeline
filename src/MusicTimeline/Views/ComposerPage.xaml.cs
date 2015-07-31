@@ -11,6 +11,7 @@ using System.EDTF;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -23,9 +24,10 @@ namespace NathanHarrenstein.MusicTimeline.Views
 {
     public partial class ComposerPage : Page, IDisposable
     {
-        private AudioPlayer _audioPlayer;
+        private Composer _composer;
         private DataProvider _dataProvider;
         private bool _disposed;
+        private FlacPlayer _flacPlayer;
         private Dictionary<ISampleProvider, Sample> _sampleDictionary;
 
         public ComposerPage()
@@ -34,20 +36,20 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
             _dataProvider = new DataProvider();
             _sampleDictionary = new Dictionary<ISampleProvider, Sample>();
-            _audioPlayer = new AudioPlayer();
-            _audioPlayer.CurrentTimeChanged += AudioPlayer_CurrentTimeChanged;
-            _audioPlayer.TotalTimeChanged += AudioPlayer_TotalTimeChanged;
-            _audioPlayer.TrackChanged += AudioPlayer_TrackChanged;
-            _audioPlayer.PlaybackStateChanged += AudioPlayer_PlaybackStateChanged;
-            _audioPlayer.VolumeChanged += AudioPlayer_VolumeChanged;
-            _audioPlayer.MuteChanged += AudioPlayer_MuteChanged;
+            _flacPlayer = new FlacPlayer();
+            _flacPlayer.CurrentTimeChanged += FlacPlayer_CurrentTimeChanged;
+            _flacPlayer.TotalTimeChanged += FlacPlayer_TotalTimeChanged;
+            _flacPlayer.TrackChanged += FlacPlayer_TrackChanged;
+            _flacPlayer.PlaybackStateChanged += FlacPlayer_PlaybackStateChanged;
+            _flacPlayer.VolumeChanged += FlacPlayer_VolumeChanged;
+            _flacPlayer.MuteChanged += FlacPlayer_MuteChanged;
 
             var composerName = System.Windows.Application.Current.Properties["SelectedComposer"] as string;
-            var composer = _dataProvider.Composers.AsNoTracking().FirstOrDefault(c => c.Name == composerName);
+            _composer = _dataProvider.Composers.AsNoTracking().FirstOrDefault(c => c.Name == composerName);
 
-            if (composer != null)
+            if (_composer != null)
             {
-                LoadComposer(composer);
+                LoadComposer();
             }
         }
 
@@ -74,7 +76,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
             }
 
             _dataProvider.Dispose();
-            _audioPlayer.Dispose();
+            _flacPlayer.Dispose();
         }
 
         private static string GetBorn(Composer composer)
@@ -95,39 +97,6 @@ namespace NathanHarrenstein.MusicTimeline.Views
             }
 
             return ExtendedDateTimeInterval.Parse(composer.Dates).End.ToString();
-        }
-
-        private void AudioPlayer_CurrentTimeChanged(object sender, TimeSpanEventArgs e)
-        {
-            ProgressSlider.Value = e.TimeSpan.Ticks;
-        }
-
-        private void AudioPlayer_MuteChanged(object sender, MuteEventArgs e)
-        {
-            MuteToggleButton.IsEnabled = true;
-            MuteToggleButton.IsChecked = e.Mute;
-        }
-
-        private void AudioPlayer_PlaybackStateChanged(object sender, PlaybackStateEventArgs e)
-        {
-            PlayPauseToggleButton.IsChecked = e.PlaybackState == PlaybackState.Playing ? true : false;
-        }
-
-        private void AudioPlayer_TotalTimeChanged(object sender, TimeSpanEventArgs e)
-        {
-            ProgressSlider.Maximum = e.TimeSpan.Ticks;
-        }
-
-        private void AudioPlayer_TrackChanged(object sender, TrackEventArgs e)
-        {
-            NowPlayingTitleTextBlock.Text = _sampleDictionary[_audioPlayer.CurrentPlaylistItem.Value].Title;
-            NowPlayingArtistTextBlock.Text = _sampleDictionary[_audioPlayer.CurrentPlaylistItem.Value].Artists;
-        }
-
-        private void AudioPlayer_VolumeChanged(object sender, VolumeEventArgs e)
-        {
-            VolumeSlider.IsEnabled = true;
-            VolumeSlider.Value = e.Volume;
         }
 
         private void BackButton_Click(object sender, RoutedEventArgs e)
@@ -198,78 +167,116 @@ namespace NathanHarrenstein.MusicTimeline.Views
         private void ComposerButton_Click(object sender, RoutedEventArgs e)
         {
             var button = (Button)sender;
-            var composer = (Composer)button.DataContext;
 
-            LoadComposer(composer);
+            _composer = (Composer)button.DataContext;
+
+            LoadComposer();
         }
 
-        private void LoadComposer(Composer composer)
+        private void FlacPlayer_CurrentTimeChanged(object sender, TimeSpanEventArgs e)
         {
-            var influencedVisibility = composer.Influenced.Count > 0 ? Visibility.Visible : Visibility.Collapsed;
-            var influencesVisibility = composer.Influences.Count > 0 ? Visibility.Visible : Visibility.Collapsed;
-            var linksVisibility = composer.ComposerLinks.Count > 0 ? Visibility.Visible : Visibility.Collapsed;
+            ProgressSlider.Value = e.TimeSpan.Ticks;
+        }
 
-            BuildBiographySection(composer);
-            BornTextBlock.Text = GetBorn(composer);
-            ComposerImagesListBox.ItemsSource = composer.ComposerImages;
-            ComposerNameTextBlock.Text = NameUtility.ToFirstLast(composer.Name);
-            DiedTextBlock.Text = GetDied(composer);
-            ComposerFlagsItemsControl.ItemsSource = composer.Nationalities;
-            InfluencedItemsControl.ItemsSource = composer.Influenced;
+        private void FlacPlayer_MuteChanged(object sender, MuteEventArgs e)
+        {
+            MuteToggleButton.IsEnabled = true;
+            MuteToggleButton.IsChecked = e.Mute;
+        }
+
+        private void FlacPlayer_PlaybackStateChanged(object sender, PlaybackStateEventArgs e)
+        {
+            PlayPauseToggleButton.IsChecked = e.PlaybackState == PlaybackState.Playing ? true : false;
+        }
+
+        private void FlacPlayer_TotalTimeChanged(object sender, TimeSpanEventArgs e)
+        {
+            ProgressSlider.Maximum = e.TimeSpan.Ticks;
+        }
+
+        private void FlacPlayer_TrackChanged(object sender, TrackEventArgs e)
+        {
+            NowPlayingTitleTextBlock.Text = _sampleDictionary[_flacPlayer.CurrentPlaylistItem.Value].Title;
+            NowPlayingArtistTextBlock.Text = _sampleDictionary[_flacPlayer.CurrentPlaylistItem.Value].Artists;
+        }
+
+        private void FlacPlayer_VolumeChanged(object sender, VolumeEventArgs e)
+        {
+            VolumeSlider.IsEnabled = true;
+            VolumeSlider.Value = e.Volume;
+        }
+
+        private void LoadComposer()
+        {
+            var influencedVisibility = _composer.Influenced.Count > 0 ? Visibility.Visible : Visibility.Collapsed;
+            var influencesVisibility = _composer.Influences.Count > 0 ? Visibility.Visible : Visibility.Collapsed;
+            var linksVisibility = _composer.ComposerLinks.Count > 0 ? Visibility.Visible : Visibility.Collapsed;
+
+            BuildBiographySection(_composer);
+            BornTextBlock.Text = GetBorn(_composer);
+            ComposerImagesListBox.ItemsSource = _composer.ComposerImages;
+            ComposerNameTextBlock.Text = NameUtility.ToFirstLast(_composer.Name);
+            DiedTextBlock.Text = GetDied(_composer);
+            ComposerFlagsItemsControl.ItemsSource = _composer.Nationalities;
+            InfluencedItemsControl.ItemsSource = _composer.Influenced;
             InfluencedItemsControl.Visibility = influencedVisibility;
             InfluencedTextBlock.Visibility = influencedVisibility;
-            InfluencesItemsControl.ItemsSource = composer.Influences;
+            InfluencesItemsControl.ItemsSource = _composer.Influences;
             InfluencesItemsControl.Visibility = influencesVisibility;
             InfluencesTextBlock.Visibility = influencesVisibility;
-            LinksItemControl.ItemsSource = composer.ComposerLinks;
+            LinksItemControl.ItemsSource = _composer.ComposerLinks;
             LinksItemControl.Visibility = LinksTextBlock.Visibility = linksVisibility;
-            TreeView.Children = composer.CompositionCollections
+            TreeView.Children = _composer.CompositionCollections
                 .Select<CompositionCollection, Controls.TreeViewItem>(cc => CompositionCollectionTreeViewItemBuilder.Build(cc, null))
-                .Concat(composer.Compositions
+                .Concat(_composer.Compositions
                     .Select(c => CompositionTreeViewItemBuilder.GetCompositionTreeViewItem(c, null)))
                 .OrderBy(tvi => tvi.Header);
 
             ComposerImagesListBox.SelectedIndex = 0;
 
-            foreach (var sample in composer.Samples)
+            StartSampleLoadingThread();
+        }
+
+        private void LoadSamples()
+        {
+            foreach (var sample in _composer.Samples)
             {
                 var flacReader = new FlacReader(new MemoryStream(sample.Audio));
 
                 _sampleDictionary[flacReader] = sample;
-
-                _audioPlayer.AddToPlaylist(flacReader);
+                _flacPlayer.AddToPlaylist(flacReader);
             }
 
-            if (_audioPlayer.Playlist.Count > 0)
+            if (_flacPlayer.Playlist.Count > 0)
             {
-                _audioPlayer.Play();
+                _flacPlayer.Play();
             }
         }
 
         private void MuteVolume_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            e.CanExecute = _audioPlayer != null;
+            e.CanExecute = _flacPlayer != null;
         }
 
         private void MuteVolume_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            _audioPlayer.Mute = !_audioPlayer.Mute;
+            _flacPlayer.Mute = !_flacPlayer.Mute;
         }
 
         private void NextTrack_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            if (_audioPlayer != null)
+            if (_flacPlayer != null)
             {
-                e.CanExecute = _audioPlayer.CanSkipForward();
+                e.CanExecute = _flacPlayer.CanSkipForward();
             }
         }
 
         private void NextTrack_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            if (_audioPlayer != null)
+            if (_flacPlayer != null)
             {
-                _audioPlayer.SkipForward();
-                _audioPlayer.Play();
+                _flacPlayer.SkipForward();
+                _flacPlayer.Play();
 
                 PlayPauseToggleButton.IsChecked = true;
             }
@@ -277,18 +284,18 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
         private void PreviousTrack_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            if (_audioPlayer != null)
+            if (_flacPlayer != null)
             {
-                e.CanExecute = _audioPlayer.CanSkipBack();
+                e.CanExecute = _flacPlayer.CanSkipBack();
             }
         }
 
         private void PreviousTrack_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            if (_audioPlayer != null)
+            if (_flacPlayer != null)
             {
-                _audioPlayer.SkipBack();
-                _audioPlayer.Play();
+                _flacPlayer.SkipBack();
+                _flacPlayer.Play();
 
                 PlayPauseToggleButton.IsChecked = true;
             }
@@ -296,13 +303,13 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
         private void ProgressSlider_DragCompleted(object sender, DragCompletedEventArgs e)
         {
-            _audioPlayer.CurrentTime = new TimeSpan((long)ProgressSlider.Value);
-            _audioPlayer.Play();
+            _flacPlayer.CurrentTime = new TimeSpan((long)ProgressSlider.Value);
+            _flacPlayer.Play();
         }
 
         private void ProgressSlider_DragStarted(object sender, RoutedEventArgs e)
         {
-            _audioPlayer.Stop();
+            _flacPlayer.Stop();
         }
 
         private void ProgressSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -310,33 +317,41 @@ namespace NathanHarrenstein.MusicTimeline.Views
             ProgressStatus.Text = TimeSpan.FromTicks((long)ProgressSlider.Value).ToString(@"hh\:mm\:ss");
         }
 
+        private void StartSampleLoadingThread()
+        {
+            var sampleLoadingThread = new Thread(new ThreadStart(LoadSamples));
+            sampleLoadingThread.Name = "Sample-Loading Thread";
+            sampleLoadingThread.IsBackground = true;
+            sampleLoadingThread.Start();
+        }
+
         private void TogglePlayPause_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            e.CanExecute = _audioPlayer != null;
+            e.CanExecute = _flacPlayer != null;
         }
 
         private void TogglePlayPause_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            if (_audioPlayer.PlaybackState == PlaybackState.Playing)
+            if (_flacPlayer.PlaybackState == PlaybackState.Playing)
             {
-                _audioPlayer.Pause();
+                _flacPlayer.Pause();
                 PlayPauseToggleButton.IsChecked = false;
             }
             else
             {
-                _audioPlayer.Play();
+                _flacPlayer.Play();
                 PlayPauseToggleButton.IsChecked = true;
             }
         }
 
         private void VolumeSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            if (_audioPlayer == null)
+            if (_flacPlayer == null)
             {
                 return;
             }
 
-            _audioPlayer.Volume = (float)e.NewValue;
+            _flacPlayer.Volume = (float)e.NewValue;
         }
     }
 }

@@ -11,30 +11,28 @@ using System.Windows.Threading;
 
 namespace NathanHarrenstein.MusicTimeline.Audio
 {
-    public class AudioPlayer : IDisposable, IAudioSessionEventsHandler
+    public class FlacPlayer : IDisposable, IAudioSessionEventsHandler
     {
         private readonly LinkedList<FlacReader> _playlist;
         private AudioSessionControl _audioSessionControl;
         private LinkedListNode<FlacReader> _currentPlaylistItem;
         private bool _disposed;
-        private EventWaitHandle _initializationWaitHandle;
-        private MMDevice _playbackDevice;
         private DispatcherTimer _playbackTimer;
-        private WaveOutEvent _waveOutEvent;
-        private Thread _waveOutEventThread;
+        private WaveOutEvent _player;
+        private EventWaitHandle _playerInitializationWaitHandle;
 
-        public AudioPlayer()
+        public FlacPlayer()
         {
             _playlist = new LinkedList<FlacReader>();
             _playbackTimer = new DispatcherTimer();
             _playbackTimer.Interval = new TimeSpan(1);
             _playbackTimer.Tick += PlaybackTimer_Tick;
 
-            _playbackDevice = GetPlaybackDevice();
-            _playbackDevice.AudioSessionManager.OnSessionCreated += AudioSessionManager_OnSessionCreated;
+            var playbackDevice = GetPlaybackDevice();
+            playbackDevice.AudioSessionManager.OnSessionCreated += AudioSessionManager_OnSessionCreated;
         }
 
-        ~AudioPlayer()
+        ~FlacPlayer()
         {
             Dispose(false);
         }
@@ -118,12 +116,12 @@ namespace NathanHarrenstein.MusicTimeline.Audio
         {
             get
             {
-                if (_waveOutEvent == null)
+                if (_player == null)
                 {
                     throw new InvalidOperationException("The playback state cannot be retrieved until a track has been loaded.");
                 }
 
-                return _waveOutEvent.PlaybackState;
+                return _player.PlaybackState;
             }
         }
 
@@ -243,25 +241,25 @@ namespace NathanHarrenstein.MusicTimeline.Audio
 
         public void Pause()
         {
-            if (_waveOutEvent == null)
+            if (_player == null)
             {
                 return;
             }
 
-            _waveOutEvent.Pause();
+            _player.Pause();
             UpdatePlaybackState();
         }
 
         public void Play()
         {
-            _initializationWaitHandle.WaitOne();
+            _playerInitializationWaitHandle.WaitOne();
 
             if (!_playbackTimer.IsEnabled)
             {
                 _playbackTimer.Start();
             }
 
-            _waveOutEvent.Play();
+            _player.Play();
             UpdatePlaybackState();
         }
 
@@ -287,13 +285,13 @@ namespace NathanHarrenstein.MusicTimeline.Audio
 
         public void Stop()
         {
-            if (_waveOutEvent == null || _currentPlaylistItem == null || _currentPlaylistItem.Value == null)
+            if (_player == null || _currentPlaylistItem == null || _currentPlaylistItem.Value == null)
             {
                 return;
             }
 
             _playbackTimer?.Stop();
-            _waveOutEvent.Stop();
+            _player.Stop();
 
             _currentPlaylistItem.Value.Seek(0, SeekOrigin.Begin);
 
@@ -305,9 +303,7 @@ namespace NathanHarrenstein.MusicTimeline.Audio
         {
             try
             {
-                MMDeviceEnumerator multimediaDeviceEnumerator = new MMDeviceEnumerator();
-
-                return multimediaDeviceEnumerator.GetDefaultAudioEndpoint(DataFlow.Render, Role.Multimedia);
+                return new MMDeviceEnumerator().GetDefaultAudioEndpoint(DataFlow.Render, Role.Multimedia);
             }
             catch (Exception)
             {
@@ -319,12 +315,10 @@ namespace NathanHarrenstein.MusicTimeline.Audio
         {
             if (!_disposed)
             {
-                if (_waveOutEvent != null)
+                if (_player != null)
                 {
-                    _waveOutEvent.Dispose();
+                    _player.Dispose();
                 }
-
-                _currentPlaylistItem = null;
 
                 foreach (var playlistItem in _playlist)
                 {
@@ -397,38 +391,38 @@ namespace NathanHarrenstein.MusicTimeline.Audio
             }
         }
 
-        private void InitializeWaveOut()
+        private void InitializePlayer()
         {
-            if (_waveOutEvent != null)
+            if (_player != null)
             {
-                _waveOutEvent.Dispose();
+                _player.Dispose();
             }
 
-            _waveOutEvent = new WaveOutEvent();
-            _waveOutEvent.Init(_currentPlaylistItem.Value);
+            _player = new WaveOutEvent();
+            _player.Init(_currentPlaylistItem.Value);
 
-            _initializationWaitHandle.Set();
+            _playerInitializationWaitHandle.Set();
 
             UpdateTotalTime();
         }
 
         private void Load(LinkedListNode<FlacReader> playlistItem)
         {
-            if (_waveOutEventThread != null)
+            if (_player != null && PlaybackState != PlaybackState.Stopped)
             {
                 Stop();
             }
 
-            _initializationWaitHandle = new EventWaitHandle(false, EventResetMode.ManualReset);
+            _playerInitializationWaitHandle = new EventWaitHandle(false, EventResetMode.ManualReset);
             _currentPlaylistItem = playlistItem;
 
-            StartWaveOutThread();
+            StartPlaybackThread();
             UpdateTrackChanged();
         }
 
         private void PlaybackTimer_Tick(object sender, EventArgs e)
         {
-            if (_waveOutEvent.PlaybackState == PlaybackState.Stopped)
+            if (_player.PlaybackState == PlaybackState.Stopped)
             {
                 if (CanSkipForward())
                 {
@@ -446,13 +440,14 @@ namespace NathanHarrenstein.MusicTimeline.Audio
             UpdateCurrentTime();
         }
 
-        private void StartWaveOutThread()
+        private void StartPlaybackThread()
         {
-            _waveOutEventThread = new Thread(new ThreadStart(InitializeWaveOut));
-            _waveOutEventThread.IsBackground = true;
-            _waveOutEventThread.Priority = ThreadPriority.Highest;
-            _waveOutEventThread.SetApartmentState(ApartmentState.MTA);
-            _waveOutEventThread.Start();
+            var playbackThread = new Thread(new ThreadStart(InitializePlayer));
+            playbackThread.Name = "Playback Thread";
+            playbackThread.IsBackground = true;
+            playbackThread.Priority = ThreadPriority.Highest;
+            playbackThread.SetApartmentState(ApartmentState.MTA);
+            playbackThread.Start();
         }
 
         private void UpdateCurrentTime()
@@ -467,7 +462,7 @@ namespace NathanHarrenstein.MusicTimeline.Audio
 
         private void UpdatePlaybackState()
         {
-            System.Windows.Application.Current.Dispatcher.Invoke(() => OnPlaybackStateChanged(new PlaybackStateEventArgs(_waveOutEvent.PlaybackState)));
+            System.Windows.Application.Current.Dispatcher.Invoke(() => OnPlaybackStateChanged(new PlaybackStateEventArgs(_player.PlaybackState)));
         }
 
         private void UpdateTotalTime()

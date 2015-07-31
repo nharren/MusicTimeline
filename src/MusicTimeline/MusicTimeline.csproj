@@ -85,7 +85,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="Audio\AudioPlayer.cs" />
+    <Compile Include="Audio\FlacPlayer.cs" />
     <Compile Include="Audio\MuteEventArgs.cs" />
     <Compile Include="Audio\VolumeEventArgs.cs" />
     <Compile Include="Builders\AlbumBuilder.cs" />
