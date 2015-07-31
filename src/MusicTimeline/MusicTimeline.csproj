@@ -107,8 +107,7 @@
     <Compile Include="Controls\TreeViewItem.cs" />
     <Compile Include="Converters\ComposerImageToBitmapConverter.cs" />
     <Compile Include="Converters\ComposerToThumbnailConverter.cs" />
-    <Compile Include="Converters\NationalityToImageConverter.cs" />
-    <Compile Include="Converters\TimeSpanToSecondsConverter.cs" />
+    <Compile Include="Converters\NationalityToFlagConverter.cs" />
     <Compile Include="Converters\UrlToCommandConverter.cs" />
     <Compile Include="Converters\UrlToFaviconConverter.cs" />
     <Compile Include="Converters\UrlToTitleConverter.cs" />

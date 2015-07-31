@@ -8,7 +8,7 @@ namespace NathanHarrenstein.MusicTimeline.Converters
 {
     public class DecimalToRomanConverter : IValueConverter
     {
-        private static Dictionary<int, string> DecimalRoman = new Dictionary<int, string>()
+        private static Dictionary<int, string> _decimalToRomanMap = new Dictionary<int, string>()
         {
             { 1000, "M" },
             { 900, "CM" },
@@ -24,7 +24,7 @@ namespace NathanHarrenstein.MusicTimeline.Converters
             { 1, "I" },
         };
 
-        private static Dictionary<char, int> RomanDecimal = new Dictionary<char, int>()
+        private static Dictionary<char, int> _romanToDecimalMap = new Dictionary<char, int>()
         {
             {'I', 1},
             {'V', 5},
@@ -35,21 +35,11 @@ namespace NathanHarrenstein.MusicTimeline.Converters
             {'M', 1000}
         };
 
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            return DecimalToRoman((int)value);
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            return RomanToDecimal((string)value);
-        }
-
         public static string DecimalToRoman(int number)
         {
             var roman = new StringBuilder();
 
-            foreach (var map in DecimalRoman)
+            foreach (var map in _decimalToRomanMap)
             {
                 while (number - map.Key >= 0)
                 {
@@ -67,17 +57,27 @@ namespace NathanHarrenstein.MusicTimeline.Converters
 
             for (int i = 0; i < roman.Length; i++)
             {
-                if (i + 1 < roman.Length && RomanDecimal[roman[i]] < RomanDecimal[roman[i + 1]])
+                if (i + 1 < roman.Length && _romanToDecimalMap[roman[i]] < _romanToDecimalMap[roman[i + 1]])
                 {
-                    number -= RomanDecimal[roman[i]];
+                    number -= _romanToDecimalMap[roman[i]];
                 }
                 else
                 {
-                    number += RomanDecimal[roman[i]];
+                    number += _romanToDecimalMap[roman[i]];
                 }
             }
 
             return number;
+        }
+
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return DecimalToRoman((int)value);
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return RomanToDecimal((string)value);
         }
     }
 }

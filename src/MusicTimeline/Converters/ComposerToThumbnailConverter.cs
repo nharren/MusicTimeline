@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media.Imaging;
 
@@ -12,25 +11,15 @@ namespace NathanHarrenstein.MusicTimeline.Converters
 {
     internal class ComposerToThumbnailConverter : IValueConverter
     {
-        private static Dictionary<int, BitmapImage> Cache = new Dictionary<int, BitmapImage>();
-
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            return ComposerToThumbnail((Composer)value);
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            throw new NotImplementedException();
-        }
+        private static Dictionary<int, BitmapImage> _thumbnailCache = new Dictionary<int, BitmapImage>();
 
         public static BitmapImage ComposerToThumbnail(Composer composer)
         {
             var thumbnail = (BitmapImage)null;
 
-            if (Cache.TryGetValue(composer.ID, out thumbnail))
+            if (_thumbnailCache.TryGetValue(composer.ID, out thumbnail))
             {
-                return Cache[composer.ID];
+                return _thumbnailCache[composer.ID];
             }
 
             var directoryPath = $@"{Environment.CurrentDirectory}\Resources\Thumbnails\";
@@ -52,7 +41,7 @@ namespace NathanHarrenstein.MusicTimeline.Converters
                 thumbnail.EndInit();
                 thumbnail.Freeze();
 
-                Cache[composer.ID] = thumbnail;
+                _thumbnailCache[composer.ID] = thumbnail;
 
                 return thumbnail;
             }
@@ -60,9 +49,19 @@ namespace NathanHarrenstein.MusicTimeline.Converters
             return CreateThumbnail(composer);
         }
 
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return ComposerToThumbnail((Composer)value);
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+
         internal static void ClearThumbnailCache()
         {
-            Cache.Clear();
+            _thumbnailCache.Clear();
 
             var thumbnailDirectory = $@"{Environment.CurrentDirectory}\Resources\Thumbnails\";
             var thumbnailPaths = Directory.EnumerateFiles(thumbnailDirectory).ToArray();
@@ -98,11 +97,11 @@ namespace NathanHarrenstein.MusicTimeline.Converters
                     encoder.Save(stream);
                 }
 
-                Cache[composer.ID] = thumbnail;
+                _thumbnailCache[composer.ID] = thumbnail;
 
                 return thumbnail;
             }
-            else if (!Cache.TryGetValue(0, out thumbnail))
+            else if (!_thumbnailCache.TryGetValue(0, out thumbnail))
             {
                 thumbnailPath = $@"{Environment.CurrentDirectory}\Resources\Thumbnails\0.jpg";
                 var thumbnailUri = new Uri(thumbnailPath, UriKind.Absolute);
@@ -116,7 +115,7 @@ namespace NathanHarrenstein.MusicTimeline.Converters
                     thumbnail.EndInit();
                     thumbnail.Freeze();
 
-                    Cache[0] = thumbnail;
+                    _thumbnailCache[0] = thumbnail;
 
                     return thumbnail;
                 }
@@ -139,7 +138,7 @@ namespace NathanHarrenstein.MusicTimeline.Converters
                         encoder.Save(stream);
                     }
 
-                    Cache[0] = thumbnail;
+                    _thumbnailCache[0] = thumbnail;
 
                     return thumbnail;
                 }

@@ -18,7 +18,7 @@
       mc:Ignorable="d">
     <Page.Resources>
         <cv:ComposerImageToBitmapConverter x:Key="ComposerImageToBitmapConverter" />
-        <cv:NationalityToImageConverter x:Key="NationalityToImageConverter" />
+        <cv:NationalityToFlagConverter x:Key="NationalityToFlagConverter" />
         <cv:UrlToCommandConverter x:Key="UrlToCommandConverter" />
         <cv:UrlToFaviconConverter x:Key="UrlToFaviconConverter" />
         <cv:UrlToTitleConverter x:Key="UrlToTitleConverter" />
@@ -95,7 +95,7 @@
                                HorizontalAlignment="Center"
                                VerticalAlignment="Center"
                                Source="{Binding Name,
-                                                Converter={StaticResource NationalityToImageConverter}}"
+                                                Converter={StaticResource NationalityToFlagConverter}}"
                                ToolTip="{Binding Name}" />
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>

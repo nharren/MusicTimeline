@@ -13,7 +13,7 @@
       d:DesignWidth="300"
       mc:Ignorable="d">
     <Page.Resources>
-        <cv:NationalityToImageConverter x:Key="NationalityToImageConverter" />
+        <cv:NationalityToFlagConverter x:Key="NationalityToFlagConverter" />
         <cv:ComposerToThumbnailConverter x:Key="ComposerToThumbnailConverter" />
     </Page.Resources>
     <Page.InputBindings>
@@ -124,7 +124,7 @@
                                                            Margin="5,0,0,0"
                                                            SnapsToDevicePixels="True"
                                                            Source="{Binding Name,
-                                                                            Converter={StaticResource NationalityToImageConverter},
+                                                                            Converter={StaticResource NationalityToFlagConverter},
                                                                             IsAsync=True}"
                                                            UseLayoutRounding="True" />
                                                 </DataTemplate>
