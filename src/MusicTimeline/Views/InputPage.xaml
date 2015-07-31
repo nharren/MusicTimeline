@@ -392,9 +392,9 @@
         <DataTemplate x:Key="SuggestionTemplate" DataType="{x:Type db:Location}">
             <TextBlock Text="{Binding Name}" />
         </DataTemplate>
-        <cv:BytesToBitmapConverter x:Key="BytesToBitmapConverter" />
+        <cv:ComposerImageToBitmapConverter x:Key="ComposerImageToBitmapConverter" />
         <cv:UrlToCommandConverter x:Key="UrlToCommandConverter" />
-        <cv:UrlToIconConverter x:Key="UrlToIconConverter" />
+        <cv:UrlToFaviconConverter x:Key="UrlToFaviconConverter" />
         <cv:UrlToTitleConverter x:Key="UrlToTitleConverter" />
         <Style BasedOn="{StaticResource FieldStyle}" TargetType="{x:Type c:AutoCompleteBox}">
             <Style.Setters>
@@ -659,8 +659,7 @@
                                     <Image x:Name="SelectedImage"
                                            Grid.ColumnSpan="2"
                                            DataContext="{TemplateBinding SelectedItem}"
-                                           Source="{Binding Image,
-                                                            Converter={StaticResource BytesToBitmapConverter},
+                                           Source="{Binding Converter={StaticResource ComposerImageToBitmapConverter},
                                                             IsAsync=True}">
                                         <Image.ContextMenu>
                                             <ContextMenu>
@@ -685,8 +684,8 @@
                                 <Image Height="30"
                                        MaxWidth="30"
                                        Cursor="Hand"
-                                       Source="{Binding Image,
-                                                        Converter={StaticResource BytesToBitmapConverter}}" />
+                                       Source="{Binding Converter={StaticResource ComposerImageToBitmapConverter},
+                                                        IsAsync=True}" />
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>
@@ -834,7 +833,7 @@
                                                     <ColumnDefinition Width="5" />
                                                     <ColumnDefinition />
                                                 </Grid.ColumnDefinitions>
-                                                <Image Source="{Binding URL, Converter={StaticResource UrlToIconConverter}, IsAsync=True}" />
+                                                <Image Source="{Binding URL, Converter={StaticResource UrlToFaviconConverter}, IsAsync=True}" />
                                                 <ContentPresenter Grid.Column="2" />
                                             </Grid>
                                         </ControlTemplate>
