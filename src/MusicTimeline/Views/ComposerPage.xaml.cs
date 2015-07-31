@@ -245,11 +245,11 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
                 _sampleDictionary[flacReader] = sample;
                 _flacPlayer.AddToPlaylist(flacReader);
-            }
 
-            if (_flacPlayer.Playlist.Count > 0)
-            {
-                _flacPlayer.Play();
+                if (_sampleDictionary.Count == 1)
+                {
+                    _flacPlayer.Play();
+                }
             }
         }
 

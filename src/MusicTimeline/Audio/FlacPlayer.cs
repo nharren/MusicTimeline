@@ -317,6 +317,11 @@ namespace NathanHarrenstein.MusicTimeline.Audio
             {
                 if (_player != null)
                 {
+                    if (_player.PlaybackState != PlaybackState.Stopped)
+                    {
+                        Stop();
+                    }
+
                     _player.Dispose();
                 }
 
