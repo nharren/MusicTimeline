@@ -1,7 +1,7 @@
 ﻿using System;
 using System.IO;
 
-namespace NathanHarrenstein.MusicTimeline
+namespace NathanHarrenstein.MusicTimeline.Logging
 {
     public static class Logger
     {

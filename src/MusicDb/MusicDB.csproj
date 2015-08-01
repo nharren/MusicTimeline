@@ -74,7 +74,9 @@
     <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Scripts\v3_AllowNullCompositionDate.sql" />
+  </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\v1_InitialVersion.sql" />
     <None Include="Scripts\v2_AddSampleTable.sql" />

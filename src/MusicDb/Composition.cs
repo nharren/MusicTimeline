@@ -23,7 +23,6 @@ namespace NathanHarrenstein.MusicDB
 
         public short? CompositionCollectionID { get; set; }
 
-        [Required]
         [StringLength(50)]
         public string Dates { get; set; }
 

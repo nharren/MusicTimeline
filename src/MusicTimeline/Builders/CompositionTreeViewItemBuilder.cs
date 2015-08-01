@@ -1,6 +1,7 @@
 ﻿using NathanHarrenstein.MusicDB;
 using NathanHarrenstein.MusicTimeline.Controls;
 using System;
+using System.Text;
 using System.Windows;
 
 namespace NathanHarrenstein.MusicTimeline.Builders
@@ -13,13 +14,36 @@ namespace NathanHarrenstein.MusicTimeline.Builders
 
             compositionTreeViewItem.Composition = composition;
             compositionTreeViewItem.Parent = parent;
-            compositionTreeViewItem.Header = composition.Name;
+            compositionTreeViewItem.Header = GetHeader(composition);
             compositionTreeViewItem.IsExpanded = composition.Movements.Count > 0 ? new Nullable<bool>(false) : null;
             compositionTreeViewItem.CanExpand = composition.Movements.Count > 0 ? true : false;
             // compositionTreeViewItem.Command = GetCommand(composition);                                                     REQUIREMENTS: Set Audio Directory; Retrieve ID from track.
             compositionTreeViewItem.StarVisibility = composition.IsPopular ? Visibility.Visible : Visibility.Collapsed;
 
             return compositionTreeViewItem;
+        }
+
+        private static string GetHeader(Composition composition)
+        {
+            var stringBuilder = new StringBuilder();
+            stringBuilder.Append(composition.Name);
+
+            if (composition.CatalogNumbers.Count > 0)
+            {
+                stringBuilder.Append(", ");
+                stringBuilder.Append(composition.CatalogNumbers[0].CompositionCatalog.Prefix);
+                stringBuilder.Append(" ");
+                stringBuilder.Append(composition.CatalogNumbers[0].Number);               
+            }
+
+            if (composition.Dates != null)
+            {
+                stringBuilder.Append(" (");
+                stringBuilder.Append(composition.Dates);
+                stringBuilder.Append(")");
+            }
+
+            return stringBuilder.ToString();
         }
 
         /*

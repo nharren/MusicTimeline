@@ -1,18 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using NathanHarrenstein.MusicTimeline.Logging;
+using System;
 using System.Linq;
 using System.Net;
 using System.Text;
-using System.Threading.Tasks;
 using System.Xml.Linq;
 
-namespace NathanHarrenstein.MusicTimeline.Utilities
+namespace NathanHarrenstein.MusicTimeline.Scrapers
 {
-    public static class WikiUtility
+    public static class WikipediaScraper
     {
-        public static string GetHTML(string wikiUrl)
+        public static string Scrape(string url)
         {
-            var urlParts = wikiUrl.Split(new string[] { "/wiki/" }, StringSplitOptions.None);
+            var urlParts = url.Split(new string[] { "/wiki/" }, StringSplitOptions.None);
 
             if (urlParts.Length > 1)
             {
@@ -32,19 +31,19 @@ namespace NathanHarrenstein.MusicTimeline.Utilities
                     catch (Exception e)
                     {
                         Logger.Log(e.ToString(), "MusicTimeline.log");
-                    }               
+                    }
                 }
 
                 if (xml != null)
                 {
-                    return ConvertExtendedASCII(XDocument.Parse(xml).Descendants("extract").First().Value); 
+                    return ConvertExtendedASCII(XDocument.Parse(xml).Descendants("extract").First().Value);
                 }
             }
 
             return null;
         }
 
-        public static string ConvertExtendedASCII(string HTML)
+        private static string ConvertExtendedASCII(string HTML)
         {
             string retVal = "";
             char[] s = HTML.ToCharArray();

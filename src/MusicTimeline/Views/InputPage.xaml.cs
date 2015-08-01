@@ -3,6 +3,8 @@ using Luminescence.Xiph;
 using NathanHarrenstein.MusicDB;
 using NathanHarrenstein.MusicTimeline.Builders;
 using NathanHarrenstein.MusicTimeline.Extensions;
+using NathanHarrenstein.MusicTimeline.Logging;
+using NathanHarrenstein.MusicTimeline.Scrapers;
 using NathanHarrenstein.MusicTimeline.Utilities;
 using System;
 using System.Collections.Generic;
@@ -22,12 +24,12 @@ namespace NathanHarrenstein.MusicTimeline.Views
 {
     public partial class InputPage : Page
     {
+        private DataProvider _dataProvider;
         private ObservableCollection<Composer> _selectedComposers;
         private Composition _selectedComposition;
         private CompositionCollection _selectedCompositionCollection;
         private Movement _selectedMovement;
         private Recording _selectedRecording;
-        private DataProvider _dataProvider;
 
         public InputPage()
         {
@@ -608,7 +610,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
                     if (url.Contains("wikipedia"))
                     {
-                        _selectedComposers[0].Biography =  BiographyUtility.CleanXaml(HtmlToXamlConverter.ConvertHtmlToXaml(WikiUtility.GetHTML(url), false));
+                        _selectedComposers[0].Biography = BiographyUtility.CleanXaml(HtmlToXamlConverter.ConvertHtmlToXaml(WikipediaScraper.Scrape(url), false));
                         ComposerBiographyTextBox.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
                     }
                 }
@@ -1035,6 +1037,14 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
         #region Movement Section Events
 
+        private void MovementDeleteCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (MovementListBox.IsEnabled)
+            {
+                _dataProvider.Movements.Remove((Movement)MovementListBox.SelectedItem);
+            }
+        }
+
         private void MovementListBox_Drop(object sender, DragEventArgs e)
         {
             if (MovementListBox.IsEnabled)
@@ -1059,14 +1069,6 @@ namespace NathanHarrenstein.MusicTimeline.Views
                 _selectedMovement = (Movement)MovementListBox.SelectedItem;
 
                 RefreshMovementSection();
-            }
-        }
-
-        private void MovementDeleteCommand_Executed(object sender, ExecutedRoutedEventArgs e)
-        {
-            if (MovementListBox.IsEnabled)
-            {
-                _dataProvider.Movements.Remove((Movement)MovementListBox.SelectedItem);
             }
         }
 
@@ -1102,6 +1104,14 @@ namespace NathanHarrenstein.MusicTimeline.Views
                 }
 
                 _selectedRecording.Album = recordingAlbum;
+            }
+        }
+
+        private void RecordingDeleteCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (RecordingListBox.IsEnabled)
+            {
+                _dataProvider.Recordings.Local.Remove((Recording)RecordingListBox.SelectedItem);
             }
         }
 
@@ -1186,12 +1196,45 @@ namespace NathanHarrenstein.MusicTimeline.Views
             }
         }
 
-        private void RecordingDeleteCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        private void RecordingLocationDeleteCommand_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            if (RecordingListBox.IsEnabled)
+            if (RecordingLocationListBox.IsEnabled)
             {
-                _dataProvider.Recordings.Local.Remove((Recording)RecordingListBox.SelectedItem);
+                var location = (Location)RecordingLocationListBox.SelectedItem;
+
+                location.Recordings.Remove(_selectedRecording);
+
+                if (location.Recordings.Count == 0 && location.BirthLocationComposers.Count == 0 && location.DeathLocationComposers.Count == 0)
+                {
+                    _dataProvider.Locations.Local.Remove(location);
+                }
             }
+        }
+
+        private void RecordingLocationListBox_Drop(object sender, DragEventArgs e)
+        {
+            if (!RecordingLocationListBox.IsEnabled)
+            {
+                return;
+            }
+
+            var locationName = (string)e.Data.GetData(DataFormats.UnicodeText);
+
+            if (locationName == null)
+            {
+                return;
+            }
+
+            var location = _dataProvider.Locations.FirstOrDefault(l => l.Name == locationName);
+
+            if (location == null)
+            {
+                location = LocationBuilder.Build(locationName, _dataProvider);
+                _dataProvider.Locations.Local.Add(location);
+            }
+
+            location.Recordings.Add(_selectedRecording);
+            _selectedRecording.Locations.Add(location);
         }
 
         private void RecordingPerformerDeleteCommand_Executed(object sender, ExecutedRoutedEventArgs e)
@@ -1235,47 +1278,6 @@ namespace NathanHarrenstein.MusicTimeline.Views
             _selectedRecording.Performers.Add(performer);
 
             RecordingPerformerListBox.SelectedItem = performer;
-        }
-
-        private void RecordingLocationListBox_Drop(object sender, DragEventArgs e)
-        {
-            if (!RecordingLocationListBox.IsEnabled)
-            {
-                return;
-            }
-
-            var locationName = (string)e.Data.GetData(DataFormats.UnicodeText);
-
-            if (locationName == null)
-            {
-                return;
-            }
-
-            var location = _dataProvider.Locations.FirstOrDefault(l => l.Name == locationName);
-
-            if (location == null)
-            {
-                location = LocationBuilder.Build(locationName, _dataProvider);
-                _dataProvider.Locations.Local.Add(location);
-            }
-
-            location.Recordings.Add(_selectedRecording);
-            _selectedRecording.Locations.Add(location);
-        }
-
-        private void RecordingLocationDeleteCommand_Executed(object sender, ExecutedRoutedEventArgs e)
-        {
-            if (RecordingLocationListBox.IsEnabled)
-            {
-                var location = (Location)RecordingLocationListBox.SelectedItem;
-
-                location.Recordings.Remove(_selectedRecording);
-
-                if (location.Recordings.Count == 0 && location.BirthLocationComposers.Count == 0 && location.DeathLocationComposers.Count == 0)
-                {
-                    _dataProvider.Locations.Local.Remove(location);
-                }
-            }
         }
 
         #endregion Recording Section Events

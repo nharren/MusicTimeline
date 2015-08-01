@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NathanHarrenstein.MusicTimeline.Logging;
+using System;
 using System.Windows;
 
 namespace NathanHarrenstein.MusicTimeline
