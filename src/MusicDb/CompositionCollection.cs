@@ -7,6 +7,7 @@ namespace NathanHarrenstein.MusicDB
     [Table("CompositionCollection")]
     public partial class CompositionCollection
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public CompositionCollection()
         {
             CatalogNumbers = new ObservableCollection<CatalogNumber>();
@@ -15,21 +16,24 @@ namespace NathanHarrenstein.MusicDB
             Composers = new ObservableCollection<Composer>();
         }
 
-        public virtual ObservableCollection<CatalogNumber> CatalogNumbers { get; set; }
-
-        public virtual ObservableCollection<Composer> Composers { get; set; }
-
-        public virtual ObservableCollection<Composition> Compositions { get; set; }
-
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public short ID { get; set; }
-
-        public bool IsPopular { get; set; }
 
         [Required]
         [StringLength(50)]
         public string Name { get; set; }
 
+        public bool IsPopular { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ObservableCollection<CatalogNumber> CatalogNumbers { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ObservableCollection<Composition> Compositions { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ObservableCollection<Recording> Recordings { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ObservableCollection<Composer> Composers { get; set; }
     }
 }

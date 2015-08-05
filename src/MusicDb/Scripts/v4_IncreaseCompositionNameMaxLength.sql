@@ -1,0 +1,2 @@
+ALTER TABLE Composition
+ALTER COLUMN Name nvarchar(255) NOT NULL

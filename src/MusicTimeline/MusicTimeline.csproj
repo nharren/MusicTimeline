@@ -92,23 +92,10 @@
     <Compile Include="Audio\FlacPlayer.cs" />
     <Compile Include="Audio\MuteEventArgs.cs" />
     <Compile Include="Audio\VolumeEventArgs.cs" />
-    <Compile Include="Builders\AlbumBuilder.cs" />
-    <Compile Include="Builders\CatalogNumberBuilder.cs" />
-    <Compile Include="Builders\ComposerBuilder.cs" />
-    <Compile Include="Builders\ComposerLinkBuilder.cs" />
-    <Compile Include="Builders\CompositionBuilder.cs" />
-    <Compile Include="Builders\CompositionCatalogBuilder.cs" />
-    <Compile Include="Builders\CompositionCollectionBuilder.cs" />
-    <Compile Include="Builders\LocationBuilder.cs" />
-    <Compile Include="Builders\MovementBuilder.cs" />
-    <Compile Include="Builders\PerformerBuilder.cs" />
-    <Compile Include="Builders\RecordingBuilder.cs" />
     <Compile Include="Controls\AutoCompleteBox.cs" />
     <Compile Include="Controls\DoubleBorderDecorator.cs" />
     <Compile Include="Controls\NumberBox.cs" />
     <Compile Include="Controls\PanningScrollViewer.cs" />
-    <Compile Include="Controls\TreeView.cs" />
-    <Compile Include="Controls\TreeViewItem.cs" />
     <Compile Include="Converters\ComposerImageToBitmapConverter.cs" />
     <Compile Include="Converters\ComposerToThumbnailConverter.cs" />
     <Compile Include="Converters\NationalityToFlagConverter.cs" />
@@ -123,11 +110,10 @@
     <Compile Include="Audio\PlaybackStateEventArgs.cs" />
     <Compile Include="Builders\ComposerEraViewModelBuilder.cs" />
     <Compile Include="Builders\ComposerEventViewModelBuilder.cs" />
-    <Compile Include="Builders\ComposerImageBuilder.cs" />
     <Compile Include="Audio\TimeSpanEventArgs.cs" />
     <Compile Include="Audio\TrackEventArgs.cs" />
     <Compile Include="Scrapers\KlassikaScraper.cs" />
-    <Compile Include="Utilities\BindingUtility.cs" />
+    <Compile Include="Builders\BindingBuilder.cs" />
     <Compile Include="Converters\DecimalToRomanConverter.cs" />
     <Compile Include="Utilities\BiographyUtility.cs" />
     <Compile Include="Scrapers\WikipediaScraper.cs" />
@@ -140,23 +126,16 @@
     <Compile Include="Views\TimelinePage.xaml.cs">
       <DependentUpon>TimelinePage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\CompositionCollectionTreeViewItem.cs" />
-    <Compile Include="Controls\CompositionTreeViewItem.cs" />
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\MovementTreeViewItem.cs" />
     <Compile Include="Views\ComposerPage.xaml.cs">
       <DependentUpon>ComposerPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Builders\CompositionCollectionTreeViewItemBuilder.cs" />
-    <Compile Include="Builders\CompositionTreeViewItemBuilder.cs" />
-    <Compile Include="Builders\MovementTreeViewItemBuilder.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Controls\TreeViewItemBase.cs" />
     <Compile Include="Utilities\ListUtility.cs" />
     <Compile Include="Utilities\NameUtility.cs" />
     <Page Include="Themes\Generic.xaml">

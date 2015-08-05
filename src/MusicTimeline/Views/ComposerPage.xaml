@@ -865,16 +865,50 @@
                         <RowDefinition Height="Auto" />
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
-                    <TextBlock Margin="0,0,0,4"
-                               FontSize="18"
+                    <TextBlock FontSize="18"
                                FontWeight="Bold"
                                Text="Compositions" />
-                    <c:TreeView x:Name="TreeView"
-                                Grid.Row="1"
-                                FontFamily="Cambria"
-                                FontSize="14"
-                                FontWeight="SemiBold"
-                                Foreground="#FFDFE0E6" />
+                    <TreeView x:Name="TreeView"
+                              Grid.Row="1"
+                              Background="Transparent"
+                              BorderThickness="0"
+                              FontFamily="Cambria"
+                              FontSize="14"
+                              FontWeight="SemiBold"
+                              Foreground="#FFDFE0E6"
+                              VirtualizingStackPanel.IsVirtualizing="True"
+                              VirtualizingStackPanel.VirtualizationMode="Recycling">
+                        <TreeView.Resources>
+                            <Style TargetType="{x:Type TreeViewItem}">
+                                <Style.Setters>
+                                    <Setter Property="FontFamily" Value="Cambria" />
+                                    <Setter Property="FontSize" Value="14" />
+                                    <Setter Property="FontWeight" Value="SemiBold" />
+                                    <Setter Property="Foreground" Value="#DFE0E6" />
+                                    <Setter Property="Margin" Value="0,4,0,0" />
+                                </Style.Setters>
+                            </Style>
+                        </TreeView.Resources>
+                        <TreeView.ItemTemplate>
+                            <DataTemplate>
+                                <TreeViewItem Header="{Binding Key}"
+                                              ItemsSource="{Binding}">
+                                    <TreeViewItem.ItemTemplate>
+                                        <DataTemplate DataType="{x:Type db:Composition}">
+                                            <TreeViewItem Header="{Binding Name}"
+                                                          ItemsSource="{Binding Movements}">
+                                                <TreeViewItem.ItemTemplate>
+                                                    <DataTemplate DataType="{x:Type db:Movement}">
+                                                        <TreeViewItem Header="{Binding Name}" />
+                                                    </DataTemplate>
+                                                </TreeViewItem.ItemTemplate>
+                                            </TreeViewItem>
+                                        </DataTemplate>
+                                    </TreeViewItem.ItemTemplate>
+                                </TreeViewItem>
+                            </DataTemplate>
+                        </TreeView.ItemTemplate>
+                    </TreeView>
                 </Grid>
             </Grid>
         </ScrollViewer>

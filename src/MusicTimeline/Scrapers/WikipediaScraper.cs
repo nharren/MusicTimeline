@@ -9,7 +9,7 @@ namespace NathanHarrenstein.MusicTimeline.Scrapers
 {
     public static class WikipediaScraper
     {
-        public static string Scrape(string url)
+        public static string ScrapeArticle(string url)
         {
             var urlParts = url.Split(new string[] { "/wiki/" }, StringSplitOptions.None);
 

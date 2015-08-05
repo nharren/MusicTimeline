@@ -7,22 +7,23 @@ namespace NathanHarrenstein.MusicDB
     [Table("CompositionCatalog")]
     public partial class CompositionCatalog
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public CompositionCatalog()
         {
             CatalogNumbers = new ObservableCollection<CatalogNumber>();
         }
 
-        public virtual ObservableCollection<CatalogNumber> CatalogNumbers { get; set; }
-
-        public virtual Composer Composer { get; set; }
-
-        public short ComposerID { get; set; }
-
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public short ID { get; set; }
 
         [Required]
         [StringLength(10)]
         public string Prefix { get; set; }
+
+        public short ComposerID { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ObservableCollection<CatalogNumber> CatalogNumbers { get; set; }
+
+        public virtual Composer Composer { get; set; }
     }
 }

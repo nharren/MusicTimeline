@@ -6,18 +6,18 @@ namespace NathanHarrenstein.MusicDB
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    [Table("ComposerLink")]
-    public partial class ComposerLink
+    [Table("CompositionLink")]
+    public partial class CompositionLink
     {
         
-        public short ID { get; set; }
+        public int ID { get; set; }
 
         [Required]
         [StringLength(255)]
         public string URL { get; set; }
 
-        public short ComposerID { get; set; }
+        public int CompositionID { get; set; }
 
-        public virtual Composer Composer { get; set; }
+        public virtual Composition Composition { get; set; }
     }
 }

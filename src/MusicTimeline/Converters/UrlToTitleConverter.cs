@@ -36,6 +36,11 @@ namespace NathanHarrenstein.MusicTimeline.Converters
                 Logger.Log(ex.ToString(), "MusicTimeline.log");
             }
 
+            if (htmlSource == null)
+            {
+                return null;
+            }
+
             var match = Regex.Match(htmlSource, @"\<title\b[^>]*\>\s*(?<Title>[\s\S]*?)\</title\>", RegexOptions.IgnoreCase);
             var group = match.Groups["Title"];
 

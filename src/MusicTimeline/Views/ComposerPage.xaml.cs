@@ -15,6 +15,7 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Markup;
@@ -226,11 +227,13 @@ namespace NathanHarrenstein.MusicTimeline.Views
             InfluencesTextBlock.Visibility = influencesVisibility;
             LinksItemControl.ItemsSource = _composer.ComposerLinks;
             LinksItemControl.Visibility = LinksTextBlock.Visibility = linksVisibility;
-            TreeView.Children = _composer.CompositionCollections
-                .Select<CompositionCollection, Controls.TreeViewItem>(cc => CompositionCollectionTreeViewItemBuilder.Build(cc, null))
-                .Concat(_composer.Compositions
-                    .Select(c => CompositionTreeViewItemBuilder.GetCompositionTreeViewItem(c, null)))
-                .OrderBy(tvi => tvi.Header);
+
+            var compositionTypes = _composer.CompositionCollections
+                .SelectMany(cc => cc.Compositions)
+                .Concat(_composer.Compositions)
+                .GroupBy(c => c.CompositionType?.Name ?? "Unknown");
+
+            TreeView.SetBinding(ItemsControl.ItemsSourceProperty, BindingBuilder.Build(compositionTypes, null, "Key"));
 
             ComposerImagesListBox.SelectedIndex = 0;
 
@@ -320,7 +323,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
         private void StartSampleLoadingThread()
         {
             var sampleLoadingThread = new Thread(new ThreadStart(LoadSamples));
-            sampleLoadingThread.Name = "Sample-Loading Thread";
+            sampleLoadingThread.Name = "Sample Loading Thread";
             sampleLoadingThread.IsBackground = true;
             sampleLoadingThread.Start();
         }

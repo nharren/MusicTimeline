@@ -7,6 +7,7 @@ namespace NathanHarrenstein.MusicDB
     [Table("Location")]
     public partial class Location
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Location()
         {
             BirthLocationComposers = new ObservableCollection<Composer>();
@@ -14,17 +15,19 @@ namespace NathanHarrenstein.MusicDB
             Recordings = new ObservableCollection<Recording>();
         }
 
-        public virtual ObservableCollection<Composer> BirthLocationComposers { get; set; }
-
-        public virtual ObservableCollection<Composer> DeathLocationComposers { get; set; }
-
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int ID { get; set; }
 
         [Required]
         [StringLength(50)]
         public string Name { get; set; }
 
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ObservableCollection<Composer> BirthLocationComposers { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ObservableCollection<Composer> DeathLocationComposers { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ObservableCollection<Recording> Recordings { get; set; }
     }
 }

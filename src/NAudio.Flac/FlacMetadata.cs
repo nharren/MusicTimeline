@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 
 namespace NAudio.Flac
 {
-    [System.Diagnostics.DebuggerDisplay("Type:{MetaDataType}   LastBlock:{IsLastMetaBlock}   Length:{Length} bytes")]
+    [DebuggerDisplay("Type:{MetaDataType}   LastBlock:{IsLastMetaBlock}   Length:{Length} bytes")]
     public class FlacMetadata
     {
         public unsafe static FlacMetadata FromStream(Stream stream)
@@ -69,7 +69,7 @@ namespace NAudio.Flac
             }
         }
 
-        protected FlacMetadata(FlacMetaDataType type, bool lastBlock, Int32 length)
+        protected FlacMetadata(FlacMetaDataType type, bool lastBlock, int length)
         {
             MetaDataType = type;
             IsLastMetaBlock = lastBlock;
@@ -78,8 +78,8 @@ namespace NAudio.Flac
 
         public FlacMetaDataType MetaDataType { get; private set; }
 
-        public Boolean IsLastMetaBlock { get; private set; }
+        public bool IsLastMetaBlock { get; private set; }
 
-        public Int32 Length { get; private set; }
+        public int Length { get; private set; }
     }
 }

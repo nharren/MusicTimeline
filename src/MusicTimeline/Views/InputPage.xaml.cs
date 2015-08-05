@@ -79,8 +79,8 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
         private void InitializeListBoxes()
         {
-            ComposerListBox.SetBinding(ItemsControl.ItemsSourceProperty, BindingUtility.Create(_dataProvider.Composers.Local, null, "Name"));
-            ComposerNationalityListBox.SetBinding(ItemsControl.ItemsSourceProperty, BindingUtility.Create(_dataProvider.Nationalities.Local, null, "Name"));
+            ComposerListBox.SetBinding(ItemsControl.ItemsSourceProperty, BindingBuilder.Build(_dataProvider.Composers.Local, null, "Name"));
+            ComposerNationalityListBox.SetBinding(ItemsControl.ItemsSourceProperty, BindingBuilder.Build(_dataProvider.Nationalities.Local, null, "Name"));
             ComposerEraListBox.ItemsSource = _dataProvider.Eras.Local;
             ComposerBirthLocationAutoCompleteBox.Suggestions = _dataProvider.Locations.Local;
             ComposerDeathLocationAutoCompleteBox.Suggestions = _dataProvider.Locations.Local;
@@ -141,16 +141,16 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
                 var composer = _selectedComposers.First();
 
-                ComposerNameTextBox.SetBinding(TextBox.TextProperty, BindingUtility.Create(composer, "Name"));
-                ComposerDatesTextBox.SetBinding(TextBox.TextProperty, BindingUtility.Create(composer, "Dates"));
+                ComposerNameTextBox.SetBinding(TextBox.TextProperty, BindingBuilder.Build(composer, "Name"));
+                ComposerDatesTextBox.SetBinding(TextBox.TextProperty, BindingBuilder.Build(composer, "Dates"));
                 ComposerBirthLocationAutoCompleteBox.Text = composer.BirthLocation?.Name;
                 ComposerDeathLocationAutoCompleteBox.Text = composer.DeathLocation?.Name;
-                ComposerInfluenceListBox.SetBinding(ItemsControl.ItemsSourceProperty, BindingUtility.Create(composer.Influences, null, "Name"));
-                ComposerImageListBox.SetBinding(ItemsControl.ItemsSourceProperty, BindingUtility.Create(composer.ComposerImages, null));
-                ComposerLinkListBox.SetBinding(ItemsControl.ItemsSourceProperty, BindingUtility.Create(composer.ComposerLinks, null));
-                ComposerBiographyTextBox.SetBinding(TextBox.TextProperty, BindingUtility.Create(composer, "Biography"));
-                CompositionCollectionListBox.SetBinding(ItemsControl.ItemsSourceProperty, BindingUtility.Create(composer.CompositionCollections, null, "Name"));
-                CompositionListBox.SetBinding(ItemsControl.ItemsSourceProperty, BindingUtility.Create(composer.Compositions, null, "Name"));
+                ComposerInfluenceListBox.SetBinding(ItemsControl.ItemsSourceProperty, BindingBuilder.Build(composer.Influences, null, "Name"));
+                ComposerImageListBox.SetBinding(ItemsControl.ItemsSourceProperty, BindingBuilder.Build(composer.ComposerImages, null));
+                ComposerLinkListBox.SetBinding(ItemsControl.ItemsSourceProperty, BindingBuilder.Build(composer.ComposerLinks, null));
+                ComposerBiographyTextBox.SetBinding(TextBox.TextProperty, BindingBuilder.Build(composer, "Biography"));
+                CompositionCollectionListBox.SetBinding(ItemsControl.ItemsSourceProperty, BindingBuilder.Build(composer.CompositionCollections, null, "Name"));
+                CompositionListBox.SetBinding(ItemsControl.ItemsSourceProperty, BindingBuilder.Build(composer.Compositions, null, "Name"));
 
                 ListUtility.AddMany(ComposerNationalityListBox.SelectedItems, composer.Nationalities.ToList());
                 ListUtility.AddMany(ComposerEraListBox.SelectedItems, composer.Eras.ToList());
@@ -169,8 +169,8 @@ namespace NathanHarrenstein.MusicTimeline.Views
                 ComposerBirthLocationAutoCompleteBox.Text = "<< Multiple Selection >>";
                 ComposerDeathLocationAutoCompleteBox.Text = "<< Multiple Selection >>";
                 ComposerBiographyTextBox.Text = "<< Multiple Selection >>";
-                CompositionCollectionListBox.SetBinding(ItemsControl.ItemsSourceProperty, BindingUtility.Create(_selectedComposers.Common(c => c.CompositionCollections), null, "Name"));
-                CompositionListBox.SetBinding(ItemsControl.ItemsSourceProperty, BindingUtility.Create(_selectedComposers.Common(c => c.Compositions), null, "Name"));
+                CompositionCollectionListBox.SetBinding(ItemsControl.ItemsSourceProperty, BindingBuilder.Build(_selectedComposers.Common(c => c.CompositionCollections), null, "Name"));
+                CompositionListBox.SetBinding(ItemsControl.ItemsSourceProperty, BindingBuilder.Build(_selectedComposers.Common(c => c.Compositions), null, "Name"));
             }
         }
 
@@ -222,10 +222,10 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
         public void LoadCompositionCollectionSection()
         {
-            CompositionCollectionNameTextBox.SetBinding(TextBox.TextProperty, BindingUtility.Create(_selectedCompositionCollection, "Name"));
-            CompositionCollectionCatalogPrefixListBox.SetBinding(ItemsControl.ItemsSourceProperty, BindingUtility.Create(_selectedCompositionCollection.Composers.SelectMany(c => c.CompositionCatalogs), null, "Prefix"));
+            CompositionCollectionNameTextBox.SetBinding(TextBox.TextProperty, BindingBuilder.Build(_selectedCompositionCollection, "Name"));
+            CompositionCollectionCatalogPrefixListBox.SetBinding(ItemsControl.ItemsSourceProperty, BindingBuilder.Build(_selectedCompositionCollection.Composers.SelectMany(c => c.CompositionCatalogs), null, "Prefix"));
             CompositionCollectionCatalogNumberTextBox.Text = _selectedCompositionCollection.CatalogNumbers.FirstOrDefault(cn => cn.CompositionCatalog.Prefix == (string)CompositionCollectionCatalogPrefixListBox.SelectedItem)?.Number;
-            CompositionListBox.SetBinding(ItemsControl.ItemsSourceProperty, BindingUtility.Create(_selectedCompositionCollection.Compositions, null, "Name"));
+            CompositionListBox.SetBinding(ItemsControl.ItemsSourceProperty, BindingBuilder.Build(_selectedCompositionCollection.Compositions, null, "Name"));
 
             if (CompositionCollectionCatalogPrefixListBox.Items.Count > 0)
             {
@@ -290,19 +290,19 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
         public void LoadCompositionSection()
         {
-            CompositionNameTextBox.SetBinding(TextBox.TextProperty, BindingUtility.Create(_selectedComposition, "Name"));
-            CompositionNicknameTextBox.SetBinding(TextBox.TextProperty, BindingUtility.Create(_selectedComposition, "Nickname"));
-            CompositionDatesTextBox.SetBinding(TextBox.TextProperty, BindingUtility.Create(_selectedComposition, "Dates"));
+            CompositionNameTextBox.SetBinding(TextBox.TextProperty, BindingBuilder.Build(_selectedComposition, "Name"));
+            CompositionNicknameTextBox.SetBinding(TextBox.TextProperty, BindingBuilder.Build(_selectedComposition, "Nickname"));
+            CompositionDatesTextBox.SetBinding(TextBox.TextProperty, BindingBuilder.Build(_selectedComposition, "Dates"));
             CompositionCatalogNumberTextBox.Text = _selectedComposition.CatalogNumbers.FirstOrDefault(cn => cn.CompositionCatalog.Prefix == (string)CompositionCatalogPrefixListBox.SelectedItem)?.Number;
-            MovementListBox.SetBinding(ItemsControl.ItemsSourceProperty, BindingUtility.Create(_selectedComposition.Movements, null, "Number"));
+            MovementListBox.SetBinding(ItemsControl.ItemsSourceProperty, BindingBuilder.Build(_selectedComposition.Movements, null, "Number"));
 
             if (_selectedCompositionCollection != null)
             {
-                CompositionCatalogPrefixListBox.SetBinding(ItemsControl.ItemsSourceProperty, BindingUtility.Create(_selectedCompositionCollection.Composers.SelectMany(c => c.CompositionCatalogs), null, "Prefix"));
+                CompositionCatalogPrefixListBox.SetBinding(ItemsControl.ItemsSourceProperty, BindingBuilder.Build(_selectedCompositionCollection.Composers.SelectMany(c => c.CompositionCatalogs), null, "Prefix"));
             }
             else
             {
-                CompositionCatalogPrefixListBox.SetBinding(ItemsControl.ItemsSourceProperty, BindingUtility.Create(_selectedComposition.Composers.SelectMany(c => c.CompositionCatalogs), null, "Prefix"));
+                CompositionCatalogPrefixListBox.SetBinding(ItemsControl.ItemsSourceProperty, BindingBuilder.Build(_selectedComposition.Composers.SelectMany(c => c.CompositionCatalogs), null, "Prefix"));
             }
 
             if (CompositionCatalogPrefixListBox.Items.Count > 0)
@@ -356,9 +356,9 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
         public void LoadMovementSection()
         {
-            MovementNumberBox.SetBinding(TextBox.TextProperty, BindingUtility.Create(_selectedMovement, "Number"));
-            MovementNameTextBox.SetBinding(TextBox.TextProperty, BindingUtility.Create(_selectedMovement, "Name"));
-            RecordingListBox.SetBinding(ItemsControl.ItemsSourceProperty, BindingUtility.Create(_selectedMovement.Recordings, null, "ID"));
+            MovementNumberBox.SetBinding(TextBox.TextProperty, BindingBuilder.Build(_selectedMovement, "Number"));
+            MovementNameTextBox.SetBinding(TextBox.TextProperty, BindingBuilder.Build(_selectedMovement, "Name"));
+            RecordingListBox.SetBinding(ItemsControl.ItemsSourceProperty, BindingBuilder.Build(_selectedMovement.Recordings, null, "ID"));
         }
 
         public void RefreshMovementSection()
@@ -413,11 +413,11 @@ namespace NathanHarrenstein.MusicTimeline.Views
         public void LoadRecordingSection()
         {
             RecordingPathTextBox.Text = LibraryDB.DataProvider.Get(_selectedRecording.ID).FirstOrDefault();
-            RecordingPerformerListBox.SetBinding(ItemsControl.ItemsSourceProperty, BindingUtility.Create(_dataProvider.Performers.Local, null, "Name"));
+            RecordingPerformerListBox.SetBinding(ItemsControl.ItemsSourceProperty, BindingBuilder.Build(_dataProvider.Performers.Local, null, "Name"));
             RecordingAlbumAutoCompleteBox.Text = _selectedRecording.Album?.Name;
-            RecordingTrackNumberBox.SetBinding(TextBox.TextProperty, BindingUtility.Create(_selectedRecording, "TrackNumber"));
-            RecordingDatesTextBox.SetBinding(TextBox.TextProperty, BindingUtility.Create(_selectedRecording, "Dates"));
-            RecordingLocationListBox.SetBinding(ItemsControl.ItemsSourceProperty, BindingUtility.Create(_selectedRecording.Locations, null, "Name"));
+            RecordingTrackNumberBox.SetBinding(TextBox.TextProperty, BindingBuilder.Build(_selectedRecording, "TrackNumber"));
+            RecordingDatesTextBox.SetBinding(TextBox.TextProperty, BindingBuilder.Build(_selectedRecording, "Dates"));
+            RecordingLocationListBox.SetBinding(ItemsControl.ItemsSourceProperty, BindingBuilder.Build(_selectedRecording.Locations, null, "Name"));
 
             ListUtility.AddMany(RecordingPerformerListBox.SelectedItems, _selectedRecording.Performers);
         }
@@ -459,7 +459,9 @@ namespace NathanHarrenstein.MusicTimeline.Views
                 }
                 else
                 {
-                    var location = LocationBuilder.Build(ComposerBirthLocationAutoCompleteBox.Text, _dataProvider);
+                    var location = new Location();
+                    location.Name = ComposerBirthLocationAutoCompleteBox.Text;
+
                     _dataProvider.Locations.Add(location);
                     composer.BirthLocation = location;
                 }
@@ -494,7 +496,9 @@ namespace NathanHarrenstein.MusicTimeline.Views
                 }
                 else
                 {
-                    var location = LocationBuilder.Build(ComposerDeathLocationAutoCompleteBox.Text, _dataProvider);
+                    var location = new Location();
+                    location.Name = ComposerDeathLocationAutoCompleteBox.Text;
+
                     _dataProvider.Locations.Add(location);
                     composer.DeathLocation = location;
                 }
@@ -554,7 +558,16 @@ namespace NathanHarrenstein.MusicTimeline.Views
         {
             if (ComposerImageListBox.IsEnabled)
             {
-                var composerImage = ComposerImageBuilder.Build(_selectedComposers[0], (string)e.Data.GetData(DataFormats.UnicodeText), _dataProvider);
+                var imageBytes = FileUtility.GetImage((string)e.Data.GetData(DataFormats.UnicodeText));
+
+                if (imageBytes == null)
+                {
+                    return;
+                }
+
+                var composerImage = new ComposerImage();
+                composerImage.Composer = _selectedComposers[0];
+                composerImage.Image = imageBytes;
 
                 if (composerImage != null)
                 {
@@ -599,23 +612,32 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
                 try
                 {
+                    if (!url.StartsWith("http"))
+                    {
+                        url = "http://" + url;
+                    }
+
                     if (!FileUtility.WebsiteExists(url))
                     {
                         return;
                     }
 
-                    var composerLink = ComposerLinkBuilder.Build(url, _selectedComposers[0], _dataProvider);
+                    var composerLink = new ComposerLink();
+                    composerLink.Composer = _selectedComposers[0];
+                    composerLink.URL = url;
+
                     _selectedComposers[0].ComposerLinks.Add(composerLink);
                     ComposerLinkListBox.SelectedItem = composerLink;
 
                     if (url.Contains("wikipedia"))
                     {
-                        _selectedComposers[0].Biography = BiographyUtility.CleanXaml(HtmlToXamlConverter.ConvertHtmlToXaml(WikipediaScraper.Scrape(url), false));
+                        _selectedComposers[0].Biography = BiographyUtility.CleanXaml(HtmlToXamlConverter.ConvertHtmlToXaml(WikipediaScraper.ScrapeArticle(url), false));
                         ComposerBiographyTextBox.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
                     }
                 }
-                catch
+                catch (Exception ex)
                 {
+                    Logger.Log(ex.ToString(), "MusicTimeline.log");
                 }
             }
         }
@@ -628,8 +650,11 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
                 if (composerName != null)
                 {
-                    var composer = ComposerBuilder.Build(composerName, _dataProvider);
+                    var composer = new Composer();
+                    composer.Name = composerName;
+
                     _dataProvider.Composers.Add(composer);
+
                     _selectedComposers = new ObservableCollection<Composer> { composer };
 
                     RefreshComposerSection();
@@ -735,7 +760,9 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
                 foreach (var catalog in selectedCatalogs)
                 {
-                    var catalogNumber = CatalogNumberBuilder.Build(catalog, _selectedCompositionCollection, null, _dataProvider);
+                    var catalogNumber = new CatalogNumber();
+                    catalogNumber.CompositionCatalog = catalog;
+                    catalogNumber.CompositionCollection = _selectedCompositionCollection;
 
                     _selectedCompositionCollection.CatalogNumbers.Add(catalogNumber);
                     catalog.CatalogNumbers.Add(catalogNumber);
@@ -792,7 +819,10 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
             for (int i = 0; i < _selectedComposers.Count; i++)
             {
-                var compositionCatalog = CompositionCatalogBuilder.Build(compositionCatalogPrefix, _selectedComposers[i], _dataProvider);
+                var compositionCatalog = new CompositionCatalog();
+                compositionCatalog.Prefix = compositionCatalogPrefix;
+                compositionCatalog.Composer = _selectedComposers[i];
+
                 _selectedComposers[i].CompositionCatalogs.Add(compositionCatalog);
                 newCompositionCatalogs[i] = compositionCatalog;
             }
@@ -833,7 +863,9 @@ namespace NathanHarrenstein.MusicTimeline.Views
                     return;
                 }
 
-                _selectedCompositionCollection = CompositionCollectionBuilder.Build(compositionCollectionName, _selectedComposers, _dataProvider);
+                _selectedCompositionCollection = new CompositionCollection();
+                _selectedCompositionCollection.Name = compositionCollectionName;
+                _selectedCompositionCollection.Composers = _selectedComposers;
 
                 foreach (var composer in _selectedComposers)
                 {
@@ -880,7 +912,9 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
                 foreach (var catalog in selectedCatalogs)
                 {
-                    var catalogNumber = CatalogNumberBuilder.Build(catalog, null, _selectedComposition, _dataProvider);
+                    var catalogNumber = new CatalogNumber();
+                    catalogNumber.CompositionCatalog = catalog;
+                    catalogNumber.Composition = _selectedComposition;
 
                     _selectedComposition.CatalogNumbers.Add(catalogNumber);
                     catalog.CatalogNumbers.Add(catalogNumber);
@@ -937,7 +971,10 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
             for (int i = 0; i < _selectedComposers.Count; i++)
             {
-                var compositionCatalog = CompositionCatalogBuilder.Build(compositionCatalogPrefix, _selectedComposers[i], _dataProvider);
+                var compositionCatalog = new CompositionCatalog();
+                compositionCatalog.Prefix = compositionCatalogPrefix;
+                compositionCatalog.Composer = _selectedComposers[i];
+
                 _selectedComposers[i].CompositionCatalogs.Add(compositionCatalog);
                 compositionCatalogs[i] = compositionCatalog;
             }
@@ -991,14 +1028,17 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
                 if (_selectedComposition == null)
                 {
-                    _selectedComposition = CompositionBuilder.Build(compositionName, _selectedComposers, _dataProvider);
+                    var _selectedComposition = new Composition();
+                    _selectedComposition.Name = compositionName;
+                    _selectedComposition.Composers = _selectedComposers;
+
                     _dataProvider.Compositions.Add(_selectedComposition);
                 }
 
                 _selectedComposition.CompositionCollection = _selectedCompositionCollection;
                 _selectedCompositionCollection.Compositions.Add(_selectedComposition);
 
-                CompositionListBox.SetBinding(ItemsControl.ItemsSourceProperty, BindingUtility.Create(_selectedCompositionCollection.Compositions, null, "Name"));
+                CompositionListBox.SetBinding(ItemsControl.ItemsSourceProperty, BindingBuilder.Build(_selectedCompositionCollection.Compositions, null, "Name"));
             }
             else
             {
@@ -1006,7 +1046,10 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
                 if (_selectedComposition == null)
                 {
-                    _selectedComposition = CompositionBuilder.Build(compositionName, _selectedComposers, _dataProvider);
+                    var _selectedComposition = new Composition();
+                    _selectedComposition.Name = compositionName;
+                    _selectedComposition.Composers = _selectedComposers;
+
                     _dataProvider.Compositions.Add(_selectedComposition);
                 }
 
@@ -1015,7 +1058,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
                     composer.Compositions.Add(_selectedComposition);
                 }
 
-                CompositionListBox.SetBinding(ItemsControl.ItemsSourceProperty, BindingUtility.Create(_selectedComposers.Common(c => c.Compositions), null, "Name"));
+                CompositionListBox.SetBinding(ItemsControl.ItemsSourceProperty, BindingBuilder.Build(_selectedComposers.Common(c => c.Compositions), null, "Name"));
             }
 
             CompositionListBox.SelectedItem = _selectedComposition;
@@ -1053,7 +1096,10 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
                 if (movementName != null)
                 {
-                    _selectedMovement = MovementBuilder.Build(movementName, _selectedComposition, _dataProvider);
+                    _selectedMovement = new Movement();
+                    _selectedMovement.Name = movementName;
+                    _selectedMovement.Composition = _selectedComposition;
+
                     _selectedComposition.Movements.Add(_selectedMovement);
 
                     MovementListBox.ItemsSource = new List<Movement>(_selectedComposition.Movements);
@@ -1093,7 +1139,11 @@ namespace NathanHarrenstein.MusicTimeline.Views
                 }
                 else
                 {
-                    _selectedRecording.Album = AlbumBuilder.Build(RecordingAlbumAutoCompleteBox.Text, _selectedRecording, _dataProvider);
+                    var album = new Album();
+                    album.Name = RecordingAlbumAutoCompleteBox.Text;
+                    album.Recordings.Add(_selectedRecording);
+
+                    _selectedRecording.Album = album;
                 }
             }
             else
@@ -1129,7 +1179,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
                 return;
             }
 
-            _selectedRecording = RecordingBuilder.Build(_dataProvider);
+            _selectedRecording = new Recording();
 
             if (_selectedMovement != null)
             {
@@ -1229,7 +1279,9 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
             if (location == null)
             {
-                location = LocationBuilder.Build(locationName, _dataProvider);
+                location = new Location();
+                location.Name = locationName;
+
                 _dataProvider.Locations.Local.Add(location);
             }
 
@@ -1270,7 +1322,9 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
             if (performer == null)
             {
-                performer = PerformerBuilder.Build(performerName, _dataProvider);
+                performer = new Performer();
+                performer.Name = performerName;
+
                 _dataProvider.Performers.Local.Add(performer);
             }
 

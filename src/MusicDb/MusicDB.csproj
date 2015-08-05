@@ -60,8 +60,12 @@
     <Compile Include="Composition.cs" />
     <Compile Include="CompositionCatalog.cs" />
     <Compile Include="CompositionCollection.cs" />
+    <Compile Include="CompositionLink.cs" />
+    <Compile Include="CompositionType.cs" />
     <Compile Include="DataProvider.cs" />
     <Compile Include="Era.cs" />
+    <Compile Include="Instrumentation.cs" />
+    <Compile Include="Key.cs" />
     <Compile Include="Location.cs" />
     <Compile Include="Movement.cs" />
     <Compile Include="Nationality.cs" />
@@ -75,7 +79,13 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Scripts\v3_AllowNullCompositionDate.sql" />
+    <None Include="Scripts\v3_AllowNullCompositionDate.sql" />
+    <None Include="Scripts\v4_IncreaseCompositionNameMaxLength.sql" />
+    <None Include="Scripts\v5_AddHistoryTables.sql" />
+    <None Include="Scripts\v6_ImproveGenerateHistoryTable.sql" />
+    <None Include="Scripts\v7_AddNewCompositionColumns.sql" />
+    <None Include="Scripts\v8_TurnOnAutoIncrement.sql" />
+    <None Include="Scripts\v9_IncreaseCompositionCommentAndKeyNameMaxLength.sql" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Scripts\v1_InitialVersion.sql" />

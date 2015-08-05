@@ -7,23 +7,23 @@ namespace NathanHarrenstein.MusicDB
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    [Table("Performer")]
-    public partial class Performer
+    [Table("Instrumentation")]
+    public partial class Instrumentation
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Performer()
+        public Instrumentation()
         {
-            Recordings = new ObservableCollection<Recording>();
+            Compositions = new ObservableCollection<Composition>();
         }
 
         
-        public int ID { get; set; }
+        public short ID { get; set; }
 
         [Required]
-        [StringLength(50)]
+        [StringLength(255)]
         public string Name { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ObservableCollection<Recording> Recordings { get; set; }
+        public virtual ObservableCollection<Composition> Compositions { get; set; }
     }
 }

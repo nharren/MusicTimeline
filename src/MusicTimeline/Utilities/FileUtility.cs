@@ -42,7 +42,6 @@ namespace NathanHarrenstein.MusicTimeline.Utilities
                     }
                     catch
                     {
-
                     }
                 }
             }
@@ -52,7 +51,7 @@ namespace NathanHarrenstein.MusicTimeline.Utilities
 
         internal static bool WebsiteExists(string url)
         {
-            ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback((a,b,c,d) => true);
+            ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback((a, b, c, d) => true);
             WebRequest webRequest = WebRequest.Create(url);
             WebResponse webResponse;
 

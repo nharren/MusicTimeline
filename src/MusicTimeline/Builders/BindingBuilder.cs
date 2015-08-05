@@ -2,11 +2,11 @@
 using System.Windows;
 using System.Windows.Data;
 
-namespace NathanHarrenstein.MusicTimeline.Utilities
+namespace NathanHarrenstein.MusicTimeline.Builders
 {
-    internal static class BindingUtility
+    internal static class BindingBuilder
     {
-        internal static Binding Create(object source)
+        internal static Binding Build(object source)
         {
             var binding = new Binding();
             binding.Source = source;
@@ -14,7 +14,7 @@ namespace NathanHarrenstein.MusicTimeline.Utilities
             return binding;
         }
 
-        internal static Binding Create(object source, string path, IValueConverter converter = null)
+        internal static Binding Build(object source, string path, IValueConverter converter = null)
         {
             var binding = new Binding();
             binding.Source = source;
@@ -24,7 +24,7 @@ namespace NathanHarrenstein.MusicTimeline.Utilities
             return binding;
         }
 
-        internal static Binding Create(object source, string path, string sortPropertyName, ListSortDirection sortDirection = ListSortDirection.Ascending)
+        internal static Binding Build(object source, string path, string sortPropertyName, ListSortDirection sortDirection = ListSortDirection.Ascending)
         {
             var sortDescription = new SortDescription(sortPropertyName, sortDirection);
 

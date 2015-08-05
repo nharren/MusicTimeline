@@ -3,13 +3,10 @@ using NathanHarrenstein.MusicTimeline.Builders;
 using NathanHarrenstein.MusicTimeline.Converters;
 using NathanHarrenstein.MusicTimeline.Input;
 using NathanHarrenstein.MusicTimeline.Scrapers;
-using NathanHarrenstein.MusicTimeline.ViewModels;
 using NathanHarrenstein.Timeline;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.EDTF;
-using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -34,7 +31,13 @@ namespace NathanHarrenstein.MusicTimeline.Views
             if (!DesignerProperties.GetIsInDesignMode(this))
             {
                 Initialize();
-            }         
+
+                //KlassikaScraper.ScrapeComposerDetailPage("http://www.klassika.info/Komponisten/Bach/index.html", _dataProvider.Composers.First(c => c.Name == "Bach, Johann Sebastian"), _dataProvider);
+                //_dataProvider.SaveChanges();
+
+                //KlassikaScraper.ScrapeComposerDetailPage("http://www.klassika.info/Komponisten/Beethoven/index.html", _dataProvider.Composers.First(c => c.Name == "Beethoven, Ludwig van"), _dataProvider);
+                //_dataProvider.SaveChanges();
+            }
         }
 
         ~TimelinePage()
@@ -121,7 +124,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
             RebuildThumbnailCacheCommand = GetRebuildThumbnailCacheCommand();
             FullScreenCommand = GetFullScreenCommand();
 
-            timeline.Dates = new ExtendedDateTimeInterval(new ExtendedDateTime(1000, 1, 1), ExtendedDateTime.Now);            
+            timeline.Dates = new ExtendedDateTimeInterval(new ExtendedDateTime(1000, 1, 1), ExtendedDateTime.Now);
             timeline.Eras = composerEraViewModels;
             timeline.Ruler = new TimeRuler();
             timeline.Ruler.TimeRulerUnit = TimeRulerUnit.Day;
