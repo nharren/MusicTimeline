@@ -222,11 +222,15 @@ namespace NathanHarrenstein.MusicTimeline.Views
             InfluencedItemsControl.ItemsSource = _composer.Influenced;
             InfluencedItemsControl.Visibility = influencedVisibility;
             InfluencedTextBlock.Visibility = influencedVisibility;
+            InfluencedUnderline.Visibility = influencedVisibility;
             InfluencesItemsControl.ItemsSource = _composer.Influences;
             InfluencesItemsControl.Visibility = influencesVisibility;
             InfluencesTextBlock.Visibility = influencesVisibility;
+            InfluencesUnderline.Visibility = influencesVisibility;
             LinksItemControl.ItemsSource = _composer.ComposerLinks;
-            LinksItemControl.Visibility = LinksTextBlock.Visibility = linksVisibility;
+            LinksItemControl.Visibility = linksVisibility;
+            LinksTextBlock.Visibility = linksVisibility;
+            LinksUnderline.Visibility = linksVisibility;
 
             var compositionTypes = _composer.CompositionCollections
                 .SelectMany(cc => cc.Compositions)

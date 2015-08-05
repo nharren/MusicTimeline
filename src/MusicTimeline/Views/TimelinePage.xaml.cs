@@ -31,12 +31,6 @@ namespace NathanHarrenstein.MusicTimeline.Views
             if (!DesignerProperties.GetIsInDesignMode(this))
             {
                 Initialize();
-
-                //KlassikaScraper.ScrapeComposerDetailPage("http://www.klassika.info/Komponisten/Bach/index.html", _dataProvider.Composers.First(c => c.Name == "Bach, Johann Sebastian"), _dataProvider);
-                //_dataProvider.SaveChanges();
-
-                //KlassikaScraper.ScrapeComposerDetailPage("http://www.klassika.info/Komponisten/Beethoven/index.html", _dataProvider.Composers.First(c => c.Name == "Beethoven, Ludwig van"), _dataProvider);
-                //_dataProvider.SaveChanges();
             }
         }
 

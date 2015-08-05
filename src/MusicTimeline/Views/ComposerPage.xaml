@@ -65,8 +65,8 @@
                     Click="BackButton_Click"
                     Content="&#xE2A4;"
                     Cursor="Hand"
-                    FontFamily="pack://application:,,,/Resources/Fonts/#Segoe UI Symbol"
-                    FontSize="43"
+                    FontFamily="Segoe UI Symbol"
+                    FontSize="48"
                     Foreground="#FFDFE0E6">
                 <Button.Template>
                     <ControlTemplate TargetType="{x:Type Button}">
@@ -91,11 +91,12 @@
                     <DataTemplate DataType="{x:Type db:Nationality}">
                         <Image Width="32"
                                Height="32"
-                               Margin="15,0,0,0"
+                               Margin="20,0,0,0"
                                HorizontalAlignment="Center"
                                VerticalAlignment="Center"
                                Source="{Binding Name,
-                                                Converter={StaticResource NationalityToFlagConverter}}"
+                                                Converter={StaticResource NationalityToFlagConverter},
+                                                IsAsync=True}"
                                ToolTip="{Binding Name}" />
                     </DataTemplate>
                 </ItemsControl.ItemTemplate>
@@ -746,25 +747,35 @@
                         </ListBox.ItemTemplate>
                     </ListBox>
                     <!--  Details  -->
-                    <StackPanel Margin="15,0,0,0">
+                    <StackPanel Margin="15,0,0,0" HorizontalAlignment="Left">
                         <!--  Born  -->
-                        <TextBlock Margin="0,15,0,5"
-                                   FontSize="16"
-                                   FontWeight="Bold"
+                        <TextBlock Margin="0,15,0,0"
+                                   FontSize="18.667"
                                    Text="Born" />
+                        <Rectangle Height="1"
+                                   Margin="0,2,0,10"
+                                   Fill="#AA6E6E6E"
+                                   StrokeThickness="0" />
                         <TextBlock Name="BornTextBlock" FontSize="14" />
                         <!--  Died  -->
-                        <TextBlock Margin="0,15,0,5"
-                                   FontSize="16"
-                                   FontWeight="Bold"
+                        <TextBlock Margin="0,15,0,0"
+                                   FontSize="18.667"
                                    Text="Died" />
+                        <Rectangle Height="1"
+                                   Margin="0,2,0,10"
+                                   Fill="#AA6E6E6E"
+                                   StrokeThickness="0" />
                         <TextBlock Name="DiedTextBlock" FontSize="14" />
                         <!--  Influences  -->
                         <TextBlock Name="InfluencesTextBlock"
-                                   Margin="0,15,0,3"
-                                   FontSize="16"
-                                   FontWeight="Bold"
+                                   Margin="0,15,0,0"
+                                   FontSize="18.667"
                                    Text="Influences" />
+                        <Rectangle Name="InfluencesUnderline"
+                                   Height="1"
+                                   Margin="0,2,0,10"
+                                   Fill="#AA6E6E6E"
+                                   StrokeThickness="0" />
                         <ItemsControl Name="InfluencesItemsControl">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate DataType="{x:Type db:Composer}">
@@ -787,10 +798,14 @@
                         </ItemsControl>
                         <!--  Influenced  -->
                         <TextBlock Name="InfluencedTextBlock"
-                                   Margin="0,15,0,3"
-                                   FontSize="16"
-                                   FontWeight="Bold"
+                                   Margin="0,15,0,0"
+                                   FontSize="18.667"
                                    Text="Influenced" />
+                        <Rectangle Name="InfluencedUnderline"
+                                   Height="1"
+                                   Margin="0,2,0,10"
+                                   Fill="#AA6E6E6E"
+                                   StrokeThickness="0" />
                         <ItemsControl Name="InfluencedItemsControl">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate DataType="{x:Type db:Composer}">
@@ -812,10 +827,14 @@
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
                         <TextBlock Name="LinksTextBlock"
-                                   Margin="0,15,0,5"
-                                   FontSize="16"
-                                   FontWeight="Bold"
+                                   Margin="0,15,0,0"
+                                   FontSize="18.667"
                                    Text="Links" />
+                        <Rectangle Name="LinksUnderline"
+                                   Height="1"
+                                   Margin="0,2,0,10"
+                                   Fill="#FF6E6E6E"
+                                   StrokeThickness="0" />
                         <ItemsControl Name="LinksItemControl"
                                       MinWidth="16"
                                       MinHeight="16">
@@ -851,25 +870,44 @@
                         </ItemsControl>
                     </StackPanel>
                 </StackPanel>
-                <c:NonBlockingFlowDocumentScrollViewer Grid.Column="1"
-                                                       Margin="30,0"
-                                                       HorizontalScrollBarVisibility="Disabled"
-                                                       TextElement.Foreground="{StaticResource ForegroundBrush}"
-                                                       VerticalScrollBarVisibility="Disabled">
-                    <FlowDocument Name="BiographyFlowDocument"
-                                  FontFamily="Cambria"
-                                  TextAlignment="Left" />
-                </c:NonBlockingFlowDocumentScrollViewer>
+                <Grid Grid.Column="1" Margin="50,0">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="1" />
+                        <RowDefinition Height="*" />
+                    </Grid.RowDefinitions>
+                    <TextBlock Margin="0,0,0,2"
+                               FontSize="24"
+                               Text="Biography" />
+                    <Rectangle Grid.Row="1"
+                               Fill="#AA6E6E6E"
+                               StrokeThickness="0" />
+                    <c:NonBlockingFlowDocumentScrollViewer Grid.Row="2"
+                                                           Margin="0,10,0,0"
+                                                           HorizontalScrollBarVisibility="Disabled"
+                                                           TextElement.Foreground="{StaticResource ForegroundBrush}"
+                                                           VerticalScrollBarVisibility="Disabled">
+                        <FlowDocument Name="BiographyFlowDocument"
+                                      FontFamily="Cambria"
+                                      PagePadding="0,5,0,0"
+                                      TextAlignment="Left" />
+                    </c:NonBlockingFlowDocumentScrollViewer>
+                </Grid>
                 <Grid Grid.Column="2">
                     <Grid.RowDefinitions>
                         <RowDefinition Height="Auto" />
+                        <RowDefinition Height="1" />
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
-                    <TextBlock FontSize="18"
-                               FontWeight="Bold"
+                    <TextBlock Margin="0,0,0,2"
+                               FontSize="24"
                                Text="Compositions" />
+                    <Rectangle Grid.Row="1"
+                               Fill="#AA6E6E6E"
+                               StrokeThickness="0" />
                     <TreeView x:Name="TreeView"
-                              Grid.Row="1"
+                              Grid.Row="2"
+                              Margin="0,10,0,0"
                               Background="Transparent"
                               BorderThickness="0"
                               FontFamily="Cambria"
@@ -915,7 +953,7 @@
                                                                     <Setter.Value>
                                                                         <ControlTemplate TargetType="{x:Type ToggleButton}">
                                                                             <Grid>
-                                                                                <ContentPresenter Margin="0,-2,0,0" />
+                                                                                <ContentPresenter Margin="0,0,0,0" />
                                                                             </Grid>
                                                                             <ControlTemplate.Triggers>
                                                                                 <Trigger Property="IsChecked" Value="True">
@@ -979,14 +1017,20 @@
                         </TreeView.Resources>
                         <TreeView.Template>
                             <ControlTemplate TargetType="{x:Type TreeView}">
-                                <Border x:Name="Bd" BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="{TemplateBinding BorderThickness}" SnapsToDevicePixels="True"  Padding="{TemplateBinding Padding}">
-                                    <Grid Background="{TemplateBinding Background}" Focusable="False" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
-                                        <ItemsPresenter/>
+                                <Border x:Name="Bd"
+                                        BorderBrush="{TemplateBinding BorderBrush}"
+                                        BorderThickness="{TemplateBinding BorderThickness}"
+                                        Padding="{TemplateBinding Padding}"
+                                        SnapsToDevicePixels="True">
+                                    <Grid Background="{TemplateBinding Background}"
+                                          Focusable="False"
+                                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+                                        <ItemsPresenter />
                                     </Grid>
                                 </Border>
                                 <ControlTemplate.Triggers>
                                     <Trigger Property="IsEnabled" Value="False">
-                                        <Setter Property="Background" TargetName="Bd" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}"/>
+                                        <Setter TargetName="Bd" Property="Background" Value="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" />
                                     </Trigger>
                                 </ControlTemplate.Triggers>
                             </ControlTemplate>
