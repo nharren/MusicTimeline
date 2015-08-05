@@ -1,4 +1,5 @@
-﻿using System;
+﻿using NathanHarrenstein.MusicTimeline.Utilities;
+using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -35,43 +36,53 @@ namespace NathanHarrenstein.MusicTimeline.Converters
 
             if (File.Exists(faviconPath))
             {
-                favicon = new BitmapImage(new Uri(faviconPath));
+                favicon = new BitmapImage();
+                favicon.BeginInit();
+                favicon.DecodePixelHeight = 16;
+                favicon.DecodePixelWidth = 16;
+                favicon.StreamSource = new MemoryStream(File.ReadAllBytes(faviconPath));
+                favicon.EndInit();
+                favicon.Freeze();
+
                 _faviconCache[url] = favicon;
 
                 return favicon;
             }
             else
             {
-                var faviconUrl = $"http://{uri.Host}/favicon.ico";
-                var faviconUri = (Uri)null;
+                var bytes = FileUtility.GetImage($"http://{uri.Host}/favicon.ico");
 
-                if (Uri.TryCreate(faviconUrl, UriKind.Absolute, out faviconUri))
+                if (bytes != null)
                 {
-                    try
-                    {
-                        favicon = new BitmapImage(faviconUri);
-                        _faviconCache[url] = favicon;
+                    File.WriteAllBytes(faviconPath, bytes);
 
-                        return favicon;
-                    }
-                    catch (Exception)
-                    {
-                    }
-                }
+                    favicon = new BitmapImage();
+                    favicon.BeginInit();
+                    favicon.DecodePixelHeight = 16;
+                    favicon.DecodePixelWidth = 16;
+                    favicon.StreamSource = new MemoryStream(bytes);
+                    favicon.EndInit();
+                    favicon.Freeze();
 
-                if (_faviconCache.TryGetValue("", out favicon))
-                {
-                    return favicon;
+                    _faviconCache[url] = favicon;
                 }
                 else
                 {
-                    faviconUrl = $@"{Environment.CurrentDirectory}\Resources\Favicons\Default.ico";
-                    faviconUri = new Uri(faviconUrl);
-                    favicon = new BitmapImage(faviconUri);
-                    _faviconCache[url] = favicon;
+                    if (!_faviconCache.TryGetValue("", out favicon))
+                    {
+                        favicon = new BitmapImage();
+                        favicon.BeginInit();
+                        favicon.DecodePixelHeight = 16;
+                        favicon.DecodePixelWidth = 16;
+                        favicon.StreamSource = new MemoryStream(File.ReadAllBytes($@"{Environment.CurrentDirectory}\Resources\Favicons\Default.ico"));
+                        favicon.EndInit();
+                        favicon.Freeze();
 
-                    return favicon;
+                        _faviconCache[url] = favicon;
+                    }
                 }
+
+                return favicon;              
             }
         }
 

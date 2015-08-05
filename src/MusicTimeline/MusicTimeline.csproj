@@ -94,6 +94,7 @@
     <Compile Include="Audio\VolumeEventArgs.cs" />
     <Compile Include="Controls\AutoCompleteBox.cs" />
     <Compile Include="Controls\DoubleBorderDecorator.cs" />
+    <Compile Include="Controls\NonBlockingFlowDocumentScrollViewer.cs" />
     <Compile Include="Controls\NumberBox.cs" />
     <Compile Include="Controls\PanningScrollViewer.cs" />
     <Compile Include="Converters\ComposerImageToBitmapConverter.cs" />
@@ -103,7 +104,6 @@
     <Compile Include="Converters\UrlToFaviconConverter.cs" />
     <Compile Include="Converters\UrlToTitleConverter.cs" />
     <Compile Include="Extensions\EnumerableExtensions.cs" />
-    <Compile Include="Controls\NonBlockingFlowDocumentScrollViewer.cs" />
     <Compile Include="Input\DelegateCommand.cs" />
     <Compile Include="Comparers\NaturalComparer.cs" />
     <Compile Include="Logging\Logger.cs" />
