@@ -104,8 +104,7 @@
                                 <Image SnapsToDevicePixels="True"
                                        Source="{Binding Composer,
                                                         Converter={StaticResource ComposerToThumbnailConverter},
-                                                        IsAsync=True}"
-                                       UseLayoutRounding="True" />
+                                                        IsAsync=True}" />
                                 <StackPanel Grid.Column="1" Margin="10,0,0,0">
                                     <StackPanel Margin="0,1,0,2" Orientation="Horizontal">
                                         <TextBlock FontSize="14"

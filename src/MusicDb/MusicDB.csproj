@@ -93,6 +93,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Scripts\v10_IncreaseKeyNameMaxLength.sql" />
+    <Content Include="Scripts\v11_IncreaseCompositionPremiereMaxLength.sql" />
+    <Content Include="Scripts\v12_AddLinkNames.sql" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

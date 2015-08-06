@@ -1,12 +1,13 @@
 ﻿using NathanHarrenstein.MusicDB;
 using NathanHarrenstein.MusicTimeline.Audio;
 using NathanHarrenstein.MusicTimeline.Builders;
-using NathanHarrenstein.MusicTimeline.Controls;
+using NathanHarrenstein.MusicTimeline.Comparers;
 using NathanHarrenstein.MusicTimeline.Utilities;
 using NAudio.Flac;
 using NAudio.Wave;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.EDTF;
 using System.IO;
 using System.Linq;
@@ -15,7 +16,6 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
-using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Markup;
@@ -25,6 +25,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
 {
     public partial class ComposerPage : Page, IDisposable
     {
+        private static LogicalComparer _logicalComparer = new LogicalComparer();
         private Composer _composer;
         private DataProvider _dataProvider;
         private bool _disposed;
@@ -64,7 +65,9 @@ namespace NathanHarrenstein.MusicTimeline.Views
             if (!_disposed)
             {
                 Dispose(true);
+
                 GC.SuppressFinalize(this);
+
                 _disposed = true;
             }
         }
@@ -207,6 +210,17 @@ namespace NathanHarrenstein.MusicTimeline.Views
             VolumeSlider.Value = e.Volume;
         }
 
+        private ComposerImage GetDefaultComposerImage()
+        {
+            var defaultComposerImageUri = new Uri("pack://application:,,,/Resources/Composers/Unknown.jpg", UriKind.Absolute);
+            var streamResourceInfo = System.Windows.Application.GetResourceStream(defaultComposerImageUri);
+
+            var composerImage = new ComposerImage();
+            composerImage.Image = StreamUtility.ReadToEnd(streamResourceInfo.Stream);
+
+            return composerImage;
+        }
+
         private void LoadComposer()
         {
             var influencedVisibility = _composer.Influenced.Count > 0 ? Visibility.Visible : Visibility.Collapsed;
@@ -215,7 +229,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
             BuildBiographySection(_composer);
             BornTextBlock.Text = GetBorn(_composer);
-            ComposerImagesListBox.ItemsSource = _composer.ComposerImages;
+            ComposerImagesListBox.ItemsSource = _composer.ComposerImages.Count == 0 ? new ObservableCollection<ComposerImage> { GetDefaultComposerImage() } : _composer.ComposerImages;
             ComposerNameTextBlock.Text = NameUtility.ToFirstLast(_composer.Name);
             DiedTextBlock.Text = GetDied(_composer);
             ComposerFlagsItemsControl.ItemsSource = _composer.Nationalities;
@@ -235,9 +249,14 @@ namespace NathanHarrenstein.MusicTimeline.Views
             var compositionTypes = _composer.CompositionCollections
                 .SelectMany(cc => cc.Compositions)
                 .Concat(_composer.Compositions)
-                .GroupBy(c => c.CompositionType?.Name ?? "Unknown");
+                .SelectMany(c => c.Movements)
+                .OrderBy(m => m.Number)
+                .GroupBy(m => m.Composition)
+                .OrderBy(c => c.Key.Name, _logicalComparer)
+                .GroupBy(c => c.Key.CompositionType?.Name ?? "Unknown")
+                .OrderBy(s => s.Key);
 
-            TreeView.SetBinding(ItemsControl.ItemsSourceProperty, BindingBuilder.Build(compositionTypes, null, "Key"));
+            TreeView.SetBinding(ItemsControl.ItemsSourceProperty, BindingBuilder.Build(compositionTypes));
 
             ComposerImagesListBox.SelectedIndex = 0;
 

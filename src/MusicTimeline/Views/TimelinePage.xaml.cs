@@ -31,6 +31,9 @@ namespace NathanHarrenstein.MusicTimeline.Views
             if (!DesignerProperties.GetIsInDesignMode(this))
             {
                 Initialize();
+
+                //KlassikaScraper.ScrapeComposerDetailPage("http://www.klassika.info/Komponisten/Vivaldi/index.html", _dataProvider.Composers.First(c => c.Name == "Vivaldi, Antonio"), _dataProvider);
+                //_dataProvider.SaveChanges();
             }
         }
 

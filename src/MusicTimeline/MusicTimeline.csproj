@@ -105,7 +105,7 @@
     <Compile Include="Converters\UrlToTitleConverter.cs" />
     <Compile Include="Extensions\EnumerableExtensions.cs" />
     <Compile Include="Input\DelegateCommand.cs" />
-    <Compile Include="Comparers\NaturalComparer.cs" />
+    <Compile Include="Comparers\LogicalComparer.cs" />
     <Compile Include="Logging\Logger.cs" />
     <Compile Include="Audio\PlaybackStateEventArgs.cs" />
     <Compile Include="Builders\ComposerEraViewModelBuilder.cs" />
@@ -117,6 +117,7 @@
     <Compile Include="Converters\DecimalToRomanConverter.cs" />
     <Compile Include="Utilities\BiographyUtility.cs" />
     <Compile Include="Scrapers\WikipediaScraper.cs" />
+    <Compile Include="Utilities\StreamUtility.cs" />
     <Compile Include="ViewModels\ComposerEventViewModel.cs" />
     <Compile Include="ViewModels\ComposerEraViewModel.cs" />
     <Compile Include="Utilities\FileUtility.cs" />

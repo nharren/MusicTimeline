@@ -816,8 +816,7 @@
                             <DataTemplate DataType="{x:Type db:ComposerLink}">
                                 <Button Command="{Binding URL,
                                                           Converter={StaticResource UrlToCommandConverter}}"
-                                        Content="{Binding URL,
-                                                          Converter={StaticResource UrlToTitleConverter}}"
+                                        Content="{Binding Name}"
                                         FontSize="14.667"
                                         Foreground="#FFC8CDD1">
                                     <Button.ContextMenu>

@@ -35,7 +35,7 @@ namespace NathanHarrenstein.MusicDB
 
         public string Comment { get; set; }
 
-        [StringLength(255)]
+        [StringLength(300)]
         public string Premiere { get; set; }
 
         [StringLength(255)]

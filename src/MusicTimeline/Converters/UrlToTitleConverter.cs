@@ -20,7 +20,7 @@ namespace NathanHarrenstein.MusicTimeline.Converters
             throw new NotImplementedException();
         }
 
-        private static string UrlToTitle(string url)
+        public static string UrlToTitle(string url)
         {
             var webClient = new WebClient();
             webClient.Encoding = Encoding.UTF8;

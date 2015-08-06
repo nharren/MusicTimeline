@@ -2,6 +2,7 @@
 using Luminescence.Xiph;
 using NathanHarrenstein.MusicDB;
 using NathanHarrenstein.MusicTimeline.Builders;
+using NathanHarrenstein.MusicTimeline.Converters;
 using NathanHarrenstein.MusicTimeline.Extensions;
 using NathanHarrenstein.MusicTimeline.Logging;
 using NathanHarrenstein.MusicTimeline.Scrapers;
@@ -625,6 +626,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
                     var composerLink = new ComposerLink();
                     composerLink.Composer = _selectedComposers[0];
                     composerLink.URL = url;
+                    composerLink.Name = UrlToTitleConverter.UrlToTitle(url);
 
                     _selectedComposers[0].ComposerLinks.Add(composerLink);
                     ComposerLinkListBox.SelectedItem = composerLink;

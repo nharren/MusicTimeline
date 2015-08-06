@@ -19,5 +19,8 @@ namespace NathanHarrenstein.MusicDB
         public short ComposerID { get; set; }
 
         public virtual Composer Composer { get; set; }
+
+        [StringLength(300)]
+        public string Name { get; set; }
     }
 }

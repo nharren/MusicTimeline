@@ -21,7 +21,7 @@
         <cv:NationalityToFlagConverter x:Key="NationalityToFlagConverter" />
         <cv:UrlToCommandConverter x:Key="UrlToCommandConverter" />
         <cv:UrlToFaviconConverter x:Key="UrlToFaviconConverter" />
-        <cv:UrlToTitleConverter x:Key="UrlToTitleConverter" />
+        <cv:DecimalToRomanConverter x:Key="DecimalToRomanConverter" />
     </Page.Resources>
     <Page.CommandBindings>
         <CommandBinding CanExecute="TogglePlayPause_CanExecute"
@@ -710,7 +710,8 @@
                                     <Image Name="selectedImage"
                                            DataContext="{TemplateBinding SelectedItem}"
                                            Source="{Binding Converter={StaticResource ComposerImageToBitmapConverter},
-                                                            IsAsync=True}" />
+                                                            IsAsync=True}"
+                                           Stretch="Uniform" />
                                     <Border Grid.Row="1"
                                             MinWidth="{Binding ActualWidth,
                                                                ElementName=selectedImage}"
@@ -853,9 +854,7 @@
                                                                             Converter={StaticResource UrlToFaviconConverter},
                                                                             Mode=OneWay,
                                                                             IsAsync=True}"
-                                                           ToolTip="{Binding URL,
-                                                                             Converter={StaticResource UrlToTitleConverter},
-                                                                             IsAsync=True}" />
+                                                           ToolTip="{Binding Name}" />
                                                 </Grid>
                                             </ControlTemplate>
                                         </Button.Template>
@@ -876,7 +875,7 @@
                         <RowDefinition Height="1" />
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
-                    <TextBlock Margin="0,0,0,2"
+                    <TextBlock Margin="0,0,0,3"
                                FontSize="24"
                                Text="Biography" />
                     <Rectangle Grid.Row="1"
@@ -899,7 +898,7 @@
                         <RowDefinition Height="1" />
                         <RowDefinition Height="*" />
                     </Grid.RowDefinitions>
-                    <TextBlock Margin="0,0,0,2"
+                    <TextBlock Margin="0,0,0,3"
                                FontSize="24"
                                Text="Compositions" />
                     <Rectangle Grid.Row="1"
@@ -940,8 +939,7 @@
                                                     <ToggleButton x:Name="Expander"
                                                                   ClickMode="Press"
                                                                   IsChecked="{Binding IsExpanded,
-                                                                                      RelativeSource={RelativeSource TemplatedParent}}"
-                                                                  IsEnabled="{Binding CanExpand}">
+                                                                                      RelativeSource={RelativeSource TemplatedParent}}">
                                                         <ToggleButton.Style>
                                                             <Style TargetType="{x:Type ToggleButton}">
                                                                 <Setter Property="Focusable" Value="False" />
@@ -964,12 +962,6 @@
                                                                                 </Trigger>
                                                                                 <Trigger Property="IsMouseOver" Value="True">
                                                                                     <Setter Property="Foreground" Value="White" />
-                                                                                </Trigger>
-                                                                                <Trigger Property="IsEnabled" Value="True">
-                                                                                    <Setter Property="Visibility" Value="Visible" />
-                                                                                </Trigger>
-                                                                                <Trigger Property="IsEnabled" Value="False">
-                                                                                    <Setter Property="Visibility" Value="Hidden" />
                                                                                 </Trigger>
                                                                             </ControlTemplate.Triggers>
                                                                         </ControlTemplate>
@@ -1038,13 +1030,17 @@
                         <TreeView.ItemTemplate>
                             <HierarchicalDataTemplate ItemsSource="{Binding}">
                                 <HierarchicalDataTemplate.ItemTemplate>
-                                    <HierarchicalDataTemplate DataType="{x:Type db:Composition}" ItemsSource="{Binding Movements}">
+                                    <HierarchicalDataTemplate ItemsSource="{Binding Key.Movements}">
                                         <HierarchicalDataTemplate.ItemTemplate>
-                                            <DataTemplate DataType="{x:Type db:Movement}">
-                                                <TextBlock Text="{Binding Name}" />
+                                            <DataTemplate>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <TextBlock Text="{Binding Number, Converter={StaticResource DecimalToRomanConverter}}" />
+                                                    <TextBlock Text=". " />
+                                                    <TextBlock Text="{Binding Name}" />
+                                                </StackPanel>
                                             </DataTemplate>
                                         </HierarchicalDataTemplate.ItemTemplate>
-                                        <TextBlock Text="{Binding Name}" />
+                                        <TextBlock Text="{Binding Key.Name}" />
                                     </HierarchicalDataTemplate>
                                 </HierarchicalDataTemplate.ItemTemplate>
                                 <TextBlock Text="{Binding Key}" />

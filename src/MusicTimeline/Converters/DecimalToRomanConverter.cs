@@ -72,7 +72,7 @@ namespace NathanHarrenstein.MusicTimeline.Converters
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return DecimalToRoman((int)value);
+            return DecimalToRoman(System.Convert.ToInt32(value));
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
