@@ -2,7 +2,6 @@
 using NathanHarrenstein.MusicTimeline.Builders;
 using NathanHarrenstein.MusicTimeline.Converters;
 using NathanHarrenstein.MusicTimeline.Input;
-using NathanHarrenstein.MusicTimeline.Scrapers;
 using NathanHarrenstein.Timeline;
 using System;
 using System.ComponentModel;
@@ -15,7 +14,7 @@ using System.Windows.Navigation;
 
 namespace NathanHarrenstein.MusicTimeline.Views
 {
-    public partial class TimelinePage : Page
+    public partial class TimelinePage : Page, IDisposable
     {
         public static readonly DependencyProperty CloseCommandProperty = DependencyProperty.Register("CloseCommand", typeof(ICommand), typeof(TimelinePage));
         public static readonly DependencyProperty FullScreenCommandProperty = DependencyProperty.Register("FullScreenCommand", typeof(ICommand), typeof(TimelinePage));
@@ -24,6 +23,8 @@ namespace NathanHarrenstein.MusicTimeline.Views
         public static readonly DependencyProperty RebuildThumbnailCacheCommandProperty = DependencyProperty.Register("RebuildThumbnailCacheCommand", typeof(ICommand), typeof(TimelinePage));
         private DataProvider _dataProvider;
 
+        private bool _isDisposed = false;
+
         public TimelinePage()
         {
             InitializeComponent();
@@ -31,15 +32,12 @@ namespace NathanHarrenstein.MusicTimeline.Views
             if (!DesignerProperties.GetIsInDesignMode(this))
             {
                 Initialize();
-
-                //KlassikaScraper.ScrapeComposerDetailPage("http://www.klassika.info/Komponisten/Vivaldi/index.html", _dataProvider.Composers.First(c => c.Name == "Vivaldi, Antonio"), _dataProvider);
-                //_dataProvider.SaveChanges();
             }
         }
 
         ~TimelinePage()
         {
-            _dataProvider.Dispose();
+            Dispose(false);
         }
 
         public ICommand CloseCommand
@@ -107,6 +105,13 @@ namespace NathanHarrenstein.MusicTimeline.Views
             }
         }
 
+        public void Dispose()
+        {
+            Dispose(true);
+
+            GC.SuppressFinalize(this);
+        }
+
         public void Initialize()
         {
             _dataProvider = new DataProvider();
@@ -132,20 +137,13 @@ namespace NathanHarrenstein.MusicTimeline.Views
             timeline.Loaded += Timeline_Loaded;
         }
 
-        private void Timeline_Loaded(object sender, RoutedEventArgs e)
+        protected virtual void Dispose(bool disposing)
         {
-            var horizontalOffset = System.Windows.Application.Current.Properties["HorizontalOffset"] as double?;
-
-            if (horizontalOffset != null)
+            if (!_isDisposed)
             {
-                timeline.HorizontalOffset = horizontalOffset.Value;
-            }
+                _dataProvider.Dispose();
 
-            var verticalOffset = System.Windows.Application.Current.Properties["VerticalOffset"] as double?;
-
-            if (verticalOffset != null)
-            {
-                timeline.VerticalOffset = verticalOffset.Value;
+                _isDisposed = true;
             }
         }
 
@@ -222,6 +220,23 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
                 NavigationService.Refresh();
             });
+        }
+
+        private void Timeline_Loaded(object sender, RoutedEventArgs e)
+        {
+            var horizontalOffset = System.Windows.Application.Current.Properties["HorizontalOffset"] as double?;
+
+            if (horizontalOffset != null)
+            {
+                timeline.HorizontalOffset = horizontalOffset.Value;
+            }
+
+            var verticalOffset = System.Windows.Application.Current.Properties["VerticalOffset"] as double?;
+
+            if (verticalOffset != null)
+            {
+                timeline.VerticalOffset = verticalOffset.Value;
+            }
         }
     }
 }

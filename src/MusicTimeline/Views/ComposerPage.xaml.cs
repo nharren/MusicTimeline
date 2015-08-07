@@ -28,8 +28,8 @@ namespace NathanHarrenstein.MusicTimeline.Views
         private static LogicalComparer _logicalComparer = new LogicalComparer();
         private Composer _composer;
         private DataProvider _dataProvider;
-        private bool _disposed;
         private FlacPlayer _flacPlayer;
+        private bool _isDisposed = false;
         private Dictionary<ISampleProvider, Sample> _sampleDictionary;
 
         public ComposerPage()
@@ -44,7 +44,10 @@ namespace NathanHarrenstein.MusicTimeline.Views
             _flacPlayer.TrackChanged += FlacPlayer_TrackChanged;
             _flacPlayer.PlaybackStateChanged += FlacPlayer_PlaybackStateChanged;
             _flacPlayer.VolumeChanged += FlacPlayer_VolumeChanged;
-            _flacPlayer.MuteChanged += FlacPlayer_MuteChanged;
+            _flacPlayer.IsMutedChanged += FlacPlayer_IsMutedChanged;
+            _flacPlayer.CanPlayChanged += FlacPlayer_CanPlayChanged;
+            _flacPlayer.CanSkipBackChanged += FlacPlayer_CanSkipBackChanged;
+            _flacPlayer.CanSkipForwardChanged += FlacPlayer_CanSkipForwardChanged;
 
             var composerName = System.Windows.Application.Current.Properties["SelectedComposer"] as string;
             _composer = _dataProvider.Composers.AsNoTracking().FirstOrDefault(c => c.Name == composerName);
@@ -62,25 +65,20 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
         public void Dispose()
         {
-            if (!_disposed)
-            {
-                Dispose(true);
+            Dispose(true);
 
-                GC.SuppressFinalize(this);
-
-                _disposed = true;
-            }
+            GC.SuppressFinalize(this);
         }
 
         protected virtual void Dispose(bool disposing)
         {
-            if (disposing)
+            if (!_isDisposed)
             {
-                // clean up managed resources
-            }
+                _dataProvider.Dispose();
+                _flacPlayer.Dispose();
 
-            _dataProvider.Dispose();
-            _flacPlayer.Dispose();
+                _isDisposed = true;
+            }
         }
 
         private static string GetBorn(Composer composer)
@@ -177,12 +175,27 @@ namespace NathanHarrenstein.MusicTimeline.Views
             LoadComposer();
         }
 
+        private void FlacPlayer_CanPlayChanged(object sender, CanPlayEventArgs e)
+        {
+            PlayPauseToggleButton.IsEnabled = e.CanPlay;
+        }
+
+        private void FlacPlayer_CanSkipBackChanged(object sender, CanSkipBackEventArgs e)
+        {
+            SkipBackButton.IsEnabled = e.CanSkipBack;
+        }
+
+        private void FlacPlayer_CanSkipForwardChanged(object sender, CanSkipForwardEventArgs e)
+        {
+            SkipForwardButton.IsEnabled = e.CanSkipForward;
+        }
+
         private void FlacPlayer_CurrentTimeChanged(object sender, TimeSpanEventArgs e)
         {
             ProgressSlider.Value = e.TimeSpan.Ticks;
         }
 
-        private void FlacPlayer_MuteChanged(object sender, MuteEventArgs e)
+        private void FlacPlayer_IsMutedChanged(object sender, MuteEventArgs e)
         {
             MuteToggleButton.IsEnabled = true;
             MuteToggleButton.IsChecked = e.Mute;
@@ -248,12 +261,8 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
             var compositionTypes = _composer.CompositionCollections
                 .SelectMany(cc => cc.Compositions)
-                .Concat(_composer.Compositions)
-                .SelectMany(c => c.Movements)
-                .OrderBy(m => m.Number)
-                .GroupBy(m => m.Composition)
-                .OrderBy(c => c.Key.Name, _logicalComparer)
-                .GroupBy(c => c.Key.CompositionType?.Name ?? "Unknown")
+                .Concat(_composer.Compositions)                
+                .GroupBy(c => c.CompositionType?.Name ?? "Unknown")
                 .OrderBy(s => s.Key);
 
             TreeView.SetBinding(ItemsControl.ItemsSourceProperty, BindingBuilder.Build(compositionTypes));
@@ -286,15 +295,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
         private void MuteVolume_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            _flacPlayer.Mute = !_flacPlayer.Mute;
-        }
-
-        private void NextTrack_CanExecute(object sender, CanExecuteRoutedEventArgs e)
-        {
-            if (_flacPlayer != null)
-            {
-                e.CanExecute = _flacPlayer.CanSkipForward();
-            }
+            _flacPlayer.ToggleMute();
         }
 
         private void NextTrack_Executed(object sender, ExecutedRoutedEventArgs e)
@@ -305,14 +306,6 @@ namespace NathanHarrenstein.MusicTimeline.Views
                 _flacPlayer.Play();
 
                 PlayPauseToggleButton.IsChecked = true;
-            }
-        }
-
-        private void PreviousTrack_CanExecute(object sender, CanExecuteRoutedEventArgs e)
-        {
-            if (_flacPlayer != null)
-            {
-                e.CanExecute = _flacPlayer.CanSkipBack();
             }
         }
 

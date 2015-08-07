@@ -15,11 +15,16 @@ namespace NathanHarrenstein.MusicTimeline.Audio
     {
         private readonly LinkedList<FlacReader> _playlist;
         private AudioSessionControl _audioSessionControl;
+        private bool _canPlay;
+        private bool _canSkipBack;
+        private bool _canSkipForward;
         private LinkedListNode<FlacReader> _currentPlaylistItem;
-        private bool _disposed;
+        private bool _isDisposed;
+        private bool _isMuted;
+        private MMDevice _playbackDevice;
+        private bool _playbackSubscribed;
         private DispatcherTimer _playbackTimer;
         private WaveOutEvent _player;
-        private EventWaitHandle _playerInitializationWaitHandle;
 
         public FlacPlayer()
         {
@@ -28,8 +33,11 @@ namespace NathanHarrenstein.MusicTimeline.Audio
             _playbackTimer.Interval = new TimeSpan(1);
             _playbackTimer.Tick += PlaybackTimer_Tick;
 
-            var playbackDevice = GetPlaybackDevice();
-            playbackDevice.AudioSessionManager.OnSessionCreated += AudioSessionManager_OnSessionCreated;
+            _playbackDevice = GetPlaybackDevice();
+            _playbackDevice.AudioEndpointVolume.OnVolumeNotification += AudioEndpointVolume_OnVolumeNotification;
+            _playbackDevice.AudioSessionManager.OnSessionCreated += AudioSessionManager_OnSessionCreated;
+
+            _isMuted = _playbackDevice.AudioEndpointVolume.Mute;
         }
 
         ~FlacPlayer()
@@ -37,9 +45,15 @@ namespace NathanHarrenstein.MusicTimeline.Audio
             Dispose(false);
         }
 
+        public event EventHandler<CanPlayEventArgs> CanPlayChanged;
+
+        public event EventHandler<CanSkipBackEventArgs> CanSkipBackChanged;
+
+        public event EventHandler<CanSkipForwardEventArgs> CanSkipForwardChanged;
+
         public event EventHandler<TimeSpanEventArgs> CurrentTimeChanged;
 
-        public event EventHandler<MuteEventArgs> MuteChanged;
+        public event EventHandler<MuteEventArgs> IsMutedChanged;
 
         public event EventHandler<PlaybackStateEventArgs> PlaybackStateChanged;
 
@@ -48,6 +62,40 @@ namespace NathanHarrenstein.MusicTimeline.Audio
         public event EventHandler<TrackEventArgs> TrackChanged;
 
         public event EventHandler<VolumeEventArgs> VolumeChanged;
+
+        public bool CanPlay
+        {
+            get
+            {
+                return _canPlay;
+            }
+        }
+
+        public bool CanSkipBack
+        {
+            get
+            {
+                return _canSkipBack;
+            }
+
+            set
+            {
+                _canSkipBack = value;
+            }
+        }
+
+        public bool CanSkipForward
+        {
+            get
+            {
+                return _canSkipForward;
+            }
+
+            set
+            {
+                _canSkipForward = value;
+            }
+        }
 
         public LinkedListNode<FlacReader> CurrentPlaylistItem
         {
@@ -85,30 +133,11 @@ namespace NathanHarrenstein.MusicTimeline.Audio
             }
         }
 
-        public bool Mute
+        public bool IsMuted
         {
             get
             {
-                if (_audioSessionControl != null)
-                {
-                    return _audioSessionControl.SimpleAudioVolume.Mute;
-                }
-                else
-                {
-                    throw new InvalidOperationException("Mute cannot be retrieved because _audioSessionControl is null.");
-                }
-            }
-
-            set
-            {
-                if (_audioSessionControl != null)
-                {
-                    _audioSessionControl.SimpleAudioVolume.Mute = value;
-                }
-                else
-                {
-                    throw new InvalidOperationException("Mute cannot be retrieved because _audioSessionControl is null.");
-                }
+                return _isMuted;
             }
         }
 
@@ -181,31 +210,16 @@ namespace NathanHarrenstein.MusicTimeline.Audio
             {
                 Load(_playlist.First);
             }
-        }
 
-        public bool CanSkipBack()
-        {
-            if (_currentPlaylistItem != null)
-            {
-                return _currentPlaylistItem.Previous != null;
-            }
+            _canSkipForward = _currentPlaylistItem.Next != null;
 
-            return false;
-        }
-
-        public bool CanSkipForward()
-        {
-            if (_currentPlaylistItem != null)
-            {
-                return _currentPlaylistItem.Next != null;
-            }
-
-            return false;
+            Application.Current.Dispatcher.Invoke(new Action(() => OnCanSkipForwardChanged(new CanSkipForwardEventArgs(_canSkipForward))));
         }
 
         public void Dispose()
         {
             Dispose(true);
+
             GC.SuppressFinalize(this);
         }
 
@@ -236,7 +250,10 @@ namespace NathanHarrenstein.MusicTimeline.Audio
         public void OnVolumeChanged(float volume, bool isMuted)
         {
             UpdateVolume();
-            UpdateMute();
+
+            _isMuted = isMuted;
+
+            UpdateIsMuted();
         }
 
         public void Pause()
@@ -252,15 +269,17 @@ namespace NathanHarrenstein.MusicTimeline.Audio
 
         public void Play()
         {
-            _playerInitializationWaitHandle.WaitOne();
-
-            if (!_playbackTimer.IsEnabled)
+            if (_canPlay)
             {
-                _playbackTimer.Start();
+                InternalPlay();
             }
-
-            _player.Play();
-            UpdatePlaybackState();
+            else
+            {
+                if (!_playbackSubscribed)
+                {
+                    CanPlayChanged += FlacPlayer_CanPlayChanged_StartPlayback;
+                }
+            }
         }
 
         public void SkipBack()
@@ -299,6 +318,21 @@ namespace NathanHarrenstein.MusicTimeline.Audio
             UpdateCurrentTime();
         }
 
+        public void ToggleMute()
+        {
+            if (_audioSessionControl == null)
+            {
+                return;
+            }
+
+            if (_isMuted && _playbackDevice.AudioEndpointVolume.Mute)
+            {
+                _playbackDevice.AudioEndpointVolume.Mute = false;
+            }
+
+            _audioSessionControl.SimpleAudioVolume.Mute = !_isMuted;
+        }
+
         internal MMDevice GetPlaybackDevice()
         {
             try
@@ -313,7 +347,7 @@ namespace NathanHarrenstein.MusicTimeline.Audio
 
         protected virtual void Dispose(bool disposing)
         {
-            if (!_disposed)
+            if (!_isDisposed)
             {
                 if (_player != null)
                 {
@@ -330,7 +364,31 @@ namespace NathanHarrenstein.MusicTimeline.Audio
                     playlistItem.Dispose();
                 }
 
-                _disposed = true;
+                _isDisposed = true;
+            }
+        }
+
+        protected virtual void OnCanPlayChanged(CanPlayEventArgs e)
+        {
+            if (CanPlayChanged != null)
+            {
+                CanPlayChanged(this, e);
+            }
+        }
+
+        protected virtual void OnCanSkipBackChanged(CanSkipBackEventArgs e)
+        {
+            if (CanSkipBackChanged != null)
+            {
+                CanSkipBackChanged(this, e);
+            }
+        }
+
+        protected virtual void OnCanSkipForwardChanged(CanSkipForwardEventArgs e)
+        {
+            if (CanSkipForwardChanged != null)
+            {
+                CanSkipForwardChanged(this, e);
             }
         }
 
@@ -342,11 +400,11 @@ namespace NathanHarrenstein.MusicTimeline.Audio
             }
         }
 
-        protected virtual void OnMuteChanged(MuteEventArgs e)
+        protected virtual void OnIsMutedChanged(MuteEventArgs e)
         {
-            if (MuteChanged != null)
+            if (IsMutedChanged != null)
             {
-                MuteChanged(this, e);
+                IsMutedChanged(this, e);
             }
         }
 
@@ -382,6 +440,13 @@ namespace NathanHarrenstein.MusicTimeline.Audio
             }
         }
 
+        private void AudioEndpointVolume_OnVolumeNotification(AudioVolumeNotificationData data)
+        {
+            _isMuted = data.Muted;
+
+            UpdateIsMuted();
+        }
+
         private void AudioSessionManager_OnSessionCreated(object sender, IAudioSessionControl newSession)
         {
             var audioSessionControl = new AudioSessionControl(newSession);
@@ -391,8 +456,24 @@ namespace NathanHarrenstein.MusicTimeline.Audio
                 _audioSessionControl = audioSessionControl;
                 _audioSessionControl.RegisterEventClient(this);
 
+                if (_audioSessionControl.SimpleAudioVolume.Mute)
+                {
+                    _isMuted = true;
+                }
+
                 UpdateVolume();
-                UpdateMute();
+                UpdateIsMuted();
+            }
+        }
+
+        private void FlacPlayer_CanPlayChanged_StartPlayback(object sender, CanPlayEventArgs e)
+        {
+            if (e.CanPlay)
+            {
+                InternalPlay();
+
+                CanPlayChanged -= FlacPlayer_CanPlayChanged_StartPlayback;
+                _playbackSubscribed = false;
             }
         }
 
@@ -406,20 +487,45 @@ namespace NathanHarrenstein.MusicTimeline.Audio
             _player = new WaveOutEvent();
             _player.Init(_currentPlaylistItem.Value);
 
-            _playerInitializationWaitHandle.Set();
+            _canPlay = true;
+
+            System.Windows.Application.Current.Dispatcher.Invoke(() => OnCanPlayChanged(new CanPlayEventArgs(_canPlay)));
 
             UpdateTotalTime();
         }
 
+        private void InternalPlay()
+        {
+            if (!_playbackTimer.IsEnabled)
+            {
+                _playbackTimer.Start();
+            }
+
+            _player.Play();
+
+            UpdatePlaybackState();
+        }
+
         private void Load(LinkedListNode<FlacReader> playlistItem)
         {
+            if (playlistItem == null)
+            {
+                throw new ArgumentNullException(nameof(playlistItem));
+            }
+
             if (_player != null && PlaybackState != PlaybackState.Stopped)
             {
                 Stop();
             }
 
-            _playerInitializationWaitHandle = new EventWaitHandle(false, EventResetMode.ManualReset);
+            _canPlay = false;
             _currentPlaylistItem = playlistItem;
+
+            _canSkipBack = _currentPlaylistItem.Previous != null;
+            _canSkipForward = _currentPlaylistItem.Next != null;
+
+            Application.Current.Dispatcher.Invoke(new Action(() => OnCanSkipBackChanged(new CanSkipBackEventArgs(_canSkipBack))));
+            Application.Current.Dispatcher.Invoke(new Action(() => OnCanSkipForwardChanged(new CanSkipForwardEventArgs(_canSkipForward))));
 
             StartPlaybackThread();
             UpdateTrackChanged();
@@ -429,7 +535,7 @@ namespace NathanHarrenstein.MusicTimeline.Audio
         {
             if (_player.PlaybackState == PlaybackState.Stopped)
             {
-                if (CanSkipForward())
+                if (_canSkipForward)
                 {
                     SkipForward();
                 }
@@ -460,9 +566,9 @@ namespace NathanHarrenstein.MusicTimeline.Audio
             System.Windows.Application.Current.Dispatcher.Invoke(() => OnCurrentTimeChanged(new TimeSpanEventArgs(_currentPlaylistItem.Value.CurrentTime)));
         }
 
-        private void UpdateMute()
+        private void UpdateIsMuted()
         {
-            System.Windows.Application.Current.Dispatcher.Invoke(() => OnMuteChanged(new MuteEventArgs(_audioSessionControl.SimpleAudioVolume.Mute)));
+            System.Windows.Application.Current.Dispatcher.Invoke(() => OnIsMutedChanged(new MuteEventArgs(_isMuted)));
         }
 
         private void UpdatePlaybackState()

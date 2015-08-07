@@ -2,6 +2,7 @@
 using Luminescence.Xiph;
 using NathanHarrenstein.MusicDB;
 using NathanHarrenstein.MusicTimeline.Builders;
+using NathanHarrenstein.MusicTimeline.Controls;
 using NathanHarrenstein.MusicTimeline.Converters;
 using NathanHarrenstein.MusicTimeline.Extensions;
 using NathanHarrenstein.MusicTimeline.Logging;
@@ -16,14 +17,17 @@ using System.Data.Entity.Core;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
+using System.Windows.Threading;
 
 namespace NathanHarrenstein.MusicTimeline.Views
 {
-    public partial class InputPage : Page
+    public partial class InputPage : Page, IDisposable
     {
         private DataProvider _dataProvider;
         private ObservableCollection<Composer> _selectedComposers;
@@ -31,6 +35,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
         private CompositionCollection _selectedCompositionCollection;
         private Movement _selectedMovement;
         private Recording _selectedRecording;
+        private Thread _dataThread;
 
         public InputPage()
         {
@@ -44,14 +49,23 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
         #region Initialization
 
+        private event EventHandler DataInitializationCompleted;
+
+        protected virtual void OnDataInitializationCompleted()
+        {
+            if (DataInitializationCompleted != null)
+            {
+                DataInitializationCompleted(this, null);
+            }
+        }
+
         private void Initialize()
         {
-            _dataProvider = new DataProvider();
-
-            InitializeDataSources();
-            InitializeListBoxes();
             InitializeAutoCompleteBoxStringSelectors();
-            InitializeAutoCompleteBoxSuggestionTemplates();
+
+            DataInitializationCompleted += InputPage_DataInitializationCompleted;
+
+            InitializeDataThread();
         }
 
         private void InitializeAutoCompleteBoxStringSelectors()
@@ -62,29 +76,52 @@ namespace NathanHarrenstein.MusicTimeline.Views
             ComposerDeathLocationAutoCompleteBox.StringSelector = stringSelector;
         }
 
-        private void InitializeAutoCompleteBoxSuggestionTemplates()
-        {
-            var suggestionTemplate = (DataTemplate)FindResource("SuggestionTemplate");
-
-            ComposerBirthLocationAutoCompleteBox.SuggestionTemplate = suggestionTemplate;
-            ComposerDeathLocationAutoCompleteBox.SuggestionTemplate = suggestionTemplate;
-        }
-
         private void InitializeDataSources()
         {
+            _dataProvider = new DataProvider();
             _dataProvider.Composers.Load();
             _dataProvider.Eras.Load();
             _dataProvider.Locations.Load();
             _dataProvider.Nationalities.Load();
+
+            Dispatcher.Invoke(OnDataInitializationCompleted);
+        }
+
+        private void InitializeDataThread()
+        {
+            _dataThread = new Thread(new ThreadStart(StartDataProcessingLoop));
+            _dataThread.Name = "Data Thread";
+            _dataThread.IsBackground = true;
+            _dataThread.Start();
+
+            _dataProcessingQueue.Enqueue(InitializeDataSources);
+        }
+
+        private Queue<Action> _dataProcessingQueue = new Queue<Action>();
+
+        private void StartDataProcessingLoop()
+        {
+            while (!_isDisposed)
+            {
+                if (_dataProcessingQueue.Count > 0)
+                {
+                    _dataProcessingQueue.Dequeue()();
+                }
+            }
         }
 
         private void InitializeListBoxes()
         {
-            ComposerListBox.SetBinding(ItemsControl.ItemsSourceProperty, BindingBuilder.Build(_dataProvider.Composers.Local, null, "Name"));
-            ComposerNationalityListBox.SetBinding(ItemsControl.ItemsSourceProperty, BindingBuilder.Build(_dataProvider.Nationalities.Local, null, "Name"));
-            ComposerEraListBox.ItemsSource = _dataProvider.Eras.Local;
-            ComposerBirthLocationAutoCompleteBox.Suggestions = _dataProvider.Locations.Local;
-            ComposerDeathLocationAutoCompleteBox.Suggestions = _dataProvider.Locations.Local;
+            ComposerListBox.SetBinding(ItemsControl.ItemsSourceProperty, BindingBuilder.Build(_dataProvider.Composers.Local.OrderBy(c => c.Name)));
+            ComposerNationalityListBox.SetBinding(ItemsControl.ItemsSourceProperty, BindingBuilder.Build(_dataProvider.Nationalities.Local.OrderBy(c => c.Name)));
+            ComposerEraListBox.SetBinding(ItemsControl.ItemsSourceProperty, BindingBuilder.Build(_dataProvider.Eras.Local));
+            ComposerBirthLocationAutoCompleteBox.SetBinding(AutoCompleteBox.SuggestionsProperty, BindingBuilder.Build(_dataProvider.Locations.Local));
+            ComposerDeathLocationAutoCompleteBox.SetBinding(AutoCompleteBox.SuggestionsProperty, BindingBuilder.Build(_dataProvider.Locations.Local));
+        }
+
+        private void InputPage_DataInitializationCompleted(object sender, EventArgs e)
+        {
+            InitializeListBoxes();
         }
 
         #endregion Initialization
@@ -153,8 +190,15 @@ namespace NathanHarrenstein.MusicTimeline.Views
                 CompositionCollectionListBox.SetBinding(ItemsControl.ItemsSourceProperty, BindingBuilder.Build(composer.CompositionCollections, null, "Name"));
                 CompositionListBox.SetBinding(ItemsControl.ItemsSourceProperty, BindingBuilder.Build(composer.Compositions, null, "Name"));
 
-                ListUtility.AddMany(ComposerNationalityListBox.SelectedItems, composer.Nationalities.ToList());
+                var nationalities = composer.Nationalities.ToList();
+
+                ListUtility.AddMany(ComposerNationalityListBox.SelectedItems, nationalities);
                 ListUtility.AddMany(ComposerEraListBox.SelectedItems, composer.Eras.ToList());
+
+                if (nationalities.Count > 0)
+                {
+                    ComposerNationalityListBox.ScrollIntoView(nationalities.First()); 
+                }
 
                 if (ComposerImageListBox.Items.Count > 0)
                 {
@@ -607,40 +651,82 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
         private void ComposerLinkListBox_Drop(object sender, DragEventArgs e)
         {
-            if (ComposerLinkListBox.IsEnabled)
+            if (ComposerLinkListBox.IsEnabled && e.Data.GetDataPresent(DataFormats.UnicodeText))
             {
-                var url = (string)e.Data.GetData(DataFormats.UnicodeText);
+                Dispatcher.BeginInvoke(new Action<string>(DropComposerLink), e.Data.GetData(DataFormats.UnicodeText));
+            }
+        }
 
-                try
+        private void DropComposerLink(string url)
+        {
+            try
+            {
+                if (!url.StartsWith("http"))
                 {
-                    if (!url.StartsWith("http"))
-                    {
-                        url = "http://" + url;
-                    }
-
-                    if (!FileUtility.WebsiteExists(url))
-                    {
-                        return;
-                    }
-
-                    var composerLink = new ComposerLink();
-                    composerLink.Composer = _selectedComposers[0];
-                    composerLink.URL = url;
-                    composerLink.Name = UrlToTitleConverter.UrlToTitle(url);
-
-                    _selectedComposers[0].ComposerLinks.Add(composerLink);
-                    ComposerLinkListBox.SelectedItem = composerLink;
-
-                    if (url.Contains("wikipedia"))
-                    {
-                        _selectedComposers[0].Biography = BiographyUtility.CleanXaml(HtmlToXamlConverter.ConvertHtmlToXaml(WikipediaScraper.ScrapeArticle(url), false));
-                        ComposerBiographyTextBox.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
-                    }
+                    url = "http://" + url;
                 }
-                catch (Exception ex)
+
+                if (!FileUtility.WebsiteExists(url))
                 {
-                    Logger.Log(ex.ToString(), "MusicTimeline.log");
+                    return;
                 }
+
+                var composerLink = new ComposerLink();
+                composerLink.Composer = _selectedComposers[0];
+                composerLink.URL = url;
+                composerLink.Name = UrlToTitleConverter.UrlToTitle(url);
+
+                _selectedComposers[0].ComposerLinks.Add(composerLink);
+                ComposerLinkListBox.SelectedItem = composerLink;
+
+                if (url.Contains("wikipedia"))
+                {
+                    _selectedComposers[0].Biography = BiographyUtility.CleanXaml(HtmlToXamlConverter.ConvertHtmlToXaml(WikipediaScraper.ScrapeArticle(url), false));
+                    ComposerBiographyTextBox.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
+                }
+
+                if (url.Contains("klassika"))
+                {
+                    var progressBar = new ProgressBar();
+                    progressBar.Width = 500;
+                    progressBar.Height = 20;
+                    progressBar.Maximum = 1;
+                    progressBar.Minimum = 0;
+                    progressBar.Margin = new Thickness(15);
+
+                    var progressDialog = new Window();
+                    progressDialog.Content = progressBar;
+                    progressDialog.ResizeMode = ResizeMode.NoResize;
+                    progressDialog.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+                    progressDialog.Owner = Application.Current.MainWindow;
+                    progressDialog.ShowInTaskbar = false;
+                    progressDialog.Topmost = true;
+                    progressDialog.SizeToContent = SizeToContent.WidthAndHeight;
+                    progressDialog.Title = "Downloading Compositions";
+
+                    var progress = new Progress<double>();
+                    progress.ProgressChanged += (o, p) =>
+                    {
+                        progressBar.Value = p;
+
+                        if (p == 1d)
+                        {
+                            progressDialog.Close();
+                        }
+                    };
+
+                    var cancellationTokenSource = new CancellationTokenSource();
+
+                    _dataProcessingQueue.Enqueue(new Action(() => KlassikaScraper.ScrapeComposerDetailPage(url, _selectedComposers[0], _dataProvider, progress, cancellationTokenSource.Token)));
+
+                    progressDialog.ShowDialog();
+
+                    cancellationTokenSource.Cancel();
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Log(ex.ToString(), "MusicTimeline.log");
             }
         }
 
@@ -1386,5 +1472,41 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
             return null;
         }
+
+        #region IDisposable Support
+
+        private bool _isDisposed = false;
+
+        ~InputPage()
+        {
+            Dispose(false);
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_isDisposed)
+            {
+                if (disposing)
+                {
+                    // dispose managed objects
+                }
+
+                if (_dataProvider != null)
+                {
+                    _dataProvider.Dispose();
+                }
+                
+                _isDisposed = true;
+            }
+        }
+
+        #endregion IDisposable Support
     }
 }

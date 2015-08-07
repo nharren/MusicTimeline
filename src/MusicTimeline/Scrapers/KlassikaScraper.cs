@@ -3,9 +3,13 @@ using NathanHarrenstein.MusicDB;
 using NathanHarrenstein.MusicTimeline.Builders;
 using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Windows.Threading;
 
 namespace NathanHarrenstein.MusicTimeline.Scrapers
 {
@@ -61,7 +65,7 @@ namespace NathanHarrenstein.MusicTimeline.Scrapers
             dataProvider.SaveChanges();
         }
 
-        public static void ScrapeComposerDetailPage(string url, Composer composer, DataProvider dataProvider)
+        public static void ScrapeComposerDetailPage(string url, Composer composer, DataProvider dataProvider, IProgress<double> progress = null, CancellationToken? cancellationToken = null)
         {
             var klassikaLink = composer.ComposerLinks.FirstOrDefault(l => l.URL.Contains("klassika.info"));
 
@@ -83,10 +87,10 @@ namespace NathanHarrenstein.MusicTimeline.Scrapers
 
             var composerKey = urlParts.ElementAt(urlParts.Length - 2);
 
-            ScrapeCompositionsPage($"http://www.klassika.info/Komponisten/{composerKey}/wv_abc.html", composer, dataProvider);
+            ScrapeCompositionsPage($"http://www.klassika.info/Komponisten/{composerKey}/wv_abc.html", composer, dataProvider, progress, cancellationToken);
         }
 
-        public static void ScrapeCompositionsPage(string url, Composer composer, DataProvider dataProvider)
+        public static void ScrapeCompositionsPage(string url, Composer composer, DataProvider dataProvider, IProgress<double> progress = null, CancellationToken? cancellationToken = null)
         {
             var htmlWeb = new HtmlWeb();
             htmlWeb.PreRequest = delegate (HttpWebRequest webRequest)
@@ -110,10 +114,21 @@ namespace NathanHarrenstein.MusicTimeline.Scrapers
                 return true;
             });
 
-            var tableRows = table.Elements("tr");
+            if (table == null)
+            {
+                return;
+            }
+
+            var tableRows = table.Elements("tr").ToArray();
+            var increment = 1d;
 
             foreach (var tableRow in tableRows)
             {
+                if (cancellationToken != null && cancellationToken.Value.IsCancellationRequested)
+                {
+                    return;
+                }
+
                 var tableDatas = tableRow.Elements("td").ToArray();
 
                 var nameTableData = tableDatas[1];
@@ -150,7 +165,7 @@ namespace NathanHarrenstein.MusicTimeline.Scrapers
                     composition.Composers = new ObservableCollection<Composer> { composer };
                     composition.Dates = compositionDate == "?" ? null : compositionDate;
 
-                    composer.Compositions.Add(composition);
+                    Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() => composer.Compositions.Add(composition)));
                 }
 
                 var catalogNumberString = (string)null;
@@ -166,7 +181,7 @@ namespace NathanHarrenstein.MusicTimeline.Scrapers
                         compositionType.Name = compositionTypeName;
                         compositionType.Compositions.Add(composition);
 
-                        dataProvider.CompositionTypes.Add(compositionType);              
+                        dataProvider.CompositionTypes.Add(compositionType);
                     }
 
                     if (composition.CompositionType == null)
@@ -214,7 +229,14 @@ namespace NathanHarrenstein.MusicTimeline.Scrapers
                     ScrapeCompositionDetailPage($"http://www.klassika.info/{hypertextReference.Value}", composition, dataProvider);
                 }
 
+                if (progress != null)
+                {
+                    progress.Report(increment++ / (double)tableRows.Length);
+                }
+
+#if DEBUG
                 Debug.WriteLine(composition.Name);
+#endif
             }
         }
 
@@ -361,7 +383,16 @@ namespace NathanHarrenstein.MusicTimeline.Scrapers
                         .Elements("td")
                         .ElementAt(1);
 
-                    var movementNumber = short.Parse(HtmlEntity.DeEntitize(movementNumberTableData.InnerText).Replace(". Satz:", ""));
+                    short movementNumber;
+                    
+                    if (!short.TryParse(HtmlEntity.DeEntitize(movementNumberTableData.InnerText).Replace(". Satz:", ""), out movementNumber))
+                    {
+                        var tableRowsArray = tableRows.ToArray();
+                        var tableRowIndex = Array.IndexOf(tableRowsArray, tableRow);
+
+                        movementNumber = Convert.ToInt16(tableRowIndex + 1);
+                    }
+
                     var movementName = HtmlEntity.DeEntitize(movementNameTableData.InnerText);
 
                     var movement = composition.Movements.FirstOrDefault(m => m.Number == movementNumber);
@@ -374,7 +405,7 @@ namespace NathanHarrenstein.MusicTimeline.Scrapers
                         movement.Number = movementNumber;
 
                         composition.Movements.Add(movement);
-                    } 
+                    }
                 }
             }
         }

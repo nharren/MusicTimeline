@@ -708,6 +708,7 @@
                                        Grid.Column="3"
                                        Grid.ColumnSpan="2"
                                        LostFocus="ComposerBirthLocationAutoCompleteBox_LostFocus"
+                                       SuggestionTemplate="{StaticResource SuggestionTemplate}"
                                        TabIndex="2" />
                     <TextBlock Grid.Row="16"
                                Grid.Column="4"
@@ -718,6 +719,7 @@
                                        Grid.Column="3"
                                        Grid.ColumnSpan="2"
                                        LostFocus="ComposerDeathLocationAutoCompleteBox_LostFocus"
+                                       SuggestionTemplate="{StaticResource SuggestionTemplate}"
                                        TabIndex="3" />
                     <TextBlock Grid.Row="20"
                                Grid.Column="4"
@@ -1454,6 +1456,7 @@
                                        Grid.Column="3"
                                        Grid.ColumnSpan="5"
                                        IsTabStop="False"
+                                       SuggestionTemplate="{StaticResource SuggestionTemplate}"
                                        TextChanged="RecordingAlbumAutoCompleteBox_TextChanged" />
                     <TextBlock Grid.Row="12"
                                Grid.Column="4"

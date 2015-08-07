@@ -22,17 +22,15 @@
         <cv:UrlToCommandConverter x:Key="UrlToCommandConverter" />
         <cv:UrlToFaviconConverter x:Key="UrlToFaviconConverter" />
         <cv:DecimalToRomanConverter x:Key="DecimalToRomanConverter" />
+        <cv:CompositionsToSortedCompositionsConverter x:Key="CompositionsToSortedCompositionsConverter" />
+        <cv:MovementsToSortedMovementsConverter x:Key="MovementsToSortedMovementsConverter" />
     </Page.Resources>
     <Page.CommandBindings>
         <CommandBinding CanExecute="TogglePlayPause_CanExecute"
                         Command="MediaCommands.TogglePlayPause"
                         Executed="TogglePlayPause_Executed" />
-        <CommandBinding CanExecute="PreviousTrack_CanExecute"
-                        Command="MediaCommands.PreviousTrack"
-                        Executed="PreviousTrack_Executed" />
-        <CommandBinding CanExecute="NextTrack_CanExecute"
-                        Command="MediaCommands.NextTrack"
-                        Executed="NextTrack_Executed" />
+        <CommandBinding Command="MediaCommands.PreviousTrack" Executed="PreviousTrack_Executed" />
+        <CommandBinding Command="MediaCommands.NextTrack" Executed="NextTrack_Executed" />
         <CommandBinding CanExecute="MuteVolume_CanExecute"
                         Command="MediaCommands.MuteVolume"
                         Executed="MuteVolume_Executed" />
@@ -54,7 +52,7 @@
                 <ColumnDefinition Width="120" />
                 <ColumnDefinition Width="Auto" />
                 <ColumnDefinition Width="3*" />
-                <ColumnDefinition Width="2*" />
+                <ColumnDefinition Width="500" />
             </Grid.ColumnDefinitions>
             <Grid Grid.ColumnSpan="4"
                   Background="#222222"
@@ -225,12 +223,14 @@
                         </ControlTemplate>
                     </ToggleButton.Template>
                 </ToggleButton>
-                <Button Grid.Row="1"
+                <Button Name="SkipBackButton"
+                        Grid.Row="1"
                         Grid.Column="2"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Bottom"
                         Command="MediaCommands.PreviousTrack"
-                        Cursor="Hand">
+                        Cursor="Hand"
+                        IsEnabled="False">
                     <Button.Template>
                         <ControlTemplate TargetType="{x:Type Button}">
                             <Grid>
@@ -292,12 +292,14 @@
                         </ControlTemplate>
                     </Button.Template>
                 </Button>
-                <Button Grid.Row="1"
+                <Button Name="SkipForwardButton"
+                        Grid.Row="1"
                         Grid.Column="4"
                         HorizontalAlignment="Center"
                         VerticalAlignment="Bottom"
                         Command="MediaCommands.NextTrack"
-                        Cursor="Hand">
+                        Cursor="Hand"
+                        IsEnabled="False">
                     <Button.Template>
                         <ControlTemplate TargetType="{x:Type Button}">
                             <Grid>
@@ -1028,9 +1030,9 @@
                             </ControlTemplate>
                         </TreeView.Template>
                         <TreeView.ItemTemplate>
-                            <HierarchicalDataTemplate ItemsSource="{Binding}">
+                            <HierarchicalDataTemplate ItemsSource="{Binding Converter={StaticResource CompositionsToSortedCompositionsConverter}}">
                                 <HierarchicalDataTemplate.ItemTemplate>
-                                    <HierarchicalDataTemplate ItemsSource="{Binding Key.Movements}">
+                                    <HierarchicalDataTemplate ItemsSource="{Binding Movements, Converter={StaticResource MovementsToSortedMovementsConverter}}">
                                         <HierarchicalDataTemplate.ItemTemplate>
                                             <DataTemplate>
                                                 <StackPanel Orientation="Horizontal">
@@ -1040,7 +1042,7 @@
                                                 </StackPanel>
                                             </DataTemplate>
                                         </HierarchicalDataTemplate.ItemTemplate>
-                                        <TextBlock Text="{Binding Key.Name}" />
+                                        <TextBlock Text="{Binding Name}" />
                                     </HierarchicalDataTemplate>
                                 </HierarchicalDataTemplate.ItemTemplate>
                                 <TextBlock Text="{Binding Key}" />

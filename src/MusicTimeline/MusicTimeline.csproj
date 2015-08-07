@@ -89,6 +89,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Audio\CanPlayEventArgs.cs" />
+    <Compile Include="Audio\CanSkipBackEventArgs.cs" />
+    <Compile Include="Audio\CanSkipForwardEventArgs.cs" />
     <Compile Include="Audio\FlacPlayer.cs" />
     <Compile Include="Audio\MuteEventArgs.cs" />
     <Compile Include="Audio\VolumeEventArgs.cs" />
@@ -99,6 +102,8 @@
     <Compile Include="Controls\PanningScrollViewer.cs" />
     <Compile Include="Converters\ComposerImageToBitmapConverter.cs" />
     <Compile Include="Converters\ComposerToThumbnailConverter.cs" />
+    <Compile Include="Converters\CompositionsToSortedCompositionsConverter.cs" />
+    <Compile Include="Converters\MovementsToSortedMovementsConverter.cs" />
     <Compile Include="Converters\NationalityToFlagConverter.cs" />
     <Compile Include="Converters\UrlToCommandConverter.cs" />
     <Compile Include="Converters\UrlToFaviconConverter.cs" />
