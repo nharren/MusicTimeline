@@ -3,7 +3,7 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:cv="clr-namespace:NathanHarrenstein.MusicTimeline.Converters"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-      xmlns:db="clr-namespace:NathanHarrenstein.MusicDB;assembly=MusicDB"
+      xmlns:db="clr-namespace:NathanHarrenstein.ClassicalMusicDb;assembly=ClassicalMusicDb"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:t="clr-namespace:NathanHarrenstein.Timeline;assembly=Timeline"
       xmlns:vm="clr-namespace:NathanHarrenstein.MusicTimeline.ViewModels"

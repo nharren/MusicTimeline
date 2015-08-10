@@ -1,4 +1,4 @@
-﻿using NathanHarrenstein.MusicDB;
+﻿using NathanHarrenstein.ClassicalMusicDb;
 using NathanHarrenstein.MusicTimeline.Comparers;
 using System;
 using System.Collections.Generic;

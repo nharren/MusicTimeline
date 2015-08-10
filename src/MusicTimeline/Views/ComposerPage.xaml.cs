@@ -1,4 +1,4 @@
-﻿using NathanHarrenstein.MusicDB;
+﻿using NathanHarrenstein.ClassicalMusicDb;
 using NathanHarrenstein.MusicTimeline.Audio;
 using NathanHarrenstein.MusicTimeline.Builders;
 using NathanHarrenstein.MusicTimeline.Comparers;
@@ -27,7 +27,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
     {
         private static LogicalComparer _logicalComparer = new LogicalComparer();
         private Composer _composer;
-        private DataProvider _dataProvider;
+        private ClassicalMusicDbContext _classicalMusicDbContext;
         private FlacPlayer _flacPlayer;
         private bool _isDisposed = false;
         private Dictionary<ISampleProvider, Sample> _sampleDictionary;
@@ -36,7 +36,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
         {
             InitializeComponent();
 
-            _dataProvider = new DataProvider();
+            _classicalMusicDbContext = new ClassicalMusicDbContext();
             _sampleDictionary = new Dictionary<ISampleProvider, Sample>();
             _flacPlayer = new FlacPlayer();
             _flacPlayer.CurrentTimeChanged += FlacPlayer_CurrentTimeChanged;
@@ -50,7 +50,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
             _flacPlayer.CanSkipForwardChanged += FlacPlayer_CanSkipForwardChanged;
 
             var composerName = System.Windows.Application.Current.Properties["SelectedComposer"] as string;
-            _composer = _dataProvider.Composers.AsNoTracking().FirstOrDefault(c => c.Name == composerName);
+            _composer = _classicalMusicDbContext.Composers.AsNoTracking().FirstOrDefault(c => c.Name == composerName);
 
             if (_composer != null)
             {
@@ -74,7 +74,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
         {
             if (!_isDisposed)
             {
-                _dataProvider.Dispose();
+                _classicalMusicDbContext.Dispose();
                 _flacPlayer.Dispose();
 
                 _isDisposed = true;
@@ -229,7 +229,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
             var streamResourceInfo = System.Windows.Application.GetResourceStream(defaultComposerImageUri);
 
             var composerImage = new ComposerImage();
-            composerImage.Image = StreamUtility.ReadToEnd(streamResourceInfo.Stream);
+            composerImage.Bytes = StreamUtility.ReadToEnd(streamResourceInfo.Stream);
 
             return composerImage;
         }
@@ -238,11 +238,11 @@ namespace NathanHarrenstein.MusicTimeline.Views
         {
             var influencedVisibility = _composer.Influenced.Count > 0 ? Visibility.Visible : Visibility.Collapsed;
             var influencesVisibility = _composer.Influences.Count > 0 ? Visibility.Visible : Visibility.Collapsed;
-            var linksVisibility = _composer.ComposerLinks.Count > 0 ? Visibility.Visible : Visibility.Collapsed;
+            var webpagesVisibility = _composer.Links.Count > 0 ? Visibility.Visible : Visibility.Collapsed;
 
             BuildBiographySection(_composer);
             BornTextBlock.Text = GetBorn(_composer);
-            ComposerImagesListBox.ItemsSource = _composer.ComposerImages.Count == 0 ? new ObservableCollection<ComposerImage> { GetDefaultComposerImage() } : _composer.ComposerImages;
+            ComposerImagesListBox.ItemsSource = _composer.ComposerImages.Count == 0 ? new List<ComposerImage> { GetDefaultComposerImage() } : _composer.ComposerImages;
             ComposerNameTextBlock.Text = NameUtility.ToFirstLast(_composer.Name);
             DiedTextBlock.Text = GetDied(_composer);
             ComposerFlagsItemsControl.ItemsSource = _composer.Nationalities;
@@ -254,15 +254,15 @@ namespace NathanHarrenstein.MusicTimeline.Views
             InfluencesItemsControl.Visibility = influencesVisibility;
             InfluencesTextBlock.Visibility = influencesVisibility;
             InfluencesUnderline.Visibility = influencesVisibility;
-            LinksItemControl.ItemsSource = _composer.ComposerLinks;
-            LinksItemControl.Visibility = linksVisibility;
-            LinksTextBlock.Visibility = linksVisibility;
-            LinksUnderline.Visibility = linksVisibility;
+            LinksItemControl.ItemsSource = _composer.Links;
+            LinksItemControl.Visibility = webpagesVisibility;
+            LinksTextBlock.Visibility = webpagesVisibility;
+            LinksUnderline.Visibility = webpagesVisibility;
 
             var compositionTypes = _composer.CompositionCollections
                 .SelectMany(cc => cc.Compositions)
                 .Concat(_composer.Compositions)                
-                .GroupBy(c => c.CompositionType?.Name ?? "Unknown")
+                .GroupBy(c => c.Genre?.Name ?? "Unknown")
                 .OrderBy(s => s.Key);
 
             TreeView.SetBinding(ItemsControl.ItemsSourceProperty, BindingBuilder.Build(compositionTypes));
@@ -276,7 +276,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
         {
             foreach (var sample in _composer.Samples)
             {
-                var flacReader = new FlacReader(new MemoryStream(sample.Audio));
+                var flacReader = new FlacReader(new MemoryStream(sample.Bytes));
 
                 _sampleDictionary[flacReader] = sample;
                 _flacPlayer.AddToPlaylist(flacReader);

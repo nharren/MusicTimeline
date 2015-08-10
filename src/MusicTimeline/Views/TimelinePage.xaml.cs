@@ -1,10 +1,12 @@
-﻿using NathanHarrenstein.MusicDB;
+﻿using NathanHarrenstein.ClassicalMusicDb;
 using NathanHarrenstein.MusicTimeline.Builders;
 using NathanHarrenstein.MusicTimeline.Converters;
 using NathanHarrenstein.MusicTimeline.Input;
 using NathanHarrenstein.Timeline;
 using System;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Data.Entity;
 using System.EDTF;
 using System.Linq;
 using System.Windows;
@@ -21,7 +23,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
         public static readonly DependencyProperty GoToCommandProperty = DependencyProperty.Register("GoToCommand", typeof(ICommand), typeof(TimelinePage));
         public static readonly DependencyProperty ManageDataCommandProperty = DependencyProperty.Register("ManageDataCommand", typeof(ICommand), typeof(TimelinePage));
         public static readonly DependencyProperty RebuildThumbnailCacheCommandProperty = DependencyProperty.Register("RebuildThumbnailCacheCommand", typeof(ICommand), typeof(TimelinePage));
-        private DataProvider _dataProvider;
+        private ClassicalMusicDbContext _classicalMusicDbContext;
 
         private bool _isDisposed = false;
 
@@ -114,10 +116,11 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
         public void Initialize()
         {
-            _dataProvider = new DataProvider();
+            _classicalMusicDbContext = new ClassicalMusicDbContext();
 
-            var eraList = _dataProvider.Eras.AsNoTracking().ToList();
-            var composers = _dataProvider.Composers.AsNoTracking();
+            var eraList = _classicalMusicDbContext.Eras.AsNoTracking().ToList();
+            var composers = _classicalMusicDbContext.Composers.AsNoTracking();
+
             var composerEraViewModels = ComposerEraViewModelBuilder.Build(eraList);
 
             ManageDataCommand = GetManageDataCommand();
@@ -141,7 +144,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
         {
             if (!_isDisposed)
             {
-                _dataProvider.Dispose();
+                _classicalMusicDbContext.Dispose();
 
                 _isDisposed = true;
             }
@@ -173,9 +176,9 @@ namespace NathanHarrenstein.MusicTimeline.Views
         {
             return new DelegateCommand(o =>
             {
-                var eraQuery = _dataProvider.Eras.First(e => e.Name == (string)o);
+                var eraQuery = _classicalMusicDbContext.Eras.First(e => e.Name == (string)o);
 
-                var composersSortedByDate = _dataProvider.Composers.ToArray()
+                var composersSortedByDate = _classicalMusicDbContext.Composers.ToArray()
                     .Select(c => Tuple.Create(ExtendedDateTimeInterval.Parse(c.Dates).Earliest(), c))
                     .OrderBy(t => t.Item1);
 

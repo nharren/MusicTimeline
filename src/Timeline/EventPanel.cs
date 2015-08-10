@@ -157,7 +157,7 @@ namespace NathanHarrenstein.Timeline
         public Vector CoercePan(Vector delta)
         {
             var extentWidth = Ruler.ToPixels(Dates);
-            var extentHeight = (Events.Count() - 2) * (EventSpacing + EventHeight) - EventSpacing;
+            var extentHeight = Events.Count() * (EventSpacing + EventHeight);
 
             if (HorizontalOffset + delta.X < 0)                                                     // Panning too far left. Set horizontal pan distance to the amount of space remaining before the left edge.
             {
@@ -269,7 +269,7 @@ namespace NathanHarrenstein.Timeline
             var viewportLeftTime = Dates.Earliest() + Ruler.ToTimeSpan(Math.Max(0d, HorizontalOffset - _preloadDistance));
             var viewportRightTime = viewportLeftTime + Ruler.ToTimeSpan(availableSize.Width + _preloadDistance * 2);
 
-            var lowestPossibleIndex = (int)(Math.Max(VerticalOffset - _preloadDistance,0) / (EventHeight + EventSpacing));
+            var lowestPossibleIndex = (int)(Math.Max(VerticalOffset - _preloadDistance, 0) / (EventHeight + EventSpacing));
             var highestPossibleIndex = Math.Min((int)((VerticalOffset + availableSize.Height + _preloadDistance) / (EventHeight + EventSpacing)), Events.Count - 1);
 
             for (int i = lowestPossibleIndex; i <= highestPossibleIndex; i++)
@@ -289,10 +289,12 @@ namespace NathanHarrenstein.Timeline
                         {
                             var eventContentControl = new ContentControl();
                             eventContentControl.Content = timelineEvent.ToString();
+
                             eventFrameworkElement = eventContentControl;
                         }
 
                         eventFrameworkElement.DataContext = timelineEvent;
+
                         _cache[i] = eventFrameworkElement;
                     }
                     else
@@ -301,6 +303,7 @@ namespace NathanHarrenstein.Timeline
                     }
 
                     Children.Add(eventFrameworkElement);
+
                     eventFrameworkElement.Measure(availableSize);
 
                     _visibleCacheIndexes.Add(i);

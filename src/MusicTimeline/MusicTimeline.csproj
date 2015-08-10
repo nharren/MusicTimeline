@@ -42,8 +42,8 @@
     <ApplicationIcon>Resources\AppIcon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EDTF, Version=1.0.5669.23842, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\EDTF.1.0.5669.23842\lib\net45\EDTF.dll</HintPath>
+    <Reference Include="EDTF, Version=1.0.5699.34534, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\EDTF.1.0.5699.34534\lib\net45\EDTF.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
@@ -103,6 +103,7 @@
     <Compile Include="Converters\ComposerImageToBitmapConverter.cs" />
     <Compile Include="Converters\ComposerToThumbnailConverter.cs" />
     <Compile Include="Converters\CompositionsToSortedCompositionsConverter.cs" />
+    <Compile Include="Converters\CompositionToCompositionDisplayNameConverter.cs" />
     <Compile Include="Converters\MovementsToSortedMovementsConverter.cs" />
     <Compile Include="Converters\NationalityToFlagConverter.cs" />
     <Compile Include="Converters\UrlToCommandConverter.cs" />
@@ -1648,6 +1649,10 @@
     <Resource Include="Resources\AppIcon.ico" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ClassicalMusicDb\ClassicalMusicDb.csproj">
+      <Project>{64e83bf1-43a0-47a7-bb5e-a0fd4454c89d}</Project>
+      <Name>ClassicalMusicDb</Name>
+    </ProjectReference>
     <ProjectReference Include="..\HtmlToXamlConverter\HtmlToXamlConverter.csproj">
       <Project>{e1f3f7a0-5fe8-447d-b2ee-065b770b0712}</Project>
       <Name>HtmlToXamlConverter</Name>
@@ -1655,10 +1660,6 @@
     <ProjectReference Include="..\LibraryDb\LibraryDB.csproj">
       <Project>{0ba043e6-3d96-4d32-8a2e-c54de859d59f}</Project>
       <Name>LibraryDB</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\MusicDb\MusicDB.csproj">
-      <Project>{1f805a11-8f8d-4f83-b44a-cec052e33778}</Project>
-      <Name>MusicDB</Name>
     </ProjectReference>
     <ProjectReference Include="..\NAudio.Flac\NAudio.Flac.csproj">
       <Project>{1bd0fa41-17b8-494c-bd88-5bf5835f6983}</Project>

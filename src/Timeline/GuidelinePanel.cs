@@ -202,27 +202,27 @@ namespace NathanHarrenstein.Timeline
                         break;
 
                     case TimeResolution.Year:
-                        guidelineTime = viewportLeftTime.ToPrecision(ExtendedDateTimePrecision.Year, true);
+                        guidelineTime = viewportLeftTime.ToRoundedPrecision(ExtendedDateTimePrecision.Year, true);
                         break;
 
                     case TimeResolution.Month:
-                        guidelineTime = viewportLeftTime.ToPrecision(ExtendedDateTimePrecision.Month, true);
+                        guidelineTime = viewportLeftTime.ToRoundedPrecision(ExtendedDateTimePrecision.Month, true);
                         break;
 
                     case TimeResolution.Day:
-                        guidelineTime = viewportLeftTime.ToPrecision(ExtendedDateTimePrecision.Day, true);
+                        guidelineTime = viewportLeftTime.ToRoundedPrecision(ExtendedDateTimePrecision.Day, true);
                         break;
 
                     case TimeResolution.Hour:
-                        guidelineTime = viewportLeftTime.ToPrecision(ExtendedDateTimePrecision.Hour, true);
+                        guidelineTime = viewportLeftTime.ToRoundedPrecision(ExtendedDateTimePrecision.Hour, true);
                         break;
 
                     case TimeResolution.Minute:
-                        guidelineTime = viewportLeftTime.ToPrecision(ExtendedDateTimePrecision.Minute, true);
+                        guidelineTime = viewportLeftTime.ToRoundedPrecision(ExtendedDateTimePrecision.Minute, true);
                         break;
 
                     case TimeResolution.Second:
-                        guidelineTime = viewportLeftTime.ToPrecision(ExtendedDateTimePrecision.Second, true);
+                        guidelineTime = viewportLeftTime.ToRoundedPrecision(ExtendedDateTimePrecision.Second, true);
                         break;
 
                     default:

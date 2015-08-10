@@ -1,4 +1,4 @@
-﻿using NathanHarrenstein.MusicDB;
+﻿using NathanHarrenstein.ClassicalMusicDb;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -17,9 +17,9 @@ namespace NathanHarrenstein.MusicTimeline.Converters
         {
             var thumbnail = (BitmapImage)null;
 
-            if (_thumbnailCache.TryGetValue(composer.ID, out thumbnail))
+            if (_thumbnailCache.TryGetValue(composer.Id, out thumbnail))
             {
-                return _thumbnailCache[composer.ID];
+                return _thumbnailCache[composer.Id];
             }
 
             var directoryPath = $@"{Environment.CurrentDirectory}\Resources\Thumbnails\";
@@ -29,7 +29,7 @@ namespace NathanHarrenstein.MusicTimeline.Converters
                 Directory.CreateDirectory(directoryPath);
             }
 
-            var thumbnailPath = $@"{Environment.CurrentDirectory}\Resources\Thumbnails\{composer.ID}.jpg";
+            var thumbnailPath = $@"{Environment.CurrentDirectory}\Resources\Thumbnails\{composer.Id}.jpg";
             var thumbnailUri = new Uri(thumbnailPath, UriKind.Absolute);
 
             if (File.Exists(thumbnailPath))
@@ -41,7 +41,7 @@ namespace NathanHarrenstein.MusicTimeline.Converters
                 thumbnail.EndInit();
                 thumbnail.Freeze();
 
-                _thumbnailCache[composer.ID] = thumbnail;
+                _thumbnailCache[composer.Id] = thumbnail;
 
                 return thumbnail;
             }
@@ -75,8 +75,8 @@ namespace NathanHarrenstein.MusicTimeline.Converters
         private static BitmapImage CreateThumbnail(Composer composer)
         {
             BitmapImage thumbnail = null;
-            var thumbnailPath = $@"{Environment.CurrentDirectory}\Resources\Thumbnails\{composer.ID}.jpg";
-            var image = composer.ComposerImages.Select(ci => ci.Image).FirstOrDefault();
+            var thumbnailPath = $@"{Environment.CurrentDirectory}\Resources\Thumbnails\{composer.Id}.jpg";
+            var image = composer.ComposerImages.Select(ci => ci.Bytes).FirstOrDefault();
 
             if (image != null)
             {
@@ -97,7 +97,7 @@ namespace NathanHarrenstein.MusicTimeline.Converters
                     encoder.Save(stream);
                 }
 
-                _thumbnailCache[composer.ID] = thumbnail;
+                _thumbnailCache[composer.Id] = thumbnail;
 
                 return thumbnail;
             }

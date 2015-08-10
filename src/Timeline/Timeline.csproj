@@ -33,8 +33,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EDTF, Version=1.0.5669.23842, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\EDTF.1.0.5669.23842\lib\net45\EDTF.dll</HintPath>
+    <Reference Include="EDTF, Version=1.0.5699.34534, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\EDTF.1.0.5699.34534\lib\net45\EDTF.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
@@ -100,7 +100,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

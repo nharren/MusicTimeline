@@ -4,7 +4,7 @@
       xmlns:c="clr-namespace:NathanHarrenstein.MusicTimeline.Controls"
       xmlns:cv="clr-namespace:NathanHarrenstein.MusicTimeline.Converters"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-      xmlns:db="clr-namespace:NathanHarrenstein.MusicDB;assembly=MusicDB"
+      xmlns:db="clr-namespace:NathanHarrenstein.ClassicalMusicDb;assembly=ClassicalMusicDb"
       xmlns:l="clr-namespace:NathanHarrenstein.MusicTimeline"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:v="clr-namespace:NathanHarrenstein.MusicTimeline.Views"
@@ -24,6 +24,7 @@
         <cv:DecimalToRomanConverter x:Key="DecimalToRomanConverter" />
         <cv:CompositionsToSortedCompositionsConverter x:Key="CompositionsToSortedCompositionsConverter" />
         <cv:MovementsToSortedMovementsConverter x:Key="MovementsToSortedMovementsConverter" />
+        <cv:CompositionToCompositionDisplayNameConverter x:Key="CompositionToCompositionDisplayNameConverter" />
     </Page.Resources>
     <Page.CommandBindings>
         <CommandBinding CanExecute="TogglePlayPause_CanExecute"
@@ -842,8 +843,8 @@
                                       MinWidth="16"
                                       MinHeight="16">
                             <ItemsControl.ItemTemplate>
-                                <DataTemplate DataType="{x:Type db:ComposerLink}">
-                                    <Button Command="{Binding URL, Converter={StaticResource UrlToCommandConverter}, Mode=OneWay, IsAsync=True}">
+                                <DataTemplate DataType="{x:Type db:Link}">
+                                    <Button Command="{Binding Url, Converter={StaticResource UrlToCommandConverter}, Mode=OneWay, IsAsync=True}">
                                         <Button.Template>
                                             <ControlTemplate>
                                                 <Grid>
@@ -852,7 +853,7 @@
                                                            Margin="0,0,10,0"
                                                            Cursor="Hand"
                                                            SnapsToDevicePixels="True"
-                                                           Source="{Binding URL,
+                                                           Source="{Binding Url,
                                                                             Converter={StaticResource UrlToFaviconConverter},
                                                                             Mode=OneWay,
                                                                             IsAsync=True}"
@@ -1042,7 +1043,7 @@
                                                 </StackPanel>
                                             </DataTemplate>
                                         </HierarchicalDataTemplate.ItemTemplate>
-                                        <TextBlock Text="{Binding Name}" />
+                                        <TextBlock Text="{Binding Converter={StaticResource CompositionToCompositionDisplayNameConverter}}" />
                                     </HierarchicalDataTemplate>
                                 </HierarchicalDataTemplate.ItemTemplate>
                                 <TextBlock Text="{Binding Key}" />

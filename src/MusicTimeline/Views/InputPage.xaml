@@ -4,7 +4,7 @@
       xmlns:c="clr-namespace:NathanHarrenstein.MusicTimeline.Controls"
       xmlns:cv="clr-namespace:NathanHarrenstein.MusicTimeline.Converters"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-      xmlns:db="clr-namespace:NathanHarrenstein.MusicDB;assembly=MusicDB"
+      xmlns:db="clr-namespace:NathanHarrenstein.ClassicalMusicDb;assembly=ClassicalMusicDb"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:t="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2"
       xmlns:vm="clr-namespace:NathanHarrenstein.MusicTimeline.ViewModels"
@@ -815,8 +815,8 @@
                             <CommandBinding Command="{x:Static ApplicationCommands.Delete}" Executed="ComposerLinkDeleteCommand_Executed" />
                         </ListBox.CommandBindings>
                         <ListBox.ItemTemplate>
-                            <DataTemplate DataType="{x:Type db:ComposerLink}">
-                                <Button Command="{Binding URL,
+                            <DataTemplate DataType="{x:Type db:Link}">
+                                <Button Command="{Binding Url,
                                                           Converter={StaticResource UrlToCommandConverter}}"
                                         Content="{Binding Name}"
                                         FontSize="14.667"
@@ -834,7 +834,7 @@
                                                     <ColumnDefinition Width="5" />
                                                     <ColumnDefinition />
                                                 </Grid.ColumnDefinitions>
-                                                <Image Source="{Binding URL, Converter={StaticResource UrlToFaviconConverter}, IsAsync=True}" />
+                                                <Image Source="{Binding Url, Converter={StaticResource UrlToFaviconConverter}, IsAsync=True}" />
                                                 <ContentPresenter Grid.Column="2" />
                                             </Grid>
                                         </ControlTemplate>
@@ -1125,7 +1125,7 @@
                              SelectionChanged="CompositionCatalogPrefixListBox_SelectionChanged"
                              SelectionMode="Extended">
                         <ListBox.CommandBindings>
-                            <CommandBinding Command="{x:Static ApplicationCommands.Delete}" Executed="CompositionCatalogPrefixDeleteCommand_Executed" />
+                            <CommandBinding Command="{x:Static ApplicationCommands.Delete}" Executed="CatalogPrefixDeleteCommand_Executed" />
                         </ListBox.CommandBindings>
                         <ListBox.ItemTemplate>
                             <DataTemplate>

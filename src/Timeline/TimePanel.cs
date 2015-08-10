@@ -228,27 +228,27 @@ namespace NathanHarrenstein.Timeline
                         break;
 
                     case TimeResolution.Year:
-                        labelTime = viewportLeftTime.ToPrecision(ExtendedDateTimePrecision.Year, false);
+                        labelTime = viewportLeftTime.ToRoundedPrecision(ExtendedDateTimePrecision.Year);
                         break;
 
                     case TimeResolution.Month:
-                        labelTime = viewportLeftTime.ToPrecision(ExtendedDateTimePrecision.Month, false);
+                        labelTime = viewportLeftTime.ToRoundedPrecision(ExtendedDateTimePrecision.Month, false);
                         break;
 
                     case TimeResolution.Day:
-                        labelTime = viewportLeftTime.ToPrecision(ExtendedDateTimePrecision.Day, false);
+                        labelTime = viewportLeftTime.ToRoundedPrecision(ExtendedDateTimePrecision.Day, false);
                         break;
 
                     case TimeResolution.Hour:
-                        labelTime = viewportLeftTime.ToPrecision(ExtendedDateTimePrecision.Hour, false);
+                        labelTime = viewportLeftTime.ToRoundedPrecision(ExtendedDateTimePrecision.Hour, false);
                         break;
 
                     case TimeResolution.Minute:
-                        labelTime = viewportLeftTime.ToPrecision(ExtendedDateTimePrecision.Minute, false);
+                        labelTime = viewportLeftTime.ToRoundedPrecision(ExtendedDateTimePrecision.Minute, false);
                         break;
 
                     case TimeResolution.Second:
-                        labelTime = viewportLeftTime.ToPrecision(ExtendedDateTimePrecision.Second, false);
+                        labelTime = viewportLeftTime.ToRoundedPrecision(ExtendedDateTimePrecision.Second, false);
                         break;
 
                     default:
