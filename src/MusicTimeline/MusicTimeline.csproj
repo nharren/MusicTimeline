@@ -58,6 +58,10 @@
       <HintPath>..\packages\HtmlAgilityPack.1.4.9\lib\Net45\HtmlAgilityPack.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="HtmlToXamlConverter, Version=1.0.5702.26891, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\HtmlToXamlConverter.1.0.5702.26891\lib\net45\HtmlToXamlConverter.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Luminescence.Xiph">
       <HintPath>..\packages\Luminescence.Xiph.2.4.1.0\lib\net40\Luminescence.Xiph.dll</HintPath>
     </Reference>
@@ -1650,10 +1654,6 @@
     <ProjectReference Include="..\ClassicalMusicDb\ClassicalMusicDb.csproj">
       <Project>{64e83bf1-43a0-47a7-bb5e-a0fd4454c89d}</Project>
       <Name>ClassicalMusicDb</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\HtmlToXamlConverter\HtmlToXamlConverter.csproj">
-      <Project>{e1f3f7a0-5fe8-447d-b2ee-065b770b0712}</Project>
-      <Name>HtmlToXamlConverter</Name>
     </ProjectReference>
     <ProjectReference Include="..\LibraryDb\LibraryDB.csproj">
       <Project>{0ba043e6-3d96-4d32-8a2e-c54de859d59f}</Project>
