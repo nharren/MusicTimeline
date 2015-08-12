@@ -10,6 +10,47 @@ namespace NathanHarrenstein.MusicTimeline.Utilities
 {
     internal static class FileUtility
     {
+        internal static byte[] GetImage(string filePath)
+        {
+            Uri fileUri = null;
+
+            if (!Uri.TryCreate(filePath, UriKind.Absolute, out fileUri))
+            {
+                return null;
+            }
+
+            if (fileUri.IsFile)
+            {
+                if (File.Exists(filePath))
+                {
+                    return File.ReadAllBytes(filePath);
+                }
+            }
+            else
+            {
+                using (var webClient = new WebClient())
+                {
+                    webClient.Proxy = null;
+                    webClient.Headers.Add("Content-Type", "image");
+
+                    try
+                    {
+                        return webClient.DownloadData(filePath);
+                    }
+                    catch (WebException e)
+                    {
+                        MessageBox.Show(e.Message);
+                    }
+                    catch
+                    {
+                    }
+                }
+            }
+
+            return null;
+        }
+
+
         internal async static Task<byte[]> GetImageAsync(string filePath)
         {
             Uri fileUri = null;
@@ -28,7 +69,7 @@ namespace NathanHarrenstein.MusicTimeline.Utilities
             }
             else
             {
-                using (var webClient = new WebClient() { Proxy = null })
+                using (var webClient = new WebClient())
                 {
                     webClient.Proxy = null;
                     webClient.Headers.Add("Content-Type", "image");

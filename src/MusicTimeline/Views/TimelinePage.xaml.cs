@@ -25,8 +25,8 @@ namespace NathanHarrenstein.MusicTimeline.Views
         public static readonly DependencyProperty GoToCommandProperty = DependencyProperty.Register("GoToCommand", typeof(ICommand), typeof(TimelinePage));
         public static readonly DependencyProperty ManageDataCommandProperty = DependencyProperty.Register("ManageDataCommand", typeof(ICommand), typeof(TimelinePage));
         public static readonly DependencyProperty RebuildThumbnailCacheCommandProperty = DependencyProperty.Register("RebuildThumbnailCacheCommand", typeof(ICommand), typeof(TimelinePage));
-        private ClassicalMusicDbContext _classicalMusicDbContext;
 
+        private ClassicalMusicDbContext _classicalMusicDbContext;
         private bool _isDisposed = false;
 
         public TimelinePage()

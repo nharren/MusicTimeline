@@ -190,9 +190,17 @@ namespace NathanHarrenstein.MusicTimeline.Views
                 CompositionListBox.SetBinding(ItemsControl.ItemsSourceProperty, BindingBuilder.Build(composer.Compositions, null, "Name"));
 
                 var nationalities = composer.Nationalities.ToList();
+                var eras = composer.Eras.ToList();
 
-                ListUtility.AddMany(ComposerNationalityListBox.SelectedItems, nationalities);
-                ListUtility.AddMany(ComposerEraListBox.SelectedItems, composer.Eras.ToList());
+                foreach (var nationality in nationalities)
+                {
+                    ComposerNationalityListBox.SelectedItems.Add(nationality);
+                }
+
+                foreach (var era in eras)
+                {
+                    ComposerEraListBox.SelectedItems.Add(era);
+                }
 
                 if (nationalities.Count > 0)
                 {
@@ -775,6 +783,11 @@ namespace NathanHarrenstein.MusicTimeline.Views
                 {
                     _selectedComposers[0].Biography = BiographyUtility.CleanXaml(HtmlToXamlConverter.ConvertHtmlToXaml(WikipediaScraper.ScrapeArticle(url), false));
                     ComposerBiographyTextBox.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
+                }
+
+                if (url.Contains("charles.smith"))
+                {
+                    ClassicalMusicNavigatorScraper.ScrapeComposer(url, _selectedComposers[0], _classicalMusicDbContext);
                 }
 
                 if (url.Contains("klassika"))

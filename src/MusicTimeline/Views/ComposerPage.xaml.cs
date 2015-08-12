@@ -86,7 +86,6 @@ namespace NathanHarrenstein.MusicTimeline.Views
                 .Where(c => c.Name == composerName)
                 .Include(c => c.ComposerImages)
                 .Include(c => c.Samples)
-                .AsNoTracking()
                 .FirstOrDefault();
 
             Dispatcher.Invoke(OnDataInitializationCompleted);

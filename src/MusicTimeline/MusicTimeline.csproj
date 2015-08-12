@@ -118,6 +118,7 @@
     <Compile Include="Builders\ComposerEventViewModelBuilder.cs" />
     <Compile Include="Audio\TimeSpanEventArgs.cs" />
     <Compile Include="Audio\TrackEventArgs.cs" />
+    <Compile Include="Scrapers\ClassicalMusicNavigatorScraper.cs" />
     <Compile Include="Scrapers\KlassikaScraper.cs" />
     <Compile Include="Builders\BindingBuilder.cs" />
     <Compile Include="Converters\DecimalToRomanConverter.cs" />
@@ -194,9 +195,6 @@
     <Resource Include="Resources\Fonts\seguisym.ttf" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Favicons\Default.ico">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
     <Resource Include="Resources\Composers\Unknown.jpg" />
     <Resource Include="Resources\Star.png" />
   </ItemGroup>
@@ -1669,6 +1667,9 @@
       <Project>{29f6b562-eed2-4ec5-9316-a6994a96e82d}</Project>
       <Name>Timeline</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Favicons\Default.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
