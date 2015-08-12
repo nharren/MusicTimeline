@@ -1,5 +1,4 @@
-﻿using System;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 
 namespace NathanHarrenstein.MusicTimeline.Utilities
 {
@@ -31,14 +30,14 @@ namespace NathanHarrenstein.MusicTimeline.Utilities
             return xaml;
         }
 
+        private static void RemoveEmptyParagraphs(ref string xaml)
+        {
+            xaml = xaml.Replace("<Paragraph />", "");
+        }
+
         private static void RemoveNamespace(ref string xaml)
         {
             xaml = xaml.Replace(@" xml:space=""preserve"" xmlns=""http://schemas.microsoft.com/winfx/2006/xaml/presentation""", "");
-        }
-
-        private static string RemoveEmptyParagraphs(ref string xaml)
-        {
-            return Regex.Replace(xaml, "<Paragraph />", "");
         }
 
         private static void RemoveSection(string title, ref string xaml)

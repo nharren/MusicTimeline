@@ -50,7 +50,7 @@ namespace NathanHarrenstein.MusicTimeline.Converters
             }
             else
             {
-                var bytes = FileUtility.GetImage($"http://{uri.Host}/favicon.ico");
+                var bytes = FileUtility.GetImageAsync($"http://{uri.Host}/favicon.ico").Result;
 
                 if (bytes != null)
                 {

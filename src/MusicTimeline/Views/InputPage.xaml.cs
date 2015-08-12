@@ -18,7 +18,6 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -30,12 +29,12 @@ namespace NathanHarrenstein.MusicTimeline.Views
     public partial class InputPage : Page, IDisposable
     {
         private ClassicalMusicDbContext _classicalMusicDbContext;
+        private Thread _dataThread;
         private ObservableCollection<Composer> _selectedComposers;
         private Composition _selectedComposition;
         private CompositionCollection _selectedCompositionCollection;
         private Movement _selectedMovement;
         private Recording _selectedRecording;
-        private Thread _dataThread;
 
         public InputPage()
         {
@@ -48,6 +47,8 @@ namespace NathanHarrenstein.MusicTimeline.Views
         }
 
         #region Initialization
+
+        private Queue<Action> _dataProcessingQueue = new Queue<Action>();
 
         private event EventHandler DataInitializationCompleted;
 
@@ -97,19 +98,6 @@ namespace NathanHarrenstein.MusicTimeline.Views
             _dataProcessingQueue.Enqueue(InitializeDataSources);
         }
 
-        private Queue<Action> _dataProcessingQueue = new Queue<Action>();
-
-        private void StartDataProcessingLoop()
-        {
-            while (!_isDisposed)
-            {
-                if (_dataProcessingQueue.Count > 0)
-                {
-                    _dataProcessingQueue.Dequeue()();
-                }
-            }
-        }
-
         private void InitializeListBoxes()
         {
             ComposerListBox.SetBinding(ItemsControl.ItemsSourceProperty, BindingBuilder.Build(_classicalMusicDbContext.Composers.Local.OrderBy(c => c.Name)));
@@ -122,6 +110,17 @@ namespace NathanHarrenstein.MusicTimeline.Views
         private void InputPage_DataInitializationCompleted(object sender, EventArgs e)
         {
             InitializeListBoxes();
+        }
+
+        private void StartDataProcessingLoop()
+        {
+            while (!_isDisposed)
+            {
+                if (_dataProcessingQueue.Count > 0)
+                {
+                    _dataProcessingQueue.Dequeue()();
+                }
+            }
         }
 
         #endregion Initialization
@@ -197,7 +196,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
                 if (nationalities.Count > 0)
                 {
-                    ComposerNationalityListBox.ScrollIntoView(nationalities.First()); 
+                    ComposerNationalityListBox.ScrollIntoView(nationalities.First());
                 }
 
                 if (ComposerImageListBox.Items.Count > 0)
@@ -259,7 +258,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
         public void EnableCompositionCollectionSection()
         {
-            CompositionCollectionNameTextBox.IsEnabled = true; 
+            CompositionCollectionNameTextBox.IsEnabled = true;
             CompositionCollectionCatalogPrefixListBox.IsEnabled = true;
             CompositionCollectionCatalogNumberTextBox.IsEnabled = true;
             CompositionListBox.IsEnabled = true;
@@ -599,11 +598,11 @@ namespace NathanHarrenstein.MusicTimeline.Views
             }
         }
 
-        private void ComposerImageListBox_Drop(object sender, DragEventArgs e)
+        private async void ComposerImageListBox_Drop(object sender, DragEventArgs e)
         {
-            if (ComposerImageListBox.IsEnabled)
+            if (ComposerImageListBox.IsEnabled && e.Data.GetDataPresent(DataFormats.UnicodeText))
             {
-                var imageBytes = FileUtility.GetImage((string)e.Data.GetData(DataFormats.UnicodeText));
+                var imageBytes = await FileUtility.GetImageAsync((string)e.Data.GetData(DataFormats.UnicodeText));
 
                 if (imageBytes == null)
                 {
@@ -657,79 +656,6 @@ namespace NathanHarrenstein.MusicTimeline.Views
             }
         }
 
-        private void DropComposerLink(string url)
-        {
-            try
-            {
-                if (!url.StartsWith("http"))
-                {
-                    url = "http://" + url;
-                }
-
-                if (!FileUtility.WebsiteExists(url))
-                {
-                    return;
-                }
-
-                var link = new Link();
-                link.Composers.Add(_selectedComposers[0]);
-                link.Url = url;
-                link.Name = UrlToTitleConverter.UrlToTitle(url);
-
-                _selectedComposers[0].Links.Add(link);
-                ComposerLinkListBox.SelectedItem = link;
-
-                if (url.Contains("wikipedia"))
-                {
-                    _selectedComposers[0].Biography = BiographyUtility.CleanXaml(HtmlToXamlConverter.ConvertHtmlToXaml(WikipediaScraper.ScrapeArticle(url), false));
-                    ComposerBiographyTextBox.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
-                }
-
-                if (url.Contains("klassika"))
-                {
-                    var progressBar = new ProgressBar();
-                    progressBar.Width = 500;
-                    progressBar.Height = 20;
-                    progressBar.Maximum = 1;
-                    progressBar.Minimum = 0;
-                    progressBar.Margin = new Thickness(15);
-
-                    var progressDialog = new Window();
-                    progressDialog.Content = progressBar;
-                    progressDialog.ResizeMode = ResizeMode.NoResize;
-                    progressDialog.WindowStartupLocation = WindowStartupLocation.CenterOwner;
-                    progressDialog.Owner = Application.Current.MainWindow;
-                    progressDialog.ShowInTaskbar = false;
-                    progressDialog.Topmost = true;
-                    progressDialog.SizeToContent = SizeToContent.WidthAndHeight;
-                    progressDialog.Title = "Downloading Compositions";
-
-                    var progress = new Progress<double>();
-                    progress.ProgressChanged += (o, p) =>
-                    {
-                        progressBar.Value = p;
-
-                        if (p == 1d)
-                        {
-                            progressDialog.Close();
-                        }
-                    };
-
-                    var cancellationTokenSource = new CancellationTokenSource();
-
-                    _dataProcessingQueue.Enqueue(new Action(() => KlassikaScraper.ScrapeComposerDetailPage(url, _selectedComposers[0], _classicalMusicDbContext, progress, cancellationTokenSource.Token)));
-
-                    progressDialog.ShowDialog();
-
-                    cancellationTokenSource.Cancel();
-                }
-            }
-            catch (Exception ex)
-            {
-                Logger.Log(ex.ToString(), "MusicTimeline.log");
-            }
-        }
-
         private void ComposerListBox_Drop(object sender, DragEventArgs e)
         {
             if (ComposerListBox.IsEnabled)
@@ -752,13 +678,13 @@ namespace NathanHarrenstein.MusicTimeline.Views
             }
         }
 
-        private void ComposerListBox_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        private void ComposerListBoxItem_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             if (ComposerListBox.IsEnabled)
             {
                 var frameworkElement = e.OriginalSource as FrameworkElement;
 
-                if (frameworkElement == null || frameworkElement.TemplatedParent == null || frameworkElement.TemplatedParent.GetType() != typeof(Thumb))
+                if (frameworkElement == null || frameworkElement.TemplatedParent == null || !(frameworkElement.TemplatedParent is Thumb || frameworkElement.TemplatedParent is RepeatButton))
                 {
                     e.Handled = true;
                 }
@@ -820,6 +746,78 @@ namespace NathanHarrenstein.MusicTimeline.Views
                 {
                     composer.Nationalities.Remove(nationality);
                 }
+            }
+        }
+
+        private void DropComposerLink(string url)
+        {
+            try
+            {
+                if (!url.StartsWith("http"))
+                {
+                    url = "http://" + url;
+                }
+
+                if (!FileUtility.WebsiteExists(url))
+                {
+                    return;
+                }
+
+                var link = new Link();
+                link.Composers.Add(_selectedComposers[0]);
+                link.Url = url;
+                link.Name = UrlToTitleConverter.UrlToTitle(url);
+
+                _selectedComposers[0].Links.Add(link);
+                ComposerLinkListBox.SelectedItem = link;
+
+                if (url.Contains("wikipedia"))
+                {
+                    _selectedComposers[0].Biography = BiographyUtility.CleanXaml(HtmlToXamlConverter.ConvertHtmlToXaml(WikipediaScraper.ScrapeArticle(url), false));
+                    ComposerBiographyTextBox.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
+                }
+
+                if (url.Contains("klassika"))
+                {
+                    var progressBar = new ProgressBar();
+                    progressBar.Width = 500;
+                    progressBar.Height = 20;
+                    progressBar.Maximum = 1;
+                    progressBar.Minimum = 0;
+                    progressBar.Margin = new Thickness(15);
+
+                    var progressDialog = new Window();
+                    progressDialog.Content = progressBar;
+                    progressDialog.ResizeMode = ResizeMode.NoResize;
+                    progressDialog.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+                    progressDialog.Owner = Application.Current.MainWindow;
+                    progressDialog.ShowInTaskbar = false;
+                    progressDialog.SizeToContent = SizeToContent.WidthAndHeight;
+                    progressDialog.Title = "Downloading Compositions";
+
+                    var progress = new Progress<double>();
+                    progress.ProgressChanged += (o, p) =>
+                    {
+                        progressBar.Value = p;
+
+                        if (p == 1d)
+                        {
+                            progressDialog.Close();
+                        }
+                    };
+
+                    var cancellationTokenSource = new CancellationTokenSource();
+
+                    _dataProcessingQueue.Enqueue(new Action(() => KlassikaScraper.ScrapeComposerDetailPage(url, _selectedComposers[0], _classicalMusicDbContext, progress, cancellationTokenSource.Token)));
+
+                    progressDialog.ShowDialog();
+
+                    cancellationTokenSource.Cancel();
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Log(ex.ToString(), "MusicTimeline.log");
             }
         }
 
@@ -979,6 +977,29 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
         #region Composition Section Events
 
+        private void CatalogPrefixDeleteCommand_Executed(object sender, ExecutedRoutedEventArgs e)
+        {
+            if (!CompositionCatalogPrefixListBox.IsEnabled)
+            {
+                return;
+            }
+
+            if (!(e.OriginalSource is ListBoxItem))
+            {
+                return;
+            }
+
+            foreach (var composer in _selectedComposers)
+            {
+                var selectedCatalog = composer.Catalogs.FirstOrDefault(cc => cc.Prefix == (string)CompositionCatalogPrefixListBox.SelectedItem);
+
+                if (selectedCatalog != null)
+                {
+                    composer.Catalogs.Remove(selectedCatalog);
+                }
+            }
+        }
+
         private void CompositionCatalogNumberTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             if (!CompositionCatalogNumberTextBox.IsEnabled)
@@ -1015,29 +1036,6 @@ namespace NathanHarrenstein.MusicTimeline.Views
             foreach (var catalogNumber in selectedCatalogNumbers)
             {
                 catalogNumber.Value = CompositionCatalogNumberTextBox.Text;
-            }
-        }
-
-        private void CatalogPrefixDeleteCommand_Executed(object sender, ExecutedRoutedEventArgs e)
-        {
-            if (!CompositionCatalogPrefixListBox.IsEnabled)
-            {
-                return;
-            }
-
-            if (!(e.OriginalSource is ListBoxItem))
-            {
-                return;
-            }
-
-            foreach (var composer in _selectedComposers)
-            {
-                var selectedCatalog = composer.Catalogs.FirstOrDefault(cc => cc.Prefix == (string)CompositionCatalogPrefixListBox.SelectedItem);
-
-                if (selectedCatalog != null)
-                {
-                    composer.Catalogs.Remove(selectedCatalog);
-                }
             }
         }
 
@@ -1502,7 +1500,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
                 {
                     _classicalMusicDbContext.Dispose();
                 }
-                
+
                 _isDisposed = true;
             }
         }

@@ -3,13 +3,14 @@ using System;
 using System.IO;
 using System.Net;
 using System.Net.Security;
+using System.Threading.Tasks;
 using System.Windows;
 
 namespace NathanHarrenstein.MusicTimeline.Utilities
 {
     internal static class FileUtility
     {
-        internal static byte[] GetImage(string filePath)
+        internal async static Task<byte[]> GetImageAsync(string filePath)
         {
             Uri fileUri = null;
 
@@ -34,7 +35,7 @@ namespace NathanHarrenstein.MusicTimeline.Utilities
 
                     try
                     {
-                        return webClient.DownloadData(filePath);
+                        return await webClient.DownloadDataTaskAsync(filePath);
                     }
                     catch (WebException e)
                     {

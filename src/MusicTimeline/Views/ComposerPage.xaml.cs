@@ -8,6 +8,7 @@ using NAudio.Wave;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Data.Entity;
 using System.EDTF;
 using System.IO;
 using System.Linq;
@@ -49,12 +50,66 @@ namespace NathanHarrenstein.MusicTimeline.Views
             _flacPlayer.CanSkipBackChanged += FlacPlayer_CanSkipBackChanged;
             _flacPlayer.CanSkipForwardChanged += FlacPlayer_CanSkipForwardChanged;
 
-            var composerName = System.Windows.Application.Current.Properties["SelectedComposer"] as string;
-            _composer = _classicalMusicDbContext.Composers.AsNoTracking().FirstOrDefault(c => c.Name == composerName);
+            DataInitializationCompleted += ComposerPage_DataInitializationCompleted;
 
+            InitializeDataThread();            
+        }
+
+        private Queue<Action> _dataProcessingQueue = new Queue<Action>();
+        private Thread _dataThread;
+
+        private event EventHandler DataInitializationCompleted;
+
+        protected virtual void OnDataInitializationCompleted()
+        {
+            if (DataInitializationCompleted != null)
+            {
+                DataInitializationCompleted(this, null);
+            }
+        }
+
+        private void ComposerPage_DataInitializationCompleted(object sender, EventArgs e)
+        {
             if (_composer != null)
             {
                 LoadComposer();
+            }
+        }
+
+        private void InitializeDataSources()
+        {
+            _classicalMusicDbContext = new ClassicalMusicDbContext();
+
+            var composerName = System.Windows.Application.Current.Properties["SelectedComposer"] as string;
+
+            _composer = _classicalMusicDbContext.Composers
+                .Where(c => c.Name == composerName)
+                .Include(c => c.ComposerImages)
+                .Include(c => c.Samples)
+                .AsNoTracking()
+                .FirstOrDefault();
+
+            Dispatcher.Invoke(OnDataInitializationCompleted);
+        }
+
+        private void InitializeDataThread()
+        {
+            _dataThread = new Thread(StartDataProcessingLoop);
+            _dataThread.Name = "Data Thread";
+            _dataThread.IsBackground = true;
+            _dataThread.Start();
+
+            _dataProcessingQueue.Enqueue(InitializeDataSources);
+        }
+
+        private void StartDataProcessingLoop()
+        {
+            while (!_isDisposed)
+            {
+                if (_dataProcessingQueue.Count > 0)
+                {
+                    _dataProcessingQueue.Dequeue()();
+                }
             }
         }
 

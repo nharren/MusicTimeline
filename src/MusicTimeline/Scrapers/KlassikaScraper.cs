@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Data.Entity;
 using System.Diagnostics;
 using System.Linq;
 using System.Net;
@@ -16,6 +17,126 @@ namespace NathanHarrenstein.MusicTimeline.Scrapers
 {
     public static class KlassikaScraper
     {
+        private static readonly Dictionary<string, string> GenreTranslations = new Dictionary<string, string>
+        {
+            { "Oboenquartett", "Oboe Quartet" },
+            { "Filmmusik", "Film Music" },
+            { "Harfenkonzert", "Harp Concerto" },
+            { "Sonate", "Sonata" },
+            { "Hornsonate", "Horn Sonata" },
+            { "Marsch", "March" },
+            { "Sextett", "Sextet" },
+            { "Symphonische Dichtung", "Symphonic Poem" },
+            { "Posaunenkonzert", "Trombone Concerto" },
+            { "Orgelstück", "Organ Piece" },
+            { "Violakonzert", "Viola Concerto" },
+            { "Menuett", "Minuet" },
+            { "Orgelkonzert", "Organ Concerto" },
+            { "Ouvertüre", "Overture" },
+            { "Klarinettenquartett", "Clarinet Quartet" },
+            { "Melodram", "Melodrama" },
+            { "Oboensonate", "Oboe Sonata" },
+            { "Violinsonate", "Violin Sonata" },
+            { "Hornkonzert", "Horn Concerto" },
+            { "Flötenkonzert", "Flute Concerto" },
+            { "Messe", "Mass" },
+            { "Hymne", "Hymn" },
+            { "Operette", "Operetta" },
+            { "Oper", "Opera" },
+            { "Streichersonate", "String Sonata" },
+            { "Geistliches Werk", "Sacred Work" },
+            { "Quintett", "Quintet" },
+            { "Klarinettenkonzert", "Clarinet Concerto" },
+            { "Romanze", "Romance" },
+            { "Oratorium", "Oratorio" },
+            { "Fagottsonate", "Bassoon Sonata" },
+            { "Streichsextett", "String Sextet" },
+            { "Cembalokonzert", "Harpsichord Concerto" },
+            { "Sonstiges", "Miscellaneous" },
+            { "Trompetenkonzert", "Trumpet Concerto" },
+            { "Klaviertrio", "Piano Trio" },
+            { "Mandolinensonate", "Mandolin Sonata" },
+            { "Septett", "Septet" },
+            { "Bühnenmusik", "Incidental Music" },
+            { "Oktett", "Octet" },
+            { "Arie", "Aria" },
+            { "Präludium", "Prelude" },
+            { "Cellosonate", "Cello Sonata" },
+            { "Konzertstück", "Concert Piece" },
+            { "Rhapsodie", "Rhapsody" },
+            { "Terzett", "Terzet" },
+            { "Cellokonzert", "Cello Concerto" },
+            { "Gitarrenquartett", "Guitar Quartet" },
+            { "Elegie", "Elegy" },
+            { "Chorwerk", "Choral Work" },
+            { "Flötenquartett", "Flute Quartet" },
+            { "Streichquartett", "String Quartet" },
+            { "Kammermusik", "Chamber Music" },
+            { "Oboenkonzert", "Oboe Concerto" },
+            { "Kanon", "Canon" },
+            { "Klavierkonzert", "Piano Concerto" },
+            { "Klaviersonate", "Piano Sonata" },
+            { "Tanz", "Dance" },
+            { "Orgelsonate", "Organ Sonata" },
+            { "Werk für Cembalo", "Harpsichord Work" },
+            { "Bearbeitung", "Arrangement" },
+            { "Mandolinenkonzert", "Mandolin Concerto" },
+            { "Duett", "Duet" },
+            { "Kantate", "Cantata" },
+            { "Flötensonate", "Flute Sonata" },
+            { "Flötenquintett", "Flute Quintet" },
+            { "Streichquintett", "String Quintet" },
+            { "Triosonate", "Trio Sonata" },
+            { "Fantasie", "Fantasia" },
+            { "Violinromanze", "Violin Romance" },
+            { "Violasonate", "Viola Sonata" },
+            { "Hornquintett", "Horn Quintet" },
+            { "Fuge", "Fugue" },
+            { "Orchesterwerk", "Orchestral Work" },
+            { "Cellosuite", "Cello Suite" },
+            { "Sonatine", "Sonatina" },
+            { "Klaviermusik", "Piano Music" },
+            { "Gitarrenquintett", "Guitar Quintet" },
+            { "Cembalosonate", "Harpsichord Sonata" },
+            { "Streichoktett", "String Octet" },
+            { "Klarinettensonate", "Clarinet Sonata" },
+            { "Horntrio", "Horn Trio" },
+            { "Ballett", "Ballet" },
+            { "Klavierquartett", "Piano Quartet" },
+            { "Etüde", "Etude" },
+            { "Transkription", "Transcription" },
+            { "Streichtrio", "String Trio" },
+            { "Violinkonzert", "Violin Concerto" },
+            { "Werk für Gitarre", "Guitar Work" },
+            { "Konzert", "Concerto" },
+            { "Quartett", "Quartet" },
+            { "Fagottkonzert", "Bassoon Concerto" },
+            { "Klarinettenquintett", "Clarinet Quintet" },
+            { "Symphonie", "Symphony" },
+            { "Klavierquintett", "Piano Quintet" },
+            { "Motette", "Motet" },
+            { "Ballade", "Ballad" },
+            { "Klarinettentrio", "Clarinet Trio" },
+            { "Flötentrio", "Flute Trio" },
+            { "Harfensonate", "Harp Sonata" },
+            { "Klavierstück", "Piano Piece" },
+            { "Nonett", "Nonet" },
+            { "Klaviersextett", "Piano Sextet" }
+        };
+
+        internal static string TranslateGenre(string genre)
+        {
+            string genreName = null;
+
+            if (GenreTranslations.TryGetValue(genre, out genreName))
+            {
+                return genreName;
+            }
+
+            return genre;
+        }
+
+
         public static void ScrapeComposersPage(ClassicalMusicDbContext classicalMusicDbContext)
         {
             for (char c = 'A'; c <= 'Z'; c++)
@@ -156,8 +277,8 @@ namespace NathanHarrenstein.MusicTimeline.Scrapers
                 var dateTableData = tableDatas[4];
                 var compositionDate = HtmlEntity.DeEntitize(dateTableData.InnerText);
 
-                var compositionTypeTableData = tableDatas[6];
-                var compositionTypeName = HtmlEntity.DeEntitize(compositionTypeTableData.InnerText).Replace("(", "").Replace(")", "");
+                var genreTableData = tableDatas[6];
+                var genreName = TranslateGenre(HtmlEntity.DeEntitize(genreTableData.InnerText).Replace("(", "").Replace(")", ""));
 
                 if (composition == null)
                 {
@@ -172,14 +293,19 @@ namespace NathanHarrenstein.MusicTimeline.Scrapers
                 var catalogNumberString = (string)null;
                 var compositionCatalogString = (string)null;
 
-                if (!string.IsNullOrWhiteSpace(compositionTypeName))
+                if (!string.IsNullOrWhiteSpace(genreName))
                 {
-                    var genre = classicalMusicDbContext.Genres.FirstOrDefault(ct => ct.Name == compositionTypeName);
+                    if (classicalMusicDbContext.Genres.Local.Count == 0)
+                    {
+                        classicalMusicDbContext.Genres.Load();
+                    }
+
+                    var genre = classicalMusicDbContext.Genres.Local.FirstOrDefault(ct => ct.Name == genreName);
 
                     if (genre == null)
                     {
                         genre = new Genre();
-                        genre.Name = compositionTypeName;
+                        genre.Name = genreName;
                         genre.Compositions.Add(composition);
 
                         classicalMusicDbContext.Genres.Add(genre);

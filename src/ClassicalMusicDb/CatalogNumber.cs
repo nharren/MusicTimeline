@@ -2,6 +2,7 @@ namespace NathanHarrenstein.ClassicalMusicDb
 {
     using System;
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
@@ -12,8 +13,8 @@ namespace NathanHarrenstein.ClassicalMusicDb
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public CatalogNumber()
         {
-            Compositions = new HashSet<Composition>();
-            CompositionCollections = new HashSet<CompositionCollection>();
+            Compositions = new ObservableCollection<Composition>();
+            CompositionCollections = new ObservableCollection<CompositionCollection>();
         }
 
         public int Id { get; set; }

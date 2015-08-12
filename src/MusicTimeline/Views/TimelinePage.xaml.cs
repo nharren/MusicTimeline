@@ -2,6 +2,8 @@
 using NathanHarrenstein.MusicTimeline.Builders;
 using NathanHarrenstein.MusicTimeline.Converters;
 using NathanHarrenstein.MusicTimeline.Input;
+using NathanHarrenstein.MusicTimeline.Scrapers;
+using NathanHarrenstein.MusicTimeline.Utilities;
 using NathanHarrenstein.Timeline;
 using System;
 using System.Collections.ObjectModel;

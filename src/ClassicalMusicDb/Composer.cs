@@ -2,6 +2,7 @@ namespace NathanHarrenstein.ClassicalMusicDb
 {
     using System;
     using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
@@ -12,16 +13,16 @@ namespace NathanHarrenstein.ClassicalMusicDb
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Composer()
         {
-            Catalogs = new HashSet<Catalog>();
-            ComposerImages = new HashSet<ComposerImage>();
-            Samples = new HashSet<Sample>();
-            Eras = new HashSet<Era>();
-            Influences = new HashSet<Composer>();
-            Influenced = new HashSet<Composer>();
-            Links = new HashSet<Link>();
-            Nationalities = new HashSet<Nationality>();
-            CompositionCollections = new HashSet<CompositionCollection>();
-            Compositions = new HashSet<Composition>();
+            Catalogs = new ObservableCollection<Catalog>();
+            ComposerImages = new ObservableCollection<ComposerImage>();
+            Samples = new ObservableCollection<Sample>();
+            Eras = new ObservableCollection<Era>();
+            Influences = new ObservableCollection<Composer>();
+            Influenced = new ObservableCollection<Composer>();
+            Links = new ObservableCollection<Link>();
+            Nationalities = new ObservableCollection<Nationality>();
+            CompositionCollections = new ObservableCollection<CompositionCollection>();
+            Compositions = new ObservableCollection<Composition>();
         }
 
         public int Id { get; set; }
