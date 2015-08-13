@@ -45,10 +45,12 @@
                         ViewportUnits="Absolute" />
         </Grid.Background>
         <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="120" />
             <RowDefinition />
         </Grid.RowDefinitions>
-        <Grid>
+        <ProgressBar Name="ProgressBar" Height="6" IsIndeterminate="True" />
+        <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="120" />
                 <ColumnDefinition Width="Auto" />
@@ -666,7 +668,7 @@
                            VerticalAlignment="Center" />
             </Grid>
         </Grid>
-        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+        <ScrollViewer Grid.Row="2" VerticalScrollBarVisibility="Auto">
             <ScrollViewer.Resources>
                 <Style TargetType="ScrollBar">
                     <Style.Triggers>
