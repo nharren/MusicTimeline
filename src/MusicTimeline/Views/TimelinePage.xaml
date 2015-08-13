@@ -26,6 +26,12 @@
                 <Separator />
                 <MenuItem Command="{Binding CloseCommand, ElementName=page}" Header="Close" />
             </MenuItem>
+            <MenuItem Header="View">
+                <MenuItem Command="{Binding FullScreenCommand, ElementName=page}" Header="Full Screen" />
+            </MenuItem>
+            <MenuItem Header="Tools">
+                <MenuItem Command="{Binding RebuildThumbnailCacheCommand, ElementName=page}" Header="Rebuild Thumbnail Cache" />
+            </MenuItem>
             <MenuItem Header="Go">
                 <MenuItem Command="{Binding GoToCommand,
                                             ElementName=page}"
@@ -56,21 +62,18 @@
                           CommandParameter="21st Century"
                           Header="21st Century" />
             </MenuItem>
-            <MenuItem Header="View">
-                <MenuItem Command="{Binding FullScreenCommand, ElementName=page}" Header="Full Screen" />
-            </MenuItem>
-            <MenuItem Header="Tools">
-                <MenuItem Command="{Binding RebuildThumbnailCacheCommand, ElementName=page}" Header="Rebuild Thumbnail Cache" />
-            </MenuItem>
         </Menu>
         <t:Timeline Name="timeline"
                     BackgroundImage="{StaticResource BackgroundImage}"
-                    LineStroke="#FF333333"
+                    LineStroke="#FF333333" 
+                    EventHeight="34"
+                    EventSpacing="1"
                     TimeForeground="White">
             <t:Timeline.EraTemplates>
                 <DataTemplate DataType="{x:Type vm:ComposerEraViewModel}">
                     <Grid Background="{Binding Background}" SnapsToDevicePixels="True">
                         <TextBlock Margin="15,0,0,0"
+                                   FontSize="17.333"
                                    VerticalAlignment="Center"
                                    Foreground="{Binding Foreground}"
                                    Text="{Binding Label}" />
@@ -79,7 +82,7 @@
             </t:Timeline.EraTemplates>
             <t:Timeline.EventTemplates>
                 <DataTemplate DataType="{x:Type vm:ComposerEventViewModel}">
-                    <Border Height="60"
+                    <Border Height="34"
                             Background="{Binding Background}"
                             CornerRadius="5"
                             Cursor="Hand">
@@ -89,7 +92,7 @@
                                 Foreground="White">
                             <Button.Template>
                                 <ControlTemplate TargetType="{x:Type Button}">
-                                    <Border Background="Transparent" Padding="7,5,0,5">
+                                    <Border Background="Transparent" Padding="7,0,0,0">
                                         <Grid>
                                             <ContentPresenter />
                                         </Grid>
@@ -99,46 +102,36 @@
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="9" />
+                                    <ColumnDefinition Width="Auto" />
+                                    <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition />
                                 </Grid.ColumnDefinitions>
-                                <Image SnapsToDevicePixels="True"
-                                       Source="{Binding Composer,
-                                                        Converter={StaticResource ComposerToThumbnailConverter},
-                                                        IsAsync=True}" />
-                                <StackPanel Grid.Column="1" Margin="10,0,0,0">
-                                    <StackPanel Margin="0,1,0,2" Orientation="Horizontal">
-                                        <TextBlock FontSize="14"
-                                                   FontWeight="SemiBold"
-                                                   Text="{Binding Label}" />
-                                        <ItemsControl ItemsSource="{Binding Composer.Nationalities}">
-                                            <ItemsControl.ItemsPanel>
-                                                <ItemsPanelTemplate>
-                                                    <StackPanel Orientation="Horizontal" />
-                                                </ItemsPanelTemplate>
-                                            </ItemsControl.ItemsPanel>
-                                            <ItemsControl.ItemTemplate>
-                                                <DataTemplate DataType="{x:Type db:Nationality}">
-                                                    <Image Width="16"
-                                                           Height="16"
-                                                           Margin="5,0,0,0"
-                                                           SnapsToDevicePixels="True"
-                                                           Source="{Binding Name,
-                                                                            Converter={StaticResource NationalityToFlagConverter},
-                                                                            IsAsync=True}"
-                                                           UseLayoutRounding="True" />
-                                                </DataTemplate>
-                                            </ItemsControl.ItemTemplate>
-                                        </ItemsControl>
-                                    </StackPanel>
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock FontSize="12" Text="Born: " />
-                                        <TextBlock FontSize="12" Text="{Binding Born}" />
-                                    </StackPanel>
-                                    <StackPanel Orientation="Horizontal">
-                                        <TextBlock FontSize="12" Text="Died: " />
-                                        <TextBlock FontSize="12" Text="{Binding Died}" />
-                                    </StackPanel>
-                                </StackPanel>
+                                <Image SnapsToDevicePixels="True" Source="{Binding Composer, Converter={StaticResource ComposerToThumbnailConverter}, IsAsync=True}" />
+                                <TextBlock Grid.Column="2"
+                                           FontSize="17.333"
+                                           Margin="0,-1,0,0"
+                                           VerticalAlignment="Center"
+                                           Text="{Binding Label}" />
+                                <ItemsControl Grid.Column="3" Margin="5,0,0,0" VerticalAlignment="Center" ItemsSource="{Binding Composer.Nationalities}">
+                                    <ItemsControl.ItemsPanel>
+                                        <ItemsPanelTemplate>
+                                            <StackPanel Orientation="Horizontal" />
+                                        </ItemsPanelTemplate>
+                                    </ItemsControl.ItemsPanel>
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate DataType="{x:Type db:Nationality}">
+                                            <Image Width="16"
+                                                   Height="16"
+                                                   Margin="5,0,0,0"
+                                                   SnapsToDevicePixels="True"
+                                                   Source="{Binding Name,
+                                                                    Converter={StaticResource NationalityToFlagConverter},
+                                                                    IsAsync=True}"
+                                                   UseLayoutRounding="True" />
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
                             </Grid>
                         </Button>
                     </Border>

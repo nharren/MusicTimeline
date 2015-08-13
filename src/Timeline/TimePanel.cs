@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.EDTF;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using System.Windows.Shapes;
 
 namespace NathanHarrenstein.Timeline
 {
@@ -22,6 +22,14 @@ namespace NathanHarrenstein.Timeline
         private bool _hasViewChanged = true;
         private double _horizontalOffset;
         private Dictionary<int, double> _labelOffsets;
+
+        public TimePanel()
+        {
+            if (DesignerProperties.GetIsInDesignMode(this))
+            {
+                _hasViewChanged = false;
+            }
+        }
 
         public ExtendedDateTimeInterval Dates
         {
@@ -177,9 +185,9 @@ namespace NathanHarrenstein.Timeline
         {
             if (_hasViewChanged)
             {
-                // In determining the labels to display, it must be kept in mind that the spacings between 
-                // the labels might be variable depending on the current time unit. For instance, if the 
-                // timeline is measured in months, then the labels will not be equally spaced apart because 
+                // In determining the labels to display, it must be kept in mind that the spacings between
+                // the labels might be variable depending on the current time unit. For instance, if the
+                // timeline is measured in months, then the labels will not be equally spaced apart because
                 // a month is anywhere from 28 to 31 days. The solution is to produce labels one at a time
                 // while the total accumulated width is less than the viewport width.
                 //

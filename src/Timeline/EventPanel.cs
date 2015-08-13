@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.EDTF;
 using System.Linq;
 using System.Windows;
@@ -28,7 +29,15 @@ namespace NathanHarrenstein.Timeline
         public EventPanel()
         {
             ClipToBounds = true;
-            SizeChanged += EventPanel_SizeChanged;
+
+            if (DesignerProperties.GetIsInDesignMode(this))
+            {
+                _hasViewChanged = false;
+            }
+            else
+            {
+                SizeChanged += EventPanel_SizeChanged;
+            }
         }
 
         public ExtendedDateTimeInterval Dates
@@ -156,6 +165,11 @@ namespace NathanHarrenstein.Timeline
 
         public Vector CoercePan(Vector delta)
         {
+            if (Ruler == null)
+            {
+                return delta;
+            }
+
             var extentWidth = Ruler.ToPixels(Dates);
             var extentHeight = Events.Count() * (EventSpacing + EventHeight);
 

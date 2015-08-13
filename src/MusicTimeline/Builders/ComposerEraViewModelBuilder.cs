@@ -39,11 +39,11 @@ namespace NathanHarrenstein.MusicTimeline.Builders
                 }
                 else if (era.Name == "20th Century")
                 {
-                    background = new SolidColorBrush(Color.FromRgb(205, 173, 74));             // #FFCDAD4A
+                    background = new SolidColorBrush(Color.FromRgb(160, 118, 88));             // #FFA962E0
                 }
                 else if (era.Name == "21st Century")
                 {
-                    background = new SolidColorBrush(Color.FromRgb(219, 109, 138));            // #FFDB6D8A
+                    background = new SolidColorBrush(Color.FromRgb(74, 142, 165));
                 }
 
                 var musicEra = new ComposerEraViewModel(era.Name, ExtendedDateTimeInterval.Parse(era.Dates), background, Brushes.White);
