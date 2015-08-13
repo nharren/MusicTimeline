@@ -28,7 +28,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
         private ClassicalMusicDbContext _classicalMusicDbContext;
         private Composer _composer;
         private Queue<Action> _dataLoadingQueue;
-        private Thread _dataThread;
+        private Thread _dataLoadingThread;
         private FlacPlayer _flacPlayer;
         private bool _isDisposed;
         private Dictionary<ISampleProvider, Sample> _sampleDictionary;
@@ -56,7 +56,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
             NonBinaryDataLoadingCompleted += ComposerPage_NonBinaryDataLoadingCompleted;
             BinaryDataLoadingCompleted += ComposerPage_BinaryDataLoadingCompleted;
 
-            InitializeDataThread();
+            InitializeDataLoadingThread();
         }
 
         ~ComposerPage()
@@ -271,17 +271,17 @@ namespace NathanHarrenstein.MusicTimeline.Views
             return composerImage;
         }
 
-        private void InitializeDataThread()
+        private void InitializeDataLoadingThread()
         {
             if (ProgressBar.Visibility == Visibility.Collapsed)
             {
                 ProgressBar.Visibility = Visibility.Visible;
             }
 
-            _dataThread = new Thread(StartDataProcessingLoop);
-            _dataThread.Name = "Data Thread";
-            _dataThread.IsBackground = true;
-            _dataThread.Start();
+            _dataLoadingThread = new Thread(StartDataLoadingLoop);
+            _dataLoadingThread.Name = "Data Loading Thread";
+            _dataLoadingThread.IsBackground = true;
+            _dataLoadingThread.Start();
 
             _dataLoadingQueue.Enqueue(LoadNonBinaryData);
             _dataLoadingQueue.Enqueue(LoadBinaryData);
@@ -291,8 +291,6 @@ namespace NathanHarrenstein.MusicTimeline.Views
         {
             _classicalMusicDbContext.Entry(_composer).Collection("ComposerImages").Load();
             _classicalMusicDbContext.Entry(_composer).Collection("Samples").Load();
-
-            Thread.Sleep(10000);
 
             Dispatcher.Invoke(OnBinaryDataLoadingCompleted);
         }
@@ -417,7 +415,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
             ProgressStatus.Text = TimeSpan.FromTicks((long)ProgressSlider.Value).ToString(@"hh\:mm\:ss");
         }
 
-        private void StartDataProcessingLoop()
+        private void StartDataLoadingLoop()
         {
             while (!_isDisposed)
             {
