@@ -18,7 +18,7 @@
                             </Grid.RowDefinitions>
                             <l:BackgroundPanel Grid.RowSpan="3" BackgroundImage="{TemplateBinding BackgroundImage}" />
                             <l:EraPanel Grid.Row="0"
-                                        Height="26"
+                                        Height="29"
                                         Dates="{TemplateBinding Dates}"
                                         EraTemplates="{TemplateBinding EraTemplates}"
                                         Eras="{TemplateBinding Eras}"

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.EDTF;
 using System.Linq;
 using System.Windows;
@@ -24,6 +25,11 @@ namespace NathanHarrenstein.Timeline
         public EraPanel()
         {
             ClipToBounds = true;
+
+            if (DesignerProperties.GetIsInDesignMode(this))
+            {
+                _hasViewChanged = false;
+            }
         }
 
         public ExtendedDateTimeInterval Dates
@@ -100,6 +106,11 @@ namespace NathanHarrenstein.Timeline
 
         public Vector CoercePan(Vector delta)
         {
+            if (Ruler == null)
+            {
+                return delta;
+            }
+
             var extentWidth = Ruler.ToPixels(Dates);
 
             if (HorizontalOffset + delta.X < 0)                                                   // Panning too far left. Set horizontal pan distance to the amount of space remaining before the left edge.
@@ -139,9 +150,9 @@ namespace NathanHarrenstein.Timeline
                 var dates = Eras[visibleCacheIndex].Dates;
 
                 _cache[visibleCacheIndex].Arrange(new Rect(
-                    Ruler.ToPixels(Dates.Earliest() + Ruler.ToTimeSpan(HorizontalOffset), dates.Earliest()), 
-                    0, 
-                    Ruler.ToPixels(dates), 
+                    Ruler.ToPixels(Dates.Earliest() + Ruler.ToTimeSpan(HorizontalOffset), dates.Earliest()),
+                    0,
+                    Ruler.ToPixels(dates),
                     finalSize.Height));
             }
 
@@ -149,7 +160,7 @@ namespace NathanHarrenstein.Timeline
         }
 
         protected override Size MeasureOverride(Size availableSize)
-        {          
+        {
             if (_hasViewChanged)
             {
                 if (_cache == null)

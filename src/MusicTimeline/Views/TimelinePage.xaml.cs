@@ -131,13 +131,12 @@ namespace NathanHarrenstein.MusicTimeline.Views
             RebuildThumbnailCacheCommand = GetRebuildThumbnailCacheCommand();
             FullScreenCommand = GetFullScreenCommand();
 
-            timeline.Dates = new ExtendedDateTimeInterval(new ExtendedDateTime(1000, 1, 1), ExtendedDateTime.Now);
+            timeline.Dates = new ExtendedDateTimeInterval(new ExtendedDateTime(476, 1, 1), ExtendedDateTime.Now);
             timeline.Eras = composerEraViewModels;
             timeline.Ruler = new TimeRuler();
             timeline.Ruler.TimeRulerUnit = TimeRulerUnit.Day;
             timeline.Ruler.TimeUnitWidth = 0.04109589041;
             timeline.Resolution = TimeResolution.Decade;
-            timeline.EventHeight = 60;
             timeline.Events = ComposerEventViewModelBuilder.Build(composers, composerEraViewModels, timeline);
             timeline.Loaded += Timeline_Loaded;
         }

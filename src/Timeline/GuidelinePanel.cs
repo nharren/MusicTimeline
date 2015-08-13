@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.EDTF;
 using System.Windows;
 using System.Windows.Controls;
@@ -17,18 +18,19 @@ namespace NathanHarrenstein.Timeline
         public static readonly DependencyProperty ResolutionProperty = DependencyProperty.Register("Resolution", typeof(TimeResolution), typeof(GuidelinePanel));
         public static readonly DependencyProperty RulerProperty = DependencyProperty.Register("Ruler", typeof(TimeRuler), typeof(GuidelinePanel));
         private bool _hasViewChanged = true;
-        private Dictionary<int, double> _lineOffsets;
         private double _horizontalOffset;
+        private Dictionary<int, double> _lineOffsets;
 
         public GuidelinePanel()
         {
-            SizeChanged += GuidelinePanel_SizeChanged;
-        }
-
-        private void GuidelinePanel_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            _hasViewChanged = true;
-            InvalidateMeasure();
+            if (DesignerProperties.GetIsInDesignMode(this))
+            {
+                _hasViewChanged = false;
+            }
+            else
+            {
+                SizeChanged += GuidelinePanel_SizeChanged;
+            }
         }
 
         public ExtendedDateTimeInterval Dates
@@ -308,6 +310,12 @@ namespace NathanHarrenstein.Timeline
             }
 
             return availableSize;
+        }
+
+        private void GuidelinePanel_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            _hasViewChanged = true;
+            InvalidateMeasure();
         }
     }
 }
