@@ -7,8 +7,6 @@ using NAudio.Flac;
 using NAudio.Wave;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Data.Entity;
 using System.EDTF;
 using System.IO;
 using System.Linq;
@@ -26,20 +24,25 @@ namespace NathanHarrenstein.MusicTimeline.Views
 {
     public partial class ComposerPage : Page, IDisposable
     {
-        private static LogicalComparer _logicalComparer = new LogicalComparer();
-        private Composer _composer;
+        private static LogicalComparer _logicalComparer;
         private ClassicalMusicDbContext _classicalMusicDbContext;
+        private Composer _composer;
+        private Queue<Action> _dataLoadingQueue;
+        private Thread _dataThread;
         private FlacPlayer _flacPlayer;
-        private bool _isDisposed = false;
+        private bool _isDisposed;
         private Dictionary<ISampleProvider, Sample> _sampleDictionary;
 
         public ComposerPage()
         {
             InitializeComponent();
 
+            _logicalComparer = new LogicalComparer();
+            _dataLoadingQueue = new Queue<Action>();
             _classicalMusicDbContext = new ClassicalMusicDbContext();
             _sampleDictionary = new Dictionary<ISampleProvider, Sample>();
             _flacPlayer = new FlacPlayer();
+
             _flacPlayer.CurrentTimeChanged += FlacPlayer_CurrentTimeChanged;
             _flacPlayer.TotalTimeChanged += FlacPlayer_TotalTimeChanged;
             _flacPlayer.TrackChanged += FlacPlayer_TrackChanged;
@@ -50,72 +53,20 @@ namespace NathanHarrenstein.MusicTimeline.Views
             _flacPlayer.CanSkipBackChanged += FlacPlayer_CanSkipBackChanged;
             _flacPlayer.CanSkipForwardChanged += FlacPlayer_CanSkipForwardChanged;
 
-            DataInitializationCompleted += ComposerPage_DataInitializationCompleted;
+            NonBinaryDataLoadingCompleted += ComposerPage_NonBinaryDataLoadingCompleted;
+            BinaryDataLoadingCompleted += ComposerPage_BinaryDataLoadingCompleted;
 
-            InitializeDataThread();            
-        }
-
-        private Queue<Action> _dataProcessingQueue = new Queue<Action>();
-        private Thread _dataThread;
-
-        private event EventHandler DataInitializationCompleted;
-
-        protected virtual void OnDataInitializationCompleted()
-        {
-            if (DataInitializationCompleted != null)
-            {
-                DataInitializationCompleted(this, null);
-            }
-        }
-
-        private void ComposerPage_DataInitializationCompleted(object sender, EventArgs e)
-        {
-            if (_composer != null)
-            {
-                LoadComposer();
-            }
-        }
-
-        private void InitializeDataSources()
-        {
-            _classicalMusicDbContext = new ClassicalMusicDbContext();
-
-            var composerName = System.Windows.Application.Current.Properties["SelectedComposer"] as string;
-
-            _composer = _classicalMusicDbContext.Composers
-                .Where(c => c.Name == composerName)
-                .Include(c => c.ComposerImages)
-                .Include(c => c.Samples)
-                .FirstOrDefault();
-
-            Dispatcher.Invoke(OnDataInitializationCompleted);
-        }
-
-        private void InitializeDataThread()
-        {
-            _dataThread = new Thread(StartDataProcessingLoop);
-            _dataThread.Name = "Data Thread";
-            _dataThread.IsBackground = true;
-            _dataThread.Start();
-
-            _dataProcessingQueue.Enqueue(InitializeDataSources);
-        }
-
-        private void StartDataProcessingLoop()
-        {
-            while (!_isDisposed)
-            {
-                if (_dataProcessingQueue.Count > 0)
-                {
-                    _dataProcessingQueue.Dequeue()();
-                }
-            }
+            InitializeDataThread();
         }
 
         ~ComposerPage()
         {
             Dispose(false);
         }
+
+        private event EventHandler BinaryDataLoadingCompleted;
+
+        private event EventHandler NonBinaryDataLoadingCompleted;
 
         public void Dispose()
         {
@@ -132,6 +83,22 @@ namespace NathanHarrenstein.MusicTimeline.Views
                 _flacPlayer.Dispose();
 
                 _isDisposed = true;
+            }
+        }
+
+        protected virtual void OnBinaryDataLoadingCompleted()
+        {
+            if (BinaryDataLoadingCompleted != null)
+            {
+                BinaryDataLoadingCompleted(this, null);
+            }
+        }
+
+        protected virtual void OnNonBinaryDataLoadingCompleted()
+        {
+            if (NonBinaryDataLoadingCompleted != null)
+            {
+                NonBinaryDataLoadingCompleted(this, null);
             }
         }
 
@@ -226,7 +193,23 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
             _composer = (Composer)button.DataContext;
 
-            LoadComposer();
+            ProcessBinaryData();
+        }
+
+        private void ComposerPage_BinaryDataLoadingCompleted(object sender, EventArgs e)
+        {
+            if (_composer != null)
+            {
+                ProcessBinaryData();
+            }
+        }
+
+        private void ComposerPage_NonBinaryDataLoadingCompleted(object sender, EventArgs e)
+        {
+            if (_composer != null)
+            {
+                ProcessNonBinaryData();
+            }
         }
 
         private void FlacPlayer_CanPlayChanged(object sender, CanPlayEventArgs e)
@@ -288,42 +271,36 @@ namespace NathanHarrenstein.MusicTimeline.Views
             return composerImage;
         }
 
-        private void LoadComposer()
+        private void InitializeDataThread()
         {
-            var influencedVisibility = _composer.Influenced.Count > 0 ? Visibility.Visible : Visibility.Collapsed;
-            var influencesVisibility = _composer.Influences.Count > 0 ? Visibility.Visible : Visibility.Collapsed;
-            var webpagesVisibility = _composer.Links.Count > 0 ? Visibility.Visible : Visibility.Collapsed;
+            _dataThread = new Thread(StartDataProcessingLoop);
+            _dataThread.Name = "Data Thread";
+            _dataThread.IsBackground = true;
+            _dataThread.Start();
 
-            BuildBiographySection(_composer);
-            BornTextBlock.Text = GetBorn(_composer);
-            ComposerImagesListBox.ItemsSource = _composer.ComposerImages.Count == 0 ? new List<ComposerImage> { GetDefaultComposerImage() } : _composer.ComposerImages;
-            ComposerNameTextBlock.Text = NameUtility.ToFirstLast(_composer.Name);
-            DiedTextBlock.Text = GetDied(_composer);
-            ComposerFlagsItemsControl.ItemsSource = _composer.Nationalities;
-            InfluencedItemsControl.ItemsSource = _composer.Influenced;
-            InfluencedItemsControl.Visibility = influencedVisibility;
-            InfluencedTextBlock.Visibility = influencedVisibility;
-            InfluencedUnderline.Visibility = influencedVisibility;
-            InfluencesItemsControl.ItemsSource = _composer.Influences;
-            InfluencesItemsControl.Visibility = influencesVisibility;
-            InfluencesTextBlock.Visibility = influencesVisibility;
-            InfluencesUnderline.Visibility = influencesVisibility;
-            LinksItemControl.ItemsSource = _composer.Links;
-            LinksItemControl.Visibility = webpagesVisibility;
-            LinksTextBlock.Visibility = webpagesVisibility;
-            LinksUnderline.Visibility = webpagesVisibility;
+            _dataLoadingQueue.Enqueue(LoadNonBinaryData);
+            _dataLoadingQueue.Enqueue(LoadBinaryData);
+        }
 
-            var compositionTypes = _composer.CompositionCollections
-                .SelectMany(cc => cc.Compositions)
-                .Concat(_composer.Compositions)                
-                .GroupBy(c => c.Genre?.Name ?? "Unknown")
-                .OrderBy(s => s.Key);
+        private void LoadBinaryData()
+        {
+            _classicalMusicDbContext.Entry(_composer).Collection("ComposerImages").Load();
+            _classicalMusicDbContext.Entry(_composer).Collection("Samples").Load();
 
-            TreeView.SetBinding(ItemsControl.ItemsSourceProperty, BindingBuilder.Build(compositionTypes));
+            Dispatcher.Invoke(OnBinaryDataLoadingCompleted);
+        }
 
-            ComposerImagesListBox.SelectedIndex = 0;
+        private void LoadNonBinaryData()
+        {
+            _classicalMusicDbContext = new ClassicalMusicDbContext();
 
-            StartSampleLoadingThread();
+            var composerName = System.Windows.Application.Current.Properties["SelectedComposer"] as string;
+
+            _composer = _classicalMusicDbContext.Composers
+                .Where(c => c.Name == composerName)
+                .FirstOrDefault();
+
+            Dispatcher.Invoke(OnNonBinaryDataLoadingCompleted);
         }
 
         private void LoadSamples()
@@ -374,6 +351,47 @@ namespace NathanHarrenstein.MusicTimeline.Views
             }
         }
 
+        private void ProcessBinaryData()
+        {
+            ComposerImagesListBox.ItemsSource = _composer.ComposerImages.Count == 0 ? new List<ComposerImage> { GetDefaultComposerImage() } : _composer.ComposerImages;
+            StartSampleLoadingThread();
+        }
+
+        private void ProcessNonBinaryData()
+        {
+            var influencedVisibility = _composer.Influenced.Count > 0 ? Visibility.Visible : Visibility.Collapsed;
+            var influencesVisibility = _composer.Influences.Count > 0 ? Visibility.Visible : Visibility.Collapsed;
+            var webpagesVisibility = _composer.Links.Count > 0 ? Visibility.Visible : Visibility.Collapsed;
+
+            BuildBiographySection(_composer);
+            BornTextBlock.Text = GetBorn(_composer);
+            ComposerNameTextBlock.Text = NameUtility.ToFirstLast(_composer.Name);
+            DiedTextBlock.Text = GetDied(_composer);
+            ComposerFlagsItemsControl.ItemsSource = _composer.Nationalities;
+            InfluencedItemsControl.ItemsSource = _composer.Influenced;
+            InfluencedItemsControl.Visibility = influencedVisibility;
+            InfluencedTextBlock.Visibility = influencedVisibility;
+            InfluencedUnderline.Visibility = influencedVisibility;
+            InfluencesItemsControl.ItemsSource = _composer.Influences;
+            InfluencesItemsControl.Visibility = influencesVisibility;
+            InfluencesTextBlock.Visibility = influencesVisibility;
+            InfluencesUnderline.Visibility = influencesVisibility;
+            LinksItemControl.ItemsSource = _composer.Links;
+            LinksItemControl.Visibility = webpagesVisibility;
+            LinksTextBlock.Visibility = webpagesVisibility;
+            LinksUnderline.Visibility = webpagesVisibility;
+
+            var compositionTypes = _composer.CompositionCollections
+                .SelectMany(cc => cc.Compositions)
+                .Concat(_composer.Compositions)
+                .GroupBy(c => c.Genre?.Name ?? "Unknown")
+                .OrderBy(s => s.Key);
+
+            TreeView.SetBinding(ItemsControl.ItemsSourceProperty, BindingBuilder.Build(compositionTypes));
+
+            ComposerImagesListBox.SelectedIndex = 0;
+        }
+
         private void ProgressSlider_DragCompleted(object sender, DragCompletedEventArgs e)
         {
             _flacPlayer.CurrentTime = new TimeSpan((long)ProgressSlider.Value);
@@ -388,6 +406,17 @@ namespace NathanHarrenstein.MusicTimeline.Views
         private void ProgressSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             ProgressStatus.Text = TimeSpan.FromTicks((long)ProgressSlider.Value).ToString(@"hh\:mm\:ss");
+        }
+
+        private void StartDataProcessingLoop()
+        {
+            while (!_isDisposed)
+            {
+                if (_dataLoadingQueue.Count > 0)
+                {
+                    _dataLoadingQueue.Dequeue()();
+                }
+            }
         }
 
         private void StartSampleLoadingThread()
