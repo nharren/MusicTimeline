@@ -29,7 +29,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
     public partial class InputPage : Page, IDisposable
     {
         private ClassicalMusicDbContext _classicalMusicDbContext;
-        private Thread _dataThread;
+        private Thread _dataLoadingThread;
         private ObservableCollection<Composer> _selectedComposers;
         private Composition _selectedComposition;
         private CompositionCollection _selectedCompositionCollection;
@@ -48,15 +48,15 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
         #region Initialization
 
-        private Queue<Action> _dataProcessingQueue = new Queue<Action>();
+        private Queue<Action> _dataLoadingQueue = new Queue<Action>();
 
-        private event EventHandler DataInitializationCompleted;
+        private event EventHandler InitialDataLoaded;
 
-        protected virtual void OnDataInitializationCompleted()
+        protected virtual void OnInitialDataLoaded()
         {
-            if (DataInitializationCompleted != null)
+            if (InitialDataLoaded != null)
             {
-                DataInitializationCompleted(this, null);
+                InitialDataLoaded(this, null);
             }
         }
 
@@ -64,7 +64,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
         {
             InitializeAutoCompleteBoxStringSelectors();
 
-            DataInitializationCompleted += InputPage_DataInitializationCompleted;
+            InitialDataLoaded += InputPage_InitialDataLoaded;
 
             InitializeDataThread();
         }
@@ -77,7 +77,22 @@ namespace NathanHarrenstein.MusicTimeline.Views
             ComposerDeathLocationAutoCompleteBox.StringSelector = stringSelector;
         }
 
-        private void InitializeDataSources()
+        private void InitializeDataThread()
+        {
+            _dataLoadingThread = new Thread(new ThreadStart(StartDataLoadingLoop));
+            _dataLoadingThread.Name = "Data Loading Thread";
+            _dataLoadingThread.IsBackground = true;
+            _dataLoadingThread.Start();
+
+            _dataLoadingQueue.Enqueue(LoadInitialData);
+        }
+
+        private void InputPage_InitialDataLoaded(object sender, EventArgs e)
+        {
+            SetInitialBindings();
+        }
+
+        private void LoadInitialData()
         {
             _classicalMusicDbContext = new ClassicalMusicDbContext();
             _classicalMusicDbContext.Composers.Load();
@@ -85,20 +100,10 @@ namespace NathanHarrenstein.MusicTimeline.Views
             _classicalMusicDbContext.Locations.Load();
             _classicalMusicDbContext.Nationalities.Load();
 
-            Dispatcher.Invoke(OnDataInitializationCompleted);
+            Dispatcher.Invoke(OnInitialDataLoaded);
         }
 
-        private void InitializeDataThread()
-        {
-            _dataThread = new Thread(new ThreadStart(StartDataProcessingLoop));
-            _dataThread.Name = "Data Thread";
-            _dataThread.IsBackground = true;
-            _dataThread.Start();
-
-            _dataProcessingQueue.Enqueue(InitializeDataSources);
-        }
-
-        private void InitializeListBoxes()
+        private void SetInitialBindings()
         {
             ComposerListBox.SetBinding(ItemsControl.ItemsSourceProperty, BindingBuilder.Build(_classicalMusicDbContext.Composers.Local.OrderBy(c => c.Name)));
             ComposerNationalityListBox.SetBinding(ItemsControl.ItemsSourceProperty, BindingBuilder.Build(_classicalMusicDbContext.Nationalities.Local.OrderBy(c => c.Name)));
@@ -107,18 +112,13 @@ namespace NathanHarrenstein.MusicTimeline.Views
             ComposerDeathLocationAutoCompleteBox.SetBinding(AutoCompleteBox.SuggestionsProperty, BindingBuilder.Build(_classicalMusicDbContext.Locations.Local));
         }
 
-        private void InputPage_DataInitializationCompleted(object sender, EventArgs e)
-        {
-            InitializeListBoxes();
-        }
-
-        private void StartDataProcessingLoop()
+        private void StartDataLoadingLoop()
         {
             while (!_isDisposed)
             {
-                if (_dataProcessingQueue.Count > 0)
+                if (_dataLoadingQueue.Count > 0)
                 {
-                    _dataProcessingQueue.Dequeue()();
+                    _dataLoadingQueue.Dequeue()();
                 }
             }
         }
@@ -686,19 +686,6 @@ namespace NathanHarrenstein.MusicTimeline.Views
             }
         }
 
-        private void ComposerListBoxItem_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            if (ComposerListBox.IsEnabled)
-            {
-                var frameworkElement = e.OriginalSource as FrameworkElement;
-
-                if (frameworkElement == null || frameworkElement.TemplatedParent == null || !(frameworkElement.TemplatedParent is Thumb || frameworkElement.TemplatedParent is RepeatButton))
-                {
-                    e.Handled = true;
-                }
-            }
-        }
-
         private void ComposerListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (!ComposerListBox.IsEnabled)
@@ -721,6 +708,19 @@ namespace NathanHarrenstein.MusicTimeline.Views
                 {
                     DragDrop.DoDragDrop(textBlock, new DataObject(typeof(Composer), textBlock.DataContext), DragDropEffects.Link);
 
+                    e.Handled = true;
+                }
+            }
+        }
+
+        private void ComposerListBoxItem_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (ComposerListBox.IsEnabled)
+            {
+                var frameworkElement = e.OriginalSource as FrameworkElement;
+
+                if (frameworkElement == null || frameworkElement.TemplatedParent == null || !(frameworkElement.TemplatedParent is Thumb || frameworkElement.TemplatedParent is RepeatButton))
+                {
                     e.Handled = true;
                 }
             }
@@ -821,7 +821,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
                     var cancellationTokenSource = new CancellationTokenSource();
 
-                    _dataProcessingQueue.Enqueue(new Action(() => KlassikaScraper.ScrapeComposerDetailPage(url, _selectedComposers[0], _classicalMusicDbContext, progress, cancellationTokenSource.Token)));
+                    _dataLoadingQueue.Enqueue(new Action(() => KlassikaScraper.ScrapeComposerDetailPage(url, _selectedComposers[0], _classicalMusicDbContext, progress, cancellationTokenSource.Token)));
 
                     progressDialog.ShowDialog();
 
