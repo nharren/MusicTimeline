@@ -273,6 +273,11 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
         private void InitializeDataThread()
         {
+            if (ProgressBar.Visibility == Visibility.Collapsed)
+            {
+                ProgressBar.Visibility = Visibility.Visible;
+            }
+
             _dataThread = new Thread(StartDataProcessingLoop);
             _dataThread.Name = "Data Thread";
             _dataThread.IsBackground = true;
@@ -286,6 +291,8 @@ namespace NathanHarrenstein.MusicTimeline.Views
         {
             _classicalMusicDbContext.Entry(_composer).Collection("ComposerImages").Load();
             _classicalMusicDbContext.Entry(_composer).Collection("Samples").Load();
+
+            Thread.Sleep(10000);
 
             Dispatcher.Invoke(OnBinaryDataLoadingCompleted);
         }
@@ -355,6 +362,8 @@ namespace NathanHarrenstein.MusicTimeline.Views
         {
             ComposerImagesListBox.ItemsSource = _composer.ComposerImages.Count == 0 ? new List<ComposerImage> { GetDefaultComposerImage() } : _composer.ComposerImages;
             StartSampleLoadingThread();
+
+            ProgressBar.Visibility = Visibility.Collapsed;
         }
 
         private void ProcessNonBinaryData()
