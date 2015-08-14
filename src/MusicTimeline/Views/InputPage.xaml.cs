@@ -173,9 +173,6 @@ namespace NathanHarrenstein.MusicTimeline.Views
         {
             if (_selectedComposers.Count == 1)
             {
-                ComposerNationalityListBox.SelectedItems.Clear();
-                ComposerEraListBox.SelectedItems.Clear();
-
                 var composer = _selectedComposers.First();
 
                 ComposerNameTextBox.SetBinding(TextBox.TextProperty, BindingBuilder.Build(composer, "Name"));
@@ -189,22 +186,19 @@ namespace NathanHarrenstein.MusicTimeline.Views
                 CompositionCollectionListBox.SetBinding(ItemsControl.ItemsSourceProperty, BindingBuilder.Build(composer.CompositionCollections, null, "Name"));
                 CompositionListBox.SetBinding(ItemsControl.ItemsSourceProperty, BindingBuilder.Build(composer.Compositions, null, "Name"));
 
-                var nationalities = composer.Nationalities.ToList();
-                var eras = composer.Eras.ToList();
-
-                foreach (var nationality in nationalities)
+                foreach (var nationality in composer.Nationalities)
                 {
                     ComposerNationalityListBox.SelectedItems.Add(nationality);
                 }
 
-                foreach (var era in eras)
+                foreach (var era in composer.Eras)
                 {
                     ComposerEraListBox.SelectedItems.Add(era);
                 }
 
-                if (nationalities.Count > 0)
+                if (composer.Nationalities.Count > 0)
                 {
-                    ComposerNationalityListBox.ScrollIntoView(nationalities.First());
+                    ComposerNationalityListBox.ScrollIntoView(composer.Nationalities.First());
                 }
 
                 if (ComposerImageListBox.Items.Count > 0)
@@ -214,8 +208,6 @@ namespace NathanHarrenstein.MusicTimeline.Views
             }
             else
             {
-                ClearComposerSection();
-
                 ComposerNameTextBox.Text = "<< Multiple Selection >>";
                 ComposerDatesTextBox.Text = "<< Multiple Selection >>";
                 ComposerBirthLocationAutoCompleteBox.Text = "<< Multiple Selection >>";
@@ -228,11 +220,11 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
         public void RefreshComposerSection()
         {
-            if (_selectedComposers.Count == 0)
-            {
-                DisableComposerSection();
-                ClearComposerSection();
+            DisableComposerSection();
+            ClearComposerSection();
 
+            if (_selectedComposers.Count == 0)
+            {              
                 _selectedCompositionCollection = null;
 
                 RefreshCompositionCollectionSection();
@@ -241,7 +233,11 @@ namespace NathanHarrenstein.MusicTimeline.Views
             }
 
             LoadComposerSection();
-            EnableComposerSection();
+
+            if (_selectedComposers.Count == 1)
+            {
+                EnableComposerSection(); 
+            }
         }
 
         #endregion Composer Section Methods
@@ -287,11 +283,11 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
         public void RefreshCompositionCollectionSection()
         {
-            if (_selectedCompositionCollection == null)
-            {
-                DisableCompositionCollectionSection();
-                ClearCompositionCollectionSection();
+            DisableCompositionCollectionSection();
+            ClearCompositionCollectionSection();
 
+            if (_selectedCompositionCollection == null)
+            {              
                 _selectedComposition = null;
 
                 RefreshCompositionSection();
@@ -365,11 +361,11 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
         public void RefreshCompositionSection()
         {
-            if (_selectedComposition == null)
-            {
-                DisableCompositionSection();
-                ClearCompositionSection();
+            DisableCompositionSection();
+            ClearCompositionSection();
 
+            if (_selectedComposition == null)
+            {               
                 _selectedMovement = null;
 
                 RefreshMovementSection();
@@ -415,11 +411,11 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
         public void RefreshMovementSection()
         {
+            DisableMovementSection();
+            ClearMovementSection();
+
             if (_selectedMovement == null)
             {
-                DisableMovementSection();
-                ClearMovementSection();
-
                 _selectedRecording = null;
 
                 RefreshRecordingSection();
