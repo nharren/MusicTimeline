@@ -16,7 +16,21 @@ namespace NathanHarrenstein.Timeline
         public static readonly DependencyProperty ForegroundProperty = DependencyProperty.Register("Foreground", typeof(Brush), typeof(TimePanel), new PropertyMetadata(Brushes.Black));
         public static readonly DependencyProperty LabelOffsetProperty = DependencyProperty.Register("LabelOffset", typeof(double), typeof(TimePanel), new PropertyMetadata(10d));
         public static readonly DependencyProperty ResolutionProperty = DependencyProperty.Register("Resolution", typeof(TimeResolution), typeof(TimePanel), new PropertyMetadata(LayoutPropertyChanged));
-        public static readonly DependencyProperty RulerProperty = DependencyProperty.Register("Ruler", typeof(TimeRuler), typeof(TimePanel), new PropertyMetadata(LayoutPropertyChanged));
+        public static readonly DependencyProperty RulerProperty = DependencyProperty.Register("Ruler", typeof(TimeRuler), typeof(TimePanel), new PropertyMetadata(TimePanel_PropertyChanged_Ruler));
+
+        private static void TimePanel_PropertyChanged_Ruler(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var timePanel = (TimePanel)d;
+            timePanel._hasViewChanged = true;
+
+            if (timePanel._labelOffsets != null)
+            {
+                timePanel._labelOffsets.Clear();
+            }
+
+            timePanel.UpdateLayout();
+        }
+
         public static readonly DependencyProperty StrokeProperty = DependencyProperty.Register("Stroke", typeof(Brush), typeof(TimePanel), new PropertyMetadata(Brushes.Black));
 
         private bool _hasViewChanged = true;
