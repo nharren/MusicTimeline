@@ -15,6 +15,11 @@ namespace NathanHarrenstein.MusicTimeline.Scrapers
     {
         public static void ScrapeComposer(string url, Composer composer, ClassicalMusicDbContext dbContext)
         {
+            if (url == null)
+            {
+                return;
+            }
+
             var urlParts = url.Split('#');
 
             if (urlParts.Length != 2)
