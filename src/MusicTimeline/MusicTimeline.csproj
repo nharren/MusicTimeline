@@ -42,8 +42,8 @@
     <ApplicationIcon>Resources\AppIcon.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="EDTF, Version=1.0.5700.36251, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\EDTF.1.0.5700.36251\lib\net45\EDTF.dll</HintPath>
+    <Reference Include="EDTF, Version=1.0.5706.22033, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\EDTF.1.0.5706.22033\lib\net45\EDTF.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">

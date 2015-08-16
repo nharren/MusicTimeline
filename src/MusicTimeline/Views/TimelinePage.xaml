@@ -27,6 +27,41 @@
                 <MenuItem Command="{Binding CloseCommand, ElementName=page}" Header="Close" />
             </MenuItem>
             <MenuItem Header="View">
+                <MenuItem Header="Resolution">
+                    <MenuItem Command="{Binding ChangeResolutionCommand,
+                                                ElementName=page}"
+                              CommandParameter="0"
+                              Header="Century" />
+                    <MenuItem Command="{Binding ChangeResolutionCommand,
+                                                ElementName=page}"
+                              CommandParameter="1"
+                              Header="Decade" />
+                    <MenuItem Command="{Binding ChangeResolutionCommand,
+                                                ElementName=page}"
+                              CommandParameter="2"
+                              Header="Year" />
+                    <MenuItem Command="{Binding ChangeResolutionCommand,
+                                                ElementName=page}"
+                              CommandParameter="3"
+                              Header="Month" />
+                    <MenuItem Command="{Binding ChangeResolutionCommand,
+                                                ElementName=page}"
+                              CommandParameter="4"
+                              Header="Day" />
+                    <MenuItem Command="{Binding ChangeResolutionCommand,
+                                                ElementName=page}"
+                              CommandParameter="5"
+                              Header="Hour" />
+                    <MenuItem Command="{Binding ChangeResolutionCommand,
+                                                ElementName=page}"
+                              CommandParameter="6"
+                              Header="Minute" />
+                    <MenuItem Command="{Binding ChangeResolutionCommand,
+                                                ElementName=page}"
+                              CommandParameter="7"
+                              Header="Second" />
+                </MenuItem>
+                <Separator />
                 <MenuItem Command="{Binding FullScreenCommand, ElementName=page}" Header="Full Screen" />
             </MenuItem>
             <MenuItem Header="Tools">
@@ -65,16 +100,16 @@
         </Menu>
         <t:Timeline Name="timeline"
                     BackgroundImage="{StaticResource BackgroundImage}"
-                    LineStroke="#FF333333" 
                     EventHeight="40"
                     EventSpacing="1"
+                    LineStroke="#FF333333"
                     TimeForeground="White">
             <t:Timeline.EraTemplates>
                 <DataTemplate DataType="{x:Type vm:ComposerEraViewModel}">
                     <Grid Background="{Binding Background}" SnapsToDevicePixels="True">
                         <TextBlock Margin="15,0,0,0"
-                                   FontSize="17.333"
                                    VerticalAlignment="Center"
+                                   FontSize="17.333"
                                    Foreground="{Binding Foreground}"
                                    Text="{Binding Label}" />
                     </Grid>
@@ -109,11 +144,14 @@
                                 </Grid.ColumnDefinitions>
                                 <Image SnapsToDevicePixels="True" Source="{Binding Composer, Converter={StaticResource ComposerToThumbnailConverter}, IsAsync=True}" />
                                 <TextBlock Grid.Column="2"
-                                           FontSize="17.333"
                                            Margin="0,-1,0,0"
                                            VerticalAlignment="Center"
+                                           FontSize="17.333"
                                            Text="{Binding Label}" />
-                                <ItemsControl Grid.Column="3" Margin="5,0,0,0" VerticalAlignment="Center" ItemsSource="{Binding Composer.Nationalities}">
+                                <ItemsControl Grid.Column="3"
+                                              Margin="5,0,0,0"
+                                              VerticalAlignment="Center"
+                                              ItemsSource="{Binding Composer.Nationalities}">
                                     <ItemsControl.ItemsPanel>
                                         <ItemsPanelTemplate>
                                             <StackPanel Orientation="Horizontal" />

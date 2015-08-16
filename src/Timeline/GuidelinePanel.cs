@@ -16,7 +16,21 @@ namespace NathanHarrenstein.Timeline
         public static readonly DependencyProperty MajorFrequencyProperty = DependencyProperty.Register("MajorFrequency", typeof(int), typeof(GuidelinePanel), new PropertyMetadata(10));
         public static readonly DependencyProperty MinorBrushProperty = DependencyProperty.Register("MinorBrush", typeof(Brush), typeof(GuidelinePanel), new PropertyMetadata(Brushes.Gray));
         public static readonly DependencyProperty ResolutionProperty = DependencyProperty.Register("Resolution", typeof(TimeResolution), typeof(GuidelinePanel));
-        public static readonly DependencyProperty RulerProperty = DependencyProperty.Register("Ruler", typeof(TimeRuler), typeof(GuidelinePanel));
+        public static readonly DependencyProperty RulerProperty = DependencyProperty.Register("Ruler", typeof(TimeRuler), typeof(GuidelinePanel), new PropertyMetadata(GuidelinePanel_PropertyChanged_Ruler));
+
+        private static void GuidelinePanel_PropertyChanged_Ruler(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var guidelinePanel = (GuidelinePanel)d;
+            guidelinePanel._hasViewChanged = true;
+
+            if (guidelinePanel._lineOffsets != null)
+            {
+                guidelinePanel._lineOffsets.Clear(); 
+            }
+
+            guidelinePanel.UpdateLayout();
+        }
+
         private bool _hasViewChanged = true;
         private double _horizontalOffset;
         private Dictionary<int, double> _lineOffsets;
@@ -262,7 +276,27 @@ namespace NathanHarrenstein.Timeline
                         case TimeResolution.Month:
                             _lineOffsets.Add(guidelineIndex, Ruler.ToPixels(viewportLeftTime, guidelineTime));
                             guideline.Stroke = guidelineTime.Month % MajorFrequency == 0 ? MajorBrush : MinorBrush;
-                            guidelineTime = guidelineTime.AddMonths(1);
+
+                            try
+                            {
+                                guidelineTime = guidelineTime.AddMonths(1);
+                            }
+                            catch (Exception)
+                            {
+                                var month = guidelineTime.Month + 1;
+                                var year = guidelineTime.Year;
+
+                                if (month > 12)
+                                {
+                                    month -= 12;
+                                    year++;
+                                }
+
+                                var day = ExtendedDateTimeCalculator.DaysInMonth(year, month);
+
+                                guidelineTime = new ExtendedDateTime(year, month, day, guidelineTime.Hour, guidelineTime.Minute, guidelineTime.Second, guidelineTime.UtcOffset.Hours, guidelineTime.UtcOffset.Minutes);
+                            }
+
                             break;
 
                         case TimeResolution.Day:

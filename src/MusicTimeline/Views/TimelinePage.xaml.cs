@@ -10,6 +10,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Data.Entity;
 using System.EDTF;
+using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -96,6 +97,21 @@ namespace NathanHarrenstein.MusicTimeline.Views
             }
         }
 
+        public ICommand ChangeResolutionCommand
+        {
+            get
+            {
+                return (ICommand)GetValue(ChangeResolutionCommandProperty);
+            }
+
+            set
+            {
+                SetValue(ChangeResolutionCommandProperty, value);
+            }
+        }
+
+        public static readonly DependencyProperty ChangeResolutionCommandProperty = DependencyProperty.Register("ChangeResolutionCommand", typeof(ICommand), typeof(TimelinePage));
+
         public ICommand RebuildThumbnailCacheCommand
         {
             get
@@ -130,6 +146,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
             GoToCommand = GetGoToCommand();
             RebuildThumbnailCacheCommand = GetRebuildThumbnailCacheCommand();
             FullScreenCommand = GetFullScreenCommand();
+            ChangeResolutionCommand = GetChangeResolutionCommand();
 
             timeline.Dates = new ExtendedDateTimeInterval(new ExtendedDateTime(476, 1, 1), ExtendedDateTime.Now);
             timeline.Eras = composerEraViewModels;
@@ -139,6 +156,41 @@ namespace NathanHarrenstein.MusicTimeline.Views
             timeline.Resolution = TimeResolution.Decade;
             timeline.Events = ComposerEventViewModelBuilder.Build(composers, composerEraViewModels, timeline);
             timeline.Loaded += Timeline_Loaded;
+        }
+
+        private ICommand GetChangeResolutionCommand()
+        {
+            return new DelegateCommand(o =>
+            {
+                var targetResolution = (TimeResolution)int.Parse((string)o);
+
+                switch (targetResolution)
+                {
+                    case TimeResolution.Century:
+                        timeline.Ruler.TimeUnitWidth = 0.01;
+                        timeline.Ruler.TimeRulerUnit = TimeRulerUnit.Day;
+                        break;
+                    case TimeResolution.Decade:
+                        timeline.Ruler.TimeUnitWidth = 0.04109589041;
+                        timeline.Ruler.TimeRulerUnit = TimeRulerUnit.Day;
+                        break;
+                    case TimeResolution.Year:
+                        timeline.Ruler.TimeUnitWidth = 0.41095890411;
+                        timeline.Ruler.TimeRulerUnit = TimeRulerUnit.Day;
+                        break;
+                    case TimeResolution.Month:
+                        timeline.Ruler.TimeUnitWidth = 5;
+                        timeline.Ruler.TimeRulerUnit = TimeRulerUnit.Day;
+                        break;
+                    case TimeResolution.Day:
+                        timeline.Ruler.TimeUnitWidth = 150;
+                        timeline.Ruler.TimeRulerUnit = TimeRulerUnit.Day;
+                        break;
+                }
+
+                timeline.Resolution = targetResolution;
+                timeline.VerticalOffset = timeline.VerticalOffset;
+            });
         }
 
         protected virtual void Dispose(bool disposing)
