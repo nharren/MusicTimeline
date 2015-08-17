@@ -49,60 +49,72 @@
             <RowDefinition Height="120" />
             <RowDefinition />
         </Grid.RowDefinitions>
-        <ProgressBar Name="ProgressBar" Height="6" IsIndeterminate="True" />
-        <Grid Grid.Row="1">
+        <ProgressBar Name="ProgressBar"
+                     Height="6"
+                     IsIndeterminate="True" />
+        <Grid Grid.Row="1"
+              Background="#222222"
+              Opacity="0.25" />
+        <Grid Grid.Row="1" Margin="30,30,47,30">
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="120" />
-                <ColumnDefinition Width="Auto" />
-                <ColumnDefinition Width="3*" />
-                <ColumnDefinition Width="500" />
+                <ColumnDefinition Width="5*" />
+                <ColumnDefinition Width="2*" />
             </Grid.ColumnDefinitions>
-            <Grid Grid.ColumnSpan="4"
-                  Background="#222222"
-                  Opacity="0.25" />
-            <Button Margin="0,-3,0,0"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    Click="BackButton_Click"
-                    Content="&#xE2A4;"
-                    Cursor="Hand"
-                    FontFamily="Segoe UI Symbol"
-                    FontSize="48"
-                    Foreground="#FFDFE0E6">
-                <Button.Template>
-                    <ControlTemplate TargetType="{x:Type Button}">
-                        <Grid Margin="{TemplateBinding Margin}">
-                            <ContentPresenter />
-                        </Grid>
-                    </ControlTemplate>
-                </Button.Template>
-            </Button>
-            <TextBlock Name="ComposerNameTextBlock"
-                       Grid.Column="1"
-                       Margin="0,-1,0,0"
-                       VerticalAlignment="Center"
-                       FontSize="38" />
-            <ItemsControl Name="ComposerFlagsItemsControl" Grid.Column="2">
-                <ItemsControl.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <StackPanel Height="120" Orientation="Horizontal" />
-                    </ItemsPanelTemplate>
-                </ItemsControl.ItemsPanel>
-                <ItemsControl.ItemTemplate>
-                    <DataTemplate DataType="{x:Type db:Nationality}">
-                        <Image Width="32"
-                               Height="32"
-                               Margin="20,0,0,0"
-                               HorizontalAlignment="Center"
-                               VerticalAlignment="Center"
-                               Source="{Binding Name,
-                                                Converter={StaticResource NationalityToFlagConverter},
-                                                IsAsync=True}"
-                               ToolTip="{Binding Name}" />
-                    </DataTemplate>
-                </ItemsControl.ItemTemplate>
-            </ItemsControl>
-            <Grid Grid.Column="3">
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Button Margin="0,-3,0,0"
+                        HorizontalAlignment="Left"
+                        VerticalAlignment="Center"
+                        Click="BackButton_Click"
+                        Content="&#xE2A4;"
+                        Cursor="Hand"
+                        FontFamily="Segoe UI Symbol"
+                        FontSize="48"
+                        Foreground="#FFDFE0E6">
+                    <Button.Template>
+                        <ControlTemplate TargetType="{x:Type Button}">
+                            <Grid Margin="{TemplateBinding Margin}">
+                                <ContentPresenter />
+                            </Grid>
+                        </ControlTemplate>
+                    </Button.Template>
+                </Button>
+                <TextBlock Name="ComposerNameTextBlock"
+                           Grid.Column="1"
+                           Margin="25,-1,0,0"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Center"
+                           FontSize="38" />
+                <ItemsControl Name="ComposerFlagsItemsControl"
+                              Grid.Column="2"
+                              HorizontalAlignment="Left"
+                              VerticalAlignment="Center">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Orientation="Horizontal" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                        <DataTemplate DataType="{x:Type db:Nationality}">
+                            <Image Width="32"
+                                   Height="32"
+                                   Margin="20,0,0,0"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"
+                                   Source="{Binding Name,
+                                                    Converter={StaticResource NationalityToFlagConverter},
+                                                    IsAsync=True}"
+                                   ToolTip="{Binding Name}" />
+                        </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                </ItemsControl>
+            </Grid>
+            <Grid Grid.Column="1">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="5" />
@@ -112,7 +124,7 @@
                     <ColumnDefinition Width="20" />
                     <ColumnDefinition />
                     <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="50" />
+                    <ColumnDefinition Width="30" />
                 </Grid.ColumnDefinitions>
                 <Grid.RowDefinitions>
                     <RowDefinition />
