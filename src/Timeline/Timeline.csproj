@@ -57,6 +57,9 @@
     <Compile Include="Input\MouseHorizontalWheelEventArgs.cs" />
     <Compile Include="Input\MouseHorizontalWheelEventHandler.cs" />
     <Compile Include="Input\MouseHook.cs" />
+    <Compile Include="NavigationPanel.cs" />
+    <Compile Include="NavigationSlider.cs" />
+    <Compile Include="PanEventArgs.cs" />
     <Compile Include="PanGrid.cs" />
     <Compile Include="IPan.cs" />
     <Compile Include="ITimelineEra.cs" />

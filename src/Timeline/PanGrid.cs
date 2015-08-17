@@ -33,7 +33,9 @@ namespace NathanHarrenstein.Timeline
 
             mouseHook = new MouseHook();
             mouseHook.StartMouseHook();
-            mouseHook.MouseHorizontalWheel += mouseHook_MouseHorizontalWheel;          
+            mouseHook.MouseHorizontalWheel += mouseHook_MouseHorizontalWheel;
+
+            EventManager.RegisterClassHandler(typeof(PanGrid), NavigationSlider.PanRequestedEvent, new PanRequestedEventHandler(PanGrid_PanRequested));
         }
 
         ~PanGrid()
@@ -346,6 +348,11 @@ namespace NathanHarrenstein.Timeline
             Origin = new Point(e.X, e.Y);
 
             Pan(new Vector(e.Delta, 0));
+        }
+
+        private void PanGrid_PanRequested(object sender, PanEventArgs e)
+        {
+            Pan(e.Delta);
         }
     }
 }
