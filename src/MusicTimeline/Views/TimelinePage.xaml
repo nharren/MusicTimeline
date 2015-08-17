@@ -7,6 +7,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:t="clr-namespace:NathanHarrenstein.Timeline;assembly=Timeline"
       xmlns:vm="clr-namespace:NathanHarrenstein.MusicTimeline.ViewModels"
+      DataContext="{Binding RelativeSource={RelativeSource Self}}"
       Name="page"
       Title="TimelinePage"
       d:DesignHeight="300"
@@ -17,99 +18,93 @@
         <cv:ComposerToThumbnailConverter x:Key="ComposerToThumbnailConverter" />
     </Page.Resources>
     <Page.InputBindings>
-        <KeyBinding Key="F11" Command="{Binding FullScreenCommand, ElementName=page}" />
+        <KeyBinding Key="F11" Command="{Binding FullScreenCommand}" />
     </Page.InputBindings>
     <DockPanel Background="{StaticResource BackgroundBrush}">
-        <Menu DockPanel.Dock="Top">
-            <MenuItem Header="File">
-                <MenuItem Command="{Binding ManageDataCommand, ElementName=page}" Header="Manage Data" />
-                <Separator />
-                <MenuItem Command="{Binding CloseCommand, ElementName=page}" Header="Close" />
-            </MenuItem>
-            <MenuItem Header="View">
-                <MenuItem Header="Resolution">
-                    <MenuItem Command="{Binding ChangeResolutionCommand,
-                                                ElementName=page}"
-                              CommandParameter="0"
-                              Header="Century" />
-                    <MenuItem Command="{Binding ChangeResolutionCommand,
-                                                ElementName=page}"
-                              CommandParameter="1"
-                              Header="Decade" />
-                    <MenuItem Command="{Binding ChangeResolutionCommand,
-                                                ElementName=page}"
-                              CommandParameter="2"
-                              Header="Year" />
-                    <MenuItem Command="{Binding ChangeResolutionCommand,
-                                                ElementName=page}"
-                              CommandParameter="3"
-                              Header="Month" />
-                    <MenuItem Command="{Binding ChangeResolutionCommand,
-                                                ElementName=page}"
-                              CommandParameter="4"
-                              Header="Day" />
-                    <MenuItem Command="{Binding ChangeResolutionCommand,
-                                                ElementName=page}"
-                              CommandParameter="5"
-                              Header="Hour" />
-                    <MenuItem Command="{Binding ChangeResolutionCommand,
-                                                ElementName=page}"
-                              CommandParameter="6"
-                              Header="Minute" />
-                    <MenuItem Command="{Binding ChangeResolutionCommand,
-                                                ElementName=page}"
-                              CommandParameter="7"
-                              Header="Second" />
-                </MenuItem>
-                <Separator />
-                <MenuItem Command="{Binding FullScreenCommand, ElementName=page}" Header="Full Screen" />
-            </MenuItem>
-            <MenuItem Header="Tools">
-                <MenuItem Command="{Binding RebuildThumbnailCacheCommand, ElementName=page}" Header="Rebuild Thumbnail Cache" />
-            </MenuItem>
-            <MenuItem Header="Go">
-                <MenuItem Command="{Binding GoToCommand,
-                                            ElementName=page}"
-                          CommandParameter="Medieval"
-                          Header="Medieval" />
-                <MenuItem Command="{Binding GoToCommand,
-                                            ElementName=page}"
-                          CommandParameter="Renaissance"
-                          Header="Renaissance" />
-                <MenuItem Command="{Binding GoToCommand,
-                                            ElementName=page}"
-                          CommandParameter="Baroque"
-                          Header="Baroque" />
-                <MenuItem Command="{Binding GoToCommand,
-                                            ElementName=page}"
-                          CommandParameter="Classical"
-                          Header="Classical" />
-                <MenuItem Command="{Binding GoToCommand,
-                                            ElementName=page}"
-                          CommandParameter="Romantic"
-                          Header="Romantic" />
-                <MenuItem Command="{Binding GoToCommand,
-                                            ElementName=page}"
-                          CommandParameter="20th Century"
-                          Header="20th Century" />
-                <MenuItem Command="{Binding GoToCommand,
-                                            ElementName=page}"
-                          CommandParameter="21st Century"
-                          Header="21st Century" />
-            </MenuItem>
-        </Menu>
         <t:Timeline Name="timeline"
                     BackgroundImage="{StaticResource BackgroundImage}"
+                    DataContext="{Binding }"
                     EventHeight="40"
                     EventSpacing="1"
                     LineStroke="#FF333333"
                     TimeForeground="White">
+            <t:Timeline.ContextMenu>
+                <ContextMenu DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource Mode=Self}}">
+                    <MenuItem Header="File">
+                        <MenuItem Command="{Binding ManageDataCommand}" Header="Manage Data" />
+                        <Separator />
+                        <MenuItem Command="{Binding CloseCommand}" Header="Close" />
+                    </MenuItem>
+                    <MenuItem Header="View">
+                        <MenuItem Header="Resolution">
+                            <MenuItem Command="{Binding ChangeResolutionCommand}"
+                                      CommandParameter="0"
+                                      Header="Century" />
+                            <MenuItem Command="{Binding ChangeResolutionCommand}"
+                                      CommandParameter="1"
+                                      Header="Decade" />
+                            <MenuItem Command="{Binding ChangeResolutionCommand}"
+                                      CommandParameter="2"
+                                      Header="Year" />
+                            <MenuItem Command="{Binding ChangeResolutionCommand}"
+                                      CommandParameter="3"
+                                      Header="Month" />
+                            <MenuItem Command="{Binding ChangeResolutionCommand}"
+                                      CommandParameter="4"
+                                      Header="Day" />
+                            <MenuItem Command="{Binding ChangeResolutionCommand}"
+                                      CommandParameter="5"
+                                      Header="Hour" />
+                            <MenuItem Command="{Binding ChangeResolutionCommand}"
+                                      CommandParameter="6"
+                                      Header="Minute" />
+                            <MenuItem Command="{Binding ChangeResolutionCommand}"
+                                      CommandParameter="7"
+                                      Header="Second" />
+                        </MenuItem>
+                        <Separator />
+                        <MenuItem Command="{Binding FullScreenCommand}" Header="Full Screen" />
+                    </MenuItem>
+                    <MenuItem Header="Tools">
+                        <MenuItem Command="{Binding RebuildThumbnailCacheCommand}" Header="Rebuild Thumbnail Cache" />
+                    </MenuItem>
+                    <MenuItem Header="Go">
+                        <MenuItem Command="{Binding GoToCommand
+                                                    }"
+                                  CommandParameter="Medieval"
+                                  Header="Medieval" />
+                        <MenuItem Command="{Binding GoToCommand
+                                                    }"
+                                  CommandParameter="Renaissance"
+                                  Header="Renaissance" />
+                        <MenuItem Command="{Binding GoToCommand
+                                                    }"
+                                  CommandParameter="Baroque"
+                                  Header="Baroque" />
+                        <MenuItem Command="{Binding GoToCommand
+                                                    }"
+                                  CommandParameter="Classical"
+                                  Header="Classical" />
+                        <MenuItem Command="{Binding GoToCommand
+                                                    }"
+                                  CommandParameter="Romantic"
+                                  Header="Romantic" />
+                        <MenuItem Command="{Binding GoToCommand
+                                                    }"
+                                  CommandParameter="20th Century"
+                                  Header="20th Century" />
+                        <MenuItem Command="{Binding GoToCommand
+                                                    }"
+                                  CommandParameter="21st Century"
+                                  Header="21st Century" />
+                    </MenuItem>
+                </ContextMenu>
+            </t:Timeline.ContextMenu>
             <t:Timeline.EraTemplates>
                 <DataTemplate DataType="{x:Type vm:ComposerEraViewModel}">
                     <Grid Background="{Binding Background}" SnapsToDevicePixels="True">
                         <TextBlock Margin="15,0,0,0"
                                    VerticalAlignment="Center"
-                                   FontSize="17.333"
                                    Foreground="{Binding Foreground}"
                                    Text="{Binding Label}" />
                     </Grid>

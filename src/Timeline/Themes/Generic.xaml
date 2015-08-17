@@ -12,13 +12,20 @@
                                    Background="Transparent"
                                    FocusVisualStyle="{x:Null}">
                             <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
+                                <RowDefinition Height="30" />
+                                <RowDefinition Height="30" />
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition />
                             </Grid.RowDefinitions>
-                            <l:BackgroundPanel Grid.RowSpan="3" BackgroundImage="{TemplateBinding BackgroundImage}" />
-                            <l:EraPanel Grid.Row="0"
-                                        Height="29"
+                            <l:NavigationSlider Dates="{TemplateBinding Dates}"
+                                                EraTemplates="{TemplateBinding EraTemplates}"
+                                                Eras="{TemplateBinding Eras}"
+                                                Resolution="{TemplateBinding Resolution}"
+                                                Ruler="{TemplateBinding Ruler}"
+                                                TextBlock.FontFamily="Cambria"
+                                                TextBlock.FontSize="12"
+                                                TextBlock.Foreground="Black" />
+                            <l:EraPanel Grid.Row="1"
                                         Dates="{TemplateBinding Dates}"
                                         EraTemplates="{TemplateBinding EraTemplates}"
                                         Eras="{TemplateBinding Eras}"
@@ -28,7 +35,7 @@
                                         TextBlock.FontFamily="Cambria"
                                         TextBlock.FontSize="14"
                                         TextBlock.Foreground="Black" />
-                            <l:TimePanel Grid.Row="1"
+                            <l:TimePanel Grid.Row="2"
                                          Height="24"
                                          Background="#33222222"
                                          Dates="{TemplateBinding Dates}"
@@ -39,7 +46,7 @@
                                          Resolution="{TemplateBinding Resolution}"
                                          Ruler="{TemplateBinding Ruler}"
                                          Stroke="{TemplateBinding LineStroke}" />
-                            <l:GuidelinePanel Grid.Row="1"
+                            <l:GuidelinePanel Grid.Row="2"
                                               Grid.RowSpan="2"
                                               Dates="{TemplateBinding Dates}"
                                               IsHitTestVisible="False"
@@ -48,7 +55,8 @@
                                               MinorBrush="#FF393939"
                                               Resolution="{TemplateBinding Resolution}"
                                               Ruler="{TemplateBinding Ruler}" />
-                            <l:EventPanel Grid.Row="2"
+                            <l:BackgroundPanel Grid.Row="3" BackgroundImage="{TemplateBinding BackgroundImage}" />
+                            <l:EventPanel Grid.Row="3"
                                           Dates="{TemplateBinding Dates}"
                                           EventHeight="{TemplateBinding EventHeight}"
                                           EventSpacing="{TemplateBinding EventSpacing}"
@@ -69,6 +77,56 @@
                                                                    Mode=TwoWay,
                                                                    UpdateSourceTrigger=PropertyChanged}" />
                         </l:PanGrid>
+                    </Border>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type l:NavigationSlider}">
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type l:NavigationSlider}">
+                    <Border Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Name="PART_LeftColumn" Width="0" />
+                                <ColumnDefinition Name="PART_CenterColumn" MinWidth="1" />
+                                <ColumnDefinition Name="PART_RightColumn" />
+                            </Grid.ColumnDefinitions>
+                            <l:NavigationPanel Grid.ColumnSpan="3"
+                                               Dates="{TemplateBinding Dates}"
+                                               EraTemplates="{TemplateBinding EraTemplates}"
+                                               Eras="{TemplateBinding Eras}"
+                                               Resolution="{TemplateBinding Resolution}"
+                                               Ruler="{TemplateBinding Ruler}"
+                                               TextBlock.FontFamily="Cambria"
+                                               TextBlock.FontSize="12"
+                                               TextBlock.Foreground="Black" />
+                            <Rectangle Fill="#55FFFFFF" />
+                            <Thumb Name="PART_Thumb" Grid.Column="1">
+                                <Thumb.Style>
+                                    <Style TargetType="{x:Type Thumb}">
+                                        <Setter Property="OverridesDefaultStyle" Value="True" />
+                                        <Setter Property="IsTabStop" Value="False" />
+                                        <Setter Property="Cursor" Value="ScrollWE" />
+                                        <Setter Property="Template">
+                                            <Setter.Value>
+                                                <ControlTemplate TargetType="{x:Type Thumb}">
+                                                    <Rectangle x:Name="Border"
+                                                               Fill="Transparent"
+                                                               Stroke="#EEEEEE"
+                                                               StrokeThickness="1" />
+                                                </ControlTemplate>
+                                            </Setter.Value>
+                                        </Setter>
+                                    </Style>
+                                </Thumb.Style>
+                            </Thumb>
+                            <Rectangle Grid.Column="2" Fill="#55FFFFFF" />
+                        </Grid>
                     </Border>
                 </ControlTemplate>
             </Setter.Value>
