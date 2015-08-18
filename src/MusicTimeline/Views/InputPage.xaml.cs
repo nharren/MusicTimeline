@@ -1148,11 +1148,6 @@ namespace NathanHarrenstein.MusicTimeline.Views
                     _classicalMusicDbContext.Compositions.Add(_selectedComposition);
                 }
 
-                foreach (var composer in _selectedComposers)
-                {
-                    composer.Compositions.Add(_selectedComposition);
-                }
-
                 CompositionListBox.SetBinding(ItemsControl.ItemsSourceProperty, BindingBuilder.Build(_selectedComposers.Common(c => c.Compositions), null, "Name"));
             }
 
