@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Threading;
+using System.Windows;
 using System.Windows.Threading;
 
 namespace NathanHarrenstein.MusicTimeline.Audio
@@ -213,7 +214,7 @@ namespace NathanHarrenstein.MusicTimeline.Audio
 
             _canSkipForward = _currentPlaylistItem.Next != null;
 
-            Application.Current.Dispatcher.Invoke(new Action(() => OnCanSkipForwardChanged(new CanSkipForwardEventArgs(_canSkipForward))));
+            App.Current.Dispatcher.Invoke(new Action(() => OnCanSkipForwardChanged(new CanSkipForwardEventArgs(_canSkipForward))));
         }
 
         public void Dispose()
@@ -420,7 +421,7 @@ namespace NathanHarrenstein.MusicTimeline.Audio
         {
             if (TotalTimeChanged != null)
             {
-                System.Windows.Application.Current.Dispatcher.Invoke(() => TotalTimeChanged(this, e));
+                Application.Current.Dispatcher.Invoke(() => TotalTimeChanged(this, e));
             }
         }
 
@@ -428,7 +429,7 @@ namespace NathanHarrenstein.MusicTimeline.Audio
         {
             if (TrackChanged != null)
             {
-                System.Windows.Application.Current.Dispatcher.Invoke(() => TrackChanged(this, e));
+                Application.Current.Dispatcher.Invoke(() => TrackChanged(this, e));
             }
         }
 
@@ -489,7 +490,7 @@ namespace NathanHarrenstein.MusicTimeline.Audio
 
             _canPlay = true;
 
-            System.Windows.Application.Current.Dispatcher.Invoke(() => OnCanPlayChanged(new CanPlayEventArgs(_canPlay)));
+            Application.Current.Dispatcher.Invoke(() => OnCanPlayChanged(new CanPlayEventArgs(_canPlay)));
 
             UpdateTotalTime();
         }
@@ -524,8 +525,8 @@ namespace NathanHarrenstein.MusicTimeline.Audio
             _canSkipBack = _currentPlaylistItem.Previous != null;
             _canSkipForward = _currentPlaylistItem.Next != null;
 
-            Application.Current.Dispatcher.Invoke(new Action(() => OnCanSkipBackChanged(new CanSkipBackEventArgs(_canSkipBack))));
-            Application.Current.Dispatcher.Invoke(new Action(() => OnCanSkipForwardChanged(new CanSkipForwardEventArgs(_canSkipForward))));
+            App.Current.Dispatcher.Invoke(new Action(() => OnCanSkipBackChanged(new CanSkipBackEventArgs(_canSkipBack))));
+            App.Current.Dispatcher.Invoke(new Action(() => OnCanSkipForwardChanged(new CanSkipForwardEventArgs(_canSkipForward))));
 
             StartPlaybackThread();
             UpdateTrackChanged();
@@ -563,32 +564,32 @@ namespace NathanHarrenstein.MusicTimeline.Audio
 
         private void UpdateCurrentTime()
         {
-            System.Windows.Application.Current.Dispatcher.Invoke(() => OnCurrentTimeChanged(new TimeSpanEventArgs(_currentPlaylistItem.Value.CurrentTime)));
+            Application.Current.Dispatcher.Invoke(() => OnCurrentTimeChanged(new TimeSpanEventArgs(_currentPlaylistItem.Value.CurrentTime)));
         }
 
         private void UpdateIsMuted()
         {
-            System.Windows.Application.Current.Dispatcher.Invoke(() => OnIsMutedChanged(new MuteEventArgs(_isMuted)));
+            Application.Current.Dispatcher.Invoke(() => OnIsMutedChanged(new MuteEventArgs(_isMuted)));
         }
 
         private void UpdatePlaybackState()
         {
-            System.Windows.Application.Current.Dispatcher.Invoke(() => OnPlaybackStateChanged(new PlaybackStateEventArgs(_player.PlaybackState)));
+            Application.Current.Dispatcher.Invoke(() => OnPlaybackStateChanged(new PlaybackStateEventArgs(_player.PlaybackState)));
         }
 
         private void UpdateTotalTime()
         {
-            System.Windows.Application.Current.Dispatcher.Invoke(() => OnTotalTimeChanged(new TimeSpanEventArgs(_currentPlaylistItem.Value.TotalTime)));
+            Application.Current.Dispatcher.Invoke(() => OnTotalTimeChanged(new TimeSpanEventArgs(_currentPlaylistItem.Value.TotalTime)));
         }
 
         private void UpdateTrackChanged()
         {
-            System.Windows.Application.Current.Dispatcher.Invoke(() => OnTrackChanged(new TrackEventArgs(_currentPlaylistItem.Value)));
+            Application.Current.Dispatcher.Invoke(() => OnTrackChanged(new TrackEventArgs(_currentPlaylistItem.Value)));
         }
 
         private void UpdateVolume()
         {
-            System.Windows.Application.Current.Dispatcher.Invoke(() => OnVolumeChanged(new VolumeEventArgs(_audioSessionControl.SimpleAudioVolume.Volume)));
+            Application.Current.Dispatcher.Invoke(() => OnVolumeChanged(new VolumeEventArgs(_audioSessionControl.SimpleAudioVolume.Volume)));
         }
     }
 }

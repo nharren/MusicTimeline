@@ -263,7 +263,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
         private ComposerImage GetDefaultComposerImage()
         {
             var defaultComposerImageUri = new Uri("pack://application:,,,/Resources/Composers/Unknown.jpg", UriKind.Absolute);
-            var streamResourceInfo = System.Windows.Application.GetResourceStream(defaultComposerImageUri);
+            var streamResourceInfo = Application.GetResourceStream(defaultComposerImageUri);
 
             var composerImage = new ComposerImage();
             composerImage.Bytes = StreamUtility.ReadToEnd(streamResourceInfo.Stream);
@@ -299,7 +299,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
         {
             _classicalMusicDbContext = new ClassicalMusicDbContext();
 
-            var composerName = System.Windows.Application.Current.Properties["SelectedComposer"] as string;
+            var composerName = Application.Current.Properties["SelectedComposer"] as string;
 
             _composer = _classicalMusicDbContext.Composers
                 .Where(c => c.Name == composerName)

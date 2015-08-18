@@ -799,7 +799,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
                     progressDialog.Content = progressBar;
                     progressDialog.ResizeMode = ResizeMode.NoResize;
                     progressDialog.WindowStartupLocation = WindowStartupLocation.CenterOwner;
-                    progressDialog.Owner = Application.Current.MainWindow;
+                    progressDialog.Owner = App.Current.MainWindow;
                     progressDialog.ShowInTaskbar = false;
                     progressDialog.SizeToContent = SizeToContent.WidthAndHeight;
                     progressDialog.Title = "Downloading Compositions";
