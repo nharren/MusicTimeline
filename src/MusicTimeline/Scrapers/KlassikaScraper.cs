@@ -287,7 +287,7 @@ namespace NathanHarrenstein.MusicTimeline.Scrapers
                     composition.Composers = new List<Composer> { composer };
                     composition.Dates = compositionDate == "?" ? null : compositionDate;
 
-                    Application.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() => composer.Compositions.Add(composition)));
+                    App.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() => composer.Compositions.Add(composition)));
                 }
 
                 var catalogNumberString = (string)null;

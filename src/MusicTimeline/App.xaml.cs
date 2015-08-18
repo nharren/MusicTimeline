@@ -4,7 +4,7 @@ using System.Windows;
 
 namespace NathanHarrenstein.MusicTimeline
 {
-    public partial class Application : System.Windows.Application
+    public partial class App : Application
     {
         protected override void OnExit(ExitEventArgs e)
         {

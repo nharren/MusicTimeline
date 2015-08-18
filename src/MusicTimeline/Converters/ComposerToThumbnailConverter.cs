@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media.Imaging;
 
@@ -125,7 +126,7 @@ namespace NathanHarrenstein.MusicTimeline.Converters
                     thumbnail.CacheOption = BitmapCacheOption.OnLoad;
                     thumbnail.BeginInit();
                     thumbnail.DecodePixelHeight = 50;
-                    thumbnail.StreamSource = System.Windows.Application.GetResourceStream(new Uri("pack://application:,,,/Resources/Composers/Unknown.jpg", UriKind.Absolute)).Stream;
+                    thumbnail.StreamSource = Application.GetResourceStream(new Uri("pack://application:,,,/Resources/Composers/Unknown.jpg", UriKind.Absolute)).Stream;
                     thumbnail.EndInit();
                     thumbnail.Freeze();
 
