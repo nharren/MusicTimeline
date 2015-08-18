@@ -121,7 +121,11 @@ namespace NathanHarrenstein.MusicTimeline.Scrapers
             { "Harfensonate", "Harp Sonata" },
             { "Klavierstück", "Piano Piece" },
             { "Nonett", "Nonet" },
-            { "Klaviersextett", "Piano Sextet" }
+            { "Klaviersextett", "Piano Sextet" },
+            { "Lied", "Song" },
+            { "Guitarrenkonzert", "Guitar Concerto" },
+            { "Harfenquintett", "Harp Quintet" },
+            { "Notturno", "Nocturne" }
         };
 
         internal static string TranslateGenre(string genre)
