@@ -1,6 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.EDTF;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -8,17 +8,15 @@ using System.Windows.Input;
 
 namespace NathanHarrenstein.Timeline
 {
-    public delegate void PanRequestedEventHandler(object sender, PanEventArgs e);
-
     public class NavigationSlider : Control, IPan
     {
         public static readonly DependencyProperty DatesProperty = DependencyProperty.Register("Dates", typeof(ExtendedDateTimeInterval), typeof(NavigationSlider));
         public static readonly DependencyProperty ErasProperty = DependencyProperty.Register("Eras", typeof(IReadOnlyList<ITimelineEra>), typeof(NavigationSlider));
         public static readonly DependencyProperty EraTemplatesProperty = DependencyProperty.Register("EraTemplates", typeof(List<DataTemplate>), typeof(NavigationSlider));
-        public static readonly RoutedEvent PanRequestedEvent = EventManager.RegisterRoutedEvent("PanRequested", RoutingStrategy.Bubble, typeof(PanRequestedEventHandler), typeof(NavigationSlider));
         public static readonly DependencyProperty ResolutionProperty = DependencyProperty.Register("Resolution", typeof(TimeResolution), typeof(NavigationSlider));
         public static readonly DependencyProperty RulerProperty = DependencyProperty.Register("Ruler", typeof(TimeRuler), typeof(NavigationSlider));
 
+        private readonly RoutedEvent _panRequestedEvent;
         private ColumnDefinition _centerColumn;
         private double _horizontalOffset;
         private ColumnDefinition _leftColumn;
@@ -31,27 +29,8 @@ namespace NathanHarrenstein.Timeline
         public NavigationSlider()
         {
             EventManager.RegisterClassHandler(typeof(NavigationSlider), Thumb.DragDeltaEvent, new DragDeltaEventHandler(NavigationSlider_DragDelta));
-        }
 
-        private void NavigationSlider_DragDelta(object sender, DragDeltaEventArgs e)
-        {
-            var ratio = e.HorizontalChange / ActualWidth;
-            var extentHorizontalChangeX = ratio * Ruler.ToPixels(Dates);
-            var panVector = new Vector(extentHorizontalChangeX, 0);
-
-            RaiseEvent(new PanEventArgs(panVector, PanRequestedEvent, this));
-        }
-
-        public event PanRequestedEventHandler PanRequested
-        {
-            add
-            {
-                AddHandler(PanRequestedEvent, value);
-            }
-            remove
-            {
-                RemoveHandler(PanRequestedEvent, value);
-            }
+            _panRequestedEvent = EventManager.GetRoutedEvents().FirstOrDefault(re => re.Name == "PanRequested");
         }
 
         public ExtendedDateTimeInterval Dates
@@ -147,6 +126,14 @@ namespace NathanHarrenstein.Timeline
             _leftColumn.Width = new GridLength(sliderLeftX);
         }
 
+        public void RequestPan(Vector delta)
+        {
+            if (_panRequestedEvent != null)
+            {
+                RaiseEvent(new PanEventArgs(delta, _panRequestedEvent, this));
+            }
+        }
+
         protected override Size MeasureOverride(Size constraint)
         {
             _centerColumn.Width = new GridLength(constraint.Width * (constraint.Width / Ruler.ToPixels(Dates)));
@@ -156,30 +143,23 @@ namespace NathanHarrenstein.Timeline
 
         protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
         {
-            e.Handled = true;
-
             var positionX = e.GetPosition(this).X;
             var ratio = positionX / ActualWidth;
             var extentCenterX = ratio * Ruler.ToPixels(Dates) - ActualWidth / 2;
             var panVector = new Vector(extentCenterX - HorizontalOffset, 0);
 
-            RaiseEvent(new PanEventArgs(panVector, PanRequestedEvent, this));
+            RequestPan(panVector);
 
             base.OnMouseLeftButtonDown(e);
         }
 
-        protected override void OnMouseLeftButtonUp(MouseButtonEventArgs e)
+        private void NavigationSlider_DragDelta(object sender, DragDeltaEventArgs e)
         {
-            e.Handled = true;
+            var ratio = e.HorizontalChange / ActualWidth;
+            var extentHorizontalChangeX = ratio * Ruler.ToPixels(Dates);
+            var panVector = new Vector(extentHorizontalChangeX, 0);
 
-            base.OnMouseLeftButtonDown(e);
-        }
-
-        protected override void OnMouseMove(MouseEventArgs e)
-        {
-            e.Handled = true;
-
-            base.OnMouseMove(e);
+            RequestPan(panVector);
         }
     }
 }

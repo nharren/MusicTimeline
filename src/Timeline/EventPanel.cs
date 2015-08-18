@@ -1,14 +1,17 @@
-﻿using System;
+﻿using NathanHarrenstein.Timeline.Input;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.EDTF;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
+using System.Windows.Media;
 
 namespace NathanHarrenstein.Timeline
 {
-    public class EventPanel : Panel, IPan
+    public class EventPanel : Panel, IPan, IDisposable
     {
         public static readonly DependencyProperty DatesProperty = DependencyProperty.Register("Dates", typeof(ExtendedDateTimeInterval), typeof(EventPanel));
         public static readonly DependencyProperty EventHeightProperty = DependencyProperty.Register("EventHeight", typeof(double), typeof(EventPanel));
@@ -20,14 +23,25 @@ namespace NathanHarrenstein.Timeline
         public static readonly DependencyProperty RulerProperty = DependencyProperty.Register("Ruler", typeof(TimeRuler), typeof(EventPanel));
         public static readonly DependencyProperty VerticalOffsetProperty = DependencyProperty.Register("VerticalOffset", typeof(double), typeof(EventPanel));
 
+        private readonly MouseHook _mouseHook;
+        private readonly RoutedEvent _panRequestedEvent;
         private FrameworkElement[] _cache;
         private bool _hasViewChanged = true;
+        private bool _isDisposed;
+        private Point _origin;
         private double _preloadDistance;
         private List<int> _previouslyVisibleCacheIndexes = new List<int>();
         private List<int> _visibleCacheIndexes = new List<int>();
 
+        static EventPanel()
+        {
+            BackgroundProperty.AddOwner(typeof(EventPanel), new FrameworkPropertyMetadata(Brushes.Transparent));
+        }
+
         public EventPanel()
         {
+            _panRequestedEvent = EventManager.GetRoutedEvents().FirstOrDefault(re => re.Name == "PanRequested");
+
             ClipToBounds = true;
 
             if (DesignerProperties.GetIsInDesignMode(this))
@@ -37,7 +51,16 @@ namespace NathanHarrenstein.Timeline
             else
             {
                 SizeChanged += EventPanel_SizeChanged;
+
+                _mouseHook = new MouseHook();
+                _mouseHook.MouseHorizontalWheel += EventPanel_MouseHorizontalWheel;
+                _mouseHook.StartMouseHook();
             }
+        }
+
+        ~EventPanel()
+        {
+            Dispose(false);
         }
 
         public ExtendedDateTimeInterval Dates
@@ -88,8 +111,13 @@ namespace NathanHarrenstein.Timeline
             }
         }
 
-        public List<DataTemplate> EventTemplates // We store the templates in this property as opposed to using a global DataTemplate so that the content is not automatically generated. The DataTemplates are applied only when needed, and the generated content is then stored in the cache.
+        public List<DataTemplate> EventTemplates
         {
+            // We store the templates in this property as opposed to using a global
+            // DataTemplate so that the content is not automatically generated. The
+            // DataTemplates are applied only when needed, and the generated content
+            // is then stored in the cache.
+
             get
             {
                 return (List<DataTemplate>)GetValue(EventTemplatesProperty);
@@ -196,6 +224,13 @@ namespace NathanHarrenstein.Timeline
             return delta;
         }
 
+        public void Dispose()
+        {
+            Dispose(true);
+
+            GC.SuppressFinalize(this);
+        }
+
         public Vector? GetCenteringVector(ITimelineEvent target)
         {
             //if (target == null)                                                             // Only call during or after the arrange pass.
@@ -242,6 +277,14 @@ namespace NathanHarrenstein.Timeline
             InvalidateMeasure();
         }
 
+        public void RequestPan(Vector delta)
+        {
+            if (_panRequestedEvent != null)
+            {
+                RaiseEvent(new PanEventArgs(delta, _panRequestedEvent, this));
+            }
+        }
+
         protected override Size ArrangeOverride(Size finalSize)
         {
             foreach (var previouslyVisibleCacheIndex in _previouslyVisibleCacheIndexes)
@@ -259,6 +302,16 @@ namespace NathanHarrenstein.Timeline
             }
 
             return finalSize;
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_isDisposed)
+            {
+                _mouseHook.Dispose();
+
+                _isDisposed = true;
+            }
         }
 
         protected override Size MeasureOverride(Size availableSize)
@@ -330,6 +383,63 @@ namespace NathanHarrenstein.Timeline
             }
 
             return availableSize;
+        }
+
+        protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
+        {
+            if (IsMouseOver)
+            {
+                _origin = e.GetPosition(this);
+
+                Cursor = Cursors.ScrollAll;
+
+                CaptureMouse();
+            }
+
+            base.OnMouseLeftButtonDown(e);
+        }
+
+        protected override void OnMouseLeftButtonUp(MouseButtonEventArgs e)
+        {
+            if (IsMouseCaptured)
+            {
+                Cursor = Cursors.Arrow;
+
+                ReleaseMouseCapture();
+            }
+
+            base.OnMouseLeftButtonUp(e);
+        }
+
+        protected override void OnMouseMove(MouseEventArgs e)
+        {
+            if (IsMouseCaptured)
+            {
+                var position = e.GetPosition(this);
+                var vector = _origin - position;
+
+                RequestPan(vector);
+
+                _origin = position;
+
+                return;
+            }
+
+            base.OnMouseMove(e);
+        }
+
+        protected override void OnMouseWheel(MouseWheelEventArgs e)
+        {
+            _origin = e.GetPosition(this);
+
+            RequestPan(new Vector(0, -e.Delta));
+
+            base.OnMouseWheel(e);
+        }
+
+        private void EventPanel_MouseHorizontalWheel(object sender, MouseHorizontalWheelEventArgs e)
+        {
+            RequestPan(new Vector(e.Delta, 0));
         }
 
         private void EventPanel_SizeChanged(object sender, SizeChangedEventArgs e)
