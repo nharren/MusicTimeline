@@ -10,6 +10,7 @@ namespace NathanHarrenstein.ClassicalMusicDb
         public ClassicalMusicDbContext()
             : base("name=ClassicalMusicDbContext")
         {
+            Database.SetInitializer<ClassicalMusicDbContext>(null);
         }
 
         public virtual DbSet<Album> Albums { get; set; }
