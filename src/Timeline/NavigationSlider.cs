@@ -20,6 +20,7 @@ namespace NathanHarrenstein.Timeline
         private ColumnDefinition _centerColumn;
         private double _horizontalOffset;
         private ColumnDefinition _leftColumn;
+        private Thumb _thumb;
 
         static NavigationSlider()
         {
@@ -114,6 +115,7 @@ namespace NathanHarrenstein.Timeline
         {
             _leftColumn = (ColumnDefinition)Template.FindName("PART_LeftColumn", this);
             _centerColumn = (ColumnDefinition)Template.FindName("PART_CenterColumn", this);
+            _thumb = (Thumb)Template.FindName("PART_Thumb", this);
         }
 
         public void Pan(Vector delta)
@@ -160,6 +162,8 @@ namespace NathanHarrenstein.Timeline
             var panVector = new Vector(extentHorizontalChangeX, 0);
 
             RequestPan(panVector);
+
+            e.Handled = true;
         }
     }
 }
