@@ -32,8 +32,6 @@ namespace NathanHarrenstein.Timeline
             EventManager.RegisterClassHandler(typeof(NavigationSlider), Thumb.DragDeltaEvent, new DragDeltaEventHandler(NavigationSlider_DragDelta));
 
             _panRequestedEvent = EventManager.GetRoutedEvents().FirstOrDefault(re => re.Name == "PanRequested");
-
-            Unloaded += NavigationSlider_Unloaded;
         }
 
         public ExtendedDateTimeInterval Dates
@@ -166,11 +164,6 @@ namespace NathanHarrenstein.Timeline
             RequestPan(panVector);
 
             e.Handled = true;
-        }
-
-        private void NavigationSlider_Unloaded(object sender, RoutedEventArgs e)
-        {
-            _thumb.CancelDrag();
         }
     }
 }
