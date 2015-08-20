@@ -41,6 +41,9 @@
   <PropertyGroup>
     <ApplicationIcon>Resources\AppIcon.ico</ApplicationIcon>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="EDTF, Version=1.0.5706.22033, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\EDTF.1.0.5706.22033\lib\net45\EDTF.dll</HintPath>
@@ -194,6 +197,7 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="App.config" />
+    <None Include="app.manifest" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
