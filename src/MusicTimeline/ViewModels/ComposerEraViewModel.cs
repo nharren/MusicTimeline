@@ -7,9 +7,9 @@ namespace NathanHarrenstein.MusicTimeline.ViewModels
     public class ComposerEraViewModel : ITimelineEra
     {
         private readonly Brush _background;
-        private ExtendedDateTimeInterval _dates;
         private readonly SolidColorBrush _foreground;
         private readonly string _label;
+        private ExtendedDateTimeInterval _dates;
 
         public ComposerEraViewModel(string label, ExtendedDateTimeInterval dates, Brush background, SolidColorBrush foreground)
         {

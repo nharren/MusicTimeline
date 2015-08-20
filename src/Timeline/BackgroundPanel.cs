@@ -1,9 +1,7 @@
-﻿using System;
-using System.EDTF;
+﻿using System.EDTF;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
 
 namespace NathanHarrenstein.Timeline
 {
@@ -11,9 +9,9 @@ namespace NathanHarrenstein.Timeline
     {
         public static readonly DependencyProperty BackgroundImageProperty = DependencyProperty.Register("BackgroundImage", typeof(ImageSource), typeof(BackgroundPanel), new PropertyMetadata(new PropertyChangedCallback(BackgroundImage_PropertyChanged)));
         public static readonly DependencyProperty DatesProperty = DependencyProperty.Register("Dates", typeof(ExtendedDateTimeInterval), typeof(BackgroundPanel));
+
         private ImageBrush _backgroundImageBrush;
         private double _horizontalOffset;
-
         private double _verticalOffset;
 
         public ImageSource BackgroundImage
