@@ -18,19 +18,6 @@ namespace NathanHarrenstein.Timeline
         public static readonly DependencyProperty ResolutionProperty = DependencyProperty.Register("Resolution", typeof(TimeResolution), typeof(GuidelinePanel));
         public static readonly DependencyProperty RulerProperty = DependencyProperty.Register("Ruler", typeof(TimeRuler), typeof(GuidelinePanel), new PropertyMetadata(GuidelinePanel_PropertyChanged_Ruler));
 
-        private static void GuidelinePanel_PropertyChanged_Ruler(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            var guidelinePanel = (GuidelinePanel)d;
-            guidelinePanel._hasViewChanged = true;
-
-            if (guidelinePanel._lineOffsets != null)
-            {
-                guidelinePanel._lineOffsets.Clear(); 
-            }
-
-            guidelinePanel.UpdateLayout();
-        }
-
         private bool _hasViewChanged = true;
         private double _horizontalOffset;
         private Dictionary<int, double> _lineOffsets;
@@ -344,6 +331,19 @@ namespace NathanHarrenstein.Timeline
             }
 
             return availableSize;
+        }
+
+        private static void GuidelinePanel_PropertyChanged_Ruler(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var guidelinePanel = (GuidelinePanel)d;
+            guidelinePanel._hasViewChanged = true;
+
+            if (guidelinePanel._lineOffsets != null)
+            {
+                guidelinePanel._lineOffsets.Clear();
+            }
+
+            guidelinePanel.UpdateLayout();
         }
 
         private void GuidelinePanel_SizeChanged(object sender, SizeChangedEventArgs e)

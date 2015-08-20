@@ -61,28 +61,16 @@ namespace NathanHarrenstein.MusicTimeline.Builders
                 var composerEvent = new ComposerEventViewModel(
                     NameUtility.ToFirstLast(composer.Name),
                     ExtendedDateTimeInterval.Parse(composer.Dates),
-                    GetBorn(composer),
-                    GetDied(composer),
                     composer,
                     background,
                     Brushes.White,
                     composerEras,
-                    GetCommand(composer, timeline), null);
+                    GetCommand(composer, timeline));
 
                 eventList.Add(composerEvent);
             }
 
             return eventList.OrderBy(e => e.Dates.Earliest()).ToList();
-        }
-
-        private static string GetBorn(Composer composer)
-        {
-            if (composer.BirthLocation != null)
-            {
-                return $"{ExtendedDateTimeInterval.Parse(composer.Dates).Start}; {composer.BirthLocation.Name}";
-            }
-
-            return ExtendedDateTimeInterval.Parse(composer.Dates).Start.ToString();
         }
 
         private static DelegateCommand GetCommand(Composer composer, Timeline.Timeline timeline)
@@ -97,16 +85,6 @@ namespace NathanHarrenstein.MusicTimeline.Builders
             };
 
             return new DelegateCommand(command);
-        }
-
-        private static string GetDied(Composer composer)
-        {
-            if (composer.DeathLocation != null)
-            {
-                return $"{ExtendedDateTimeInterval.Parse(composer.Dates).End}; {composer.DeathLocation.Name}";
-            }
-
-            return ExtendedDateTimeInterval.Parse(composer.Dates).End.ToString();
         }
     }
 }

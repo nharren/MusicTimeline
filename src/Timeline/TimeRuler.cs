@@ -77,48 +77,6 @@ namespace NathanHarrenstein.Timeline
             return unitCount * TimeUnitWidth;
         }
 
-        public int ToUnitCount(double pixels)
-        {
-            switch (TimeRulerUnit)
-            {
-                case TimeRulerUnit.Day:
-                    return (int)Math.Floor(pixels / TimeUnitWidth);
-
-                case TimeRulerUnit.Hour:
-                    return (int)Math.Floor(pixels / TimeUnitWidth);
-
-                case TimeRulerUnit.Minute:
-                    return (int)Math.Floor(pixels / TimeUnitWidth);
-
-                case TimeRulerUnit.Second:
-                    return (int)Math.Floor(pixels / TimeUnitWidth);
-
-                default:
-                    return default(int);
-            }
-        }
-
-        public int ToUnitCount(ExtendedTimeSpan timeSpan)
-        {
-            switch (TimeRulerUnit)
-            {
-                case TimeRulerUnit.Day:
-                    return (int)Math.Floor(timeSpan.TotalDays);
-
-                case TimeRulerUnit.Hour:
-                    return (int)Math.Floor(timeSpan.TotalHours);
-
-                case TimeRulerUnit.Minute:
-                    return (int)Math.Floor(timeSpan.TotalMinutes);
-
-                case TimeRulerUnit.Second:
-                    return (int)Math.Floor(timeSpan.TotalSeconds);
-
-                default:
-                    return default(int);
-            }
-        }
-
         public TimeSpan ToTimeSpan(double pixels)
         {
             switch (TimeRulerUnit)
@@ -158,6 +116,48 @@ namespace NathanHarrenstein.Timeline
 
                 default:
                     return TimeSpan.Zero;
+            }
+        }
+
+        public int ToUnitCount(double pixels)
+        {
+            switch (TimeRulerUnit)
+            {
+                case TimeRulerUnit.Day:
+                    return (int)Math.Floor(pixels / TimeUnitWidth);
+
+                case TimeRulerUnit.Hour:
+                    return (int)Math.Floor(pixels / TimeUnitWidth);
+
+                case TimeRulerUnit.Minute:
+                    return (int)Math.Floor(pixels / TimeUnitWidth);
+
+                case TimeRulerUnit.Second:
+                    return (int)Math.Floor(pixels / TimeUnitWidth);
+
+                default:
+                    return default(int);
+            }
+        }
+
+        public int ToUnitCount(ExtendedTimeSpan timeSpan)
+        {
+            switch (TimeRulerUnit)
+            {
+                case TimeRulerUnit.Day:
+                    return (int)Math.Floor(timeSpan.TotalDays);
+
+                case TimeRulerUnit.Hour:
+                    return (int)Math.Floor(timeSpan.TotalHours);
+
+                case TimeRulerUnit.Minute:
+                    return (int)Math.Floor(timeSpan.TotalMinutes);
+
+                case TimeRulerUnit.Second:
+                    return (int)Math.Floor(timeSpan.TotalSeconds);
+
+                default:
+                    return default(int);
             }
         }
     }

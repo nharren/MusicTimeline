@@ -2,15 +2,10 @@
 using NathanHarrenstein.MusicTimeline.Builders;
 using NathanHarrenstein.MusicTimeline.Converters;
 using NathanHarrenstein.MusicTimeline.Input;
-using NathanHarrenstein.MusicTimeline.Scrapers;
-using NathanHarrenstein.MusicTimeline.Utilities;
 using NathanHarrenstein.Timeline;
 using System;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Data.Entity;
 using System.EDTF;
-using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -21,6 +16,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
 {
     public partial class TimelinePage : Page, IDisposable
     {
+        public static readonly DependencyProperty ChangeResolutionCommandProperty = DependencyProperty.Register("ChangeResolutionCommand", typeof(ICommand), typeof(TimelinePage));
         public static readonly DependencyProperty CloseCommandProperty = DependencyProperty.Register("CloseCommand", typeof(ICommand), typeof(TimelinePage));
         public static readonly DependencyProperty FullScreenCommandProperty = DependencyProperty.Register("FullScreenCommand", typeof(ICommand), typeof(TimelinePage));
         public static readonly DependencyProperty GoToCommandProperty = DependencyProperty.Register("GoToCommand", typeof(ICommand), typeof(TimelinePage));
@@ -43,6 +39,19 @@ namespace NathanHarrenstein.MusicTimeline.Views
         ~TimelinePage()
         {
             Dispose(false);
+        }
+
+        public ICommand ChangeResolutionCommand
+        {
+            get
+            {
+                return (ICommand)GetValue(ChangeResolutionCommandProperty);
+            }
+
+            set
+            {
+                SetValue(ChangeResolutionCommandProperty, value);
+            }
         }
 
         public ICommand CloseCommand
@@ -97,21 +106,6 @@ namespace NathanHarrenstein.MusicTimeline.Views
             }
         }
 
-        public ICommand ChangeResolutionCommand
-        {
-            get
-            {
-                return (ICommand)GetValue(ChangeResolutionCommandProperty);
-            }
-
-            set
-            {
-                SetValue(ChangeResolutionCommandProperty, value);
-            }
-        }
-
-        public static readonly DependencyProperty ChangeResolutionCommandProperty = DependencyProperty.Register("ChangeResolutionCommand", typeof(ICommand), typeof(TimelinePage));
-
         public ICommand RebuildThumbnailCacheCommand
         {
             get
@@ -158,6 +152,16 @@ namespace NathanHarrenstein.MusicTimeline.Views
             timeline.Loaded += Timeline_Loaded;
         }
 
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!_isDisposed)
+            {
+                _classicalMusicDbContext.Dispose();
+
+                _isDisposed = true;
+            }
+        }
+
         private ICommand GetChangeResolutionCommand()
         {
             return new DelegateCommand(o =>
@@ -170,18 +174,22 @@ namespace NathanHarrenstein.MusicTimeline.Views
                         timeline.Ruler.TimeUnitWidth = 0.01;
                         timeline.Ruler.TimeRulerUnit = TimeRulerUnit.Day;
                         break;
+
                     case TimeResolution.Decade:
                         timeline.Ruler.TimeUnitWidth = 0.04109589041;
                         timeline.Ruler.TimeRulerUnit = TimeRulerUnit.Day;
                         break;
+
                     case TimeResolution.Year:
                         timeline.Ruler.TimeUnitWidth = 0.41095890411;
                         timeline.Ruler.TimeRulerUnit = TimeRulerUnit.Day;
                         break;
+
                     case TimeResolution.Month:
                         timeline.Ruler.TimeUnitWidth = 5;
                         timeline.Ruler.TimeRulerUnit = TimeRulerUnit.Day;
                         break;
+
                     case TimeResolution.Day:
                         timeline.Ruler.TimeUnitWidth = 150;
                         timeline.Ruler.TimeRulerUnit = TimeRulerUnit.Day;
@@ -191,16 +199,6 @@ namespace NathanHarrenstein.MusicTimeline.Views
                 timeline.Resolution = targetResolution;
                 timeline.VerticalOffset = timeline.VerticalOffset;
             });
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!_isDisposed)
-            {
-                _classicalMusicDbContext.Dispose();
-
-                _isDisposed = true;
-            }
         }
 
         private ICommand GetCloseCommand()

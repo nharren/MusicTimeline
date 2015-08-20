@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.EDTF;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
 
 namespace NathanHarrenstein.MusicTimeline.ViewModels
 {
@@ -21,18 +20,15 @@ namespace NathanHarrenstein.MusicTimeline.ViewModels
         private readonly string _label;
         private readonly ICommand _playPopularCommand;
 
-        public ComposerEventViewModel(string label, ExtendedDateTimeInterval dates, string born, string died, Composer composer, Brush background, Brush foreground, IEnumerable<ComposerEraViewModel> eras, ICommand clickCommand, ICommand playPopularCommand)
+        public ComposerEventViewModel(string label, ExtendedDateTimeInterval dates, Composer composer, Brush background, Brush foreground, IEnumerable<ComposerEraViewModel> eras, ICommand clickCommand)
         {
             _dates = dates;
-            _born = born;
-            _died = died;
             _composer = composer;
             _background = background;
             _foreground = foreground;
             _label = label;
             _eras = eras;
             _clickCommand = clickCommand;
-            _playPopularCommand = playPopularCommand;
         }
 
         public Brush Background
@@ -40,14 +36,6 @@ namespace NathanHarrenstein.MusicTimeline.ViewModels
             get
             {
                 return _background;
-            }
-        }
-
-        public string Born
-        {
-            get
-            {
-                return _born;
             }
         }
 
@@ -75,14 +63,6 @@ namespace NathanHarrenstein.MusicTimeline.ViewModels
             }
         }
 
-        public string Died
-        {
-            get
-            {
-                return _died;
-            }
-        }
-
         public IEnumerable<ComposerEraViewModel> Eras
         {
             get
@@ -104,14 +84,6 @@ namespace NathanHarrenstein.MusicTimeline.ViewModels
             get
             {
                 return _label;
-            }
-        }
-
-        public ICommand PlayPopularCommand
-        {
-            get
-            {
-                return _playPopularCommand;
             }
         }
     }

@@ -7,9 +7,9 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:t="clr-namespace:NathanHarrenstein.Timeline;assembly=Timeline"
       xmlns:vm="clr-namespace:NathanHarrenstein.MusicTimeline.ViewModels"
-      DataContext="{Binding RelativeSource={RelativeSource Self}}"
       Name="page"
       Title="TimelinePage"
+      DataContext="{Binding RelativeSource={RelativeSource Self}}"
       d:DesignHeight="300"
       d:DesignWidth="300"
       mc:Ignorable="d">
@@ -69,32 +69,25 @@
                         <MenuItem Command="{Binding RebuildThumbnailCacheCommand}" Header="Rebuild Thumbnail Cache" />
                     </MenuItem>
                     <MenuItem Header="Go">
-                        <MenuItem Command="{Binding GoToCommand
-                                                    }"
+                        <MenuItem Command="{Binding GoToCommand}"
                                   CommandParameter="Medieval"
                                   Header="Medieval" />
-                        <MenuItem Command="{Binding GoToCommand
-                                                    }"
+                        <MenuItem Command="{Binding GoToCommand}"
                                   CommandParameter="Renaissance"
                                   Header="Renaissance" />
-                        <MenuItem Command="{Binding GoToCommand
-                                                    }"
+                        <MenuItem Command="{Binding GoToCommand}"
                                   CommandParameter="Baroque"
                                   Header="Baroque" />
-                        <MenuItem Command="{Binding GoToCommand
-                                                    }"
+                        <MenuItem Command="{Binding GoToCommand}"
                                   CommandParameter="Classical"
                                   Header="Classical" />
-                        <MenuItem Command="{Binding GoToCommand
-                                                    }"
+                        <MenuItem Command="{Binding GoToCommand}"
                                   CommandParameter="Romantic"
                                   Header="Romantic" />
-                        <MenuItem Command="{Binding GoToCommand
-                                                    }"
+                        <MenuItem Command="{Binding GoToCommand}"
                                   CommandParameter="20th Century"
                                   Header="20th Century" />
-                        <MenuItem Command="{Binding GoToCommand
-                                                    }"
+                        <MenuItem Command="{Binding GoToCommand}"
                                   CommandParameter="21st Century"
                                   Header="21st Century" />
                     </MenuItem>
