@@ -32,6 +32,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
         private FlacPlayer _flacPlayer;
         private bool _isDisposed;
         private Dictionary<ISampleProvider, Sample> _sampleDictionary;
+        private Queue<Action> _sampleLoadingQueue;
 
         public ComposerPage()
         {
@@ -39,6 +40,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
             _logicalComparer = new LogicalComparer();
             _dataLoadingQueue = new Queue<Action>();
+            _sampleLoadingQueue = new Queue<Action>();
             _classicalMusicDbContext = new ClassicalMusicDbContext();
             _sampleDictionary = new Dictionary<ISampleProvider, Sample>();
             _flacPlayer = new FlacPlayer();
@@ -57,6 +59,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
             BinaryDataLoadingCompleted += ComposerPage_BinaryDataLoadingCompleted;
 
             InitializeDataLoadingThread();
+            StartSampleLoadingThread();
         }
 
         ~ComposerPage()
@@ -184,16 +187,48 @@ namespace NathanHarrenstein.MusicTimeline.Views
                 }
             }
 
-            BiographyFlowDocument.Blocks.Add(section);
+            var flowDocument = new FlowDocument(section);
+            flowDocument.FontFamily = new System.Windows.Media.FontFamily("Cambria");
+            flowDocument.PagePadding = new Thickness(0, 5, 0, 0);
+            flowDocument.TextAlignment = TextAlignment.Left;
+
+            FlowDocumenScrollViewer.Document = flowDocument;
         }
 
         private void ComposerButton_Click(object sender, RoutedEventArgs e)
         {
+            _sampleDictionary.Clear();
+
+            _flacPlayer.Dispose();
+
+            _flacPlayer = new FlacPlayer();
+
+            _flacPlayer.CurrentTimeChanged += FlacPlayer_CurrentTimeChanged;
+            _flacPlayer.TotalTimeChanged += FlacPlayer_TotalTimeChanged;
+            _flacPlayer.TrackChanged += FlacPlayer_TrackChanged;
+            _flacPlayer.PlaybackStateChanged += FlacPlayer_PlaybackStateChanged;
+            _flacPlayer.VolumeChanged += FlacPlayer_VolumeChanged;
+            _flacPlayer.IsMutedChanged += FlacPlayer_IsMutedChanged;
+            _flacPlayer.CanPlayChanged += FlacPlayer_CanPlayChanged;
+            _flacPlayer.CanSkipBackChanged += FlacPlayer_CanSkipBackChanged;
+            _flacPlayer.CanSkipForwardChanged += FlacPlayer_CanSkipForwardChanged;
+
+            NowPlayingTitleTextBlock.Text = null;
+            NowPlayingArtistTextBlock.Text = null;
+
+            PlayPauseToggleButton.IsEnabled = false;
+            SkipBackButton.IsEnabled = false;
+            SkipForwardButton.IsEnabled = false;
+            ProgressSlider.IsEnabled = false;
+            MuteToggleButton.IsEnabled = false;
+            VolumeSlider.IsEnabled = false;
+
             var button = (Button)sender;
 
-            _composer = (Composer)button.DataContext;
+            Application.Current.Properties["SelectedComposer"] = ((Composer)button.DataContext).Name;
 
-            ProcessBinaryData();
+            _dataLoadingQueue.Enqueue(LoadNonBinaryData);
+            _dataLoadingQueue.Enqueue(LoadBinaryData);
         }
 
         private void ComposerPage_BinaryDataLoadingCompleted(object sender, EventArgs e)
@@ -229,6 +264,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
         private void FlacPlayer_CurrentTimeChanged(object sender, TimeSpanEventArgs e)
         {
+            ProgressSlider.IsEnabled = true;
             ProgressSlider.Value = e.TimeSpan.Ticks;
         }
 
@@ -240,11 +276,13 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
         private void FlacPlayer_PlaybackStateChanged(object sender, PlaybackStateEventArgs e)
         {
+            PlayPauseToggleButton.IsEnabled = true;
             PlayPauseToggleButton.IsChecked = e.PlaybackState == PlaybackState.Playing ? true : false;
         }
 
         private void FlacPlayer_TotalTimeChanged(object sender, TimeSpanEventArgs e)
         {
+            ProgressSlider.IsEnabled = true;
             ProgressSlider.Maximum = e.TimeSpan.Ticks;
         }
 
@@ -359,7 +397,9 @@ namespace NathanHarrenstein.MusicTimeline.Views
         private void ProcessBinaryData()
         {
             ComposerImagesListBox.ItemsSource = _composer.ComposerImages.Count == 0 ? new List<ComposerImage> { GetDefaultComposerImage() } : _composer.ComposerImages;
-            StartSampleLoadingThread();
+            ComposerImagesListBox.SelectedIndex = 0;
+
+            _sampleLoadingQueue.Enqueue(LoadSamples);
 
             ProgressBar.Visibility = Visibility.Collapsed;
         }
@@ -395,8 +435,6 @@ namespace NathanHarrenstein.MusicTimeline.Views
                 .OrderBy(s => s.Key);
 
             TreeView.SetBinding(ItemsControl.ItemsSourceProperty, BindingBuilder.Build(compositionTypes));
-
-            ComposerImagesListBox.SelectedIndex = 0;
         }
 
         private void ProgressSlider_DragCompleted(object sender, DragCompletedEventArgs e)
@@ -426,9 +464,20 @@ namespace NathanHarrenstein.MusicTimeline.Views
             }
         }
 
+        private void StartSampleLoadingLoop()
+        {
+            while (!_isDisposed)
+            {
+                if (_sampleLoadingQueue.Count > 0)
+                {
+                    _sampleLoadingQueue.Dequeue()();
+                }
+            }
+        }
+
         private void StartSampleLoadingThread()
         {
-            var sampleLoadingThread = new Thread(new ThreadStart(LoadSamples));
+            var sampleLoadingThread = new Thread(new ThreadStart(StartSampleLoadingLoop));
             sampleLoadingThread.Name = "Sample Loading Thread";
             sampleLoadingThread.IsBackground = true;
             sampleLoadingThread.Start();
