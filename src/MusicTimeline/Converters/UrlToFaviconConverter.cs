@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media.Imaging;
@@ -17,6 +16,11 @@ namespace NathanHarrenstein.MusicTimeline.Converters
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             return UrlToFavicon((string)value);
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
         }
 
         private BitmapImage UrlToFavicon(string url)
@@ -34,7 +38,9 @@ namespace NathanHarrenstein.MusicTimeline.Converters
                 return favicon;
             }
 
-            var faviconPath = $@"{Environment.CurrentDirectory}\Resources\Favicons\{uri.Host}.ico";
+            Directory.CreateDirectory($@"{Environment.CurrentDirectory}\Resources\Favicons");
+
+            var faviconPath = $@"{Environment.CurrentDirectory}\Resources\Favicons\{uri.Host}.ico";         
 
             if (File.Exists(faviconPath))
             {
@@ -88,13 +94,8 @@ namespace NathanHarrenstein.MusicTimeline.Converters
                     }
                 }
 
-                return favicon;              
+                return favicon;
             }
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            throw new NotImplementedException();
         }
     }
 }
