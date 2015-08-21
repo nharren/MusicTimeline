@@ -1,23 +1,31 @@
 ﻿using NathanHarrenstein.ClassicalMusicDb;
 using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Data;
 
 namespace NathanHarrenstein.MusicTimeline.Converters
 {
-    class CompositionToCompositionDisplayNameConverter : IValueConverter
+    internal class CompositionToCompositionDisplayNameConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             return CompositionToCompositionDisplayName((Composition)value);
         }
 
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+
         private string CompositionToCompositionDisplayName(Composition composition)
         {
+            if (composition == null)
+            {
+                return null;
+            }
+
             var stringBuilder = new StringBuilder();
             stringBuilder.Append(composition.Name);
 
@@ -32,11 +40,6 @@ namespace NathanHarrenstein.MusicTimeline.Converters
             }
 
             return stringBuilder.ToString();
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
-        {
-            throw new NotImplementedException();
         }
     }
 }

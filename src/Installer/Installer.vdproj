@@ -13188,50 +13188,6 @@
             "Property" = "8:TARGETDIR"
                 "Folders"
                 {
-                    "{9EF0B969-E518-4E46-987F-47570745A589}:_D5098682B9BF4B3593E19F5F0F9EE636"
-                    {
-                    "Name" = "8:Resources"
-                    "AlwaysCreate" = "11:FALSE"
-                    "Condition" = "8:"
-                    "Transitive" = "11:FALSE"
-                    "Property" = "8:_12F68469EECE456ABA1989A281621097"
-                        "Folders"
-                        {
-                            "{9EF0B969-E518-4E46-987F-47570745A589}:_E745254D2EC041B29DB7DF3A70A68D69"
-                            {
-                            "Name" = "8:Flags"
-                            "AlwaysCreate" = "11:FALSE"
-                            "Condition" = "8:"
-                            "Transitive" = "11:FALSE"
-                            "Property" = "8:_7913DFBC6A1E47FCA786A58A1B51B811"
-                                "Folders"
-                                {
-                                    "{9EF0B969-E518-4E46-987F-47570745A589}:_D36DCB176A0D4E38922CC4A8874CE859"
-                                    {
-                                    "Name" = "8:32"
-                                    "AlwaysCreate" = "11:FALSE"
-                                    "Condition" = "8:"
-                                    "Transitive" = "11:FALSE"
-                                    "Property" = "8:_1D61B8466CB24CCF86043804843B081A"
-                                        "Folders"
-                                        {
-                                        }
-                                    }
-                                    "{9EF0B969-E518-4E46-987F-47570745A589}:_F1D8AB586EE34C92B13C6CCF967FB8FB"
-                                    {
-                                    "Name" = "8:16"
-                                    "AlwaysCreate" = "11:FALSE"
-                                    "Condition" = "8:"
-                                    "Transitive" = "11:FALSE"
-                                    "Property" = "8:_3772F8CDA9694C849A727D4DEFF34A8D"
-                                        "Folders"
-                                        {
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
                 }
             }
             "{1525181F-901A-416C-8A58-119130FE478E}:_356770484522403787C1B7F44CC209BC"
@@ -13267,6 +13223,72 @@
                 {
                 }
             }
+            "{1525181F-901A-416C-8A58-119130FE478E}:_DFB5DA6B25784B7491CAA397EA5A846A"
+            {
+            "Name" = "8:#1915"
+            "AlwaysCreate" = "11:FALSE"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Property" = "8:AppDataFolder"
+                "Folders"
+                {
+                    "{9EF0B969-E518-4E46-987F-47570745A589}:_79BE09E0B471435BA4F9513C899ECCC8"
+                    {
+                    "Name" = "8:Music Timeline"
+                    "AlwaysCreate" = "11:FALSE"
+                    "Condition" = "8:"
+                    "Transitive" = "11:FALSE"
+                    "Property" = "8:_77A48DAF0A0E42D1A272625132D4EC01"
+                        "Folders"
+                        {
+                            "{9EF0B969-E518-4E46-987F-47570745A589}:_790A3CFB36C04A39A97536BDE4F8EA67"
+                            {
+                            "Name" = "8:Resources"
+                            "AlwaysCreate" = "11:FALSE"
+                            "Condition" = "8:"
+                            "Transitive" = "11:FALSE"
+                            "Property" = "8:_12F68469EECE456ABA1989A281621097"
+                                "Folders"
+                                {
+                                    "{9EF0B969-E518-4E46-987F-47570745A589}:_E745254D2EC041B29DB7DF3A70A68D69"
+                                    {
+                                    "Name" = "8:Flags"
+                                    "AlwaysCreate" = "11:FALSE"
+                                    "Condition" = "8:"
+                                    "Transitive" = "11:FALSE"
+                                    "Property" = "8:_7913DFBC6A1E47FCA786A58A1B51B811"
+                                        "Folders"
+                                        {
+                                            "{9EF0B969-E518-4E46-987F-47570745A589}:_D36DCB176A0D4E38922CC4A8874CE859"
+                                            {
+                                            "Name" = "8:32"
+                                            "AlwaysCreate" = "11:FALSE"
+                                            "Condition" = "8:"
+                                            "Transitive" = "11:FALSE"
+                                            "Property" = "8:_1D61B8466CB24CCF86043804843B081A"
+                                                "Folders"
+                                                {
+                                                }
+                                            }
+                                            "{9EF0B969-E518-4E46-987F-47570745A589}:_F1D8AB586EE34C92B13C6CCF967FB8FB"
+                                            {
+                                            "Name" = "8:16"
+                                            "AlwaysCreate" = "11:FALSE"
+                                            "Condition" = "8:"
+                                            "Transitive" = "11:FALSE"
+                                            "Property" = "8:_3772F8CDA9694C849A727D4DEFF34A8D"
+                                                "Folders"
+                                                {
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
         }
         "LaunchCondition"
         {
@@ -13284,7 +13306,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:Music Timeline"
         "ProductCode" = "8:{DB234DB1-1D35-4418-B778-7B4FE7F0E3BD}"
-        "PackageCode" = "8:{81959261-E4FF-46A8-8535-09219D5DB240}"
+        "PackageCode" = "8:{74F2B58B-279F-4F34-81E5-84CEE4D126E5}"
         "UpgradeCode" = "8:{29178833-DFF0-4F8D-86F6-18B1CD886887}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"

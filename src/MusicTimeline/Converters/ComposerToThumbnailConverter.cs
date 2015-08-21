@@ -23,14 +23,14 @@ namespace NathanHarrenstein.MusicTimeline.Converters
                 return _thumbnailCache[composer.Id];
             }
 
-            var directoryPath = $@"{Environment.CurrentDirectory}\Resources\Thumbnails\";
+            var directoryPath = $@"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData, Environment.SpecialFolderOption.Create)}\Music Timeline\Resources\Thumbnails\";
 
             if (!Directory.Exists(directoryPath))
             {
                 Directory.CreateDirectory(directoryPath);
             }
 
-            var thumbnailPath = $@"{Environment.CurrentDirectory}\Resources\Thumbnails\{composer.Id}.jpg";
+            var thumbnailPath = $@"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData, Environment.SpecialFolderOption.Create)}\Music Timeline\Resources\Thumbnails\{composer.Id}.jpg";
             var thumbnailUri = new Uri(thumbnailPath, UriKind.Absolute);
 
             if (File.Exists(thumbnailPath))
@@ -64,7 +64,7 @@ namespace NathanHarrenstein.MusicTimeline.Converters
         {
             _thumbnailCache.Clear();
 
-            var thumbnailDirectory = $@"{Environment.CurrentDirectory}\Resources\Thumbnails\";
+            var thumbnailDirectory = $@"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData, Environment.SpecialFolderOption.Create)}\Music Timeline\Resources\Thumbnails\";
             var thumbnailPaths = Directory.EnumerateFiles(thumbnailDirectory).ToArray();
 
             foreach (var thumbnailPath in thumbnailPaths)
@@ -76,7 +76,7 @@ namespace NathanHarrenstein.MusicTimeline.Converters
         private static BitmapImage CreateThumbnail(Composer composer)
         {
             BitmapImage thumbnail = null;
-            var thumbnailPath = $@"{Environment.CurrentDirectory}\Resources\Thumbnails\{composer.Id}.jpg";
+            var thumbnailPath = $@"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData, Environment.SpecialFolderOption.Create)}\Music Timeline\Resources\Thumbnails\{composer.Id}.jpg";
             var image = composer.ComposerImages.Select(ci => ci.Bytes).FirstOrDefault();
 
             if (image != null)
@@ -104,10 +104,10 @@ namespace NathanHarrenstein.MusicTimeline.Converters
             }
             else if (!_thumbnailCache.TryGetValue(0, out thumbnail))
             {
-                thumbnailPath = $@"{Environment.CurrentDirectory}\Resources\Thumbnails\0.jpg";
+                thumbnailPath = $@"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData, Environment.SpecialFolderOption.Create)}\Music Timeline\Resources\Thumbnails\0.jpg";
                 var thumbnailUri = new Uri(thumbnailPath, UriKind.Absolute);
 
-                if (File.Exists(thumbnailPath))                                                                // Cache and return default thumbnail from file.
+                if (File.Exists(thumbnailPath))
                 {
                     thumbnail = new BitmapImage();
                     thumbnail.BeginInit();
@@ -120,7 +120,7 @@ namespace NathanHarrenstein.MusicTimeline.Converters
 
                     return thumbnail;
                 }
-                else                                                                                            // Create, cache and return default thumbnail from file.
+                else
                 {
                     thumbnail = new BitmapImage();
                     thumbnail.CacheOption = BitmapCacheOption.OnLoad;
