@@ -38,9 +38,9 @@ namespace NathanHarrenstein.MusicTimeline.Converters
                 return favicon;
             }
 
-            Directory.CreateDirectory($@"{Environment.CurrentDirectory}\Resources\Favicons");
+            Directory.CreateDirectory($@"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData, Environment.SpecialFolderOption.Create)}\Music Timeline\Resources\Favicons");
 
-            var faviconPath = $@"{Environment.CurrentDirectory}\Resources\Favicons\{uri.Host}.ico";         
+            var faviconPath = $@"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData, Environment.SpecialFolderOption.Create)}\Music Timeline\Resources\Favicons\{uri.Host}.ico";         
 
             if (File.Exists(faviconPath))
             {

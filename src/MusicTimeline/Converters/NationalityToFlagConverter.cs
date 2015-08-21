@@ -38,7 +38,7 @@ namespace NathanHarrenstein.MusicTimeline.Converters
                 }
                 else
                 {
-                    var path = $"{Environment.CurrentDirectory}/Resources/Flags/16/{nationality}.png";
+                    var path = $@"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData, Environment.SpecialFolderOption.Create)}\Music Timeline\Resources\Flags\16\{nationality}.png";
                     var uri = new Uri(path, UriKind.Absolute);
                     flag = new BitmapImage(uri);
                     _smallFlagCache[nationality] = flag;
@@ -54,7 +54,7 @@ namespace NathanHarrenstein.MusicTimeline.Converters
                 }
                 else
                 {
-                    var path = $"{Environment.CurrentDirectory}/Resources/Flags/32/{nationality}.png";
+                    var path = $@"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData, Environment.SpecialFolderOption.Create)}\Music Timeline\Resources\Flags\32\{nationality}.png";
                     var uri = new Uri(path);
                     flag = new BitmapImage(uri);
                     _largeFlagCache[nationality] = flag;

@@ -33,6 +33,41 @@ namespace NathanHarrenstein.MusicTimeline.Views
             if (!DesignerProperties.GetIsInDesignMode(this))
             {
                 Initialize();
+
+
+                //var shostakovich = _classicalMusicDbContext.Composers.Where(c => c.Name == "Shostakovich, Dmitri").First();
+
+                //var sample1 = new Sample();
+                //sample1.Artists = "Emerson String Quartet";
+                //sample1.Title = "String Quartet No. 8 in C minor, Op. 110: II. Allegro molto";
+                //sample1.Bytes = System.IO.File.ReadAllBytes(@"C:\Users\Nathan\Desktop\Samples\Shostakovich\New folder\1. 02. String Quartet No. 8 in C minor, Op. 110 - II. Allegro molto.flac");
+                //shostakovich.Samples.Add(sample1);
+
+                //var sample2 = new Sample();
+                //sample2.Artists = "David Oistrakh; New York Philharmonic; Dmitri Mitropoulos";
+                //sample2.Title = "Violin Concerto No. 1 in A minor, Op. 99: III. Passacaglia";
+                //sample2.Bytes = System.IO.File.ReadAllBytes(@"C:\Users\Nathan\Desktop\Samples\Shostakovich\New folder\2. 03. Violin Concerto No. 1 in A minor, Op. 99 - III. Passacaglia.flac");
+                //shostakovich.Samples.Add(sample2);
+
+                //var sample3 = new Sample();
+                //sample3.Artists = "Gürzenich-Orchester Köln; Dmitrij Kitajenko";
+                //sample3.Title = "Symphony No. 5 in D minor, Op. 47: II. Allegretto";
+                //sample3.Bytes = System.IO.File.ReadAllBytes(@"C:\Users\Nathan\Desktop\Samples\Shostakovich\New folder\3. 08. Symphony No. 5 in D minor, Op. 47 - IV. Allegro non troppo.flac");
+                //shostakovich.Samples.Add(sample3);
+
+                //var sample4 = new Sample();
+                //sample4.Artists = "Scottish National Orchestra; Neeme Järvi";
+                //sample4.Title = "Symphony No. 7 in C major, Op. 60 \"Leningrad\": I. Allegretto";
+                //sample4.Bytes = System.IO.File.ReadAllBytes(@"C:\Users\Nathan\Desktop\Samples\Shostakovich\New folder\4. 01. Symphony No. 7 in C major, Op. 60 ''Leningrad'' - I. Allegretto 2.flac");
+                //shostakovich.Samples.Add(sample4);
+
+                //var sample5 = new Sample();
+                //sample5.Artists = "Mstislav Rostropovich; USSR State Symphony; Evgeni Svetlanov";
+                //sample5.Title = "Cello Concerto No. 2 in G major, Op. 126: III. Allegretto–Cadenza";
+                //sample5.Bytes = System.IO.File.ReadAllBytes(@"C:\Users\Nathan\Desktop\Samples\Shostakovich\New folder\5. 07. Cello Concerto No. 2 in G major, Op. 126 - III. Allegretto–Cadenza.flac");
+                //shostakovich.Samples.Add(sample5);
+
+                //_classicalMusicDbContext.SaveChanges();
             }
         }
 
