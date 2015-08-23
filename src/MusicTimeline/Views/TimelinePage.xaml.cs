@@ -33,41 +33,6 @@ namespace NathanHarrenstein.MusicTimeline.Views
             if (!DesignerProperties.GetIsInDesignMode(this))
             {
                 Initialize();
-
-
-                //var shostakovich = _classicalMusicDbContext.Composers.Where(c => c.Name == "Shostakovich, Dmitri").First();
-
-                //var sample1 = new Sample();
-                //sample1.Artists = "Emerson String Quartet";
-                //sample1.Title = "String Quartet No. 8 in C minor, Op. 110: II. Allegro molto";
-                //sample1.Bytes = System.IO.File.ReadAllBytes(@"C:\Users\Nathan\Desktop\Samples\Shostakovich\New folder\1. 02. String Quartet No. 8 in C minor, Op. 110 - II. Allegro molto.flac");
-                //shostakovich.Samples.Add(sample1);
-
-                //var sample2 = new Sample();
-                //sample2.Artists = "David Oistrakh; New York Philharmonic; Dmitri Mitropoulos";
-                //sample2.Title = "Violin Concerto No. 1 in A minor, Op. 99: III. Passacaglia";
-                //sample2.Bytes = System.IO.File.ReadAllBytes(@"C:\Users\Nathan\Desktop\Samples\Shostakovich\New folder\2. 03. Violin Concerto No. 1 in A minor, Op. 99 - III. Passacaglia.flac");
-                //shostakovich.Samples.Add(sample2);
-
-                //var sample3 = new Sample();
-                //sample3.Artists = "Gürzenich-Orchester Köln; Dmitrij Kitajenko";
-                //sample3.Title = "Symphony No. 5 in D minor, Op. 47: II. Allegretto";
-                //sample3.Bytes = System.IO.File.ReadAllBytes(@"C:\Users\Nathan\Desktop\Samples\Shostakovich\New folder\3. 08. Symphony No. 5 in D minor, Op. 47 - IV. Allegro non troppo.flac");
-                //shostakovich.Samples.Add(sample3);
-
-                //var sample4 = new Sample();
-                //sample4.Artists = "Scottish National Orchestra; Neeme Järvi";
-                //sample4.Title = "Symphony No. 7 in C major, Op. 60 \"Leningrad\": I. Allegretto";
-                //sample4.Bytes = System.IO.File.ReadAllBytes(@"C:\Users\Nathan\Desktop\Samples\Shostakovich\New folder\4. 01. Symphony No. 7 in C major, Op. 60 ''Leningrad'' - I. Allegretto 2.flac");
-                //shostakovich.Samples.Add(sample4);
-
-                //var sample5 = new Sample();
-                //sample5.Artists = "Mstislav Rostropovich; USSR State Symphony; Evgeni Svetlanov";
-                //sample5.Title = "Cello Concerto No. 2 in G major, Op. 126: III. Allegretto–Cadenza";
-                //sample5.Bytes = System.IO.File.ReadAllBytes(@"C:\Users\Nathan\Desktop\Samples\Shostakovich\New folder\5. 07. Cello Concerto No. 2 in G major, Op. 126 - III. Allegretto–Cadenza.flac");
-                //shostakovich.Samples.Add(sample5);
-
-                //_classicalMusicDbContext.SaveChanges();
             }
         }
 
@@ -170,12 +135,12 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
             var composerEraViewModels = ComposerEraViewModelBuilder.Build(eraList);
 
-            ManageDataCommand = GetManageDataCommand();
-            CloseCommand = GetCloseCommand();
-            GoToCommand = GetGoToCommand();
-            RebuildThumbnailCacheCommand = GetRebuildThumbnailCacheCommand();
-            FullScreenCommand = GetFullScreenCommand();
-            ChangeResolutionCommand = GetChangeResolutionCommand();
+            ManageDataCommand = new DelegateCommand(NavigateToInputPage);
+            CloseCommand = new DelegateCommand(Exit);
+            GoToCommand = new DelegateCommand(GoToEra);
+            RebuildThumbnailCacheCommand = new DelegateCommand(RebuildThumbnailCache);
+            FullScreenCommand = new DelegateCommand(ExpandToFullScreen);
+            ChangeResolutionCommand = new DelegateCommand(ChangeResolution);
 
             timeline.Dates = new ExtendedDateTimeInterval(new ExtendedDateTime(476, 1, 1), ExtendedDateTime.Now);
             timeline.Eras = composerEraViewModels;
@@ -197,118 +162,103 @@ namespace NathanHarrenstein.MusicTimeline.Views
             }
         }
 
-        private ICommand GetChangeResolutionCommand()
+        private void ChangeResolution(object obj)
         {
-            return new DelegateCommand(o =>
+            var targetResolution = (TimeResolution)int.Parse((string)obj);
+
+            switch (targetResolution)
             {
-                var targetResolution = (TimeResolution)int.Parse((string)o);
+                case TimeResolution.Century:
+                    timeline.Ruler.TimeUnitWidth = 0.01;
+                    timeline.Ruler.TimeRulerUnit = TimeRulerUnit.Day;
+                    break;
 
-                switch (targetResolution)
+                case TimeResolution.Decade:
+                    timeline.Ruler.TimeUnitWidth = 0.04109589041;
+                    timeline.Ruler.TimeRulerUnit = TimeRulerUnit.Day;
+                    break;
+
+                case TimeResolution.Year:
+                    timeline.Ruler.TimeUnitWidth = 0.41095890411;
+                    timeline.Ruler.TimeRulerUnit = TimeRulerUnit.Day;
+                    break;
+
+                case TimeResolution.Month:
+                    timeline.Ruler.TimeUnitWidth = 5;
+                    timeline.Ruler.TimeRulerUnit = TimeRulerUnit.Day;
+                    break;
+
+                case TimeResolution.Day:
+                    timeline.Ruler.TimeUnitWidth = 150;
+                    timeline.Ruler.TimeRulerUnit = TimeRulerUnit.Day;
+                    break;
+            }
+
+            timeline.Resolution = targetResolution;
+            timeline.VerticalOffset = timeline.VerticalOffset;
+        }
+
+        private void Exit(object obj)
+        {
+            Application.Current.Shutdown();
+        }
+
+        private void ExpandToFullScreen(object obj)
+        {
+            if (Application.Current.MainWindow.WindowStyle == WindowStyle.None)
+            {
+                Application.Current.MainWindow.WindowStyle = WindowStyle.SingleBorderWindow;
+            }
+            else
+            {
+                Application.Current.MainWindow.WindowState = WindowState.Normal;
+                Application.Current.MainWindow.WindowStyle = WindowStyle.None;
+                Application.Current.MainWindow.WindowState = WindowState.Maximized;
+            }
+        }
+
+        private void GoToEra(object obj)
+        {
+            var eraQuery = _classicalMusicDbContext.Eras.First(e => e.Name == (string)obj);
+
+            var composersSortedByDate = _classicalMusicDbContext.Composers.ToArray()
+                .Select(c => Tuple.Create(ExtendedDateTimeInterval.Parse(c.Dates).Earliest(), c))
+                .OrderBy(t => t.Item1);
+
+            var index = 0;
+
+            foreach (var composer in composersSortedByDate)
+            {
+                if (composer.Item2.Eras.Contains(eraQuery))
                 {
-                    case TimeResolution.Century:
-                        timeline.Ruler.TimeUnitWidth = 0.01;
-                        timeline.Ruler.TimeRulerUnit = TimeRulerUnit.Day;
-                        break;
+                    timeline.HorizontalOffset = timeline.Ruler.ToPixels(timeline.Dates.Earliest(), composer.Item1);
+                    timeline.VerticalOffset = index * (timeline.EventHeight + timeline.EventSpacing);
 
-                    case TimeResolution.Decade:
-                        timeline.Ruler.TimeUnitWidth = 0.04109589041;
-                        timeline.Ruler.TimeRulerUnit = TimeRulerUnit.Day;
-                        break;
-
-                    case TimeResolution.Year:
-                        timeline.Ruler.TimeUnitWidth = 0.41095890411;
-                        timeline.Ruler.TimeRulerUnit = TimeRulerUnit.Day;
-                        break;
-
-                    case TimeResolution.Month:
-                        timeline.Ruler.TimeUnitWidth = 5;
-                        timeline.Ruler.TimeRulerUnit = TimeRulerUnit.Day;
-                        break;
-
-                    case TimeResolution.Day:
-                        timeline.Ruler.TimeUnitWidth = 150;
-                        timeline.Ruler.TimeRulerUnit = TimeRulerUnit.Day;
-                        break;
+                    return;
                 }
 
-                timeline.Resolution = targetResolution;
-                timeline.VerticalOffset = timeline.VerticalOffset;
-            });
+                index++;
+            }
+
+            timeline.HorizontalOffset = timeline.Ruler.ToPixels(timeline.Dates.Earliest(), ExtendedDateTimeInterval.Parse(eraQuery.Dates).Earliest());
         }
 
-        private ICommand GetCloseCommand()
+        private void NavigateToInputPage(object obj)
         {
-            return new DelegateCommand(o => Application.Current.Shutdown());
+            Application.Current.Properties["HorizontalOffset"] = timeline.HorizontalOffset;
+            Application.Current.Properties["VerticalOffset"] = timeline.VerticalOffset;
+
+            NavigationService.Navigate(new Uri(@"pack://application:,,,/Views/InputPage.xaml", UriKind.Absolute));
         }
 
-        private ICommand GetFullScreenCommand()
+        private void RebuildThumbnailCache(object obj)
         {
-            return new DelegateCommand(o =>
-            {
-                if (Application.Current.MainWindow.WindowStyle == WindowStyle.None)
-                {
-                    Application.Current.MainWindow.WindowStyle = WindowStyle.SingleBorderWindow;
-                }
-                else
-                {
-                    Application.Current.MainWindow.WindowState = WindowState.Normal;
-                    Application.Current.MainWindow.WindowStyle = WindowStyle.None;
-                    Application.Current.MainWindow.WindowState = WindowState.Maximized;
-                }
-            });
-        }
+            ComposerToThumbnailConverter.ClearThumbnailCache();
 
-        private ICommand GetGoToCommand()
-        {
-            return new DelegateCommand(o =>
-            {
-                var eraQuery = _classicalMusicDbContext.Eras.First(e => e.Name == (string)o);
+            Application.Current.Properties["HorizontalOffset"] = timeline.HorizontalOffset;
+            Application.Current.Properties["VerticalOffset"] = timeline.VerticalOffset;
 
-                var composersSortedByDate = _classicalMusicDbContext.Composers.ToArray()
-                    .Select(c => Tuple.Create(ExtendedDateTimeInterval.Parse(c.Dates).Earliest(), c))
-                    .OrderBy(t => t.Item1);
-
-                var index = 0;
-
-                foreach (var composer in composersSortedByDate)
-                {
-                    if (composer.Item2.Eras.Contains(eraQuery))
-                    {
-                        timeline.HorizontalOffset = timeline.Ruler.ToPixels(timeline.Dates.Earliest(), composer.Item1);
-                        timeline.VerticalOffset = index * (timeline.EventHeight + timeline.EventSpacing);
-
-                        return;
-                    }
-
-                    index++;
-                }
-
-                timeline.HorizontalOffset = timeline.Ruler.ToPixels(timeline.Dates.Earliest(), ExtendedDateTimeInterval.Parse(eraQuery.Dates).Earliest());
-            });
-        }
-
-        private ICommand GetManageDataCommand()
-        {
-            return new DelegateCommand(o =>
-            {
-                Application.Current.Properties["HorizontalOffset"] = timeline.HorizontalOffset;
-                Application.Current.Properties["VerticalOffset"] = timeline.VerticalOffset;
-
-                NavigationService.Navigate(new Uri(@"pack://application:,,,/Views/InputPage.xaml", UriKind.Absolute));
-            });
-        }
-
-        private ICommand GetRebuildThumbnailCacheCommand()
-        {
-            return new DelegateCommand(o =>
-            {
-                ComposerToThumbnailConverter.ClearThumbnailCache();
-
-                Application.Current.Properties["HorizontalOffset"] = timeline.HorizontalOffset;
-                Application.Current.Properties["VerticalOffset"] = timeline.VerticalOffset;
-
-                NavigationService.Refresh();
-            });
+            NavigationService.Refresh();
         }
 
         private void Timeline_Loaded(object sender, RoutedEventArgs e)
