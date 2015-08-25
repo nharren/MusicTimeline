@@ -10,11 +10,52 @@ namespace NathanHarrenstein.Timeline
 {
     public class EraPanel : Panel, IPan
     {
-        public static readonly DependencyProperty DatesProperty = DependencyProperty.Register("Dates", typeof(ExtendedDateTimeInterval), typeof(EraPanel));
-        public static readonly DependencyProperty ErasProperty = DependencyProperty.Register("Eras", typeof(IReadOnlyList<ITimelineEra>), typeof(EraPanel));
-        public static readonly DependencyProperty EraTemplatesProperty = DependencyProperty.Register("EraTemplates", typeof(List<DataTemplate>), typeof(EraPanel));
-        public static readonly DependencyProperty ResolutionProperty = DependencyProperty.Register("Resolution", typeof(TimeResolution), typeof(EraPanel));
-        public static readonly DependencyProperty RulerProperty = DependencyProperty.Register("Ruler", typeof(TimeRuler), typeof(EraPanel));
+        public static readonly DependencyProperty DatesProperty = DependencyProperty.Register(
+            "Dates",
+            typeof(ExtendedDateTimeInterval),
+            typeof(EraPanel),
+            new FrameworkPropertyMetadata(
+                default(ExtendedDateTimeInterval),
+                FrameworkPropertyMetadataOptions.AffectsMeasure,
+                new PropertyChangedCallback(EraPanel_DatesChanged)));
+
+        public static readonly DependencyProperty ErasProperty = DependencyProperty.Register(
+            "Eras",
+            typeof(IReadOnlyList<ITimelineEra>),
+            typeof(EraPanel),
+            new FrameworkPropertyMetadata(
+                default(IReadOnlyList<ITimelineEra>),
+                FrameworkPropertyMetadataOptions.AffectsMeasure,
+                new PropertyChangedCallback(EraPanel_ErasChanged)));
+
+        public static readonly DependencyProperty EraTemplatesProperty =
+            DependencyProperty.Register(
+                "EraTemplates",
+                typeof(List<DataTemplate>),
+                typeof(EraPanel),
+                new FrameworkPropertyMetadata(
+                    default(List<DataTemplate>),
+                    FrameworkPropertyMetadataOptions.AffectsMeasure,
+                    new PropertyChangedCallback(EraPanel_EraTemplatesChanged)));
+
+        public static readonly DependencyProperty ResolutionProperty =
+            DependencyProperty.Register(
+                "Resolution",
+                typeof(TimeResolution),
+                typeof(EraPanel),
+                new FrameworkPropertyMetadata(
+                    default(TimeResolution),
+                    FrameworkPropertyMetadataOptions.AffectsMeasure,
+                    new PropertyChangedCallback(EraPanel_ResolutionChanged)));
+
+        public static readonly DependencyProperty RulerProperty = DependencyProperty.Register(
+            "Ruler",
+            typeof(TimeRuler),
+            typeof(EraPanel),
+            new FrameworkPropertyMetadata(
+                default(TimeRuler),
+                FrameworkPropertyMetadataOptions.AffectsMeasure,
+                new PropertyChangedCallback(EraPanel_RulerChanged)));
 
         private FrameworkElement[] _cache;
         private bool _hasViewChanged = true;
@@ -132,7 +173,6 @@ namespace NathanHarrenstein.Timeline
 
             _hasViewChanged = true;
             _previouslyVisibleCacheIndexes = new List<int>(_visibleCacheIndexes);
-
             _visibleCacheIndexes.Clear();
             Children.Clear();
             InvalidateMeasure();
@@ -229,7 +269,58 @@ namespace NathanHarrenstein.Timeline
                 child.Measure(availableSize);
             }
 
-            return base.MeasureOverride(availableSize);
+            return availableSize;
+        }
+
+        private static void EraPanel_DatesChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var eraPanel = (EraPanel)d;
+            eraPanel.ResetView();
+        }
+
+        private static void EraPanel_ErasChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var eraPanel = (EraPanel)d;
+            eraPanel.ResetCache();
+            eraPanel.ResetView();
+        }
+
+        private static void EraPanel_EraTemplatesChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var eraPanel = (EraPanel)d;
+            eraPanel.ResetCache();
+            eraPanel.ResetView();
+        }
+
+        private static void EraPanel_ResolutionChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var eraPanel = (EraPanel)d;
+            eraPanel.ResetView();
+        }
+
+        private static void EraPanel_RulerChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var eraPanel = (EraPanel)d;
+            eraPanel.ResetView();
+        }
+
+        private void ResetCache()
+        {
+            foreach (var visibleCacheIndex in _visibleCacheIndexes)
+            {
+                _cache[visibleCacheIndex].Arrange(new Rect());
+            }
+
+            _cache = null;
+            _visibleCacheIndexes.Clear();
+        }
+
+        private void ResetView()
+        {
+            _hasViewChanged = true;
+            _previouslyVisibleCacheIndexes = new List<int>(_visibleCacheIndexes);
+            _visibleCacheIndexes.Clear();
+            Children.Clear();
         }
     }
 }

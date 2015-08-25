@@ -9,11 +9,52 @@ namespace NathanHarrenstein.Timeline
 {
     public class NavigationPanel : Panel
     {
-        public static readonly DependencyProperty DatesProperty = DependencyProperty.Register("Dates", typeof(ExtendedDateTimeInterval), typeof(NavigationPanel));
-        public static readonly DependencyProperty ErasProperty = DependencyProperty.Register("Eras", typeof(IReadOnlyList<ITimelineEra>), typeof(NavigationPanel), new PropertyMetadata(new PropertyChangedCallback(NavigationPanel_ErasPropertyChanged)));
-        public static readonly DependencyProperty EraTemplatesProperty = DependencyProperty.Register("EraTemplates", typeof(List<DataTemplate>), typeof(NavigationPanel), new PropertyMetadata(new PropertyChangedCallback(NavigationPanel_EraTemplatesPropertyChanged)));
-        public static readonly DependencyProperty ResolutionProperty = DependencyProperty.Register("Resolution", typeof(TimeResolution), typeof(NavigationPanel));
-        public static readonly DependencyProperty RulerProperty = DependencyProperty.Register("Ruler", typeof(TimeRuler), typeof(NavigationPanel));
+        public static readonly DependencyProperty DatesProperty = DependencyProperty.Register(
+            "Dates",
+            typeof(ExtendedDateTimeInterval),
+            typeof(NavigationPanel),
+            new FrameworkPropertyMetadata(
+                default(ExtendedDateTimeInterval),
+                FrameworkPropertyMetadataOptions.AffectsMeasure,
+                new PropertyChangedCallback(NavigationPanel_DatesChanged)));
+
+        public static readonly DependencyProperty ErasProperty = DependencyProperty.Register(
+            "Eras",
+            typeof(IReadOnlyList<ITimelineEra>),
+            typeof(NavigationPanel),
+            new FrameworkPropertyMetadata(
+                default(IReadOnlyList<ITimelineEra>),
+                FrameworkPropertyMetadataOptions.AffectsMeasure,
+                new PropertyChangedCallback(NavigationPanel_ErasChanged)));
+
+        public static readonly DependencyProperty EraTemplatesProperty = DependencyProperty.Register(
+            "EraTemplates",
+            typeof(List<DataTemplate>),
+            typeof(NavigationPanel),
+            new FrameworkPropertyMetadata(
+                default(List<DataTemplate>),
+                FrameworkPropertyMetadataOptions.AffectsMeasure,
+                new PropertyChangedCallback(NavigationPanel_EraTemplatesChanged)));
+
+        public static readonly DependencyProperty ResolutionProperty = DependencyProperty.Register(
+            "Resolution",
+            typeof(TimeResolution),
+            typeof(NavigationPanel),
+            new FrameworkPropertyMetadata(
+                default(TimeResolution),
+                FrameworkPropertyMetadataOptions.AffectsMeasure,
+                new PropertyChangedCallback(NavigationPanel_ResolutionChanged)));
+
+        public static readonly DependencyProperty RulerProperty = DependencyProperty.Register(
+            "Ruler",
+            typeof(TimeRuler),
+            typeof(NavigationPanel),
+            new FrameworkPropertyMetadata(
+                default(TimeRuler),
+                FrameworkPropertyMetadataOptions.AffectsMeasure,
+                new PropertyChangedCallback(NavigationPanel_RulerChanged)));
+
+        private bool _hasViewChanged = true;
 
         public ExtendedDateTimeInterval Dates
         {
@@ -99,6 +140,31 @@ namespace NathanHarrenstein.Timeline
 
         protected override Size MeasureOverride(Size availableSize)
         {
+            if (_hasViewChanged)
+            {
+                foreach (var era in Eras.OrderBy(e => e.Dates.Earliest()))
+                {
+                    var eraType = era.GetType();
+
+                    var template = EraTemplates?.FirstOrDefault(et => ((Type)et.DataType) == eraType);
+                    var eraControl = template?.LoadContent() as FrameworkElement;
+
+                    if (template == null || eraControl == null)
+                    {
+                        eraControl = new ContentControl
+                        {
+                            Content = era.ToString(),
+                        };
+                    }
+
+                    eraControl.DataContext = era;
+
+                    Children.Add(eraControl);
+                }
+
+                _hasViewChanged = false;
+            }
+
             foreach (UIElement child in Children)
             {
                 child.Measure(availableSize);
@@ -107,39 +173,40 @@ namespace NathanHarrenstein.Timeline
             return base.MeasureOverride(availableSize);
         }
 
-        private static void NavigationPanel_ErasPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void NavigationPanel_DatesChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            ((NavigationPanel)d).UpdateChildren();
+            var navigationPanel = (NavigationPanel)d;
+            navigationPanel.ResetView();
         }
 
-        private static void NavigationPanel_EraTemplatesPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void NavigationPanel_ErasChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            ((NavigationPanel)d).UpdateChildren();
+            var navigationPanel = (NavigationPanel)d;
+            navigationPanel.ResetView();
         }
 
-        private void UpdateChildren()
+        private static void NavigationPanel_EraTemplatesChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
+            var navigationPanel = (NavigationPanel)d;
+            navigationPanel.ResetView();
+        }
+
+        private static void NavigationPanel_ResolutionChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var navigationPanel = (NavigationPanel)d;
+            navigationPanel.ResetView();
+        }
+
+        private static void NavigationPanel_RulerChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var navigationPanel = (NavigationPanel)d;
+            navigationPanel.ResetView();
+        }
+
+        private void ResetView()
+        {
+            _hasViewChanged = true;
             Children.Clear();
-
-            foreach (var era in Eras.OrderBy(e => e.Dates.Earliest()))
-            {
-                var eraType = era.GetType();
-
-                var template = EraTemplates?.FirstOrDefault(et => ((Type)et.DataType) == eraType);
-                var eraControl = template?.LoadContent() as FrameworkElement;
-
-                if (template == null || eraControl == null)
-                {
-                    eraControl = new ContentControl
-                    {
-                        Content = era.ToString(),
-                    };
-                }
-
-                eraControl.DataContext = era;
-
-                Children.Add(eraControl);
-            }
         }
     }
 }

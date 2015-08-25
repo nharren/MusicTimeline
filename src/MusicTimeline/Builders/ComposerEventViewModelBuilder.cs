@@ -4,8 +4,10 @@ using NathanHarrenstein.MusicTimeline.Utilities;
 using NathanHarrenstein.MusicTimeline.ViewModels;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.EDTF;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Navigation;
@@ -14,8 +16,9 @@ namespace NathanHarrenstein.MusicTimeline.Builders
 {
     public static class ComposerEventViewModelBuilder
     {
-        public static List<ComposerEventViewModel> Build(IEnumerable<Composer> composers, IEnumerable<ComposerEraViewModel> musicEras, Timeline.Timeline timeline)
+        public async static Task<List<ComposerEventViewModel>> BuildAsync(IEnumerable<ComposerEraViewModel> musicEras, Timeline.Timeline timeline, ClassicalMusicDbContext dbContext)
         {
+            var composers = await dbContext.Composers.AsNoTracking().ToListAsync();
             var eventList = new List<ComposerEventViewModel>();
 
             foreach (var composer in composers)

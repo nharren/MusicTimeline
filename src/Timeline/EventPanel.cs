@@ -13,15 +13,88 @@ namespace NathanHarrenstein.Timeline
 {
     public class EventPanel : Panel, IPan, IDisposable
     {
-        public static readonly DependencyProperty DatesProperty = DependencyProperty.Register("Dates", typeof(ExtendedDateTimeInterval), typeof(EventPanel));
-        public static readonly DependencyProperty EventHeightProperty = DependencyProperty.Register("EventHeight", typeof(double), typeof(EventPanel));
-        public static readonly DependencyProperty EventSpacingProperty = DependencyProperty.Register("EventSpacing", typeof(double), typeof(EventPanel));
-        public static readonly DependencyProperty EventsProperty = DependencyProperty.Register("Events", typeof(IReadOnlyList<ITimelineEvent>), typeof(EventPanel));
-        public static readonly DependencyProperty EventTemplatesProperty = DependencyProperty.Register("EventTemplates", typeof(List<DataTemplate>), typeof(EventPanel));
-        public static readonly DependencyProperty HorizontalOffsetProperty = DependencyProperty.Register("HorizontalOffset", typeof(double), typeof(EventPanel));
-        public static readonly DependencyProperty ResolutionProperty = DependencyProperty.Register("Resolution", typeof(TimeResolution), typeof(EventPanel));
-        public static readonly DependencyProperty RulerProperty = DependencyProperty.Register("Ruler", typeof(TimeRuler), typeof(EventPanel));
-        public static readonly DependencyProperty VerticalOffsetProperty = DependencyProperty.Register("VerticalOffset", typeof(double), typeof(EventPanel));
+        public static readonly DependencyProperty DatesProperty = DependencyProperty.Register(
+            "Dates",
+            typeof(ExtendedDateTimeInterval),
+            typeof(EventPanel),
+            new FrameworkPropertyMetadata(
+                default(ExtendedDateTimeInterval),
+                FrameworkPropertyMetadataOptions.AffectsMeasure,
+                new PropertyChangedCallback(EventPanel_DatesChanged)));
+
+        public static readonly DependencyProperty EventHeightProperty = DependencyProperty.Register(
+            "EventHeight",
+            typeof(double),
+            typeof(EventPanel),
+            new FrameworkPropertyMetadata(
+                default(double),
+                FrameworkPropertyMetadataOptions.AffectsMeasure,
+                new PropertyChangedCallback(EventPanel_EventHeightChanged)));
+
+        public static readonly DependencyProperty EventSpacingProperty =
+            DependencyProperty.Register(
+                "EventSpacing",
+                typeof(double),
+                typeof(EventPanel),
+                new FrameworkPropertyMetadata(
+                    default(double),
+                    FrameworkPropertyMetadataOptions.AffectsMeasure,
+                    new PropertyChangedCallback(EventPanel_EventSpacingChanged)));
+
+        public static readonly DependencyProperty EventsProperty =
+            DependencyProperty.Register(
+                "Events",
+                typeof(IReadOnlyList<ITimelineEvent>),
+                typeof(EventPanel),
+                new FrameworkPropertyMetadata(
+                    default(IReadOnlyList<ITimelineEvent>),
+                    FrameworkPropertyMetadataOptions.AffectsMeasure,
+                    new PropertyChangedCallback(EventPanel_EventsChanged)));
+
+        public static readonly DependencyProperty EventTemplatesProperty = DependencyProperty.Register(
+            "EventTemplates",
+            typeof(List<DataTemplate>),
+            typeof(EventPanel),
+            new FrameworkPropertyMetadata(
+                default(List<DataTemplate>),
+                FrameworkPropertyMetadataOptions.AffectsMeasure,
+                new PropertyChangedCallback(EventPanel_EventTemplatesChanged)));
+
+        public static readonly DependencyProperty HorizontalOffsetProperty = DependencyProperty.Register(
+            "HorizontalOffset",
+            typeof(double),
+            typeof(EventPanel),
+            new FrameworkPropertyMetadata(
+                default(double),
+                FrameworkPropertyMetadataOptions.AffectsMeasure,
+                new PropertyChangedCallback(EventPanel_HorizontalOffsetChanged)));
+
+        public static readonly DependencyProperty ResolutionProperty = DependencyProperty.Register(
+            "Resolution",
+            typeof(TimeResolution),
+            typeof(EventPanel),
+            new FrameworkPropertyMetadata(
+                default(TimeResolution),
+                FrameworkPropertyMetadataOptions.AffectsMeasure,
+                new PropertyChangedCallback(EventPanel_ResolutionChanged)));
+
+        public static readonly DependencyProperty RulerProperty = DependencyProperty.Register(
+            "Ruler",
+            typeof(TimeRuler),
+            typeof(EventPanel),
+            new FrameworkPropertyMetadata(
+                default(TimeRuler),
+                FrameworkPropertyMetadataOptions.AffectsMeasure,
+                new PropertyChangedCallback(EventPanel_RulerChanged)));
+
+        public static readonly DependencyProperty VerticalOffsetProperty = DependencyProperty.Register(
+            "VerticalOffset",
+            typeof(double),
+            typeof(EventPanel),
+            new FrameworkPropertyMetadata(
+                default(double),
+                FrameworkPropertyMetadataOptions.AffectsMeasure,
+                new PropertyChangedCallback(EventPanel_VerticalOffsetChanged)));
 
         private readonly MouseHook _mouseHook;
         private readonly RoutedEvent _panRequestedEvent;
@@ -437,6 +510,62 @@ namespace NathanHarrenstein.Timeline
             base.OnMouseWheel(e);
         }
 
+        private static void EventPanel_DatesChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var eventPanel = (EventPanel)d;
+            eventPanel.ResetView();
+        }
+
+        private static void EventPanel_EventHeightChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var eventPanel = (EventPanel)d;
+            eventPanel.ResetView();
+        }
+
+        private static void EventPanel_EventsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var eventPanel = (EventPanel)d;
+            eventPanel.ResetView();
+            eventPanel.ResetCache();
+        }
+
+        private static void EventPanel_EventSpacingChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var eventPanel = (EventPanel)d;
+            eventPanel.ResetView();
+        }
+
+        private static void EventPanel_EventTemplatesChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var eventPanel = (EventPanel)d;
+            eventPanel.ResetView();
+            eventPanel.ResetCache();
+        }
+
+        private static void EventPanel_HorizontalOffsetChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var eventPanel = (EventPanel)d;
+            eventPanel.ResetView();
+        }
+
+        private static void EventPanel_ResolutionChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var eventPanel = (EventPanel)d;
+            eventPanel.ResetView();
+        }
+
+        private static void EventPanel_RulerChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var eventPanel = (EventPanel)d;
+            eventPanel.ResetView();
+        }
+
+        private static void EventPanel_VerticalOffsetChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var eventPanel = (EventPanel)d;
+            eventPanel.ResetView();
+        }
+
         private void EventPanel_MouseHorizontalWheel(object sender, MouseHorizontalWheelEventArgs e)
         {
             RequestPan(new Vector(e.Delta, 0));
@@ -449,6 +578,25 @@ namespace NathanHarrenstein.Timeline
             _visibleCacheIndexes.Clear();
             Children.Clear();
             InvalidateMeasure();
+        }
+
+        private void ResetCache()
+        {
+            foreach (var visibleCacheIndex in _visibleCacheIndexes)
+            {
+                _cache[visibleCacheIndex].Arrange(new Rect());
+            }
+
+            _cache = null;
+            _visibleCacheIndexes.Clear();
+        }
+
+        private void ResetView()
+        {
+            _hasViewChanged = true;
+            _previouslyVisibleCacheIndexes = new List<int>(_visibleCacheIndexes);
+            _visibleCacheIndexes.Clear();
+            Children.Clear();
         }
     }
 }
