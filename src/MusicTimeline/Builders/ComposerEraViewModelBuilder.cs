@@ -1,7 +1,9 @@
 ﻿using NathanHarrenstein.ClassicalMusicDb;
 using NathanHarrenstein.MusicTimeline.ViewModels;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.EDTF;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 
@@ -9,8 +11,10 @@ namespace NathanHarrenstein.MusicTimeline.Builders
 {
     public static class ComposerEraViewModelBuilder
     {
-        public static List<ComposerEraViewModel> Build(IList<Era> eraList)
+        public async static Task<List<ComposerEraViewModel>> BuildAsync(ClassicalMusicDbContext dbContext)
         {
+            var eraList = await dbContext.Eras.AsNoTracking().ToListAsync();
+
             var composerEraViewModels = new List<ComposerEraViewModel>();
 
             foreach (var era in eraList)

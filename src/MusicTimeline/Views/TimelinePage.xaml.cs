@@ -128,13 +128,6 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
         public void Initialize()
         {
-            _classicalMusicDbContext = new ClassicalMusicDbContext();
-
-            var eraList = _classicalMusicDbContext.Eras.AsNoTracking().ToList();
-            var composers = _classicalMusicDbContext.Composers.AsNoTracking();
-
-            var composerEraViewModels = ComposerEraViewModelBuilder.Build(eraList);
-
             ManageDataCommand = new DelegateCommand(NavigateToInputPage);
             CloseCommand = new DelegateCommand(Exit);
             GoToCommand = new DelegateCommand(GoToEra);
@@ -143,12 +136,10 @@ namespace NathanHarrenstein.MusicTimeline.Views
             ChangeResolutionCommand = new DelegateCommand(ChangeResolution);
 
             timeline.Dates = new ExtendedDateTimeInterval(new ExtendedDateTime(476, 1, 1), ExtendedDateTime.Now);
-            timeline.Eras = composerEraViewModels;
             timeline.Ruler = new TimeRuler();
             timeline.Ruler.TimeRulerUnit = TimeRulerUnit.Day;
             timeline.Ruler.TimeUnitWidth = 0.04109589041;
             timeline.Resolution = TimeResolution.Decade;
-            timeline.Events = ComposerEventViewModelBuilder.Build(composers, composerEraViewModels, timeline);
             timeline.Loaded += Timeline_Loaded;
         }
 
@@ -261,8 +252,16 @@ namespace NathanHarrenstein.MusicTimeline.Views
             NavigationService.Refresh();
         }
 
-        private void Timeline_Loaded(object sender, RoutedEventArgs e)
+        private async void Timeline_Loaded(object sender, RoutedEventArgs e)
         {
+            _classicalMusicDbContext = new ClassicalMusicDbContext();
+
+            var composerEraViewModels = await ComposerEraViewModelBuilder.BuildAsync(_classicalMusicDbContext);
+            var composerEventViewModels = await ComposerEventViewModelBuilder.BuildAsync(composerEraViewModels, timeline, _classicalMusicDbContext);
+
+            timeline.Eras = composerEraViewModels;
+            timeline.Events = composerEventViewModels;
+
             var horizontalOffset = Application.Current.Properties["HorizontalOffset"] as double?;
 
             if (horizontalOffset != null)
