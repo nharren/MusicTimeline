@@ -141,18 +141,15 @@ namespace NathanHarrenstein.MusicTimeline.Scrapers
         }
 
 
-        public static void ScrapeComposersPage(ClassicalMusicContext classicalMusicContext)
+        public async static Task ScrapeComposersPageAsync(ClassicalMusicContext classicalMusicContext)
         {
             for (char c = 'A'; c <= 'Z'; c++)
             {
-                var htmlWeb = new HtmlWeb();
-                htmlWeb.PreRequest = delegate (HttpWebRequest webRequest)
-                {
-                    webRequest.Timeout = 300000;
-                    return true;
-                };
+                var webClient = new WebClient();
+                var htmlSource = await webClient.DownloadStringTaskAsync(new Uri($"http://www.klassika.info/Komponisten/lindex_{c}.html"));
 
-                var htmlDocument = htmlWeb.Load($"http://www.klassika.info/Komponisten/lindex_{c}.html");
+                var htmlDocument = new HtmlDocument();
+                htmlDocument.LoadHtml(htmlSource);
 
                 var column1 = htmlDocument.GetElementbyId("personen_s1v3");
                 var column2 = htmlDocument.GetElementbyId("personen_s2v3");
@@ -184,14 +181,14 @@ namespace NathanHarrenstein.MusicTimeline.Scrapers
                         classicalMusicContext.Composers.Add(composer);
                     }
 
-                    ScrapeComposerDetailPage($"http://www.klassika.info/{hypertextReference.Value}", composer, classicalMusicContext);
+                    await ScrapeComposerDetailPageAsync($"http://www.klassika.info/{hypertextReference.Value}", composer, classicalMusicContext);
                 }
             }
 
             classicalMusicContext.SaveChanges();
         }
 
-        public static void ScrapeComposerDetailPage(string url, Composer composer, ClassicalMusicContext classicalMusicContext, IProgress<double> progress = null, CancellationToken? cancellationToken = null)
+        public async static Task ScrapeComposerDetailPageAsync(string url, Composer composer, ClassicalMusicContext classicalMusicContext, IProgress<double> progress = null, CancellationToken? cancellationToken = null)
         {
             var composerLink = composer.Links.FirstOrDefault(l => l.Url.Contains("klassika.info"));
 
@@ -213,19 +210,16 @@ namespace NathanHarrenstein.MusicTimeline.Scrapers
 
             var composerKey = urlParts.ElementAt(urlParts.Length - 2);
 
-            ScrapeCompositionsPage($"http://www.klassika.info/Komponisten/{composerKey}/wv_abc.html", composer, classicalMusicContext, progress, cancellationToken);
+            await ScrapeCompositionsPageAsync($"http://www.klassika.info/Komponisten/{composerKey}/wv_abc.html", composer, classicalMusicContext, progress, cancellationToken);
         }
 
-        public static void ScrapeCompositionsPage(string url, Composer composer, ClassicalMusicContext classicalMusicContext, IProgress<double> progress = null, CancellationToken? cancellationToken = null)
+        public async static Task ScrapeCompositionsPageAsync(string url, Composer composer, ClassicalMusicContext classicalMusicContext, IProgress<double> progress = null, CancellationToken? cancellationToken = null)
         {
-            var htmlWeb = new HtmlWeb();
-            htmlWeb.PreRequest = delegate (HttpWebRequest webRequest)
-            {
-                webRequest.Timeout = 300000;
-                return true;
-            };
+            var webClient = new WebClient();
+            var htmlSource = await webClient.DownloadStringTaskAsync(new Uri(url));
 
-            var htmlDocument = htmlWeb.Load(url);
+            var htmlDocument = new HtmlDocument();
+            htmlDocument.LoadHtml(htmlSource);
 
             var tables = htmlDocument.DocumentNode.Descendants("table");
             var table = tables.FirstOrDefault(n =>
@@ -291,7 +285,7 @@ namespace NathanHarrenstein.MusicTimeline.Scrapers
                     composition.Composers = new List<Composer> { composer };
                     composition.Dates = compositionDate == "?" ? null : compositionDate;
 
-                    App.Current.Dispatcher.BeginInvoke(DispatcherPriority.Background, new Action(() => composer.Compositions.Add(composition)));
+                    composer.Compositions.Add(composition);
                 }
 
                 var catalogNumberString = (string)null;
@@ -357,7 +351,7 @@ namespace NathanHarrenstein.MusicTimeline.Scrapers
 
                 if (hypertextReference != null)
                 {
-                    ScrapeCompositionDetailPage($"http://www.klassika.info/{hypertextReference.Value}", composition, classicalMusicContext);
+                    await ScrapeCompositionDetailPageAsync($"http://www.klassika.info/{hypertextReference.Value}", composition, classicalMusicContext);
                 }
 
                 if (progress != null)
@@ -371,7 +365,7 @@ namespace NathanHarrenstein.MusicTimeline.Scrapers
             }
         }
 
-        public static void ScrapeCompositionDetailPage(string url, Composition composition, ClassicalMusicContext classicalMusicContext)
+        public async static Task ScrapeCompositionDetailPageAsync(string url, Composition composition, ClassicalMusicContext classicalMusicContext)
         {
             var compositionWebpage = composition.Links.FirstOrDefault(l => l.Url.Contains("klassika.info"));
 
@@ -384,14 +378,11 @@ namespace NathanHarrenstein.MusicTimeline.Scrapers
                 composition.Links.Add(compositionWebpage);
             }
 
-            var htmlWeb = new HtmlWeb();
-            htmlWeb.PreRequest = delegate (HttpWebRequest webRequest)
-            {
-                webRequest.Timeout = 300000;
-                return true;
-            };
+            var webClient = new WebClient();
+            var htmlSource = await webClient.DownloadStringTaskAsync(new Uri(url));
 
-            var htmlDocument = htmlWeb.Load(url);
+            var htmlDocument = new HtmlDocument();
+            htmlDocument.LoadHtml(htmlSource);
 
             var generalInformationHeader = htmlDocument.DocumentNode
                 .Descendants("h2")

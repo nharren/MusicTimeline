@@ -54,11 +54,6 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
         private async void TimelinePage_Loaded(object sender, RoutedEventArgs e)
         {
-            if (ProgressBar.Visibility == Visibility.Collapsed)
-            {
-                ProgressBar.Visibility = Visibility.Visible;
-            }
-
             var eraList = await _classicalMusicContext.Eras
                 .AsNoTracking()
                 .ToListAsync();
@@ -86,8 +81,6 @@ namespace NathanHarrenstein.MusicTimeline.Views
             {
                 timeline.VerticalOffset = verticalOffset.Value;
             }
-
-            ProgressBar.Visibility = Visibility.Collapsed;
         }
 
         ~TimelinePage()
