@@ -6,7 +6,7 @@ namespace NathanHarrenstein.MusicLibraryDb
     public partial class MusicLibraryContext : DbContext
     {
         public MusicLibraryContext()
-            : base("name=MusicLibraryContext")
+            : base()
         {
         }
 

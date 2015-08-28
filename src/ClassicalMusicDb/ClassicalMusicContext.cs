@@ -8,7 +8,7 @@ namespace NathanHarrenstein.ClassicalMusicDb
     public partial class ClassicalMusicContext : DbContext
     {
         public ClassicalMusicContext()
-            : base("name=ClassicalMusicDbContext")
+            : base("name=ClassicalMusicContext")
         {
             Database.SetInitializer<ClassicalMusicContext>(null);
         }
