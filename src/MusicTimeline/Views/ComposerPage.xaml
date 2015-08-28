@@ -901,7 +901,7 @@
                     <Rectangle Grid.Row="1"
                                Fill="#AA6E6E6E"
                                StrokeThickness="0" />
-                    <c:NonBlockingFlowDocumentScrollViewer x:Name="FlowDocumenScrollViewer"
+                    <c:NonBlockingFlowDocumentScrollViewer x:Name="FlowDocumentScrollViewer"
                                                            Grid.Row="2"
                                                            Margin="0,10,0,0"
                                                            HorizontalScrollBarVisibility="Disabled"
