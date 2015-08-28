@@ -11,7 +11,7 @@ namespace NathanHarrenstein.Timeline
     public class EraPanel : Panel, IPan
     {
         public static readonly DependencyProperty DatesProperty = DependencyProperty.Register("Dates", typeof(ExtendedDateTimeInterval), typeof(EraPanel));
-        public static readonly DependencyProperty ErasProperty = DependencyProperty.Register("Eras", typeof(IReadOnlyList<ITimelineEra>), typeof(EraPanel));
+        public static readonly DependencyProperty ErasProperty = DependencyProperty.Register("Eras", typeof(IReadOnlyList<ITimelineEra>), typeof(EraPanel), new PropertyMetadata(new PropertyChangedCallback(EraPanel_ErasChanged)));
         public static readonly DependencyProperty EraTemplatesProperty = DependencyProperty.Register("EraTemplates", typeof(List<DataTemplate>), typeof(EraPanel));
         public static readonly DependencyProperty ResolutionProperty = DependencyProperty.Register("Resolution", typeof(TimeResolution), typeof(EraPanel));
         public static readonly DependencyProperty RulerProperty = DependencyProperty.Register("Ruler", typeof(TimeRuler), typeof(EraPanel));
@@ -230,6 +230,18 @@ namespace NathanHarrenstein.Timeline
             }
 
             return base.MeasureOverride(availableSize);
+        }
+
+        private static void EraPanel_ErasChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            ((EraPanel)d).ClearCache();
+        }
+
+        private void ClearCache()
+        {
+            _cache = null;
+            _hasViewChanged = true;
+            InvalidateMeasure();
         }
     }
 }

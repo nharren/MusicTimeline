@@ -20,14 +20,26 @@
     <Page.InputBindings>
         <KeyBinding Key="F11" Command="{Binding FullScreenCommand}" />
     </Page.InputBindings>
-    <DockPanel Background="{StaticResource BackgroundBrush}">
+    <Grid Background="{StaticResource BackgroundBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition />
+        </Grid.RowDefinitions>
+        <ProgressBar Name="ProgressBar"
+                     Height="6"
+                     IsIndeterminate="True" />
         <t:Timeline Name="timeline"
+                    Grid.Row="1"
                     BackgroundImage="{StaticResource BackgroundImage}"
                     DataContext="{Binding }"
                     EventHeight="40"
                     EventSpacing="1"
                     LineStroke="#FF333333"
+                    Resolution="Decade"
                     TimeForeground="White">
+            <t:Timeline.Ruler>
+                <t:TimeRuler TimeRulerUnit="Day" TimeUnitWidth="0.04109589041" />
+            </t:Timeline.Ruler>
             <t:Timeline.ContextMenu>
                 <ContextMenu DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource Mode=Self}}">
                     <MenuItem Header="File">
@@ -164,5 +176,5 @@
                 </DataTemplate>
             </t:Timeline.EventTemplates>
         </t:Timeline>
-    </DockPanel>
+    </Grid>
 </Page>
