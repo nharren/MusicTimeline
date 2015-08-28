@@ -29,8 +29,6 @@ namespace NathanHarrenstein.MusicTimeline.Views
     public partial class InputPage : Page, IDisposable
     {
         private ClassicalMusicContext _classicalMusicContext;
-        private Queue<Action> _dataLoadingQueue = new Queue<Action>();
-        private Thread _dataLoadingThread;
         private bool _isDisposed = false;
         private ObservableCollection<Composer> _selectedComposers;
         private Composition _selectedComposition;
@@ -44,16 +42,41 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
             if (!DesignerProperties.GetIsInDesignMode(this))
             {
-                Initialize();
+                _classicalMusicContext = new ClassicalMusicContext();
+
+                var stringSelector = new Func<object, string>(o => ((Location)o).Name);
+
+                ComposerBirthLocationAutoCompleteBox.StringSelector = stringSelector;
+                ComposerDeathLocationAutoCompleteBox.StringSelector = stringSelector;
+
+                Loaded += InputPage_Loaded;
             }
+        }
+
+        private async void InputPage_Loaded(object sender, RoutedEventArgs e)
+        {
+            await _classicalMusicContext.Composers.LoadAsync();
+
+            ComposerListBox.SetBinding(ItemsControl.ItemsSourceProperty, BindingBuilder.Build(_classicalMusicContext.Composers.Local.OrderBy(c => c.Name)));
+
+            await _classicalMusicContext.Eras.LoadAsync();
+
+            ComposerEraListBox.SetBinding(ItemsControl.ItemsSourceProperty, BindingBuilder.Build(_classicalMusicContext.Eras.Local));
+
+            await _classicalMusicContext.Nationalities.LoadAsync();
+
+            ComposerNationalityListBox.SetBinding(ItemsControl.ItemsSourceProperty, BindingBuilder.Build(_classicalMusicContext.Nationalities.Local.OrderBy(c => c.Name)));
+
+            await _classicalMusicContext.Locations.LoadAsync();
+       
+            ComposerBirthLocationAutoCompleteBox.SetBinding(AutoCompleteBox.SuggestionsProperty, BindingBuilder.Build(_classicalMusicContext.Locations.Local));
+            ComposerDeathLocationAutoCompleteBox.SetBinding(AutoCompleteBox.SuggestionsProperty, BindingBuilder.Build(_classicalMusicContext.Locations.Local));
         }
 
         ~InputPage()
         {
             Dispose(false);
         }
-
-        private event EventHandler InitialDataLoaded;
 
         public void ClearComposerSection()
         {
@@ -421,14 +444,6 @@ namespace NathanHarrenstein.MusicTimeline.Views
             }
         }
 
-        protected virtual void OnInitialDataLoaded()
-        {
-            if (InitialDataLoaded != null)
-            {
-                InitialDataLoaded(this, null);
-            }
-        }
-
         private void CancelButton_Click(object sender, RoutedEventArgs e)
         {
             _classicalMusicContext.Dispose();
@@ -623,11 +638,83 @@ namespace NathanHarrenstein.MusicTimeline.Views
             }
         }
 
-        private void ComposerLinkListBox_Drop(object sender, DragEventArgs e)
+        private async void ComposerLinkListBox_Drop(object sender, DragEventArgs e)
         {
             if (ComposerLinkListBox.IsEnabled && e.Data.GetDataPresent(DataFormats.UnicodeText))
             {
-                Dispatcher.BeginInvoke(new Action<string>(DropComposerLink), e.Data.GetData(DataFormats.UnicodeText));
+                var url = (string)e.Data.GetData(DataFormats.UnicodeText);
+
+                try
+                {
+                    if (!url.StartsWith("http"))
+                    {
+                        url = "http://" + url;
+                    }
+
+                    if (!FileUtility.WebsiteExists(url))
+                    {
+                        return;
+                    }
+
+                    var link = new Link();
+                    link.Composers.Add(_selectedComposers[0]);
+                    link.Url = url;
+                    link.Name = UrlToTitleConverter.UrlToTitle(url);
+
+                    _selectedComposers[0].Links.Add(link);
+                    ComposerLinkListBox.SelectedItem = link;
+
+                    if (url.Contains("wikipedia"))
+                    {
+                        _selectedComposers[0].Biography = BiographyUtility.CleanXaml(HtmlToXamlConverter.ConvertHtmlToXaml(WikipediaScraper.ScrapeArticle(url), false));
+                        ComposerBiographyTextBox.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
+                    }
+
+                    if (url.Contains("charles.smith"))
+                    {
+                        ClassicalMusicNavigatorScraper.ScrapeComposer(url, _selectedComposers[0], _classicalMusicContext);
+                    }
+
+                    if (url.Contains("klassika"))
+                    {
+                        var progressBar = new ProgressBar();
+                        progressBar.Width = 500;
+                        progressBar.Height = 20;
+                        progressBar.Maximum = 1;
+                        progressBar.Minimum = 0;
+                        progressBar.Margin = new Thickness(15);
+
+                        var progressDialog = new Window();
+                        progressDialog.Content = progressBar;
+                        progressDialog.ResizeMode = ResizeMode.NoResize;
+                        progressDialog.WindowStartupLocation = WindowStartupLocation.CenterOwner;
+                        progressDialog.Owner = App.Current.MainWindow;
+                        progressDialog.ShowInTaskbar = false;
+                        progressDialog.SizeToContent = SizeToContent.WidthAndHeight;
+                        progressDialog.Title = "Downloading Compositions";
+
+                        var progress = new Progress<double>();
+                        progress.ProgressChanged += (o, p) =>
+                        {
+                            progressBar.Value = p;
+
+                            if (p == 1d)
+                            {
+                                progressDialog.Close();
+                            }
+                        };
+
+                        var cancellationTokenSource = new CancellationTokenSource();
+
+                        await KlassikaScraper.ScrapeComposerDetailPageAsync(url, _selectedComposers[0], _classicalMusicContext, progress, cancellationTokenSource.Token);
+
+                        progressDialog.ShowDialog();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Logger.Log(ex.ToString(), "MusicTimeline.log");
+                }
             }
         }
 
@@ -1029,83 +1116,6 @@ namespace NathanHarrenstein.MusicTimeline.Views
             RefreshCompositionSection();
         }
 
-        private void DropComposerLink(string url)
-        {
-            try
-            {
-                if (!url.StartsWith("http"))
-                {
-                    url = "http://" + url;
-                }
-
-                if (!FileUtility.WebsiteExists(url))
-                {
-                    return;
-                }
-
-                var link = new Link();
-                link.Composers.Add(_selectedComposers[0]);
-                link.Url = url;
-                link.Name = UrlToTitleConverter.UrlToTitle(url);
-
-                _selectedComposers[0].Links.Add(link);
-                ComposerLinkListBox.SelectedItem = link;
-
-                if (url.Contains("wikipedia"))
-                {
-                    _selectedComposers[0].Biography = BiographyUtility.CleanXaml(HtmlToXamlConverter.ConvertHtmlToXaml(WikipediaScraper.ScrapeArticle(url), false));
-                    ComposerBiographyTextBox.GetBindingExpression(TextBox.TextProperty).UpdateTarget();
-                }
-
-                if (url.Contains("charles.smith"))
-                {
-                    ClassicalMusicNavigatorScraper.ScrapeComposer(url, _selectedComposers[0], _classicalMusicContext);
-                }
-
-                if (url.Contains("klassika"))
-                {
-                    var progressBar = new ProgressBar();
-                    progressBar.Width = 500;
-                    progressBar.Height = 20;
-                    progressBar.Maximum = 1;
-                    progressBar.Minimum = 0;
-                    progressBar.Margin = new Thickness(15);
-
-                    var progressDialog = new Window();
-                    progressDialog.Content = progressBar;
-                    progressDialog.ResizeMode = ResizeMode.NoResize;
-                    progressDialog.WindowStartupLocation = WindowStartupLocation.CenterOwner;
-                    progressDialog.Owner = App.Current.MainWindow;
-                    progressDialog.ShowInTaskbar = false;
-                    progressDialog.SizeToContent = SizeToContent.WidthAndHeight;
-                    progressDialog.Title = "Downloading Compositions";
-
-                    var progress = new Progress<double>();
-                    progress.ProgressChanged += (o, p) =>
-                    {
-                        progressBar.Value = p;
-
-                        if (p == 1d)
-                        {
-                            progressDialog.Close();
-                        }
-                    };
-
-                    var cancellationTokenSource = new CancellationTokenSource();
-
-                    _dataLoadingQueue.Enqueue(new Action(() => KlassikaScraper.ScrapeComposerDetailPage(url, _selectedComposers[0], _classicalMusicContext, progress, cancellationTokenSource.Token)));
-
-                    progressDialog.ShowDialog();
-
-                    cancellationTokenSource.Cancel();
-                }
-            }
-            catch (Exception ex)
-            {
-                Logger.Log(ex.ToString(), "MusicTimeline.log");
-            }
-        }
-
         private Recording GetRecordingFromFilePath(string selectedFilePath)
         {
             var flacTagger = new FlacTagger(selectedFilePath);
@@ -1125,49 +1135,6 @@ namespace NathanHarrenstein.MusicTimeline.Views
             }
 
             return null;
-        }
-
-        private void Initialize()
-        {
-            InitializeAutoCompleteBoxStringSelectors();
-
-            InitialDataLoaded += InputPage_InitialDataLoaded;
-
-            InitializeDataThread();
-        }
-
-        private void InitializeAutoCompleteBoxStringSelectors()
-        {
-            var stringSelector = new Func<object, string>(o => ((Location)o).Name);
-
-            ComposerBirthLocationAutoCompleteBox.StringSelector = stringSelector;
-            ComposerDeathLocationAutoCompleteBox.StringSelector = stringSelector;
-        }
-
-        private void InitializeDataThread()
-        {
-            _dataLoadingThread = new Thread(new ThreadStart(StartDataLoadingLoop));
-            _dataLoadingThread.Name = "Data Loading Thread";
-            _dataLoadingThread.IsBackground = true;
-            _dataLoadingThread.Start();
-
-            _dataLoadingQueue.Enqueue(LoadInitialData);
-        }
-
-        private void InputPage_InitialDataLoaded(object sender, EventArgs e)
-        {
-            SetInitialBindings();
-        }
-
-        private void LoadInitialData()
-        {
-            _classicalMusicContext = new ClassicalMusicContext();
-            _classicalMusicContext.Composers.Load();
-            _classicalMusicContext.Eras.Load();
-            _classicalMusicContext.Locations.Load();
-            _classicalMusicContext.Nationalities.Load();
-
-            Dispatcher.Invoke(OnInitialDataLoaded);
         }
 
         private void MovementDeleteCommand_Executed(object sender, ExecutedRoutedEventArgs e)
@@ -1418,26 +1385,6 @@ namespace NathanHarrenstein.MusicTimeline.Views
             _selectedRecording.Performers.Add(performer);
 
             RecordingPerformerListBox.SelectedItem = performer;
-        }
-
-        private void SetInitialBindings()
-        {
-            ComposerListBox.SetBinding(ItemsControl.ItemsSourceProperty, BindingBuilder.Build(_classicalMusicContext.Composers.Local.OrderBy(c => c.Name)));
-            ComposerNationalityListBox.SetBinding(ItemsControl.ItemsSourceProperty, BindingBuilder.Build(_classicalMusicContext.Nationalities.Local.OrderBy(c => c.Name)));
-            ComposerEraListBox.SetBinding(ItemsControl.ItemsSourceProperty, BindingBuilder.Build(_classicalMusicContext.Eras.Local));
-            ComposerBirthLocationAutoCompleteBox.SetBinding(AutoCompleteBox.SuggestionsProperty, BindingBuilder.Build(_classicalMusicContext.Locations.Local));
-            ComposerDeathLocationAutoCompleteBox.SetBinding(AutoCompleteBox.SuggestionsProperty, BindingBuilder.Build(_classicalMusicContext.Locations.Local));
-        }
-
-        private void StartDataLoadingLoop()
-        {
-            while (!_isDisposed)
-            {
-                if (_dataLoadingQueue.Count > 0)
-                {
-                    _dataLoadingQueue.Dequeue()();
-                }
-            }
         }
 
         private void SubmitButton_Click(object sender, RoutedEventArgs e)

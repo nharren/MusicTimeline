@@ -21,13 +21,6 @@
         <KeyBinding Key="F11" Command="{Binding FullScreenCommand}" />
     </Page.InputBindings>
     <Grid Background="{StaticResource BackgroundBrush}">
-        <Grid.RowDefinitions>
-            <RowDefinition Height="Auto" />
-            <RowDefinition />
-        </Grid.RowDefinitions>
-        <ProgressBar Name="ProgressBar"
-                     Height="6"
-                     IsIndeterminate="True" />
         <t:Timeline Name="timeline"
                     Grid.Row="1"
                     BackgroundImage="{StaticResource BackgroundImage}"
