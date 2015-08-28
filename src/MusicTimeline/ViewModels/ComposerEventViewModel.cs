@@ -10,15 +10,12 @@ namespace NathanHarrenstein.MusicTimeline.ViewModels
     public class ComposerEventViewModel : ITimelineEvent
     {
         private readonly Brush _background;
-        private readonly string _born;
         private readonly ICommand _clickCommand;
         private readonly Composer _composer;
         private readonly ExtendedDateTimeInterval _dates;
-        private readonly string _died;
         private readonly IEnumerable<ComposerEraViewModel> _eras;
         private readonly Brush _foreground;
         private readonly string _label;
-        private readonly ICommand _playPopularCommand;
 
         public ComposerEventViewModel(string label, ExtendedDateTimeInterval dates, Composer composer, Brush background, Brush foreground, IEnumerable<ComposerEraViewModel> eras, ICommand clickCommand)
         {

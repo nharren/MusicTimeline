@@ -23,7 +23,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
         public static readonly DependencyProperty ManageDataCommandProperty = DependencyProperty.Register("ManageDataCommand", typeof(ICommand), typeof(TimelinePage));
         public static readonly DependencyProperty RebuildThumbnailCacheCommandProperty = DependencyProperty.Register("RebuildThumbnailCacheCommand", typeof(ICommand), typeof(TimelinePage));
 
-        private ClassicalMusicDbContext _classicalMusicDbContext;
+        private ClassicalMusicContext _classicalMusicContext;
         private bool _isDisposed = false;
 
         public TimelinePage()
@@ -128,10 +128,10 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
         public void Initialize()
         {
-            _classicalMusicDbContext = new ClassicalMusicDbContext();
+            _classicalMusicContext = new ClassicalMusicContext();
 
-            var eraList = _classicalMusicDbContext.Eras.AsNoTracking().ToList();
-            var composers = _classicalMusicDbContext.Composers.AsNoTracking();
+            var eraList = _classicalMusicContext.Eras.AsNoTracking().ToList();
+            var composers = _classicalMusicContext.Composers.AsNoTracking();
 
             var composerEraViewModels = ComposerEraViewModelBuilder.Build(eraList);
 
@@ -156,7 +156,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
         {
             if (!_isDisposed)
             {
-                _classicalMusicDbContext.Dispose();
+                _classicalMusicContext.Dispose();
 
                 _isDisposed = true;
             }
@@ -219,9 +219,9 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
         private void GoToEra(object obj)
         {
-            var eraQuery = _classicalMusicDbContext.Eras.First(e => e.Name == (string)obj);
+            var eraQuery = _classicalMusicContext.Eras.First(e => e.Name == (string)obj);
 
-            var composersSortedByDate = _classicalMusicDbContext.Composers.ToArray()
+            var composersSortedByDate = _classicalMusicContext.Composers.ToArray()
                 .Select(c => Tuple.Create(ExtendedDateTimeInterval.Parse(c.Dates).Earliest(), c))
                 .OrderBy(t => t.Item1);
 

@@ -141,7 +141,7 @@ namespace NathanHarrenstein.MusicTimeline.Scrapers
         }
 
 
-        public static void ScrapeComposersPage(ClassicalMusicDbContext classicalMusicDbContext)
+        public static void ScrapeComposersPage(ClassicalMusicContext classicalMusicContext)
         {
             for (char c = 'A'; c <= 'Z'; c++)
             {
@@ -174,24 +174,24 @@ namespace NathanHarrenstein.MusicTimeline.Scrapers
                     var composerNameAndDate = HtmlEntity.DeEntitize(anchor.InnerText);
                     var composerNameAndDateParts = composerNameAndDate.Split(new string[] { " (" }, 2, StringSplitOptions.None);
                     var composerName = composerNameAndDateParts.Length == 2 ? composerNameAndDateParts[0] : composerNameAndDate;
-                    var composer = classicalMusicDbContext.Composers.FirstOrDefault(co => co.Name == composerName);
+                    var composer = classicalMusicContext.Composers.FirstOrDefault(co => co.Name == composerName);
 
                     if (composer == null)
                     {
                         composer = new Composer();
                         composer.Name = composerName;
 
-                        classicalMusicDbContext.Composers.Add(composer);
+                        classicalMusicContext.Composers.Add(composer);
                     }
 
-                    ScrapeComposerDetailPage($"http://www.klassika.info/{hypertextReference.Value}", composer, classicalMusicDbContext);
+                    ScrapeComposerDetailPage($"http://www.klassika.info/{hypertextReference.Value}", composer, classicalMusicContext);
                 }
             }
 
-            classicalMusicDbContext.SaveChanges();
+            classicalMusicContext.SaveChanges();
         }
 
-        public static void ScrapeComposerDetailPage(string url, Composer composer, ClassicalMusicDbContext classicalMusicDbContext, IProgress<double> progress = null, CancellationToken? cancellationToken = null)
+        public static void ScrapeComposerDetailPage(string url, Composer composer, ClassicalMusicContext classicalMusicContext, IProgress<double> progress = null, CancellationToken? cancellationToken = null)
         {
             var composerLink = composer.Links.FirstOrDefault(l => l.Url.Contains("klassika.info"));
 
@@ -213,10 +213,10 @@ namespace NathanHarrenstein.MusicTimeline.Scrapers
 
             var composerKey = urlParts.ElementAt(urlParts.Length - 2);
 
-            ScrapeCompositionsPage($"http://www.klassika.info/Komponisten/{composerKey}/wv_abc.html", composer, classicalMusicDbContext, progress, cancellationToken);
+            ScrapeCompositionsPage($"http://www.klassika.info/Komponisten/{composerKey}/wv_abc.html", composer, classicalMusicContext, progress, cancellationToken);
         }
 
-        public static void ScrapeCompositionsPage(string url, Composer composer, ClassicalMusicDbContext classicalMusicDbContext, IProgress<double> progress = null, CancellationToken? cancellationToken = null)
+        public static void ScrapeCompositionsPage(string url, Composer composer, ClassicalMusicContext classicalMusicContext, IProgress<double> progress = null, CancellationToken? cancellationToken = null)
         {
             var htmlWeb = new HtmlWeb();
             htmlWeb.PreRequest = delegate (HttpWebRequest webRequest)
@@ -299,12 +299,12 @@ namespace NathanHarrenstein.MusicTimeline.Scrapers
 
                 if (!string.IsNullOrWhiteSpace(genreName))
                 {
-                    if (classicalMusicDbContext.Genres.Local.Count == 0)
+                    if (classicalMusicContext.Genres.Local.Count == 0)
                     {
-                        classicalMusicDbContext.Genres.Load();
+                        classicalMusicContext.Genres.Load();
                     }
 
-                    var genre = classicalMusicDbContext.Genres.Local.FirstOrDefault(ct => ct.Name == genreName);
+                    var genre = classicalMusicContext.Genres.Local.FirstOrDefault(ct => ct.Name == genreName);
 
                     if (genre == null)
                     {
@@ -312,7 +312,7 @@ namespace NathanHarrenstein.MusicTimeline.Scrapers
                         genre.Name = genreName;
                         genre.Compositions.Add(composition);
 
-                        classicalMusicDbContext.Genres.Add(genre);
+                        classicalMusicContext.Genres.Add(genre);
                     }
 
                     if (composition.Genre == null)
@@ -357,7 +357,7 @@ namespace NathanHarrenstein.MusicTimeline.Scrapers
 
                 if (hypertextReference != null)
                 {
-                    ScrapeCompositionDetailPage($"http://www.klassika.info/{hypertextReference.Value}", composition, classicalMusicDbContext);
+                    ScrapeCompositionDetailPage($"http://www.klassika.info/{hypertextReference.Value}", composition, classicalMusicContext);
                 }
 
                 if (progress != null)
@@ -371,7 +371,7 @@ namespace NathanHarrenstein.MusicTimeline.Scrapers
             }
         }
 
-        public static void ScrapeCompositionDetailPage(string url, Composition composition, ClassicalMusicDbContext classicalMusicDbContext)
+        public static void ScrapeCompositionDetailPage(string url, Composition composition, ClassicalMusicContext classicalMusicContext)
         {
             var compositionWebpage = composition.Links.FirstOrDefault(l => l.Url.Contains("klassika.info"));
 
@@ -417,7 +417,7 @@ namespace NathanHarrenstein.MusicTimeline.Scrapers
 
                     if (header == "Tonart:")
                     {
-                        var key = classicalMusicDbContext.Keys.FirstOrDefault(k => k.Name == value);
+                        var key = classicalMusicContext.Keys.FirstOrDefault(k => k.Name == value);
 
                         if (key == null)
                         {
@@ -427,7 +427,7 @@ namespace NathanHarrenstein.MusicTimeline.Scrapers
 
                             composition.Key = key;
 
-                            classicalMusicDbContext.Keys.Add(key);
+                            classicalMusicContext.Keys.Add(key);
                         }
 
                         if (composition.Key == null)
@@ -445,7 +445,7 @@ namespace NathanHarrenstein.MusicTimeline.Scrapers
                     }
                     else if (header == "Besetzung:")
                     {
-                        var instrumentation = classicalMusicDbContext.Instrumentations.FirstOrDefault(i => i.Name == value);
+                        var instrumentation = classicalMusicContext.Instrumentations.FirstOrDefault(i => i.Name == value);
 
                         if (instrumentation == null)
                         {
@@ -455,7 +455,7 @@ namespace NathanHarrenstein.MusicTimeline.Scrapers
 
                             composition.Instrumentation = instrumentation;
 
-                            classicalMusicDbContext.Instrumentations.Add(instrumentation);
+                            classicalMusicContext.Instrumentations.Add(instrumentation);
                         }
 
                         if (composition.Instrumentation == null)

@@ -20,7 +20,7 @@ namespace NathanHarrenstein.ClassicalMusicDb
             Performers = new ObservableCollection<Performer>();
         }
 
-        public int Id { get; set; }
+        public int RecordingId { get; set; }
 
         public int? TrackNumber { get; set; }
 
