@@ -16,7 +16,7 @@ namespace NathanHarrenstein.Timeline
         public static readonly DependencyProperty DatesProperty = DependencyProperty.Register("Dates", typeof(ExtendedDateTimeInterval), typeof(EventPanel));
         public static readonly DependencyProperty EventHeightProperty = DependencyProperty.Register("EventHeight", typeof(double), typeof(EventPanel));
         public static readonly DependencyProperty EventSpacingProperty = DependencyProperty.Register("EventSpacing", typeof(double), typeof(EventPanel));
-        public static readonly DependencyProperty EventsProperty = DependencyProperty.Register("Events", typeof(IReadOnlyList<ITimelineEvent>), typeof(EventPanel));
+        public static readonly DependencyProperty EventsProperty = DependencyProperty.Register("Events", typeof(IReadOnlyList<ITimelineEvent>), typeof(EventPanel), new PropertyMetadata(new PropertyChangedCallback(EventPanel_EventsChanged)));
         public static readonly DependencyProperty EventTemplatesProperty = DependencyProperty.Register("EventTemplates", typeof(List<DataTemplate>), typeof(EventPanel));
         public static readonly DependencyProperty HorizontalOffsetProperty = DependencyProperty.Register("HorizontalOffset", typeof(double), typeof(EventPanel));
         public static readonly DependencyProperty ResolutionProperty = DependencyProperty.Register("Resolution", typeof(TimeResolution), typeof(EventPanel));
@@ -435,6 +435,18 @@ namespace NathanHarrenstein.Timeline
             RequestPan(new Vector(0, -e.Delta));
 
             base.OnMouseWheel(e);
+        }
+
+        private static void EventPanel_EventsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            ((EventPanel)d).ClearCache();
+        }
+
+        private void ClearCache()
+        {
+            _cache = null;
+            _hasViewChanged = true;
+            InvalidateMeasure();
         }
 
         private void EventPanel_MouseHorizontalWheel(object sender, MouseHorizontalWheelEventArgs e)

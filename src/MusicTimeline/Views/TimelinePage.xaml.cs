@@ -5,6 +5,7 @@ using NathanHarrenstein.MusicTimeline.Input;
 using NathanHarrenstein.Timeline;
 using System;
 using System.ComponentModel;
+using System.Data.Entity;
 using System.EDTF;
 using System.Linq;
 using System.Windows;
@@ -24,7 +25,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
         public static readonly DependencyProperty RebuildThumbnailCacheCommandProperty = DependencyProperty.Register("RebuildThumbnailCacheCommand", typeof(ICommand), typeof(TimelinePage));
 
         private ClassicalMusicContext _classicalMusicContext;
-        private bool _isDisposed = false;
+        private bool _isDisposed;
 
         public TimelinePage()
         {
@@ -32,8 +33,61 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
             if (!DesignerProperties.GetIsInDesignMode(this))
             {
-                Initialize();
+                _classicalMusicContext = new ClassicalMusicContext();
+
+                ManageDataCommand = new DelegateCommand(NavigateToInputPage);
+                CloseCommand = new DelegateCommand(Exit);
+                GoToCommand = new DelegateCommand(GoToEra);
+                RebuildThumbnailCacheCommand = new DelegateCommand(RebuildThumbnailCache);
+                FullScreenCommand = new DelegateCommand(ExpandToFullScreen);
+                ChangeResolutionCommand = new DelegateCommand(ChangeResolution);
+
+                timeline.Ruler = new TimeRuler();
+                timeline.Ruler.TimeRulerUnit = TimeRulerUnit.Day;
+                timeline.Ruler.TimeUnitWidth = 0.04109589041;
+                timeline.Resolution = TimeResolution.Decade;
+                timeline.Dates = new ExtendedDateTimeInterval(new ExtendedDateTime(476, 1, 1), ExtendedDateTime.Now);
+
+                Loaded += TimelinePage_Loaded;
             }
+        }
+
+        private async void TimelinePage_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (ProgressBar.Visibility == Visibility.Collapsed)
+            {
+                ProgressBar.Visibility = Visibility.Visible;
+            }
+
+            var eraList = await _classicalMusicContext.Eras
+                .AsNoTracking()
+                .ToListAsync();
+
+            var composerEraViewModels = ComposerEraViewModelBuilder.Build(eraList);
+
+            timeline.Eras = composerEraViewModels;
+
+            var composers = await _classicalMusicContext.Composers
+                .AsNoTracking()
+                .ToListAsync();
+
+            timeline.Events = ComposerEventViewModelBuilder.Build(composers, composerEraViewModels, timeline);
+
+            var horizontalOffset = Application.Current.Properties["HorizontalOffset"] as double?;
+
+            if (horizontalOffset != null)
+            {
+                timeline.HorizontalOffset = horizontalOffset.Value;
+            }
+
+            var verticalOffset = Application.Current.Properties["VerticalOffset"] as double?;
+
+            if (verticalOffset != null)
+            {
+                timeline.VerticalOffset = verticalOffset.Value;
+            }
+
+            ProgressBar.Visibility = Visibility.Collapsed;
         }
 
         ~TimelinePage()
@@ -124,32 +178,6 @@ namespace NathanHarrenstein.MusicTimeline.Views
             Dispose(true);
 
             GC.SuppressFinalize(this);
-        }
-
-        public void Initialize()
-        {
-            _classicalMusicContext = new ClassicalMusicContext();
-
-            var eraList = _classicalMusicContext.Eras.AsNoTracking().ToList();
-            var composers = _classicalMusicContext.Composers.AsNoTracking();
-
-            var composerEraViewModels = ComposerEraViewModelBuilder.Build(eraList);
-
-            ManageDataCommand = new DelegateCommand(NavigateToInputPage);
-            CloseCommand = new DelegateCommand(Exit);
-            GoToCommand = new DelegateCommand(GoToEra);
-            RebuildThumbnailCacheCommand = new DelegateCommand(RebuildThumbnailCache);
-            FullScreenCommand = new DelegateCommand(ExpandToFullScreen);
-            ChangeResolutionCommand = new DelegateCommand(ChangeResolution);
-
-            timeline.Dates = new ExtendedDateTimeInterval(new ExtendedDateTime(476, 1, 1), ExtendedDateTime.Now);
-            timeline.Eras = composerEraViewModels;
-            timeline.Ruler = new TimeRuler();
-            timeline.Ruler.TimeRulerUnit = TimeRulerUnit.Day;
-            timeline.Ruler.TimeUnitWidth = 0.04109589041;
-            timeline.Resolution = TimeResolution.Decade;
-            timeline.Events = ComposerEventViewModelBuilder.Build(composers, composerEraViewModels, timeline);
-            timeline.Loaded += Timeline_Loaded;
         }
 
         protected virtual void Dispose(bool disposing)
@@ -259,23 +287,6 @@ namespace NathanHarrenstein.MusicTimeline.Views
             Application.Current.Properties["VerticalOffset"] = timeline.VerticalOffset;
 
             NavigationService.Refresh();
-        }
-
-        private void Timeline_Loaded(object sender, RoutedEventArgs e)
-        {
-            var horizontalOffset = Application.Current.Properties["HorizontalOffset"] as double?;
-
-            if (horizontalOffset != null)
-            {
-                timeline.HorizontalOffset = horizontalOffset.Value;
-            }
-
-            var verticalOffset = Application.Current.Properties["VerticalOffset"] as double?;
-
-            if (verticalOffset != null)
-            {
-                timeline.VerticalOffset = verticalOffset.Value;
-            }
         }
     }
 }
