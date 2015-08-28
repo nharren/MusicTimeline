@@ -1671,9 +1671,9 @@
       <Project>{64e83bf1-43a0-47a7-bb5e-a0fd4454c89d}</Project>
       <Name>ClassicalMusicDb</Name>
     </ProjectReference>
-    <ProjectReference Include="..\LibraryDb\LibraryDB.csproj">
+    <ProjectReference Include="..\MusicLibraryDb\MusicLibraryDb.csproj">
       <Project>{0ba043e6-3d96-4d32-8a2e-c54de859d59f}</Project>
-      <Name>LibraryDB</Name>
+      <Name>MusicLibraryDb</Name>
     </ProjectReference>
     <ProjectReference Include="..\Timeline\Timeline.csproj">
       <Project>{29f6b562-eed2-4ec5-9316-a6994a96e82d}</Project>

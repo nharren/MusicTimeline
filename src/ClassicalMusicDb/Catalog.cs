@@ -16,7 +16,7 @@ namespace NathanHarrenstein.ClassicalMusicDb
             CatalogNumbers = new ObservableCollection<CatalogNumber>();
         }
 
-        public int Id { get; set; }
+        public int CatalogId { get; set; }
 
         [Required]
         public string Prefix { get; set; }

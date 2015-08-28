@@ -31,7 +31,7 @@ namespace NathanHarrenstein.MusicTimeline.Converters
 
             var bitmap = (BitmapImage)null;
 
-            if (!_bitmapCache.TryGetValue(composerImage.Id, out bitmap))
+            if (!_bitmapCache.TryGetValue(composerImage.ComposerImageId, out bitmap))
             {
                 bitmap = new BitmapImage();
                 bitmap.BeginInit();
@@ -39,7 +39,7 @@ namespace NathanHarrenstein.MusicTimeline.Converters
                 bitmap.EndInit();
                 bitmap.Freeze();
 
-                _bitmapCache[composerImage.Id] = bitmap;
+                _bitmapCache[composerImage.ComposerImageId] = bitmap;
 
                 return bitmap;
             }

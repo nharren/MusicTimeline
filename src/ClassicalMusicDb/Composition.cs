@@ -20,7 +20,7 @@ namespace NathanHarrenstein.ClassicalMusicDb
             Recordings = new ObservableCollection<Recording>();
         }
 
-        public int Id { get; set; }
+        public int CompositionId { get; set; }
 
         [Required]
         public string Name { get; set; }

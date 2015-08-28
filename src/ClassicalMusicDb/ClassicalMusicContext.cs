@@ -5,12 +5,12 @@ namespace NathanHarrenstein.ClassicalMusicDb
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Linq;
 
-    public partial class ClassicalMusicDbContext : DbContext
+    public partial class ClassicalMusicContext : DbContext
     {
-        public ClassicalMusicDbContext()
+        public ClassicalMusicContext()
             : base("name=ClassicalMusicDbContext")
         {
-            Database.SetInitializer<ClassicalMusicDbContext>(null);
+            Database.SetInitializer<ClassicalMusicContext>(null);
         }
 
         public virtual DbSet<Album> Albums { get; set; }

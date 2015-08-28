@@ -18,9 +18,9 @@ namespace NathanHarrenstein.MusicTimeline.Converters
         {
             var thumbnail = (BitmapImage)null;
 
-            if (_thumbnailCache.TryGetValue(composer.Id, out thumbnail))
+            if (_thumbnailCache.TryGetValue(composer.ComposerId, out thumbnail))
             {
-                return _thumbnailCache[composer.Id];
+                return _thumbnailCache[composer.ComposerId];
             }
 
             var directoryPath = $@"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData, Environment.SpecialFolderOption.Create)}\Music Timeline\Resources\Thumbnails\";
@@ -30,7 +30,7 @@ namespace NathanHarrenstein.MusicTimeline.Converters
                 Directory.CreateDirectory(directoryPath);
             }
 
-            var thumbnailPath = $@"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData, Environment.SpecialFolderOption.Create)}\Music Timeline\Resources\Thumbnails\{composer.Id}.jpg";
+            var thumbnailPath = $@"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData, Environment.SpecialFolderOption.Create)}\Music Timeline\Resources\Thumbnails\{composer.ComposerId}.jpg";
             var thumbnailUri = new Uri(thumbnailPath, UriKind.Absolute);
 
             if (File.Exists(thumbnailPath))
@@ -42,7 +42,7 @@ namespace NathanHarrenstein.MusicTimeline.Converters
                 thumbnail.EndInit();
                 thumbnail.Freeze();
 
-                _thumbnailCache[composer.Id] = thumbnail;
+                _thumbnailCache[composer.ComposerId] = thumbnail;
 
                 return thumbnail;
             }
@@ -76,7 +76,7 @@ namespace NathanHarrenstein.MusicTimeline.Converters
         private static BitmapImage CreateThumbnail(Composer composer)
         {
             BitmapImage thumbnail = null;
-            var thumbnailPath = $@"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData, Environment.SpecialFolderOption.Create)}\Music Timeline\Resources\Thumbnails\{composer.Id}.jpg";
+            var thumbnailPath = $@"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData, Environment.SpecialFolderOption.Create)}\Music Timeline\Resources\Thumbnails\{composer.ComposerId}.jpg";
             var image = composer.ComposerImages.Select(ci => ci.Bytes).FirstOrDefault();
 
             if (image != null)
@@ -98,7 +98,7 @@ namespace NathanHarrenstein.MusicTimeline.Converters
                     encoder.Save(stream);
                 }
 
-                _thumbnailCache[composer.Id] = thumbnail;
+                _thumbnailCache[composer.ComposerId] = thumbnail;
 
                 return thumbnail;
             }

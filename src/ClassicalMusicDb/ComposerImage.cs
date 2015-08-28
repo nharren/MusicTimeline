@@ -9,7 +9,7 @@ namespace NathanHarrenstein.ClassicalMusicDb
     [Table("ComposerImage")]
     public partial class ComposerImage
     {
-        public int Id { get; set; }
+        public int ComposerImageId { get; set; }
 
         [Required]
         public byte[] Bytes { get; set; }

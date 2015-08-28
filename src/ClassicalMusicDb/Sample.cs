@@ -9,7 +9,7 @@ namespace NathanHarrenstein.ClassicalMusicDb
     [Table("Sample")]
     public partial class Sample
     {
-        public int Id { get; set; }
+        public int SampleId { get; set; }
 
         [Required]
         public string Title { get; set; }

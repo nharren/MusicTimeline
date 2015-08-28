@@ -7,8 +7,8 @@
     <ProjectGuid>{0BA043E6-3D96-4D32-8A2E-C54DE859D59F}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>LibraryDb</RootNamespace>
-    <AssemblyName>LibraryDb</AssemblyName>
+    <RootNamespace>NathanHarrenstein.MusicLibraryDb</RootNamespace>
+    <AssemblyName>MusicLibraryDb</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <PublishUrl>publish\</PublishUrl>
@@ -67,23 +67,13 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="DataProvider.cs" />
+    <Compile Include="MusicLibraryContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Recording.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Library.mdf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="Library_log.ldf">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <DependentUpon>Library.mdf</DependentUpon>
-    </Content>
-    <None Include="Scripts\v1_InitialVersion.sql" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.5">

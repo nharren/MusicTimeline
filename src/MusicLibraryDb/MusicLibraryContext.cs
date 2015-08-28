@@ -1,12 +1,12 @@
-namespace NathanHarrenstein.LibraryDB
+namespace NathanHarrenstein.MusicLibraryDb
 {
     using System.Data.Entity;
     using System.Linq;
 
-    public partial class DataProvider : DbContext
+    public partial class MusicLibraryContext : DbContext
     {
-        public DataProvider()
-            : base("name=DataProvider1")
+        public MusicLibraryContext()
+            : base("name=MusicLibraryContext")
         {
         }
 
@@ -14,11 +14,11 @@ namespace NathanHarrenstein.LibraryDB
 
         public static void Add(int mdbid, string path)
         {
-            using (var dataProvider = new DataProvider())
+            using (var dataProvider = new MusicLibraryContext())
             {
                 var recording = new Recording();
-                recording.ID = dataProvider.Recordings.Count();
-                recording.MDBID = mdbid;
+                recording.RecordingId = dataProvider.Recordings.Count();
+                recording.ClassicalMusicDatabaseId = mdbid;
                 recording.FilePath = path;
 
                 dataProvider.Recordings.Add(recording);
@@ -28,10 +28,10 @@ namespace NathanHarrenstein.LibraryDB
 
         public static string[] Get(int mdbid)
         {
-            using (var dataProvider = new DataProvider())
+            using (var dataProvider = new MusicLibraryContext())
             {
                 return dataProvider.Recordings
-                    .Where(r => r.MDBID == mdbid)
+                    .Where(r => r.ClassicalMusicDatabaseId == mdbid)
                     .Select(r => r.FilePath)
                     .ToArray();
             }
@@ -39,7 +39,7 @@ namespace NathanHarrenstein.LibraryDB
 
         public static string[] GetAll()
         {
-            using (var dataProvider = new DataProvider())
+            using (var dataProvider = new MusicLibraryContext())
             {
                 return dataProvider.Recordings.Local.Select(r => r.FilePath).ToArray();
             }
@@ -47,7 +47,7 @@ namespace NathanHarrenstein.LibraryDB
 
         public static bool Has(string path)
         {
-            using (var dataProvider = new DataProvider())
+            using (var dataProvider = new MusicLibraryContext())
             {
                 return dataProvider.Recordings.Any(r => r.FilePath == path);
             }

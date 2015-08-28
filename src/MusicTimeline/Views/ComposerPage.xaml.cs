@@ -20,6 +20,7 @@ using System.Windows.Controls.Primitives;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Markup;
+using System.Windows.Media;
 using System.Windows.Navigation;
 
 namespace NathanHarrenstein.MusicTimeline.Views
@@ -27,7 +28,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
     public partial class ComposerPage : Page, IDisposable
     {
         private static LogicalComparer _logicalComparer;
-        private ClassicalMusicDbContext _classicalMusicDbContext;
+        private ClassicalMusicContext _classicalMusicContext;
         private Composer _composer;
         private FlacPlayer _flacPlayer;
         private bool _isDisposed;
@@ -38,7 +39,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
             InitializeComponent();
 
             _logicalComparer = new LogicalComparer();
-            _classicalMusicDbContext = new ClassicalMusicDbContext();
+            _classicalMusicContext = new ClassicalMusicContext();
             _sampleDictionary = new Dictionary<ISampleProvider, Sample>();
             _flacPlayer = new FlacPlayer();
 
@@ -69,7 +70,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
             var composerName = Application.Current.Properties["SelectedComposer"] as string;
 
-            _composer = await _classicalMusicDbContext.Composers
+            _composer = await _classicalMusicContext.Composers
                 .Where(c => c.Name == composerName)
                 .Include(c => c.CompositionCollections)
                 .Include(c => c.Compositions)
@@ -106,14 +107,14 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
             TreeView.SetBinding(ItemsControl.ItemsSourceProperty, BindingBuilder.Build(compositionTypes));
 
-            await _classicalMusicDbContext.Entry(_composer)
+            await _classicalMusicContext.Entry(_composer)
                 .Collection("ComposerImages")
                 .LoadAsync();
 
             ComposerImagesListBox.ItemsSource = _composer.ComposerImages.Count == 0 ? new List<ComposerImage> { GetDefaultComposerImage() } : _composer.ComposerImages;
             ComposerImagesListBox.SelectedIndex = 0;
 
-            await _classicalMusicDbContext.Entry(_composer)
+            await _classicalMusicContext.Entry(_composer)
                 .Collection("Samples")
                 .LoadAsync();
 
@@ -138,7 +139,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
         {
             if (!_isDisposed)
             {
-                _classicalMusicDbContext.Dispose();
+                _classicalMusicContext.Dispose();
                 _flacPlayer.Dispose();
 
                 _isDisposed = true;
@@ -228,7 +229,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
             }
 
             var flowDocument = new FlowDocument(section);
-            flowDocument.FontFamily = new System.Windows.Media.FontFamily("Cambria");
+            flowDocument.FontFamily = new FontFamily("Cambria");
             flowDocument.PagePadding = new Thickness(0, 5, 0, 0);
             flowDocument.TextAlignment = TextAlignment.Left;
 

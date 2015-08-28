@@ -13,7 +13,7 @@ namespace NathanHarrenstein.MusicTimeline.Scrapers
 {
    public static class ClassicalMusicNavigatorScraper
     {
-        public static void ScrapeComposer(string url, Composer composer, ClassicalMusicDbContext dbContext)
+        public static void ScrapeComposer(string url, Composer composer, ClassicalMusicContext dbContext)
         {
             if (url == null)
             {
