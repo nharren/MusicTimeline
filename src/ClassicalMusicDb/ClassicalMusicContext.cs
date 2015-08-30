@@ -17,6 +17,7 @@ namespace NathanHarrenstein.ClassicalMusicDb
         public virtual DbSet<Catalog> Catalogs { get; set; }
         public virtual DbSet<CatalogNumber> CatalogNumbers { get; set; }
         public virtual DbSet<Composer> Composers { get; set; }
+        public virtual DbSet<ComposerDetails> ComposerDetails { get; set; }
         public virtual DbSet<ComposerImage> ComposerImages { get; set; }
         public virtual DbSet<Composition> Compositions { get; set; }
         public virtual DbSet<CompositionCollection> CompositionCollections { get; set; }
@@ -115,12 +116,12 @@ namespace NathanHarrenstein.ClassicalMusicDb
                 .Map(m => m.ToTable("CompositionCollectionRecording").MapLeftKey("CompositionCollectionId").MapRightKey("RecordingId"));
 
             modelBuilder.Entity<Location>()
-                .HasMany(e => e.BirthLocationComposers)
+                .HasMany(e => e.BirthLocationComposerDetailsCollection)
                 .WithOptional(e => e.BirthLocation)
                 .HasForeignKey(e => e.BirthLocationId);
 
             modelBuilder.Entity<Location>()
-                .HasMany(e => e.DeathLocationComposers)
+                .HasMany(e => e.DeathLocationComposerDetailsCollection)
                 .WithOptional(e => e.DeathLocation)
                 .HasForeignKey(e => e.DeathLocationId);
 
@@ -138,6 +139,10 @@ namespace NathanHarrenstein.ClassicalMusicDb
                 .HasMany(e => e.Recordings)
                 .WithMany(e => e.Performers)
                 .Map(m => m.ToTable("RecordingPerformer").MapLeftKey("PerformerId").MapRightKey("RecordingId"));
+
+            modelBuilder.Entity<Composer>()
+                .HasRequired(e => e.Details)
+                .WithRequiredDependent(e => e.Composer);
         }
     }
 }
