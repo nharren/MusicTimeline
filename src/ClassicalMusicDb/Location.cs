@@ -13,8 +13,8 @@ namespace NathanHarrenstein.ClassicalMusicDb
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Location()
         {
-            BirthLocationComposers = new ObservableCollection<Composer>();
-            DeathLocationComposers = new ObservableCollection<Composer>();
+            BirthLocationComposerDetailsCollection = new ObservableCollection<ComposerDetails>();
+            DeathLocationComposerDetailsCollection = new ObservableCollection<ComposerDetails>();
             Recordings = new ObservableCollection<Recording>();
         }
 
@@ -24,10 +24,10 @@ namespace NathanHarrenstein.ClassicalMusicDb
         public string Name { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Composer> BirthLocationComposers { get; set; }
+        public virtual ICollection<ComposerDetails> BirthLocationComposerDetailsCollection { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Composer> DeathLocationComposers { get; set; }
+        public virtual ICollection<ComposerDetails> DeathLocationComposerDetailsCollection { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Recording> Recordings { get; set; }

@@ -148,9 +148,9 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
         private static string GetBorn(Composer composer)
         {
-            if (composer.BirthLocation != null)
+            if (composer.Details.BirthLocation != null)
             {
-                return $"{ExtendedDateTimeInterval.Parse(composer.Dates).Start}; {composer.BirthLocation.Name}";
+                return $"{ExtendedDateTimeInterval.Parse(composer.Dates).Start}; {composer.Details.BirthLocation.Name}";
             }
 
             return ExtendedDateTimeInterval.Parse(composer.Dates).Start.ToString();
@@ -158,9 +158,9 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
         private static string GetDied(Composer composer)
         {
-            if (composer.DeathLocation != null)
+            if (composer.Details.DeathLocation != null)
             {
-                return $"{ExtendedDateTimeInterval.Parse(composer.Dates).End}; {composer.DeathLocation.Name}";
+                return $"{ExtendedDateTimeInterval.Parse(composer.Dates).End}; {composer.Details.DeathLocation.Name}";
             }
 
             return ExtendedDateTimeInterval.Parse(composer.Dates).End.ToString();
@@ -175,7 +175,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
         private void BuildBiographySection(Composer composer)
         {
-            if (composer.Biography == null)
+            if (composer.Details.Biography == null)
             {
                 return;
             }
@@ -184,7 +184,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
             parserContext.XmlnsDictionary.Add("", "http://schemas.microsoft.com/winfx/2006/xaml/presentation");
             parserContext.XmlSpace = "preserve";
 
-            var section = (Section)XamlReader.Load(new MemoryStream(Encoding.UTF8.GetBytes(composer.Biography)), parserContext);
+            var section = (Section)XamlReader.Load(new MemoryStream(Encoding.UTF8.GetBytes(composer.Details.Biography)), parserContext);
 
             if (section == null)
             {

@@ -71,6 +71,7 @@
     <Compile Include="Performer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Recording.cs" />
+    <Compile Include="ComposerDetails.cs" />
     <Compile Include="Sample.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -33,20 +33,10 @@ namespace NathanHarrenstein.ClassicalMusicDb
         [Required]
         public string Dates { get; set; }
 
-        public int? BirthLocationId { get; set; }
-
-        public int? DeathLocationId { get; set; }
-
-        public string Biography { get; set; }
-
-        public bool IsPopular { get; set; }
+        public virtual ComposerDetails Details { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Catalog> Catalogs { get; set; }
-
-        public virtual Location BirthLocation { get; set; }
-
-        public virtual Location DeathLocation { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ComposerImage> ComposerImages { get; set; }
