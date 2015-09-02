@@ -3,7 +3,6 @@ using NathanHarrenstein.MusicTimeline.Audio;
 using NathanHarrenstein.MusicTimeline.Builders;
 using NathanHarrenstein.MusicTimeline.Comparers;
 using NathanHarrenstein.MusicTimeline.Utilities;
-using NAudio.Flac;
 using NAudio.Wave;
 using System;
 using System.Collections.Generic;
@@ -30,9 +29,9 @@ namespace NathanHarrenstein.MusicTimeline.Views
         private static LogicalComparer _logicalComparer;
         private ClassicalMusicContext _classicalMusicContext;
         private Composer _composer;
-        private FlacPlayer _flacPlayer;
+        private Mp3Player _mp3Player;
         private bool _isDisposed;
-        private Dictionary<ISampleProvider, Sample> _sampleDictionary;
+        private Dictionary<IWaveProvider, Sample> _sampleDictionary;
 
         public ComposerPage()
         {
@@ -40,18 +39,18 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
             _logicalComparer = new LogicalComparer();
             _classicalMusicContext = new ClassicalMusicContext();
-            _sampleDictionary = new Dictionary<ISampleProvider, Sample>();
-            _flacPlayer = new FlacPlayer();
+            _sampleDictionary = new Dictionary<IWaveProvider, Sample>();
+            _mp3Player = new Mp3Player();
 
-            _flacPlayer.CurrentTimeChanged += FlacPlayer_CurrentTimeChanged;
-            _flacPlayer.TotalTimeChanged += FlacPlayer_TotalTimeChanged;
-            _flacPlayer.TrackChanged += FlacPlayer_TrackChanged;
-            _flacPlayer.PlaybackStateChanged += FlacPlayer_PlaybackStateChanged;
-            _flacPlayer.VolumeChanged += FlacPlayer_VolumeChanged;
-            _flacPlayer.IsMutedChanged += FlacPlayer_IsMutedChanged;
-            _flacPlayer.CanPlayChanged += FlacPlayer_CanPlayChanged;
-            _flacPlayer.CanSkipBackChanged += FlacPlayer_CanSkipBackChanged;
-            _flacPlayer.CanSkipForwardChanged += FlacPlayer_CanSkipForwardChanged;
+            _mp3Player.CurrentTimeChanged += Mp3Player_CurrentTimeChanged;
+            _mp3Player.TotalTimeChanged += Mp3Player_TotalTimeChanged;
+            _mp3Player.TrackChanged += Mp3Player_TrackChanged;
+            _mp3Player.PlaybackStateChanged += Mp3Player_PlaybackStateChanged;
+            _mp3Player.VolumeChanged += Mp3Player_VolumeChanged;
+            _mp3Player.IsMutedChanged += Mp3Player_IsMutedChanged;
+            _mp3Player.CanPlayChanged += Mp3Player_CanPlayChanged;
+            _mp3Player.CanSkipBackChanged += Mp3Player_CanSkipBackChanged;
+            _mp3Player.CanSkipForwardChanged += Mp3Player_CanSkipForwardChanged;
 
             Loaded += ComposerPage_Loaded;
         }
@@ -140,7 +139,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
             if (!_isDisposed)
             {
                 _classicalMusicContext.Dispose();
-                _flacPlayer.Dispose();
+                _mp3Player.Dispose();
 
                 _isDisposed = true;
             }
@@ -240,19 +239,19 @@ namespace NathanHarrenstein.MusicTimeline.Views
         {
             _sampleDictionary.Clear();
 
-            _flacPlayer.Dispose();
+            _mp3Player.Dispose();
 
-            _flacPlayer = new FlacPlayer();
+            _mp3Player = new Mp3Player();
 
-            _flacPlayer.CurrentTimeChanged += FlacPlayer_CurrentTimeChanged;
-            _flacPlayer.TotalTimeChanged += FlacPlayer_TotalTimeChanged;
-            _flacPlayer.TrackChanged += FlacPlayer_TrackChanged;
-            _flacPlayer.PlaybackStateChanged += FlacPlayer_PlaybackStateChanged;
-            _flacPlayer.VolumeChanged += FlacPlayer_VolumeChanged;
-            _flacPlayer.IsMutedChanged += FlacPlayer_IsMutedChanged;
-            _flacPlayer.CanPlayChanged += FlacPlayer_CanPlayChanged;
-            _flacPlayer.CanSkipBackChanged += FlacPlayer_CanSkipBackChanged;
-            _flacPlayer.CanSkipForwardChanged += FlacPlayer_CanSkipForwardChanged;
+            _mp3Player.CurrentTimeChanged += Mp3Player_CurrentTimeChanged;
+            _mp3Player.TotalTimeChanged += Mp3Player_TotalTimeChanged;
+            _mp3Player.TrackChanged += Mp3Player_TrackChanged;
+            _mp3Player.PlaybackStateChanged += Mp3Player_PlaybackStateChanged;
+            _mp3Player.VolumeChanged += Mp3Player_VolumeChanged;
+            _mp3Player.IsMutedChanged += Mp3Player_IsMutedChanged;
+            _mp3Player.CanPlayChanged += Mp3Player_CanPlayChanged;
+            _mp3Player.CanSkipBackChanged += Mp3Player_CanSkipBackChanged;
+            _mp3Player.CanSkipForwardChanged += Mp3Player_CanSkipForwardChanged;
 
             NowPlayingTitleTextBlock.Text = null;
             NowPlayingArtistTextBlock.Text = null;
@@ -271,52 +270,52 @@ namespace NathanHarrenstein.MusicTimeline.Views
             await LoadComposerAsync();
         }
 
-        private void FlacPlayer_CanPlayChanged(object sender, CanPlayEventArgs e)
+        private void Mp3Player_CanPlayChanged(object sender, CanPlayEventArgs e)
         {
             PlayPauseToggleButton.IsEnabled = e.CanPlay;
         }
 
-        private void FlacPlayer_CanSkipBackChanged(object sender, CanSkipBackEventArgs e)
+        private void Mp3Player_CanSkipBackChanged(object sender, CanSkipBackEventArgs e)
         {
             SkipBackButton.IsEnabled = e.CanSkipBack;
         }
 
-        private void FlacPlayer_CanSkipForwardChanged(object sender, CanSkipForwardEventArgs e)
+        private void Mp3Player_CanSkipForwardChanged(object sender, CanSkipForwardEventArgs e)
         {
             SkipForwardButton.IsEnabled = e.CanSkipForward;
         }
 
-        private void FlacPlayer_CurrentTimeChanged(object sender, TimeSpanEventArgs e)
+        private void Mp3Player_CurrentTimeChanged(object sender, TimeSpanEventArgs e)
         {
             ProgressSlider.IsEnabled = true;
             ProgressSlider.Value = e.TimeSpan.Ticks;
         }
 
-        private void FlacPlayer_IsMutedChanged(object sender, MuteEventArgs e)
+        private void Mp3Player_IsMutedChanged(object sender, MuteEventArgs e)
         {
             MuteToggleButton.IsEnabled = true;
             MuteToggleButton.IsChecked = e.Mute;
         }
 
-        private void FlacPlayer_PlaybackStateChanged(object sender, PlaybackStateEventArgs e)
+        private void Mp3Player_PlaybackStateChanged(object sender, PlaybackStateEventArgs e)
         {
             PlayPauseToggleButton.IsEnabled = true;
             PlayPauseToggleButton.IsChecked = e.PlaybackState == PlaybackState.Playing ? true : false;
         }
 
-        private void FlacPlayer_TotalTimeChanged(object sender, TimeSpanEventArgs e)
+        private void Mp3Player_TotalTimeChanged(object sender, TimeSpanEventArgs e)
         {
             ProgressSlider.IsEnabled = true;
             ProgressSlider.Maximum = e.TimeSpan.Ticks;
         }
 
-        private void FlacPlayer_TrackChanged(object sender, TrackEventArgs e)
+        private void Mp3Player_TrackChanged(object sender, TrackEventArgs e)
         {
-            NowPlayingTitleTextBlock.Text = _sampleDictionary[_flacPlayer.CurrentPlaylistItem.Value].Title;
-            NowPlayingArtistTextBlock.Text = _sampleDictionary[_flacPlayer.CurrentPlaylistItem.Value].Artists;
+            NowPlayingTitleTextBlock.Text = _sampleDictionary[_mp3Player.CurrentPlaylistItem.Value].Title;
+            NowPlayingArtistTextBlock.Text = _sampleDictionary[_mp3Player.CurrentPlaylistItem.Value].Artists;
         }
 
-        private void FlacPlayer_VolumeChanged(object sender, VolumeEventArgs e)
+        private void Mp3Player_VolumeChanged(object sender, VolumeEventArgs e)
         {
             VolumeSlider.IsEnabled = true;
             VolumeSlider.Value = e.Volume;
@@ -337,34 +336,34 @@ namespace NathanHarrenstein.MusicTimeline.Views
         {
             foreach (var sample in _composer.Samples)
             {
-                var flacReader = new FlacReader(new MemoryStream(sample.Bytes));
+                var mp3FileReader = new Mp3FileReader(new MemoryStream(sample.Bytes));
 
-                _sampleDictionary[flacReader] = sample;
-                _flacPlayer.AddToPlaylist(flacReader);
+                _sampleDictionary[mp3FileReader] = sample;
+                _mp3Player.AddToPlaylist(mp3FileReader);
 
                 if (_sampleDictionary.Count == 1)
                 {
-                    _flacPlayer.Play();
+                    _mp3Player.Play();
                 }
             }
         }
 
         private void MuteVolume_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            e.CanExecute = _flacPlayer != null;
+            e.CanExecute = _mp3Player != null;
         }
 
         private void MuteVolume_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            _flacPlayer.ToggleMute();
+            _mp3Player.ToggleMute();
         }
 
         private void NextTrack_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            if (_flacPlayer != null)
+            if (_mp3Player != null)
             {
-                _flacPlayer.SkipForward();
-                _flacPlayer.Play();
+                _mp3Player.SkipForward();
+                _mp3Player.Play();
 
                 PlayPauseToggleButton.IsChecked = true;
             }
@@ -372,10 +371,10 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
         private void PreviousTrack_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            if (_flacPlayer != null)
+            if (_mp3Player != null)
             {
-                _flacPlayer.SkipBack();
-                _flacPlayer.Play();
+                _mp3Player.SkipBack();
+                _mp3Player.Play();
 
                 PlayPauseToggleButton.IsChecked = true;
             }
@@ -383,13 +382,13 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
         private void ProgressSlider_DragCompleted(object sender, DragCompletedEventArgs e)
         {
-            _flacPlayer.CurrentTime = new TimeSpan((long)ProgressSlider.Value);
-            _flacPlayer.Play();
+            _mp3Player.CurrentTime = new TimeSpan((long)ProgressSlider.Value);
+            _mp3Player.Play();
         }
 
         private void ProgressSlider_DragStarted(object sender, RoutedEventArgs e)
         {
-            _flacPlayer.Stop();
+            _mp3Player.Stop();
         }
 
         private void ProgressSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -399,31 +398,31 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
         private void TogglePlayPause_CanExecute(object sender, CanExecuteRoutedEventArgs e)
         {
-            e.CanExecute = _flacPlayer != null;
+            e.CanExecute = _mp3Player != null;
         }
 
         private void TogglePlayPause_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            if (_flacPlayer.PlaybackState == PlaybackState.Playing)
+            if (_mp3Player.PlaybackState == PlaybackState.Playing)
             {
-                _flacPlayer.Pause();
+                _mp3Player.Pause();
                 PlayPauseToggleButton.IsChecked = false;
             }
             else
             {
-                _flacPlayer.Play();
+                _mp3Player.Play();
                 PlayPauseToggleButton.IsChecked = true;
             }
         }
 
         private void VolumeSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            if (_flacPlayer == null)
+            if (_mp3Player == null)
             {
                 return;
             }
 
-            _flacPlayer.Volume = (float)e.NewValue;
+            _mp3Player.Volume = (float)e.NewValue;
         }
     }
 }
