@@ -82,15 +82,15 @@ namespace NathanHarrenstein.MusicTimeline.Converters
             if (image != null)
             {
                 thumbnail = new BitmapImage();
-                thumbnail.CacheOption = BitmapCacheOption.OnLoad;
+                thumbnail.CacheOption = BitmapCacheOption.None;
                 thumbnail.BeginInit();
-                thumbnail.DecodePixelHeight = 50;
+                thumbnail.DecodePixelHeight = 40;
                 thumbnail.StreamSource = new MemoryStream(image);
                 thumbnail.EndInit();
                 thumbnail.Freeze();
 
                 var encoder = new JpegBitmapEncoder();
-                encoder.QualityLevel = 95;
+                encoder.QualityLevel = 60;
                 encoder.Frames.Add(BitmapFrame.Create(thumbnail));
 
                 using (var stream = new FileStream(thumbnailPath, FileMode.Create))
