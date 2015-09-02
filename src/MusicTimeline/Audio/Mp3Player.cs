@@ -1,6 +1,5 @@
 ﻿using NAudio.CoreAudioApi;
 using NAudio.CoreAudioApi.Interfaces;
-using NAudio.Flac;
 using NAudio.Wave;
 using System;
 using System.Collections.Generic;
@@ -12,14 +11,14 @@ using System.Windows.Threading;
 
 namespace NathanHarrenstein.MusicTimeline.Audio
 {
-    public class FlacPlayer : IDisposable, IAudioSessionEventsHandler
+    public class Mp3Player : IDisposable, IAudioSessionEventsHandler
     {
-        private readonly LinkedList<FlacReader> _playlist;
+        private readonly LinkedList<Mp3FileReader> _playlist;
         private AudioSessionControl _audioSessionControl;
         private bool _canPlay;
         private bool _canSkipBack;
         private bool _canSkipForward;
-        private LinkedListNode<FlacReader> _currentPlaylistItem;
+        private LinkedListNode<Mp3FileReader> _currentPlaylistItem;
         private bool _isDisposed;
         private bool _isMuted;
         private MMDevice _playbackDevice;
@@ -27,9 +26,9 @@ namespace NathanHarrenstein.MusicTimeline.Audio
         private DispatcherTimer _playbackTimer;
         private WaveOutEvent _player;
 
-        public FlacPlayer()
+        public Mp3Player()
         {
-            _playlist = new LinkedList<FlacReader>();
+            _playlist = new LinkedList<Mp3FileReader>();
             _playbackTimer = new DispatcherTimer();
             _playbackTimer.Interval = new TimeSpan(1);
             _playbackTimer.Tick += PlaybackTimer_Tick;
@@ -41,7 +40,7 @@ namespace NathanHarrenstein.MusicTimeline.Audio
             _isMuted = _playbackDevice.AudioEndpointVolume.Mute;
         }
 
-        ~FlacPlayer()
+        ~Mp3Player()
         {
             Dispose(false);
         }
@@ -98,7 +97,7 @@ namespace NathanHarrenstein.MusicTimeline.Audio
             }
         }
 
-        public LinkedListNode<FlacReader> CurrentPlaylistItem
+        public LinkedListNode<Mp3FileReader> CurrentPlaylistItem
         {
             get
             {
@@ -155,7 +154,7 @@ namespace NathanHarrenstein.MusicTimeline.Audio
             }
         }
 
-        public LinkedList<FlacReader> Playlist
+        public LinkedList<Mp3FileReader> Playlist
         {
             get
             {
@@ -203,9 +202,9 @@ namespace NathanHarrenstein.MusicTimeline.Audio
             }
         }
 
-        public void AddToPlaylist(FlacReader flacReader)
+        public void AddToPlaylist(Mp3FileReader mp3FileReader)
         {
-            _playlist.AddLast(flacReader);
+            _playlist.AddLast(mp3FileReader);
 
             if (_playlist.Count == 1)
             {
@@ -507,7 +506,7 @@ namespace NathanHarrenstein.MusicTimeline.Audio
             UpdatePlaybackState();
         }
 
-        private void Load(LinkedListNode<FlacReader> playlistItem)
+        private void Load(LinkedListNode<Mp3FileReader> playlistItem)
         {
             if (playlistItem == null)
             {

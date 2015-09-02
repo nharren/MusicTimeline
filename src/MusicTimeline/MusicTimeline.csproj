@@ -81,10 +81,6 @@
       <HintPath>..\packages\NAudio.1.7.3\lib\net35\NAudio.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="NAudio.Flac, Version=1.0.5702.29018, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\NAudio.Flac.1.0.5702.29018\lib\net45\NAudio.Flac.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="presentationframework.aero2" />
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
@@ -112,7 +108,7 @@
     <Compile Include="Audio\CanPlayEventArgs.cs" />
     <Compile Include="Audio\CanSkipBackEventArgs.cs" />
     <Compile Include="Audio\CanSkipForwardEventArgs.cs" />
-    <Compile Include="Audio\FlacPlayer.cs" />
+    <Compile Include="Audio\Mp3Player.cs" />
     <Compile Include="Audio\MuteEventArgs.cs" />
     <Compile Include="Audio\VolumeEventArgs.cs" />
     <Compile Include="Controls\AutoCompleteBox.cs" />

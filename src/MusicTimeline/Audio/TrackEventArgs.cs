@@ -5,14 +5,14 @@ namespace NathanHarrenstein.MusicTimeline.Audio
 {
     public class TrackEventArgs : EventArgs
     {
-        private readonly ISampleProvider _track;
+        private readonly IWaveProvider _track;
 
-        public TrackEventArgs(ISampleProvider track)
+        public TrackEventArgs(IWaveProvider track)
         {
             _track = track;
         }
 
-        public ISampleProvider Track
+        public IWaveProvider Track
         {
             get
             {
