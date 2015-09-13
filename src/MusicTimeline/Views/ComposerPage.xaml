@@ -36,6 +36,13 @@
                         Command="MediaCommands.MuteVolume"
                         Executed="MuteVolume_Executed" />
     </Page.CommandBindings>
+    <Page.ContextMenu>
+        <ContextMenu>
+            <MenuItem Name="EditMenuItem"
+                      Click="EditMenuItem_Click"
+                      Header="Edit..." />
+        </ContextMenu>
+    </Page.ContextMenu>
     <!--  Root  -->
     <Grid>
         <Grid.Background>
@@ -801,7 +808,7 @@
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate DataType="{x:Type db:Composer}">
                                     <Button Margin="0,0,0,2"
-                                            Click="ComposerButton_Click"
+                                            Click="Influence_Click"
                                             Content="{Binding Name}"
                                             Cursor="Hand"
                                             FontSize="14"
@@ -831,7 +838,7 @@
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate DataType="{x:Type db:Composer}">
                                     <Button Margin="0,0,0,2"
-                                            Click="ComposerButton_Click"
+                                            Click="Influence_Click"
                                             Content="{Binding Name}"
                                             Cursor="Hand"
                                             FontSize="14"
@@ -1056,7 +1063,15 @@
                                                 </StackPanel>
                                             </DataTemplate>
                                         </HierarchicalDataTemplate.ItemTemplate>
-                                        <TextBlock Text="{Binding Converter={StaticResource CompositionToCompositionDisplayNameConverter}}" />
+                                        <TextBlock Text="{Binding Converter={StaticResource CompositionToCompositionDisplayNameConverter}}">
+                                            <TextBlock.ContextMenu>
+                                                <ContextMenu>
+                                                    <MenuItem Name="EditMenuItem"
+                                                              Click="CompositionEditMenuItem_Click"
+                                                              Header="Edit..." />
+                                                </ContextMenu>
+                                            </TextBlock.ContextMenu>
+                                        </TextBlock>
                                     </HierarchicalDataTemplate>
                                 </HierarchicalDataTemplate.ItemTemplate>
                                 <TextBlock Text="{Binding Key}" />

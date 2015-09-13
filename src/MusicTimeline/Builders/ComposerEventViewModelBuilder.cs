@@ -65,7 +65,7 @@ namespace NathanHarrenstein.MusicTimeline.Builders
                     background,
                     Brushes.White,
                     composerEras,
-                    GetCommand(composer.Name, timeline));
+                    GetCommand(composer.ComposerId, timeline));
 
                 eventList.Add(composerEvent);
             }
@@ -73,11 +73,11 @@ namespace NathanHarrenstein.MusicTimeline.Builders
             return eventList.OrderBy(e => e.Dates.Earliest()).ToList();
         }
 
-        private static DelegateCommand GetCommand(string composerName, Timeline.Timeline timeline)
+        private static DelegateCommand GetCommand(int composerId, Timeline.Timeline timeline)
         {
             Action<object> command = o =>
             {
-                Application.Current.Properties["SelectedComposer"] = composerName;
+                Application.Current.Properties["SelectedComposer"] = composerId;
                 Application.Current.Properties["HorizontalOffset"] = timeline.HorizontalOffset;
                 Application.Current.Properties["VerticalOffset"] = timeline.VerticalOffset;
 

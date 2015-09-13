@@ -195,10 +195,6 @@ namespace NathanHarrenstein.MusicTimeline.Audio
                 {
                     _audioSessionControl.SimpleAudioVolume.Volume = value;
                 }
-                else
-                {
-                    throw new InvalidOperationException("The volume cannot be set because _audioSessionControl is null.");
-                }
             }
         }
 
