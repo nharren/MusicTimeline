@@ -209,7 +209,7 @@ namespace NathanHarrenstein.MusicTimeline.Controls
             if (string.IsNullOrEmpty(_textBox.Text))
             {
                 _listBox.SelectedIndex = -1;
-                _popup.IsOpen = false;
+              _popup.IsOpen = false;
 
                 return;
             }

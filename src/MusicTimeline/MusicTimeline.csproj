@@ -70,8 +70,8 @@
       <HintPath>..\packages\HtmlAgilityPack.1.4.9\lib\Net45\HtmlAgilityPack.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="HtmlToXamlConverter, Version=1.0.5702.26891, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\HtmlToXamlConverter.1.0.5702.26891\lib\net45\HtmlToXamlConverter.dll</HintPath>
+    <Reference Include="HtmlToXamlConverter, Version=1.0.5727.24510, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\HtmlToXamlConverter.1.0.5727.24510\lib\net45\HtmlToXamlConverter.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="Luminescence.Xiph">
@@ -144,8 +144,14 @@
     <Compile Include="ViewModels\ComposerEventViewModel.cs" />
     <Compile Include="ViewModels\ComposerEraViewModel.cs" />
     <Compile Include="Utilities\FileUtility.cs" />
-    <Compile Include="Views\InputPage.xaml.cs">
-      <DependentUpon>InputPage.xaml</DependentUpon>
+    <Compile Include="Views\ComposerEditPage.xaml.cs">
+      <DependentUpon>ComposerEditPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ComposersEditPage.xaml.cs">
+      <DependentUpon>ComposersEditPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\CompositionEditPage.xaml.cs">
+      <DependentUpon>CompositionEditPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\TimelinePage.xaml.cs">
       <DependentUpon>TimelinePage.xaml</DependentUpon>
@@ -166,7 +172,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\InputPage.xaml">
+    <Page Include="Views\ComposerEditPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ComposersEditPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\CompositionEditPage.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -212,6 +226,13 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Composers\Unknown.jpg" />
+    <Resource Include="Resources\Icons\editcopy.png" />
+    <Resource Include="Resources\Icons\editcut.png" />
+    <Resource Include="Resources\Icons\editpaste.png" />
+    <Resource Include="Resources\Icons\editredo.png" />
+    <Resource Include="Resources\Icons\editundo.png" />
+    <Resource Include="Resources\Icons\filesave.png" />
+    <Resource Include="Resources\Icons\listbullets.png" />
     <Resource Include="Resources\Star.png" />
   </ItemGroup>
   <ItemGroup>
@@ -1678,6 +1699,18 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Favicons\Default.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Icons\charactergrowfont.png" />
+    <Resource Include="Resources\Icons\charactershrinkfont.png" />
+    <Resource Include="Resources\Icons\fileopen.png" />
+    <Resource Include="Resources\Icons\listnumbering.png" />
+    <Resource Include="Resources\Icons\paragraphcenterjustify.png" />
+    <Resource Include="Resources\Icons\paragraphdecreaseindentation.png" />
+    <Resource Include="Resources\Icons\paragraphfulljustify.png" />
+    <Resource Include="Resources\Icons\paragraphincreaseindentation.png" />
+    <Resource Include="Resources\Icons\paragraphleftjustify.png" />
+    <Resource Include="Resources\Icons\paragraphrightjustify.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

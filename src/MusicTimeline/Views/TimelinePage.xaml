@@ -35,11 +35,6 @@
             </t:Timeline.Ruler>
             <t:Timeline.ContextMenu>
                 <ContextMenu DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource Mode=Self}}">
-                    <MenuItem Header="File">
-                        <MenuItem Command="{Binding ManageDataCommand}" Header="Manage Data" />
-                        <Separator />
-                        <MenuItem Command="{Binding CloseCommand}" Header="Close" />
-                    </MenuItem>
                     <MenuItem Header="View">
                         <MenuItem Header="Resolution">
                             <MenuItem Command="{Binding ChangeResolutionCommand}"
@@ -96,6 +91,10 @@
                                   CommandParameter="21st Century"
                                   Header="21st Century" />
                     </MenuItem>
+                    <Separator />
+                    <MenuItem Name="EditMenuItem"
+                              Click="EditMenuItem_Click"
+                              Header="Edit..." />
                 </ContextMenu>
             </t:Timeline.ContextMenu>
             <t:Timeline.EraTemplates>

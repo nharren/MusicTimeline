@@ -21,7 +21,6 @@ namespace NathanHarrenstein.MusicTimeline.Views
         public static readonly DependencyProperty CloseCommandProperty = DependencyProperty.Register("CloseCommand", typeof(ICommand), typeof(TimelinePage));
         public static readonly DependencyProperty FullScreenCommandProperty = DependencyProperty.Register("FullScreenCommand", typeof(ICommand), typeof(TimelinePage));
         public static readonly DependencyProperty GoToCommandProperty = DependencyProperty.Register("GoToCommand", typeof(ICommand), typeof(TimelinePage));
-        public static readonly DependencyProperty ManageDataCommandProperty = DependencyProperty.Register("ManageDataCommand", typeof(ICommand), typeof(TimelinePage));
         public static readonly DependencyProperty RebuildThumbnailCacheCommandProperty = DependencyProperty.Register("RebuildThumbnailCacheCommand", typeof(ICommand), typeof(TimelinePage));
 
         private ClassicalMusicContext _classicalMusicContext;
@@ -35,7 +34,6 @@ namespace NathanHarrenstein.MusicTimeline.Views
             {
                 _classicalMusicContext = new ClassicalMusicContext();
 
-                ManageDataCommand = new DelegateCommand(NavigateToInputPage);
                 CloseCommand = new DelegateCommand(Exit);
                 GoToCommand = new DelegateCommand(GoToEra);
                 RebuildThumbnailCacheCommand = new DelegateCommand(RebuildThumbnailCache);
@@ -49,37 +47,6 @@ namespace NathanHarrenstein.MusicTimeline.Views
                 timeline.Dates = new ExtendedDateTimeInterval(new ExtendedDateTime(476, 1, 1), ExtendedDateTime.Now);
 
                 Loaded += TimelinePage_Loaded;
-            }
-        }
-
-        private async void TimelinePage_Loaded(object sender, RoutedEventArgs e)
-        {
-            var eraList = await _classicalMusicContext.Eras
-                .AsNoTracking()
-                .ToListAsync();
-
-            var composerEraViewModels = ComposerEraViewModelBuilder.Build(eraList);
-
-            timeline.Eras = composerEraViewModels;
-
-            var composers = await _classicalMusicContext.Composers
-                .AsNoTracking()
-                .ToListAsync();
-
-            timeline.Events = ComposerEventViewModelBuilder.Build(composers, composerEraViewModels, timeline);
-
-            var horizontalOffset = Application.Current.Properties["HorizontalOffset"] as double?;
-
-            if (horizontalOffset != null)
-            {
-                timeline.HorizontalOffset = horizontalOffset.Value;
-            }
-
-            var verticalOffset = Application.Current.Properties["VerticalOffset"] as double?;
-
-            if (verticalOffset != null)
-            {
-                timeline.VerticalOffset = verticalOffset.Value;
             }
         }
 
@@ -137,19 +104,6 @@ namespace NathanHarrenstein.MusicTimeline.Views
             set
             {
                 SetValue(GoToCommandProperty, value);
-            }
-        }
-
-        public ICommand ManageDataCommand
-        {
-            get
-            {
-                return (ICommand)GetValue(ManageDataCommandProperty);
-            }
-
-            set
-            {
-                SetValue(ManageDataCommandProperty, value);
             }
         }
 
@@ -219,6 +173,11 @@ namespace NathanHarrenstein.MusicTimeline.Views
             timeline.VerticalOffset = timeline.VerticalOffset;
         }
 
+        private void EditMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            NavigationService.Navigate(new Uri(@"pack://application:,,,/Views/ComposersEditPage.xaml", UriKind.Absolute));
+        }
+
         private void Exit(object obj)
         {
             Application.Current.Shutdown();
@@ -280,6 +239,37 @@ namespace NathanHarrenstein.MusicTimeline.Views
             Application.Current.Properties["VerticalOffset"] = timeline.VerticalOffset;
 
             NavigationService.Refresh();
+        }
+
+        private async void TimelinePage_Loaded(object sender, RoutedEventArgs e)
+        {
+            var eraList = await _classicalMusicContext.Eras
+                .AsNoTracking()
+                .ToListAsync();
+
+            var composerEraViewModels = ComposerEraViewModelBuilder.Build(eraList);
+
+            timeline.Eras = composerEraViewModels;
+
+            var composers = await _classicalMusicContext.Composers
+                .AsNoTracking()
+                .ToListAsync();
+
+            timeline.Events = ComposerEventViewModelBuilder.Build(composers, composerEraViewModels, timeline);
+
+            var horizontalOffset = Application.Current.Properties["HorizontalOffset"] as double?;
+
+            if (horizontalOffset != null)
+            {
+                timeline.HorizontalOffset = horizontalOffset.Value;
+            }
+
+            var verticalOffset = Application.Current.Properties["VerticalOffset"] as double?;
+
+            if (verticalOffset != null)
+            {
+                timeline.VerticalOffset = verticalOffset.Value;
+            }
         }
     }
 }
