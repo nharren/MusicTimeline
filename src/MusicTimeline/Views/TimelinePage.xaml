@@ -3,7 +3,7 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:cv="clr-namespace:NathanHarrenstein.MusicTimeline.Converters"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-      xmlns:db="clr-namespace:NathanHarrenstein.ClassicalMusicDb;assembly=ClassicalMusicDb"
+      xmlns:db="clr-namespace:NathanHarrenstein.MusicTimeline.ClassicalMusicDb"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:t="clr-namespace:NathanHarrenstein.Timeline;assembly=Timeline"
       xmlns:vm="clr-namespace:NathanHarrenstein.MusicTimeline.ViewModels"
@@ -33,7 +33,7 @@
             <t:Timeline.Ruler>
                 <t:TimeRuler TimeRulerUnit="Day" TimeUnitWidth="0.04109589041" />
             </t:Timeline.Ruler>
-            <t:Timeline.ContextMenu>
+            <!--<t:Timeline.ContextMenu>
                 <ContextMenu DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource Mode=Self}}">
                     <MenuItem Header="View">
                         <MenuItem Header="Resolution">
@@ -96,7 +96,7 @@
                               Click="EditMenuItem_Click"
                               Header="Edit..." />
                 </ContextMenu>
-            </t:Timeline.ContextMenu>
+            </t:Timeline.ContextMenu>-->
             <t:Timeline.EraTemplates>
                 <DataTemplate DataType="{x:Type vm:ComposerEraViewModel}">
                     <Grid Background="{Binding Background}" SnapsToDevicePixels="True">

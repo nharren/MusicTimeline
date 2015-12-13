@@ -1,4 +1,4 @@
-﻿using NathanHarrenstein.ClassicalMusicDb;
+﻿using NathanHarrenstein.MusicTimeline.ClassicalMusicDb;
 using NathanHarrenstein.MusicTimeline.Audio;
 using NathanHarrenstein.MusicTimeline.Builders;
 using NathanHarrenstein.MusicTimeline.Comparers;
@@ -21,6 +21,10 @@ using System.Windows.Input;
 using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Navigation;
+using System.Collections.ObjectModel;
+using NathanHarrenstein.MusicTimeline.Extensions;
+using System.Collections;
+using System.Data.Services.Client;
 
 namespace NathanHarrenstein.MusicTimeline.Views
 {
@@ -39,7 +43,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
             InitializeComponent();
 
             _logicalComparer = new LogicalComparer();
-            _classicalMusicContext = new ClassicalMusicContext();
+            _classicalMusicContext = new ClassicalMusicContext(new Uri("http://www.harrenstein.com/ClassicalMusic/ClassicalMusic.svc"));
             _sampleDictionary = new Dictionary<IWaveProvider, Sample>();
             _mp3Player = new Mp3Player();
 
@@ -77,31 +81,10 @@ namespace NathanHarrenstein.MusicTimeline.Views
                     _loadingCancellationTokenSource.Cancel();
                 }
 
-                _classicalMusicContext.Dispose();
                 _mp3Player.Dispose();
 
                 _isDisposed = true;
             }
-        }
-
-        private static string GetBorn(Composer composer)
-        {
-            if (composer.Details.BirthLocation != null)
-            {
-                return $"{ExtendedDateTimeInterval.Parse(composer.Dates).Start}; {composer.Details.BirthLocation.Name}";
-            }
-
-            return ExtendedDateTimeInterval.Parse(composer.Dates).Start.ToString();
-        }
-
-        private static string GetDied(Composer composer)
-        {
-            if (composer.Details.DeathLocation != null)
-            {
-                return $"{ExtendedDateTimeInterval.Parse(composer.Dates).End}; {composer.Details.DeathLocation.Name}";
-            }
-
-            return ExtendedDateTimeInterval.Parse(composer.Dates).End.ToString();
         }
 
         private void BackButton_Click(object sender, RoutedEventArgs e)
@@ -109,31 +92,6 @@ namespace NathanHarrenstein.MusicTimeline.Views
             NavigationService.GoBack();
 
             e.Handled = true;
-        }
-
-        private void BuildBiographySection(Composer composer)
-        {
-            if (composer.Details.Biography == null)
-            {
-                return;
-            }
-
-            var parserContext = new ParserContext();
-            parserContext.XmlnsDictionary.Add("", "http://schemas.microsoft.com/winfx/2006/xaml/presentation");
-            parserContext.XmlSpace = "preserve";
-
-            var flowDocument = (FlowDocument)XamlReader.Load(new MemoryStream(Encoding.UTF8.GetBytes(composer.Details.Biography)), parserContext);
-
-            if (flowDocument == null)
-            {
-                return;
-            }
-
-            flowDocument.FontFamily = new FontFamily("Cambria");
-            flowDocument.PagePadding = new Thickness(0, 5, 0, 0);
-            flowDocument.TextAlignment = TextAlignment.Left;
-
-            FlowDocumentScrollViewer.Document = flowDocument;
         }
 
         private async void ComposerPage_Loaded(object sender, RoutedEventArgs e)
@@ -147,7 +105,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
             _mp3Player.Dispose();
 
-            NavigationService.Navigate(new Uri(@"pack://application:,,,/Views/ComposerEditPage.xaml", UriKind.Absolute));
+            //NavigationService.Navigate(new Uri(@"pack://application:,,,/Views/ComposerEditPage.xaml", UriKind.Absolute));
         }
 
         private ComposerImage GetDefaultComposerImage()
@@ -207,62 +165,104 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
             var composerId = (int)Application.Current.Properties["SelectedComposer"];
 
-            _composer = await _classicalMusicContext.Composers
-                .Where(c => c.ComposerId == composerId)
-                .Include(c => c.CompositionCollections)
-                .Include(c => c.Compositions)
-                .FirstOrDefaultAsync(_loadingCancellationTokenSource.Token);
+            var composerUri = new Uri($"http://www.harrenstein.com/ClassicalMusic/ClassicalMusic.svc/Composers?$filter=ComposerId eq {composerId}&$expand=Details,Details/BirthLocation,Details/DeathLocation,Nationalities,Influences,Influenced,Links");
+            _composer = _classicalMusicContext.Execute<Composer>(composerUri).First();
 
-            var influencedVisibility = _composer.Influenced.Count > 0 ? Visibility.Visible : Visibility.Collapsed;
-            var influencesVisibility = _composer.Influences.Count > 0 ? Visibility.Visible : Visibility.Collapsed;
-            var webpagesVisibility = _composer.Links.Count > 0 ? Visibility.Visible : Visibility.Collapsed;
-
-            BornTextBlock.Text = GetBorn(_composer);
             ComposerNameTextBlock.Text = NameUtility.ToFirstLast(_composer.Name);
-            DiedTextBlock.Text = GetDied(_composer);
+
+            if (_composer.Details != null)
+            {
+                if (_composer.Details.BirthLocation != null)
+                {
+                    BornTextBlock.Text = $"{ExtendedDateTimeInterval.Parse(_composer.Dates).Start}; {_composer.Details.BirthLocation.Name}";
+                }
+                else
+                {
+                    BornTextBlock.Text = ExtendedDateTimeInterval.Parse(_composer.Dates).Start.ToString();
+                }
+
+                var deathLocation = _composer.Details.DeathLocation;
+
+                if (deathLocation != null)
+                {
+                    DiedTextBlock.Text = $"{ExtendedDateTimeInterval.Parse(_composer.Dates).End}; {deathLocation.Name}";
+                }
+                else
+                {
+                    DiedTextBlock.Text = ExtendedDateTimeInterval.Parse(_composer.Dates).End.ToString();
+                }
+
+                if (!string.IsNullOrEmpty(_composer.Details.Biography))
+                {
+                    var parserContext = new ParserContext();
+                    parserContext.XmlnsDictionary.Add("", "http://schemas.microsoft.com/winfx/2006/xaml/presentation");
+                    parserContext.XmlSpace = "preserve";
+
+                    var flowDocument = (FlowDocument)XamlReader.Load(new MemoryStream(Encoding.UTF8.GetBytes(_composer.Details.Biography)), parserContext);
+
+                    if (flowDocument != null)
+                    {
+                        flowDocument.FontFamily = new FontFamily("Cambria");
+                        flowDocument.PagePadding = new Thickness(0, 5, 0, 0);
+                        flowDocument.TextAlignment = TextAlignment.Left;
+
+                        FlowDocumentScrollViewer.Document = flowDocument;
+                    }
+                }
+            }
+
             ComposerFlagsItemsControl.ItemsSource = _composer.Nationalities;
-            InfluencedItemsControl.ItemsSource = _composer.Influenced;
-            InfluencedItemsControl.Visibility = influencedVisibility;
-            InfluencedTextBlock.Visibility = influencedVisibility;
-            InfluencedUnderline.Visibility = influencedVisibility;
+
             InfluencesItemsControl.ItemsSource = _composer.Influences;
+
+            var influencesVisibility = _composer.Influences.Count > 0 ? Visibility.Visible : Visibility.Collapsed;
+
             InfluencesItemsControl.Visibility = influencesVisibility;
             InfluencesTextBlock.Visibility = influencesVisibility;
             InfluencesUnderline.Visibility = influencesVisibility;
+
+            InfluencedItemsControl.ItemsSource = _composer.Influenced;
+
+            var influencedVisibility = _composer.Influenced.Count > 0 ? Visibility.Visible : Visibility.Collapsed;
+
+            InfluencedItemsControl.Visibility = influencedVisibility;
+            InfluencedTextBlock.Visibility = influencedVisibility;
+            InfluencedUnderline.Visibility = influencedVisibility;
+
             LinksItemControl.ItemsSource = _composer.Links;
-            LinksItemControl.Visibility = webpagesVisibility;
-            LinksTextBlock.Visibility = webpagesVisibility;
-            LinksUnderline.Visibility = webpagesVisibility;
 
-            BuildBiographySection(_composer);
+            var linksVisibility = _composer.Links.Count > 0 ? Visibility.Visible : Visibility.Collapsed;
 
-            var compositionTypes = _composer.CompositionCollections
-                .SelectMany(cc => cc.Compositions)
-                .Concat(_composer.Compositions)
-                .GroupBy(c => c.Genre?.Name ?? "Unknown")
-                .OrderBy(s => s.Key);
+            LinksItemControl.Visibility = linksVisibility;
+            LinksTextBlock.Visibility = linksVisibility;
+            LinksUnderline.Visibility = linksVisibility;
 
-            TreeView.SetBinding(ItemsControl.ItemsSourceProperty, BindingBuilder.Build(compositionTypes));
+            var composerImagesQuery = await _classicalMusicContext.LoadPropertyAsync(_composer, "ComposerImages");
+            var composerImages = composerImagesQuery.Cast<ComposerImage>().ToList();
 
-            await _classicalMusicContext.Entry(_composer)
-                .Collection("ComposerImages")
-                .LoadAsync(_loadingCancellationTokenSource.Token);
+            if (composerImages.Count == 0)
+            {
+                ComposerImagesListBox.ItemsSource = new ComposerImage[] { GetDefaultComposerImage() };
+            }
+            else
+            {
+                ComposerImagesListBox.ItemsSource = composerImages;
+            }
 
-            ComposerImagesListBox.ItemsSource = _composer.ComposerImages.Count == 0 ? new List<ComposerImage> { GetDefaultComposerImage() } : _composer.ComposerImages;
             ComposerImagesListBox.SelectedIndex = 0;
 
-            await _classicalMusicContext.Entry(_composer)
-                .Collection("Samples")
-                .LoadAsync(_loadingCancellationTokenSource.Token);
+            var compositionsUri = new Uri($"http://www.harrenstein.com/ClassicalMusic/ClassicalMusic.svc/Compositions?$filter=Composers/any(d:d/Name eq '{_composer.Name}')&$expand=Genre,Key,Movements");
 
-            LoadSamples();
+            var genres = _classicalMusicContext.Execute<Composition>(compositionsUri)
+                .GroupBy(c => c.Genre == null ? "Unknown" : c.Genre.Name)
+                .OrderBy(s => s.Key);
 
-            ProgressBar.Visibility = Visibility.Collapsed;
-        }
+            TreeView.SetBinding(ItemsControl.ItemsSourceProperty, BindingBuilder.Build(genres));
 
-        private void LoadSamples()
-        {
-            foreach (var sample in _composer.Samples)
+            var samplesQuery = await _classicalMusicContext.LoadPropertyAsync(_composer, "Samples");
+            var samples = samplesQuery.Cast<Sample>();
+
+            foreach (var sample in samples)
             {
                 var mp3FileReader = new Mp3FileReader(new MemoryStream(sample.Bytes));
 
@@ -274,6 +274,8 @@ namespace NathanHarrenstein.MusicTimeline.Views
                     _mp3Player.Play();
                 }
             }
+
+            ProgressBar.Visibility = Visibility.Collapsed;
         }
 
         private void Mp3Player_CanPlayChanged(object sender, CanPlayEventArgs e)
@@ -409,7 +411,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
             var menuItem = (MenuItem)sender;
             Application.Current.Properties["SelectedComposition"] = ((Composition)menuItem.DataContext).CompositionId;
 
-            NavigationService.Navigate(new Uri(@"pack://application:,,,/Views/CompositionEditPage.xaml", UriKind.Absolute));
+            //NavigationService.Navigate(new Uri(@"pack://application:,,,/Views/CompositionEditPage.xaml", UriKind.Absolute));
         }
     }
 }

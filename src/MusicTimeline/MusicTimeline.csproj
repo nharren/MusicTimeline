@@ -77,6 +77,18 @@
     <Reference Include="Luminescence.Xiph">
       <HintPath>..\packages\Luminescence.Xiph.2.4.1.0\lib\net40\Luminescence.Xiph.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.Data.Edm, Version=5.7.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Data.Edm.5.7.0\lib\net40\Microsoft.Data.Edm.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Data.OData, Version=5.7.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Data.OData.5.7.0\lib\net40\Microsoft.Data.OData.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Data.Services.Client, Version=5.7.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Data.Services.Client.5.7.0\lib\net40\Microsoft.Data.Services.Client.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="NAudio, Version=1.7.3.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\NAudio.1.7.3\lib\net35\NAudio.dll</HintPath>
       <Private>True</Private>
@@ -87,6 +99,12 @@
     <Reference Include="System.configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Spatial, Version=5.7.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Spatial.5.7.0\lib\net40\System.Spatial.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
@@ -125,6 +143,7 @@
     <Compile Include="Converters\UrlToCommandConverter.cs" />
     <Compile Include="Converters\UrlToFaviconConverter.cs" />
     <Compile Include="Converters\UrlToTitleConverter.cs" />
+    <Compile Include="Extensions\DataServiceAsyncExtensions.cs" />
     <Compile Include="Extensions\EnumerableExtensions.cs" />
     <Compile Include="Input\DelegateCommand.cs" />
     <Compile Include="Comparers\LogicalComparer.cs" />
@@ -134,25 +153,18 @@
     <Compile Include="Builders\ComposerEventViewModelBuilder.cs" />
     <Compile Include="Audio\TimeSpanEventArgs.cs" />
     <Compile Include="Audio\TrackEventArgs.cs" />
-    <Compile Include="Scrapers\ClassicalMusicNavigatorScraper.cs" />
-    <Compile Include="Scrapers\KlassikaScraper.cs" />
     <Compile Include="Builders\BindingBuilder.cs" />
     <Compile Include="Converters\DecimalToRomanConverter.cs" />
+    <Compile Include="Service References\ClassicalMusicDb\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.datasvcmap</DependentUpon>
+    </Compile>
     <Compile Include="Utilities\BiographyUtility.cs" />
-    <Compile Include="Scrapers\WikipediaScraper.cs" />
     <Compile Include="Utilities\StreamUtility.cs" />
     <Compile Include="ViewModels\ComposerEventViewModel.cs" />
     <Compile Include="ViewModels\ComposerEraViewModel.cs" />
     <Compile Include="Utilities\FileUtility.cs" />
-    <Compile Include="Views\ComposerEditPage.xaml.cs">
-      <DependentUpon>ComposerEditPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\ComposersEditPage.xaml.cs">
-      <DependentUpon>ComposersEditPage.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Views\CompositionEditPage.xaml.cs">
-      <DependentUpon>CompositionEditPage.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\TimelinePage.xaml.cs">
       <DependentUpon>TimelinePage.xaml</DependentUpon>
     </Compile>
@@ -171,18 +183,6 @@
     <Page Include="Themes\Generic.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </Page>
-    <Page Include="Views\ComposerEditPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\ComposersEditPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Views\CompositionEditPage.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\ComposerPage.xaml">
       <SubType>Designer</SubType>
@@ -215,13 +215,13 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="App.config" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
     <AppDesigner Include="Properties\" />
+    <None Include="Service References\ClassicalMusicDb\service.edmx" />
     <Resource Include="Resources\Fonts\seguisym.ttf" />
   </ItemGroup>
   <ItemGroup>
@@ -1684,14 +1684,6 @@
     <Resource Include="Resources\Icon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ClassicalMusicDb\ClassicalMusicDb.csproj">
-      <Project>{64e83bf1-43a0-47a7-bb5e-a0fd4454c89d}</Project>
-      <Name>ClassicalMusicDb</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\MusicLibraryDb\MusicLibraryDb.csproj">
-      <Project>{0ba043e6-3d96-4d32-8a2e-c54de859d59f}</Project>
-      <Name>MusicLibraryDb</Name>
-    </ProjectReference>
     <ProjectReference Include="..\Timeline\Timeline.csproj">
       <Project>{29f6b562-eed2-4ec5-9316-a6994a96e82d}</Project>
       <Name>Timeline</Name>
@@ -1711,6 +1703,20 @@
     <Resource Include="Resources\Icons\paragraphincreaseindentation.png" />
     <Resource Include="Resources\Icons\paragraphleftjustify.png" />
     <Resource Include="Resources\Icons\paragraphrightjustify.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ServiceReferenceMetadataStorage Include="Service References\ClassicalMusicDb\">
+      <Type>datasvcmap</Type>
+    </ServiceReferenceMetadataStorage>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\ClassicalMusicDb\Reference.datasvcmap">
+      <Generator>DataServicesCoreClientGenerator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

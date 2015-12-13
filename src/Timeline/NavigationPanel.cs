@@ -133,9 +133,11 @@ namespace NathanHarrenstein.Timeline
                     eraControl = new ContentControl
                     {
                         Content = era.ToString(),
+                        
                     };
                 }
 
+                eraControl.UseLayoutRounding = true;
                 eraControl.DataContext = era;
 
                 Children.Add(eraControl);

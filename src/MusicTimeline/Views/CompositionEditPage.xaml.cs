@@ -1,4 +1,4 @@
-﻿using NathanHarrenstein.ClassicalMusicDb;
+﻿using NathanHarrenstein.MusicTimeline.ClassicalMusicDb;
 using NathanHarrenstein.MusicTimeline.Converters;
 using System;
 using System.Data.Entity;
@@ -42,8 +42,6 @@ namespace NathanHarrenstein.MusicTimeline.Views
                     _loadingCancellationTokenSource.Cancel();
                 }
 
-                _classicalMusicContext.Dispose();
-
                 _isDisposed = true;
             }
         }
@@ -73,7 +71,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
         private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            _classicalMusicContext = new ClassicalMusicContext();
+            _classicalMusicContext = new ClassicalMusicContext(new Uri("http://www.harrenstein.com/ClassicalMusic/ClassicalMusic.svc"));
             _loadingCancellationTokenSource = new CancellationTokenSource();
 
             var composerId = (int)Application.Current.Properties["SelectedComposer"];

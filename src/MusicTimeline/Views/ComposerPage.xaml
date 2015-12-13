@@ -4,7 +4,7 @@
       xmlns:c="clr-namespace:NathanHarrenstein.MusicTimeline.Controls"
       xmlns:cv="clr-namespace:NathanHarrenstein.MusicTimeline.Converters"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-      xmlns:db="clr-namespace:NathanHarrenstein.ClassicalMusicDb;assembly=ClassicalMusicDb"
+      xmlns:db="clr-namespace:NathanHarrenstein.MusicTimeline.ClassicalMusicDb"
       xmlns:l="clr-namespace:NathanHarrenstein.MusicTimeline"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:v="clr-namespace:NathanHarrenstein.MusicTimeline.Views"
@@ -36,13 +36,13 @@
                         Command="MediaCommands.MuteVolume"
                         Executed="MuteVolume_Executed" />
     </Page.CommandBindings>
-    <Page.ContextMenu>
+    <!--<Page.ContextMenu>
         <ContextMenu>
             <MenuItem Name="EditMenuItem"
                       Click="EditMenuItem_Click"
                       Header="Edit..." />
         </ContextMenu>
-    </Page.ContextMenu>
+    </Page.ContextMenu>-->
     <!--  Root  -->
     <Grid>
         <Grid.Background>
@@ -1064,13 +1064,13 @@
                                             </DataTemplate>
                                         </HierarchicalDataTemplate.ItemTemplate>
                                         <TextBlock Text="{Binding Converter={StaticResource CompositionToCompositionDisplayNameConverter}}">
-                                            <TextBlock.ContextMenu>
+                                            <!--<TextBlock.ContextMenu>
                                                 <ContextMenu>
                                                     <MenuItem Name="EditMenuItem"
                                                               Click="CompositionEditMenuItem_Click"
                                                               Header="Edit..." />
                                                 </ContextMenu>
-                                            </TextBlock.ContextMenu>
+                                            </TextBlock.ContextMenu>-->
                                         </TextBlock>
                                     </HierarchicalDataTemplate>
                                 </HierarchicalDataTemplate.ItemTemplate>

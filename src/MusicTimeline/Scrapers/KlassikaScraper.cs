@@ -1,5 +1,5 @@
 ﻿using HtmlAgilityPack;
-using NathanHarrenstein.ClassicalMusicDb;
+using NathanHarrenstein.MusicTimeline.ClassicalMusicDb;
 using NathanHarrenstein.MusicTimeline.Builders;
 using System;
 using System.Collections.Generic;
@@ -12,6 +12,7 @@ using System.Net;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Threading;
+using System.Data.Services.Client;
 
 namespace NathanHarrenstein.MusicTimeline.Scrapers
 {
@@ -282,7 +283,7 @@ namespace NathanHarrenstein.MusicTimeline.Scrapers
                 {
                     composition = new Composition();
                     composition.Name = compositionName;
-                    composition.Composers = new List<Composer> { composer };
+                    composition.Composers = new DataServiceCollection<Composer> { composer };
                     composition.Dates = compositionDate == "?" ? null : compositionDate;
 
                     composer.Compositions.Add(composition);
@@ -293,12 +294,7 @@ namespace NathanHarrenstein.MusicTimeline.Scrapers
 
                 if (!string.IsNullOrWhiteSpace(genreName))
                 {
-                    if (classicalMusicContext.Genres.Local.Count == 0)
-                    {
-                        classicalMusicContext.Genres.Load();
-                    }
-
-                    var genre = classicalMusicContext.Genres.Local.FirstOrDefault(ct => ct.Name == genreName);
+                    var genre = classicalMusicContext.Genres.FirstOrDefault(ct => ct.Name == genreName);
 
                     if (genre == null)
                     {

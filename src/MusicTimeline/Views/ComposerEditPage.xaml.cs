@@ -1,6 +1,5 @@
 ﻿using HTMLConverter;
 using Microsoft.Win32;
-using NathanHarrenstein.ClassicalMusicDb;
 using NathanHarrenstein.MusicTimeline.Converters;
 using NathanHarrenstein.MusicTimeline.Scrapers;
 using NathanHarrenstein.MusicTimeline.Utilities;
@@ -16,6 +15,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Markup;
 using System.Windows.Media;
+using NathanHarrenstein.MusicTimeline.ClassicalMusicDb;
 
 namespace NathanHarrenstein.MusicTimeline.Views
 {
@@ -55,8 +55,6 @@ namespace NathanHarrenstein.MusicTimeline.Views
                 {
                     _loadingCancellationTokenSource.Cancel();
                 }
-
-                _classicalMusicContext.Dispose();
 
                 _isDisposed = true;
             }
@@ -203,6 +201,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
             var url = textBox.Text;
             var link = (Link)textBox.DataContext;
+            link.Url = url;
 
             if (!url.StartsWith("http"))
             {
@@ -221,7 +220,9 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
             if (url.Contains("wikipedia"))
             {
-                composer.Details.Biography = BiographyUtility.CleanXaml(HtmlToXamlConverter.ConvertHtmlToXaml(WikipediaScraper.ScrapeArticle(url), false));
+                composer.Details.Biography = BiographyUtility.CleanXaml(HtmlToXamlConverter.ConvertHtmlToXaml(WikipediaScraper.ScrapeArticle(url), true));
+
+                BiographyRichTextBox.Document = StringToFlowDocument(composer.Details.Biography);
             }
 
             if (url.Contains("charles.smith"))
@@ -262,7 +263,16 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
                 await KlassikaScraper.ScrapeComposerDetailPageAsync(url, composer, _classicalMusicContext, progress, cancellationTokenSource.Token);
 
-                progressDialog.ShowDialog();
+                // An exception can occur if the function completes before the dialog window has had time to open.
+
+                try
+                {
+                    progressDialog.ShowDialog();
+                }
+                catch (Exception)
+                {
+
+                }               
             }
         }
 
@@ -350,9 +360,21 @@ namespace NathanHarrenstein.MusicTimeline.Views
             NationalityDataGrid.ItemsSource = composer.Nationalities;
         }
 
+        private FlowDocument StringToFlowDocument(string input)
+        {
+            var parserContext = new ParserContext();
+            parserContext.XmlnsDictionary.Add("", "http://schemas.microsoft.com/winfx/2006/xaml/presentation");
+            parserContext.XmlSpace = "preserve";
+
+            var inputBytes = Encoding.UTF8.GetBytes(input);
+            var memoryStream = new MemoryStream(inputBytes);
+
+            return (FlowDocument)XamlReader.Load(memoryStream, parserContext);
+        }
+
         private async void Page_Loaded(object sender, RoutedEventArgs e)
         {
-            _classicalMusicContext = new ClassicalMusicContext();
+            _classicalMusicContext = new ClassicalMusicContext(new Uri("http://www.harrenstein.com/ClassicalMusic/ClassicalMusic.svc"));
             _loadingCancellationTokenSource = new CancellationTokenSource();
 
             var composerId = (int)Application.Current.Properties["SelectedComposer"];
@@ -360,15 +382,11 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
             DataContext = composer;
 
-            ComposerDataGrid.ItemsSource = new Composer[] { composer };
+            ComposerDataGrid.ItemsSource = new Composer[] { composer };            
 
-            var parserContext = new ParserContext();
-            parserContext.XmlnsDictionary.Add("", "http://schemas.microsoft.com/winfx/2006/xaml/presentation");
-            parserContext.XmlSpace = "preserve";
-
-            if (composer.Details.Biography != null)
+            if (!string.IsNullOrEmpty(composer.Details.Biography))
             {
-                BiographyRichTextBox.Document = (FlowDocument)XamlReader.Load(new MemoryStream(Encoding.UTF8.GetBytes(composer.Details.Biography)), parserContext);
+                BiographyRichTextBox.Document = StringToFlowDocument(composer.Details.Biography);
             }
 
             await _classicalMusicContext.Locations.LoadAsync(_loadingCancellationTokenSource.Token);

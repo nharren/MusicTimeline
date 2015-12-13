@@ -1,4 +1,4 @@
-﻿using NathanHarrenstein.ClassicalMusicDb;
+﻿using NathanHarrenstein.MusicTimeline.ClassicalMusicDb;
 using NathanHarrenstein.MusicTimeline.ViewModels;
 using System.Collections.Generic;
 using System.EDTF;

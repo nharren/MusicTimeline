@@ -3,7 +3,7 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:c="clr-namespace:NathanHarrenstein.MusicTimeline.Controls"
       xmlns:cm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
-      xmlns:db="clr-namespace:NathanHarrenstein.ClassicalMusicDb;assembly=ClassicalMusicDb"
+      xmlns:db="clr-namespace:NathanHarrenstein.MusicTimeline.ClassicalMusicDb"
       xmlns:t="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2"
       Title="ComposerEditPage"
       Loaded="Page_Loaded"
@@ -212,7 +212,7 @@
                     </DataGrid>
                     <DataGrid Name="LinkDataGrid"
                               Margin="0,10,0,0"
-                              CellEditEnding="LinkDataGrid_CellEditEnding"
+                              CellEditEnding="LinkDataGrid_CellEditEnding"                            
                               ColumnWidth="*"
                               ItemsSource="{Binding Links}">
                         <DataGrid.Columns>

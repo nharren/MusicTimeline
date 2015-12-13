@@ -1,4 +1,4 @@
-﻿using NathanHarrenstein.ClassicalMusicDb;
+﻿using NathanHarrenstein.MusicTimeline.ClassicalMusicDb;
 using NathanHarrenstein.MusicTimeline.Builders;
 using NathanHarrenstein.MusicTimeline.Converters;
 using NathanHarrenstein.MusicTimeline.Input;
@@ -12,6 +12,9 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Navigation;
+using System.Data.Services.Client;
+using System.Collections.Generic;
+using NathanHarrenstein.MusicTimeline.ViewModels;
 
 namespace NathanHarrenstein.MusicTimeline.Views
 {
@@ -32,7 +35,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
             if (!DesignerProperties.GetIsInDesignMode(this))
             {
-                _classicalMusicContext = new ClassicalMusicContext();
+                _classicalMusicContext = new ClassicalMusicContext(new Uri("http://www.harrenstein.com/ClassicalMusic/ClassicalMusic.svc"));
 
                 CloseCommand = new DelegateCommand(Exit);
                 GoToCommand = new DelegateCommand(GoToEra);
@@ -131,8 +134,6 @@ namespace NathanHarrenstein.MusicTimeline.Views
         {
             if (!_isDisposed)
             {
-                _classicalMusicContext.Dispose();
-
                 _isDisposed = true;
             }
         }
@@ -175,7 +176,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
         private void EditMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            NavigationService.Navigate(new Uri(@"pack://application:,,,/Views/ComposersEditPage.xaml", UriKind.Absolute));
+            //NavigationService.Navigate(new Uri(@"pack://application:,,,/Views/ComposersEditPage.xaml", UriKind.Absolute));
         }
 
         private void Exit(object obj)
@@ -241,21 +242,18 @@ namespace NathanHarrenstein.MusicTimeline.Views
             NavigationService.Refresh();
         }
 
-        private async void TimelinePage_Loaded(object sender, RoutedEventArgs e)
+        private void TimelinePage_Loaded(object sender, RoutedEventArgs e)
         {
-            var eraList = await _classicalMusicContext.Eras
-                .AsNoTracking()
-                .ToListAsync();
+            var erasQuery = _classicalMusicContext.Eras;
 
-            var composerEraViewModels = ComposerEraViewModelBuilder.Build(eraList);
-
-            timeline.Eras = composerEraViewModels;
-
-            var composers = await _classicalMusicContext.Composers
-                .AsNoTracking()
-                .ToListAsync();
-
-            timeline.Events = ComposerEventViewModelBuilder.Build(composers, composerEraViewModels, timeline);
+            try
+            {
+                erasQuery.BeginExecute(OnErasQueryComplete, erasQuery);
+            }
+            catch (DataServiceQueryException ex)
+            {
+                throw new ApplicationException("An error occurred during query execution.", ex);
+            }
 
             var horizontalOffset = Application.Current.Properties["HorizontalOffset"] as double?;
 
@@ -270,6 +268,45 @@ namespace NathanHarrenstein.MusicTimeline.Views
             {
                 timeline.VerticalOffset = verticalOffset.Value;
             }
+        }
+
+        private List<ComposerEraViewModel> _composerEraViewModels;
+
+        private void OnErasQueryComplete(IAsyncResult result)
+        { 
+            var query = result.AsyncState as DataServiceQuery<Era>;
+
+            var eraList = query.EndExecute(result).ToList();
+
+            Dispatcher.Invoke(() =>
+            {
+                _composerEraViewModels = ComposerEraViewModelBuilder.Build(eraList);
+
+                timeline.Eras = _composerEraViewModels;
+            });          
+
+            var composersQuery = _classicalMusicContext.Composers
+                .Expand(c => c.Eras);
+
+            try
+            {
+                composersQuery.BeginExecute(OnComposersQueryComplete, composersQuery);
+            }
+            catch (DataServiceQueryException ex)
+            {
+                throw new ApplicationException("An error occurred during query execution.", ex);
+            }
+        }
+
+        private void OnComposersQueryComplete(IAsyncResult result)
+        {
+            var query = result.AsyncState as DataServiceQuery<Composer>;
+            var composerList = query.EndExecute(result).ToList();
+
+            Dispatcher.Invoke(() =>
+           {                
+                timeline.Events = ComposerEventViewModelBuilder.Build(composerList, _composerEraViewModels, timeline);
+           });
         }
     }
 }
