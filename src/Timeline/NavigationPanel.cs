@@ -83,7 +83,7 @@ namespace NathanHarrenstein.Timeline
             foreach (FrameworkElement child in Children)
             {
                 var era = (ITimelineEra)child.DataContext;
-                var width = (era.Dates.Span().TotalSeconds / totalSeconds) * finalSize.Width;
+                var width = Math.Round((era.Dates.Span().TotalSeconds / totalSeconds) * finalSize.Width);
 
                 child.Arrange(new Rect(
                     pixelsUsed,
