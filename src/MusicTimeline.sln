@@ -13,7 +13,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		..\README.md = ..\README.md
 	EndProjectSection
 EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "Installer", "Installer\Installer.vdproj", "{59C83BCA-3460-4D58-BB99-E48F0273FAF2}"
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "MusicTimeline.Installer", "MusicTimeline.Installer\MusicTimeline.Installer.vdproj", "{EF8160AC-7155-4961-A069-C7C750D236E7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -49,18 +49,12 @@ Global
 		{73DA9912-A74D-43D7-87DE-08F626F24BFB}.Release|Any CPU.Build.0 = Release|Any CPU
 		{73DA9912-A74D-43D7-87DE-08F626F24BFB}.Release|x86.ActiveCfg = Release|Any CPU
 		{73DA9912-A74D-43D7-87DE-08F626F24BFB}.Release|x86.Build.0 = Release|Any CPU
-		{59C83BCA-3460-4D58-BB99-E48F0273FAF2}.Debug|Any CPU.ActiveCfg = Debug
-		{59C83BCA-3460-4D58-BB99-E48F0273FAF2}.Debug|Any CPU.Build.0 = Debug
-		{59C83BCA-3460-4D58-BB99-E48F0273FAF2}.Debug|x86.ActiveCfg = Debug
-		{59C83BCA-3460-4D58-BB99-E48F0273FAF2}.Debug|x86.Build.0 = Debug
-		{59C83BCA-3460-4D58-BB99-E48F0273FAF2}.DebugOnSurfaceSEA|Any CPU.ActiveCfg = Debug
-		{59C83BCA-3460-4D58-BB99-E48F0273FAF2}.DebugOnSurfaceSEA|Any CPU.Build.0 = Debug
-		{59C83BCA-3460-4D58-BB99-E48F0273FAF2}.DebugOnSurfaceSEA|x86.ActiveCfg = Debug
-		{59C83BCA-3460-4D58-BB99-E48F0273FAF2}.DebugOnSurfaceSEA|x86.Build.0 = Debug
-		{59C83BCA-3460-4D58-BB99-E48F0273FAF2}.Release|Any CPU.ActiveCfg = Release
-		{59C83BCA-3460-4D58-BB99-E48F0273FAF2}.Release|Any CPU.Build.0 = Release
-		{59C83BCA-3460-4D58-BB99-E48F0273FAF2}.Release|x86.ActiveCfg = Release
-		{59C83BCA-3460-4D58-BB99-E48F0273FAF2}.Release|x86.Build.0 = Release
+		{EF8160AC-7155-4961-A069-C7C750D236E7}.Debug|Any CPU.ActiveCfg = Debug
+		{EF8160AC-7155-4961-A069-C7C750D236E7}.Debug|x86.ActiveCfg = Debug
+		{EF8160AC-7155-4961-A069-C7C750D236E7}.DebugOnSurfaceSEA|Any CPU.ActiveCfg = Debug
+		{EF8160AC-7155-4961-A069-C7C750D236E7}.DebugOnSurfaceSEA|x86.ActiveCfg = Debug
+		{EF8160AC-7155-4961-A069-C7C750D236E7}.Release|Any CPU.ActiveCfg = Release
+		{EF8160AC-7155-4961-A069-C7C750D236E7}.Release|x86.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

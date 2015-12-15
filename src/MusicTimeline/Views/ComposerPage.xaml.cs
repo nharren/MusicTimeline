@@ -44,6 +44,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
             _logicalComparer = new LogicalComparer();
             _classicalMusicContext = new ClassicalMusicContext(new Uri("http://www.harrenstein.com/ClassicalMusic/ClassicalMusic.svc"));
+            _classicalMusicContext.MergeOption = MergeOption.OverwriteChanges;
             _sampleDictionary = new Dictionary<IWaveProvider, Sample>();
             _mp3Player = new Mp3Player();
 
@@ -166,7 +167,9 @@ namespace NathanHarrenstein.MusicTimeline.Views
             var composerId = (int)Application.Current.Properties["SelectedComposer"];
 
             var composerUri = new Uri($"http://www.harrenstein.com/ClassicalMusic/ClassicalMusic.svc/Composers?$filter=ComposerId eq {composerId}&$expand=Details,Details/BirthLocation,Details/DeathLocation,Nationalities,Influences,Influenced,Links");
-            _composer = _classicalMusicContext.Execute<Composer>(composerUri).First();
+            var composerQuery = await _classicalMusicContext.ExecuteAsync<Composer>(composerUri, null);
+
+            _composer = composerQuery.First();
 
             ComposerNameTextBlock.Text = NameUtility.ToFirstLast(_composer.Name);
 
@@ -253,8 +256,8 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
             var compositionsUri = new Uri($"http://www.harrenstein.com/ClassicalMusic/ClassicalMusic.svc/Compositions?$filter=Composers/any(d:d/Name eq '{_composer.Name}')&$expand=Genre,Key,Movements");
 
-            var genres = _classicalMusicContext.Execute<Composition>(compositionsUri)
-                .GroupBy(c => c.Genre == null ? "Unknown" : c.Genre.Name)
+            var genresQuery = await _classicalMusicContext.ExecuteAsync<Composition>(compositionsUri, null);
+            var genres = genresQuery.GroupBy(c => c.Genre == null ? "Unknown" : c.Genre.Name)
                 .OrderBy(s => s.Key);
 
             TreeView.SetBinding(ItemsControl.ItemsSourceProperty, BindingBuilder.Build(genres));

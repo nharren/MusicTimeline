@@ -283,10 +283,11 @@ namespace NathanHarrenstein.MusicTimeline.Views
                 _composerEraViewModels = ComposerEraViewModelBuilder.Build(eraList);
 
                 timeline.Eras = _composerEraViewModels;
-            });          
+            });
 
             var composersQuery = _classicalMusicContext.Composers
-                .Expand(c => c.Eras);
+                .Expand(c => c.Eras)
+                .Expand(c => c.Nationalities);
 
             try
             {

@@ -236,1443 +236,497 @@
     <Resource Include="Resources\Star.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Flags\16\Afghan.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Albanian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Algerian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\American Samoan.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Andorran.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Angolan.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Anguillian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Argentine.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Armenian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Aruban.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Australian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Austrian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Azerbaijani.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Bahamian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Bahraini.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Bangladeshi.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Barbadian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Belarusian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Belgian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Belizean.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Beninese.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Bermudian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Bhutanese.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Bolivian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Motswana.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Brazilian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\British Virgin Islander.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Bruneian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Bulgarian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Burkinabe.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Burundian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Cambodian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Cameroonian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Canadian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Cabo Verdean.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Caymanian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Central African.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Chadian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Chilean.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Chinese.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Christmas Island.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Cocos Islander.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Colombian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Comoran.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Cook Islander.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Costa Rican.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Ivorian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Croatian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Cuban.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Curacaoan.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Cypriot.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Czech.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Congolese %28Democratic Republic of the Congo%29.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Danish.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Djiboutian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Dominican %28Dominica%29.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Dominican %28Dominican Republic%29.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Timorese.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Ecuadorian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Egyptian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Salvadoran.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\English.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Equatorial Guinean.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Eritrean.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Estonian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Ethiopian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Falkland Island.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Faroese.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Fijian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Finnish.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\French.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\French Polynesian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Gabonese.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Gambian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Georgian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\German.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Ghanaian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Gibraltarian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Greek.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Greenlandic.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Grenadian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Guamanian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Guatemalan.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Channel Islander %28Guernsey%29.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Bissau-Guinean.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Guinean.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Guyanese.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Haitian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Honduran.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Chinese %28Hong Kong%29.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Hungarian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Icelandic.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Indian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Indonesian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Iranian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Iraqi.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Irish.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Manx.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Israeli.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Italian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Jamaican.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Japanese.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Channel Islander %28Jersey%29.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Jordanian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Kazakhstani.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Kenyan.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\I-Kiribati.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Kosovan.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Kuwaiti.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Kyrgyzstani.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Lao.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Latvian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Lebanese.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Basotho.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Liberian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Libyan.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Liechtenstein.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Lithuanian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Luxembourg.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Chinese %28Macau%29.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Macedonian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Malagasy.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Malawian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Malaysian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Maldivian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Malian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Maltese.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Marshallese.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Mauritanian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Mauritian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Mexican.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Micronesian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Moldovan.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Monegasque.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Mongolian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Montenegrin.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Montserratian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Moroccan.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Mozambican.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Burmese.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Namibian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Nauruan.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Nepali.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Dutch.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\New Caledonian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\New Zealand.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Nicaraguan.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Nigerian %28Niger%29.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Nigerian %28Nigeria%29.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Niuean.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Norfolk Islander.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\North Korean.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Norwegian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Omani.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Pakistani.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Palauan.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Palestinian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Panamanian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Papua New Guinean.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Paraguayan.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Peruvian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Philippine.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Pitcairn Islander.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Polish.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Portuguese.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Puerto Rican.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Qatari.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Congolese %28Republic of the Congo%29.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Romanian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Russian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Rwandan.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Saint Helenian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Kittitian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Saint Lucian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Saint Vincentian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Samoan.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Sammarinese.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Sao Tomean.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Saudi.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Scottish.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Senegalese.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Serbian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Seychellois.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Sierra Leonean.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Singapore.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Slovak.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Slovenian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Solomon Islander.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Somali.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\South African.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\South Korean.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\South Sudanese.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Spanish.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Sri Lankan.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Sudanese.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Surinamese.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Swazi.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Swedish.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Swiss.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Syrian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Taiwan.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Tajikistani.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Tanzanian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Thai.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Togolese.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Tokelauan.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Tongan.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Tobagonian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Tunisian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Turkish.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Turkmen.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Tuvaluan.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Ugandan.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Ukrainian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Emirati.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\British.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\American.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Unknown.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Uruguayan.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Virgin Islander.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Uzbekistani.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Ni-Vanuatu.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Venezuelan.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Vietnamese.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Welsh.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Wallisian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Sahrawi.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Yemeni.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Zambian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Zimbabwean.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Afghan.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Albanian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Algerian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\American Samoan.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Andorran.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Angolan.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Anguillian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Argentine.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Armenian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Aruban.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Australian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Austrian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Azerbaijani.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Bahamian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Bahraini.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Bangladeshi.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Barbadian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Belarusian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Belgian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Belizean.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Beninese.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Bermudian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Bhutanese.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Bolivian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Brazilian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\British Virgin Islander.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Bruneian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Bulgarian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Burkinabe.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Burundian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Cambodian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Cameroonian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Canadian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Cabo Verdean.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Caymanian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Central African.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Chadian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Chilean.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Chinese.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Christmas Island.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Cocos Islander.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Colombian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Comoran.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Cook Islander.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Costa Rican.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Ivorian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Croatian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Cuban.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Curacaoan.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Cypriot.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Czech.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Congolese %28Democratic Republic of the Congo%29.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Danish.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Djiboutian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Dominican %28Dominica%29.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Dominican %28Dominican Republic%29.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Timorese.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Ecuadorian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Egyptian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Salvadoran.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\English.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Equatorial Guinean.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Eritrean.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Estonian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Ethiopian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Falkland Island.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Faroese.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Fijian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Finnish.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\French.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\French Polynesian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Gabonese.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Gambian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Georgian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\German.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Ghanaian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Gibraltarian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Greek.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Greenlandic.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Grenadian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Guamanian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Guatemalan.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Channel Islander %28Guernsey%29.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Bissau-Guinean.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Guinean.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Guyanese.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Haitian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Honduran.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Chinese %28Hong Kong%29.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Hungarian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Icelandic.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Indian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Indonesian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Iranian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Iraqi.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Irish.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Manx.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Israeli.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Italian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Jamaican.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Japanese.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Channel Islander %28Jersey%29.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Jordanian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Kazakhstani.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Kenyan.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\I-Kiribati.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Kosovan.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Kuwaiti.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Kyrgyzstani.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Lao.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Latvian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Lebanese.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Basotho.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Liberian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Libyan.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Liechtenstein.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Lithuanian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Luxembourg.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Chinese %28Macau%29.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Macedonian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Malagasy.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Malawian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Malaysian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Maldivian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Malian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Maltese.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Marshallese.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Mauritanian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Mauritian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Mexican.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Micronesian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Moldovan.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Monegasque.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Mongolian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Montenegrin.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Montserratian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Moroccan.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Mozambican.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Burmese.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Namibian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Nauruan.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Nepali.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Dutch.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\New Caledonian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\New Zealand.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Nicaraguan.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Nigerian %28Niger%29.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Nigerian %28Nigeria%29.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Niuean.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Norfolk Islander.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\North Korean.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Norwegian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Omani.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Pakistani.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Palauan.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Palestinian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Panamanian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Papua New Guinean.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Paraguayan.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Peruvian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Philippine.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Pitcairn Islander.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Polish.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Portuguese.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Puerto Rican.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Qatari.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Congolese %28Republic of the Congo%29.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Romanian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Russian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Rwandan.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Saint Helenian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Kittitian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Saint Lucian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Saint Vincentian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Samoan.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Sammarinese.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Sao Tomean.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Saudi.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Scottish.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Senegalese.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Serbian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Seychellois.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Sierra Leonean.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Singapore.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Slovak.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Slovenian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Solomon Islander.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Somali.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\South African.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\South Korean.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\South Sudanese.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Spanish.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Sri Lankan.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Sudanese.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Surinamese.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Swazi.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Swedish.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Swiss.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Syrian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Taiwan.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Tajikistani.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Tanzanian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Thai.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Togolese.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Tokelauan.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Tongan.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Trinidadian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Tunisian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Turkish.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Turkmen.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Tuvaluan.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Ugandan.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Ukrainian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Emirati.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\British.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\American.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Unknown.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Uruguayan.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Virgin Islander.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Uzbekistani.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Ni-Vanuatu.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Venezuelan.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Vietnamese.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Welsh.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Wallisian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Sahrawi.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Yemeni.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Zambian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Zimbabwean.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <Resource Include="Resources\Flags\16\Afghan.png" />
+    <Resource Include="Resources\Flags\16\Albanian.png" />
+    <Resource Include="Resources\Flags\16\Algerian.png" />
+    <Resource Include="Resources\Flags\16\American Samoan.png" />
+    <Resource Include="Resources\Flags\16\Andorran.png" />
+    <Resource Include="Resources\Flags\16\Angolan.png" />
+    <Resource Include="Resources\Flags\16\Anguillian.png" />
+    <Resource Include="Resources\Flags\16\Argentine.png" />
+    <Resource Include="Resources\Flags\16\Armenian.png" />
+    <Resource Include="Resources\Flags\16\Aruban.png" />
+    <Resource Include="Resources\Flags\16\Australian.png" />
+    <Resource Include="Resources\Flags\16\Austrian.png" />
+    <Resource Include="Resources\Flags\16\Azerbaijani.png" />
+    <Resource Include="Resources\Flags\16\Bahamian.png" />
+    <Resource Include="Resources\Flags\16\Bahraini.png" />
+    <Resource Include="Resources\Flags\16\Bangladeshi.png" />
+    <Resource Include="Resources\Flags\16\Barbadian.png" />
+    <Resource Include="Resources\Flags\16\Belarusian.png" />
+    <Resource Include="Resources\Flags\16\Belgian.png" />
+    <Resource Include="Resources\Flags\16\Belizean.png" />
+    <Resource Include="Resources\Flags\16\Beninese.png" />
+    <Resource Include="Resources\Flags\16\Bermudian.png" />
+    <Resource Include="Resources\Flags\16\Bhutanese.png" />
+    <Resource Include="Resources\Flags\16\Bolivian.png" />
+    <Resource Include="Resources\Flags\16\Motswana.png" />
+    <Resource Include="Resources\Flags\16\Brazilian.png" />
+    <Resource Include="Resources\Flags\16\British Virgin Islander.png" />
+    <Resource Include="Resources\Flags\16\Bruneian.png" />
+    <Resource Include="Resources\Flags\16\Bulgarian.png" />
+    <Resource Include="Resources\Flags\16\Burkinabe.png" />
+    <Resource Include="Resources\Flags\16\Burundian.png" />
+    <Resource Include="Resources\Flags\16\Cambodian.png" />
+    <Resource Include="Resources\Flags\16\Cameroonian.png" />
+    <Resource Include="Resources\Flags\16\Canadian.png" />
+    <Resource Include="Resources\Flags\16\Cabo Verdean.png" />
+    <Resource Include="Resources\Flags\16\Caymanian.png" />
+    <Resource Include="Resources\Flags\16\Central African.png" />
+    <Resource Include="Resources\Flags\16\Chadian.png" />
+    <Resource Include="Resources\Flags\16\Chilean.png" />
+    <Resource Include="Resources\Flags\16\Chinese.png" />
+    <Resource Include="Resources\Flags\16\Christmas Island.png" />
+    <Resource Include="Resources\Flags\16\Cocos Islander.png" />
+    <Resource Include="Resources\Flags\16\Colombian.png" />
+    <Resource Include="Resources\Flags\16\Comoran.png" />
+    <Resource Include="Resources\Flags\16\Cook Islander.png" />
+    <Resource Include="Resources\Flags\16\Costa Rican.png" />
+    <Resource Include="Resources\Flags\16\Ivorian.png" />
+    <Resource Include="Resources\Flags\16\Croatian.png" />
+    <Resource Include="Resources\Flags\16\Cuban.png" />
+    <Resource Include="Resources\Flags\16\Curacaoan.png" />
+    <Resource Include="Resources\Flags\16\Cypriot.png" />
+    <Resource Include="Resources\Flags\16\Czech.png" />
+    <Resource Include="Resources\Flags\16\Congolese %28Democratic Republic of the Congo%29.png" />
+    <Resource Include="Resources\Flags\16\Danish.png" />
+    <Resource Include="Resources\Flags\16\Djiboutian.png" />
+    <Resource Include="Resources\Flags\16\Dominican %28Dominica%29.png" />
+    <Resource Include="Resources\Flags\16\Dominican %28Dominican Republic%29.png" />
+    <Resource Include="Resources\Flags\16\Timorese.png" />
+    <Resource Include="Resources\Flags\16\Ecuadorian.png" />
+    <Resource Include="Resources\Flags\16\Egyptian.png" />
+    <Resource Include="Resources\Flags\16\Salvadoran.png" />
+    <Resource Include="Resources\Flags\16\English.png" />
+    <Resource Include="Resources\Flags\16\Equatorial Guinean.png" />
+    <Resource Include="Resources\Flags\16\Eritrean.png" />
+    <Resource Include="Resources\Flags\16\Estonian.png" />
+    <Resource Include="Resources\Flags\16\Ethiopian.png" />
+    <Resource Include="Resources\Flags\16\Falkland Island.png" />
+    <Resource Include="Resources\Flags\16\Faroese.png" />
+    <Resource Include="Resources\Flags\16\Fijian.png" />
+    <Resource Include="Resources\Flags\16\Finnish.png" />
+    <Resource Include="Resources\Flags\16\French.png" />
+    <Resource Include="Resources\Flags\16\French Polynesian.png" />
+    <Resource Include="Resources\Flags\16\Gabonese.png" />
+    <Resource Include="Resources\Flags\16\Gambian.png" />
+    <Resource Include="Resources\Flags\16\Georgian.png" />
+    <Resource Include="Resources\Flags\16\German.png" />
+    <Resource Include="Resources\Flags\16\Ghanaian.png" />
+    <Resource Include="Resources\Flags\16\Gibraltarian.png" />
+    <Resource Include="Resources\Flags\16\Greek.png" />
+    <Resource Include="Resources\Flags\16\Greenlandic.png" />
+    <Resource Include="Resources\Flags\16\Grenadian.png" />
+    <Resource Include="Resources\Flags\16\Guamanian.png" />
+    <Resource Include="Resources\Flags\16\Guatemalan.png" />
+    <Resource Include="Resources\Flags\16\Channel Islander %28Guernsey%29.png" />
+    <Resource Include="Resources\Flags\16\Bissau-Guinean.png" />
+    <Resource Include="Resources\Flags\16\Guinean.png" />
+    <Resource Include="Resources\Flags\16\Guyanese.png" />
+    <Resource Include="Resources\Flags\16\Haitian.png" />
+    <Resource Include="Resources\Flags\16\Honduran.png" />
+    <Resource Include="Resources\Flags\16\Chinese %28Hong Kong%29.png" />
+    <Resource Include="Resources\Flags\16\Hungarian.png" />
+    <Resource Include="Resources\Flags\16\Icelandic.png" />
+    <Resource Include="Resources\Flags\16\Indian.png" />
+    <Resource Include="Resources\Flags\16\Indonesian.png" />
+    <Resource Include="Resources\Flags\16\Iranian.png" />
+    <Resource Include="Resources\Flags\16\Iraqi.png" />
+    <Resource Include="Resources\Flags\16\Irish.png" />
+    <Resource Include="Resources\Flags\16\Manx.png" />
+    <Resource Include="Resources\Flags\16\Israeli.png" />
+    <Resource Include="Resources\Flags\16\Italian.png" />
+    <Resource Include="Resources\Flags\16\Jamaican.png" />
+    <Resource Include="Resources\Flags\16\Japanese.png" />
+    <Resource Include="Resources\Flags\16\Channel Islander %28Jersey%29.png" />
+    <Resource Include="Resources\Flags\16\Jordanian.png" />
+    <Resource Include="Resources\Flags\16\Kazakhstani.png" />
+    <Resource Include="Resources\Flags\16\Kenyan.png" />
+    <Resource Include="Resources\Flags\16\I-Kiribati.png" />
+    <Resource Include="Resources\Flags\16\Kosovan.png" />
+    <Resource Include="Resources\Flags\16\Kuwaiti.png" />
+    <Resource Include="Resources\Flags\16\Kyrgyzstani.png" />
+    <Resource Include="Resources\Flags\16\Lao.png" />
+    <Resource Include="Resources\Flags\16\Latvian.png" />
+    <Resource Include="Resources\Flags\16\Lebanese.png" />
+    <Resource Include="Resources\Flags\16\Basotho.png" />
+    <Resource Include="Resources\Flags\16\Liberian.png" />
+    <Resource Include="Resources\Flags\16\Libyan.png" />
+    <Resource Include="Resources\Flags\16\Liechtenstein.png" />
+    <Resource Include="Resources\Flags\16\Lithuanian.png" />
+    <Resource Include="Resources\Flags\16\Luxembourg.png" />
+    <Resource Include="Resources\Flags\16\Chinese %28Macau%29.png" />
+    <Resource Include="Resources\Flags\16\Macedonian.png" />
+    <Resource Include="Resources\Flags\16\Malagasy.png" />
+    <Resource Include="Resources\Flags\16\Malawian.png" />
+    <Resource Include="Resources\Flags\16\Malaysian.png" />
+    <Resource Include="Resources\Flags\16\Maldivian.png" />
+    <Resource Include="Resources\Flags\16\Malian.png" />
+    <Resource Include="Resources\Flags\16\Maltese.png" />
+    <Resource Include="Resources\Flags\16\Marshallese.png" />
+    <Resource Include="Resources\Flags\16\Mauritanian.png" />
+    <Resource Include="Resources\Flags\16\Mauritian.png" />
+    <Resource Include="Resources\Flags\16\Mexican.png" />
+    <Resource Include="Resources\Flags\16\Micronesian.png" />
+    <Resource Include="Resources\Flags\16\Moldovan.png" />
+    <Resource Include="Resources\Flags\16\Monegasque.png" />
+    <Resource Include="Resources\Flags\16\Mongolian.png" />
+    <Resource Include="Resources\Flags\16\Montenegrin.png" />
+    <Resource Include="Resources\Flags\16\Montserratian.png" />
+    <Resource Include="Resources\Flags\16\Moroccan.png" />
+    <Resource Include="Resources\Flags\16\Mozambican.png" />
+    <Resource Include="Resources\Flags\16\Burmese.png" />
+    <Resource Include="Resources\Flags\16\Namibian.png" />
+    <Resource Include="Resources\Flags\16\Nauruan.png" />
+    <Resource Include="Resources\Flags\16\Nepali.png" />
+    <Resource Include="Resources\Flags\16\Dutch.png" />
+    <Resource Include="Resources\Flags\16\New Caledonian.png" />
+    <Resource Include="Resources\Flags\16\New Zealand.png" />
+    <Resource Include="Resources\Flags\16\Nicaraguan.png" />
+    <Resource Include="Resources\Flags\16\Nigerian %28Niger%29.png" />
+    <Resource Include="Resources\Flags\16\Nigerian %28Nigeria%29.png" />
+    <Resource Include="Resources\Flags\16\Niuean.png" />
+    <Resource Include="Resources\Flags\16\Norfolk Islander.png" />
+    <Resource Include="Resources\Flags\16\North Korean.png" />
+    <Resource Include="Resources\Flags\16\Norwegian.png" />
+    <Resource Include="Resources\Flags\16\Omani.png" />
+    <Resource Include="Resources\Flags\16\Pakistani.png" />
+    <Resource Include="Resources\Flags\16\Palauan.png" />
+    <Resource Include="Resources\Flags\16\Palestinian.png" />
+    <Resource Include="Resources\Flags\16\Panamanian.png" />
+    <Resource Include="Resources\Flags\16\Papua New Guinean.png" />
+    <Resource Include="Resources\Flags\16\Paraguayan.png" />
+    <Resource Include="Resources\Flags\16\Peruvian.png" />
+    <Resource Include="Resources\Flags\16\Philippine.png" />
+    <Resource Include="Resources\Flags\16\Pitcairn Islander.png" />
+    <Resource Include="Resources\Flags\16\Polish.png" />
+    <Resource Include="Resources\Flags\16\Portuguese.png" />
+    <Resource Include="Resources\Flags\16\Puerto Rican.png" />
+    <Resource Include="Resources\Flags\16\Qatari.png" />
+    <Resource Include="Resources\Flags\16\Congolese %28Republic of the Congo%29.png" />
+    <Resource Include="Resources\Flags\16\Romanian.png" />
+    <Resource Include="Resources\Flags\16\Russian.png" />
+    <Resource Include="Resources\Flags\16\Rwandan.png" />
+    <Resource Include="Resources\Flags\16\Saint Helenian.png" />
+    <Resource Include="Resources\Flags\16\Kittitian.png" />
+    <Resource Include="Resources\Flags\16\Saint Lucian.png" />
+    <Resource Include="Resources\Flags\16\Saint Vincentian.png" />
+    <Resource Include="Resources\Flags\16\Samoan.png" />
+    <Resource Include="Resources\Flags\16\Sammarinese.png" />
+    <Resource Include="Resources\Flags\16\Sao Tomean.png" />
+    <Resource Include="Resources\Flags\16\Saudi.png" />
+    <Resource Include="Resources\Flags\16\Scottish.png" />
+    <Resource Include="Resources\Flags\16\Senegalese.png" />
+    <Resource Include="Resources\Flags\16\Serbian.png" />
+    <Resource Include="Resources\Flags\16\Seychellois.png" />
+    <Resource Include="Resources\Flags\16\Sierra Leonean.png" />
+    <Resource Include="Resources\Flags\16\Singapore.png" />
+    <Resource Include="Resources\Flags\16\Slovak.png" />
+    <Resource Include="Resources\Flags\16\Slovenian.png" />
+    <Resource Include="Resources\Flags\16\Solomon Islander.png" />
+    <Resource Include="Resources\Flags\16\Somali.png" />
+    <Resource Include="Resources\Flags\16\South African.png" />
+    <Resource Include="Resources\Flags\16\South Korean.png" />
+    <Resource Include="Resources\Flags\16\South Sudanese.png" />
+    <Resource Include="Resources\Flags\16\Spanish.png" />
+    <Resource Include="Resources\Flags\16\Sri Lankan.png" />
+    <Resource Include="Resources\Flags\16\Sudanese.png" />
+    <Resource Include="Resources\Flags\16\Surinamese.png" />
+    <Resource Include="Resources\Flags\16\Swazi.png" />
+    <Resource Include="Resources\Flags\16\Swedish.png" />
+    <Resource Include="Resources\Flags\16\Swiss.png" />
+    <Resource Include="Resources\Flags\16\Syrian.png" />
+    <Resource Include="Resources\Flags\16\Taiwan.png" />
+    <Resource Include="Resources\Flags\16\Tajikistani.png" />
+    <Resource Include="Resources\Flags\16\Tanzanian.png" />
+    <Resource Include="Resources\Flags\16\Thai.png" />
+    <Resource Include="Resources\Flags\16\Togolese.png" />
+    <Resource Include="Resources\Flags\16\Tokelauan.png" />
+    <Resource Include="Resources\Flags\16\Tongan.png" />
+    <Resource Include="Resources\Flags\16\Tobagonian.png" />
+    <Resource Include="Resources\Flags\16\Tunisian.png" />
+    <Resource Include="Resources\Flags\16\Turkish.png" />
+    <Resource Include="Resources\Flags\16\Turkmen.png" />
+    <Resource Include="Resources\Flags\16\Tuvaluan.png" />
+    <Resource Include="Resources\Flags\16\Ugandan.png" />
+    <Resource Include="Resources\Flags\16\Ukrainian.png" />
+    <Resource Include="Resources\Flags\16\Emirati.png" />
+    <Resource Include="Resources\Flags\16\British.png" />
+    <Resource Include="Resources\Flags\16\American.png" />
+    <Resource Include="Resources\Flags\16\Unknown.png" />
+    <Resource Include="Resources\Flags\16\Uruguayan.png" />
+    <Resource Include="Resources\Flags\16\Virgin Islander.png" />
+    <Resource Include="Resources\Flags\16\Uzbekistani.png" />
+    <Resource Include="Resources\Flags\16\Ni-Vanuatu.png" />
+    <Resource Include="Resources\Flags\16\Venezuelan.png" />
+    <Resource Include="Resources\Flags\16\Vietnamese.png" />
+    <Resource Include="Resources\Flags\16\Welsh.png" />
+    <Resource Include="Resources\Flags\16\Wallisian.png" />
+    <Resource Include="Resources\Flags\16\Sahrawi.png" />
+    <Resource Include="Resources\Flags\16\Yemeni.png" />
+    <Resource Include="Resources\Flags\16\Zambian.png" />
+    <Resource Include="Resources\Flags\16\Zimbabwean.png" />
+    <Resource Include="Resources\Flags\32\Afghan.png" />
+    <Resource Include="Resources\Flags\32\Albanian.png" />
+    <Resource Include="Resources\Flags\32\Algerian.png" />
+    <Resource Include="Resources\Flags\32\American Samoan.png" />
+    <Resource Include="Resources\Flags\32\Andorran.png" />
+    <Resource Include="Resources\Flags\32\Angolan.png" />
+    <Resource Include="Resources\Flags\32\Anguillian.png" />
+    <Resource Include="Resources\Flags\32\Argentine.png" />
+    <Resource Include="Resources\Flags\32\Armenian.png" />
+    <Resource Include="Resources\Flags\32\Aruban.png" />
+    <Resource Include="Resources\Flags\32\Australian.png" />
+    <Resource Include="Resources\Flags\32\Austrian.png" />
+    <Resource Include="Resources\Flags\32\Azerbaijani.png" />
+    <Resource Include="Resources\Flags\32\Bahamian.png" />
+    <Resource Include="Resources\Flags\32\Bahraini.png" />
+    <Resource Include="Resources\Flags\32\Bangladeshi.png" />
+    <Resource Include="Resources\Flags\32\Barbadian.png" />
+    <Resource Include="Resources\Flags\32\Belarusian.png" />
+    <Resource Include="Resources\Flags\32\Belgian.png" />
+    <Resource Include="Resources\Flags\32\Belizean.png" />
+    <Resource Include="Resources\Flags\32\Beninese.png" />
+    <Resource Include="Resources\Flags\32\Bermudian.png" />
+    <Resource Include="Resources\Flags\32\Bhutanese.png" />
+    <Resource Include="Resources\Flags\32\Bolivian.png" />
+    <Resource Include="Resources\Flags\32\Brazilian.png" />
+    <Resource Include="Resources\Flags\32\British Virgin Islander.png" />
+    <Resource Include="Resources\Flags\32\Bruneian.png" />
+    <Resource Include="Resources\Flags\32\Bulgarian.png" />
+    <Resource Include="Resources\Flags\32\Burkinabe.png" />
+    <Resource Include="Resources\Flags\32\Burundian.png" />
+    <Resource Include="Resources\Flags\32\Cambodian.png" />
+    <Resource Include="Resources\Flags\32\Cameroonian.png" />
+    <Resource Include="Resources\Flags\32\Canadian.png" />
+    <Resource Include="Resources\Flags\32\Cabo Verdean.png" />
+    <Resource Include="Resources\Flags\32\Caymanian.png" />
+    <Resource Include="Resources\Flags\32\Central African.png" />
+    <Resource Include="Resources\Flags\32\Chadian.png" />
+    <Resource Include="Resources\Flags\32\Chilean.png" />
+    <Resource Include="Resources\Flags\32\Chinese.png" />
+    <Resource Include="Resources\Flags\32\Christmas Island.png" />
+    <Resource Include="Resources\Flags\32\Cocos Islander.png" />
+    <Resource Include="Resources\Flags\32\Colombian.png" />
+    <Resource Include="Resources\Flags\32\Comoran.png" />
+    <Resource Include="Resources\Flags\32\Cook Islander.png" />
+    <Resource Include="Resources\Flags\32\Costa Rican.png" />
+    <Resource Include="Resources\Flags\32\Ivorian.png" />
+    <Resource Include="Resources\Flags\32\Croatian.png" />
+    <Resource Include="Resources\Flags\32\Cuban.png" />
+    <Resource Include="Resources\Flags\32\Curacaoan.png" />
+    <Resource Include="Resources\Flags\32\Cypriot.png" />
+    <Resource Include="Resources\Flags\32\Czech.png" />
+    <Resource Include="Resources\Flags\32\Congolese %28Democratic Republic of the Congo%29.png" />
+    <Resource Include="Resources\Flags\32\Danish.png" />
+    <Resource Include="Resources\Flags\32\Djiboutian.png" />
+    <Resource Include="Resources\Flags\32\Dominican %28Dominica%29.png" />
+    <Resource Include="Resources\Flags\32\Dominican %28Dominican Republic%29.png" />
+    <Resource Include="Resources\Flags\32\Timorese.png" />
+    <Resource Include="Resources\Flags\32\Ecuadorian.png" />
+    <Resource Include="Resources\Flags\32\Egyptian.png" />
+    <Resource Include="Resources\Flags\32\Salvadoran.png" />
+    <Resource Include="Resources\Flags\32\English.png" />
+    <Resource Include="Resources\Flags\32\Equatorial Guinean.png" />
+    <Resource Include="Resources\Flags\32\Eritrean.png" />
+    <Resource Include="Resources\Flags\32\Estonian.png" />
+    <Resource Include="Resources\Flags\32\Ethiopian.png" />
+    <Resource Include="Resources\Flags\32\Falkland Island.png" />
+    <Resource Include="Resources\Flags\32\Faroese.png" />
+    <Resource Include="Resources\Flags\32\Fijian.png" />
+    <Resource Include="Resources\Flags\32\Finnish.png" />
+    <Resource Include="Resources\Flags\32\French.png" />
+    <Resource Include="Resources\Flags\32\French Polynesian.png" />
+    <Resource Include="Resources\Flags\32\Gabonese.png" />
+    <Resource Include="Resources\Flags\32\Gambian.png" />
+    <Resource Include="Resources\Flags\32\Georgian.png" />
+    <Resource Include="Resources\Flags\32\German.png" />
+    <Resource Include="Resources\Flags\32\Ghanaian.png" />
+    <Resource Include="Resources\Flags\32\Gibraltarian.png" />
+    <Resource Include="Resources\Flags\32\Greek.png" />
+    <Resource Include="Resources\Flags\32\Greenlandic.png" />
+    <Resource Include="Resources\Flags\32\Grenadian.png" />
+    <Resource Include="Resources\Flags\32\Guamanian.png" />
+    <Resource Include="Resources\Flags\32\Guatemalan.png" />
+    <Resource Include="Resources\Flags\32\Channel Islander %28Guernsey%29.png" />
+    <Resource Include="Resources\Flags\32\Bissau-Guinean.png" />
+    <Resource Include="Resources\Flags\32\Guinean.png" />
+    <Resource Include="Resources\Flags\32\Guyanese.png" />
+    <Resource Include="Resources\Flags\32\Haitian.png" />
+    <Resource Include="Resources\Flags\32\Honduran.png" />
+    <Resource Include="Resources\Flags\32\Chinese %28Hong Kong%29.png" />
+    <Resource Include="Resources\Flags\32\Hungarian.png" />
+    <Resource Include="Resources\Flags\32\Icelandic.png" />
+    <Resource Include="Resources\Flags\32\Indian.png" />
+    <Resource Include="Resources\Flags\32\Indonesian.png" />
+    <Resource Include="Resources\Flags\32\Iranian.png" />
+    <Resource Include="Resources\Flags\32\Iraqi.png" />
+    <Resource Include="Resources\Flags\32\Irish.png" />
+    <Resource Include="Resources\Flags\32\Manx.png" />
+    <Resource Include="Resources\Flags\32\Israeli.png" />
+    <Resource Include="Resources\Flags\32\Italian.png" />
+    <Resource Include="Resources\Flags\32\Jamaican.png" />
+    <Resource Include="Resources\Flags\32\Japanese.png" />
+    <Resource Include="Resources\Flags\32\Channel Islander %28Jersey%29.png" />
+    <Resource Include="Resources\Flags\32\Jordanian.png" />
+    <Resource Include="Resources\Flags\32\Kazakhstani.png" />
+    <Resource Include="Resources\Flags\32\Kenyan.png" />
+    <Resource Include="Resources\Flags\32\I-Kiribati.png" />
+    <Resource Include="Resources\Flags\32\Kosovan.png" />
+    <Resource Include="Resources\Flags\32\Kuwaiti.png" />
+    <Resource Include="Resources\Flags\32\Kyrgyzstani.png" />
+    <Resource Include="Resources\Flags\32\Lao.png" />
+    <Resource Include="Resources\Flags\32\Latvian.png" />
+    <Resource Include="Resources\Flags\32\Lebanese.png" />
+    <Resource Include="Resources\Flags\32\Basotho.png" />
+    <Resource Include="Resources\Flags\32\Liberian.png" />
+    <Resource Include="Resources\Flags\32\Libyan.png" />
+    <Resource Include="Resources\Flags\32\Liechtenstein.png" />
+    <Resource Include="Resources\Flags\32\Lithuanian.png" />
+    <Resource Include="Resources\Flags\32\Luxembourg.png" />
+    <Resource Include="Resources\Flags\32\Chinese %28Macau%29.png" />
+    <Resource Include="Resources\Flags\32\Macedonian.png" />
+    <Resource Include="Resources\Flags\32\Malagasy.png" />
+    <Resource Include="Resources\Flags\32\Malawian.png" />
+    <Resource Include="Resources\Flags\32\Malaysian.png" />
+    <Resource Include="Resources\Flags\32\Maldivian.png" />
+    <Resource Include="Resources\Flags\32\Malian.png" />
+    <Resource Include="Resources\Flags\32\Maltese.png" />
+    <Resource Include="Resources\Flags\32\Marshallese.png" />
+    <Resource Include="Resources\Flags\32\Mauritanian.png" />
+    <Resource Include="Resources\Flags\32\Mauritian.png" />
+    <Resource Include="Resources\Flags\32\Mexican.png" />
+    <Resource Include="Resources\Flags\32\Micronesian.png" />
+    <Resource Include="Resources\Flags\32\Moldovan.png" />
+    <Resource Include="Resources\Flags\32\Monegasque.png" />
+    <Resource Include="Resources\Flags\32\Mongolian.png" />
+    <Resource Include="Resources\Flags\32\Montenegrin.png" />
+    <Resource Include="Resources\Flags\32\Montserratian.png" />
+    <Resource Include="Resources\Flags\32\Moroccan.png" />
+    <Resource Include="Resources\Flags\32\Mozambican.png" />
+    <Resource Include="Resources\Flags\32\Burmese.png" />
+    <Resource Include="Resources\Flags\32\Namibian.png" />
+    <Resource Include="Resources\Flags\32\Nauruan.png" />
+    <Resource Include="Resources\Flags\32\Nepali.png" />
+    <Resource Include="Resources\Flags\32\Dutch.png" />
+    <Resource Include="Resources\Flags\32\New Caledonian.png" />
+    <Resource Include="Resources\Flags\32\New Zealand.png" />
+    <Resource Include="Resources\Flags\32\Nicaraguan.png" />
+    <Resource Include="Resources\Flags\32\Nigerian %28Niger%29.png" />
+    <Resource Include="Resources\Flags\32\Nigerian %28Nigeria%29.png" />
+    <Resource Include="Resources\Flags\32\Niuean.png" />
+    <Resource Include="Resources\Flags\32\Norfolk Islander.png" />
+    <Resource Include="Resources\Flags\32\North Korean.png" />
+    <Resource Include="Resources\Flags\32\Norwegian.png" />
+    <Resource Include="Resources\Flags\32\Omani.png" />
+    <Resource Include="Resources\Flags\32\Pakistani.png" />
+    <Resource Include="Resources\Flags\32\Palauan.png" />
+    <Resource Include="Resources\Flags\32\Palestinian.png" />
+    <Resource Include="Resources\Flags\32\Panamanian.png" />
+    <Resource Include="Resources\Flags\32\Papua New Guinean.png" />
+    <Resource Include="Resources\Flags\32\Paraguayan.png" />
+    <Resource Include="Resources\Flags\32\Peruvian.png" />
+    <Resource Include="Resources\Flags\32\Philippine.png" />
+    <Resource Include="Resources\Flags\32\Pitcairn Islander.png" />
+    <Resource Include="Resources\Flags\32\Polish.png" />
+    <Resource Include="Resources\Flags\32\Portuguese.png" />
+    <Resource Include="Resources\Flags\32\Puerto Rican.png" />
+    <Resource Include="Resources\Flags\32\Qatari.png" />
+    <Resource Include="Resources\Flags\32\Congolese %28Republic of the Congo%29.png" />
+    <Resource Include="Resources\Flags\32\Romanian.png" />
+    <Resource Include="Resources\Flags\32\Russian.png" />
+    <Resource Include="Resources\Flags\32\Rwandan.png" />
+    <Resource Include="Resources\Flags\32\Saint Helenian.png" />
+    <Resource Include="Resources\Flags\32\Kittitian.png" />
+    <Resource Include="Resources\Flags\32\Saint Lucian.png" />
+    <Resource Include="Resources\Flags\32\Saint Vincentian.png" />
+    <Resource Include="Resources\Flags\32\Samoan.png" />
+    <Resource Include="Resources\Flags\32\Sammarinese.png" />
+    <Resource Include="Resources\Flags\32\Sao Tomean.png" />
+    <Resource Include="Resources\Flags\32\Saudi.png" />
+    <Resource Include="Resources\Flags\32\Scottish.png" />
+    <Resource Include="Resources\Flags\32\Senegalese.png" />
+    <Resource Include="Resources\Flags\32\Serbian.png" />
+    <Resource Include="Resources\Flags\32\Seychellois.png" />
+    <Resource Include="Resources\Flags\32\Sierra Leonean.png" />
+    <Resource Include="Resources\Flags\32\Singapore.png" />
+    <Resource Include="Resources\Flags\32\Slovak.png" />
+    <Resource Include="Resources\Flags\32\Slovenian.png" />
+    <Resource Include="Resources\Flags\32\Solomon Islander.png" />
+    <Resource Include="Resources\Flags\32\Somali.png" />
+    <Resource Include="Resources\Flags\32\South African.png" />
+    <Resource Include="Resources\Flags\32\South Korean.png" />
+    <Resource Include="Resources\Flags\32\South Sudanese.png" />
+    <Resource Include="Resources\Flags\32\Spanish.png" />
+    <Resource Include="Resources\Flags\32\Sri Lankan.png" />
+    <Resource Include="Resources\Flags\32\Sudanese.png" />
+    <Resource Include="Resources\Flags\32\Surinamese.png" />
+    <Resource Include="Resources\Flags\32\Swazi.png" />
+    <Resource Include="Resources\Flags\32\Swedish.png" />
+    <Resource Include="Resources\Flags\32\Swiss.png" />
+    <Resource Include="Resources\Flags\32\Syrian.png" />
+    <Resource Include="Resources\Flags\32\Taiwan.png" />
+    <Resource Include="Resources\Flags\32\Tajikistani.png" />
+    <Resource Include="Resources\Flags\32\Tanzanian.png" />
+    <Resource Include="Resources\Flags\32\Thai.png" />
+    <Resource Include="Resources\Flags\32\Togolese.png" />
+    <Resource Include="Resources\Flags\32\Tokelauan.png" />
+    <Resource Include="Resources\Flags\32\Tongan.png" />
+    <Resource Include="Resources\Flags\32\Trinidadian.png" />
+    <Resource Include="Resources\Flags\32\Tunisian.png" />
+    <Resource Include="Resources\Flags\32\Turkish.png" />
+    <Resource Include="Resources\Flags\32\Turkmen.png" />
+    <Resource Include="Resources\Flags\32\Tuvaluan.png" />
+    <Resource Include="Resources\Flags\32\Ugandan.png" />
+    <Resource Include="Resources\Flags\32\Ukrainian.png" />
+    <Resource Include="Resources\Flags\32\Emirati.png" />
+    <Resource Include="Resources\Flags\32\British.png" />
+    <Resource Include="Resources\Flags\32\American.png" />
+    <Resource Include="Resources\Flags\32\Unknown.png" />
+    <Resource Include="Resources\Flags\32\Uruguayan.png" />
+    <Resource Include="Resources\Flags\32\Virgin Islander.png" />
+    <Resource Include="Resources\Flags\32\Uzbekistani.png" />
+    <Resource Include="Resources\Flags\32\Ni-Vanuatu.png" />
+    <Resource Include="Resources\Flags\32\Venezuelan.png" />
+    <Resource Include="Resources\Flags\32\Vietnamese.png" />
+    <Resource Include="Resources\Flags\32\Welsh.png" />
+    <Resource Include="Resources\Flags\32\Wallisian.png" />
+    <Resource Include="Resources\Flags\32\Sahrawi.png" />
+    <Resource Include="Resources\Flags\32\Yemeni.png" />
+    <Resource Include="Resources\Flags\32\Zambian.png" />
+    <Resource Include="Resources\Flags\32\Zimbabwean.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Flags\16\Antiguan.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Barbudan.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <Resource Include="Resources\Flags\16\Antiguan.png" />
+    <Resource Include="Resources\Flags\16\Barbudan.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Flags\32\Antiguan.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Barbudan.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <Resource Include="Resources\Flags\32\Antiguan.png" />
+    <Resource Include="Resources\Flags\32\Barbudan.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Flags\16\Bosnian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Herzegovinian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <Resource Include="Resources\Flags\16\Bosnian.png" />
+    <Resource Include="Resources\Flags\16\Herzegovinian.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Flags\32\Bosnian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\32\Herzegovinian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <Resource Include="Resources\Flags\32\Bosnian.png" />
+    <Resource Include="Resources\Flags\32\Herzegovinian.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Flags\32\Motswana.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <Resource Include="Resources\Flags\32\Motswana.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Flags\32\Nevisian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <Resource Include="Resources\Flags\32\Nevisian.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Flags\32\Tobagonian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <Resource Include="Resources\Flags\32\Tobagonian.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Flags\16\Nevisian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Resources\Flags\16\Trinidadian.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <Resource Include="Resources\Flags\16\Nevisian.png" />
+    <Resource Include="Resources\Flags\16\Trinidadian.png" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\Flags\16\Futunan.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <Resource Include="Resources\Flags\16\Futunan.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Flags\32\Futunan.png" />

@@ -1,6 +1,7 @@
 ﻿using NathanHarrenstein.MusicTimeline.ClassicalMusicDb;
 using System;
 using System.Collections.Generic;
+using System.Data.Services.Client;
 using System.Globalization;
 using System.IO;
 using System.Linq;
@@ -77,7 +78,8 @@ namespace NathanHarrenstein.MusicTimeline.Converters
         {
             BitmapImage thumbnail = null;
             var thumbnailPath = $@"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData, Environment.SpecialFolderOption.Create)}\Music Timeline\Resources\Thumbnails\{composer.ComposerId}.jpg";
-            var image = composer.ComposerImages.Select(ci => ci.Bytes).FirstOrDefault();
+            var context = new ClassicalMusicContext(new Uri("http://www.harrenstein.com/ClassicalMusic/ClassicalMusic.svc"));
+            var image = context.Execute<ComposerImage>(new Uri($"http://www.harrenstein.com/ClassicalMusic/ClassicalMusic.svc/Composers({composer.ComposerId})/ComposerImages")).Select(c => c.Bytes).FirstOrDefault();
 
             if (image != null)
             {
@@ -104,45 +106,14 @@ namespace NathanHarrenstein.MusicTimeline.Converters
             }
             else if (!_thumbnailCache.TryGetValue(0, out thumbnail))
             {
-                thumbnailPath = $@"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData, Environment.SpecialFolderOption.Create)}\Music Timeline\Resources\Thumbnails\0.jpg";
+                thumbnailPath = $@"pack://application:,,,/Resources/Composers/Unknown.jpg";
                 var thumbnailUri = new Uri(thumbnailPath, UriKind.Absolute);
 
-                if (File.Exists(thumbnailPath))
-                {
-                    thumbnail = new BitmapImage();
-                    thumbnail.BeginInit();
-                    thumbnail.DecodePixelHeight = 50;
-                    thumbnail.StreamSource = new MemoryStream(File.ReadAllBytes(thumbnailPath));
-                    thumbnail.EndInit();
-                    thumbnail.Freeze();
+                thumbnail = new BitmapImage(thumbnailUri);
 
-                    _thumbnailCache[0] = thumbnail;
+                _thumbnailCache[0] = thumbnail;
 
-                    return thumbnail;
-                }
-                else
-                {
-                    thumbnail = new BitmapImage();
-                    thumbnail.CacheOption = BitmapCacheOption.OnLoad;
-                    thumbnail.BeginInit();
-                    thumbnail.DecodePixelHeight = 50;
-                    thumbnail.StreamSource = Application.GetResourceStream(new Uri("pack://application:,,,/Resources/Composers/Unknown.jpg", UriKind.Absolute)).Stream;
-                    thumbnail.EndInit();
-                    thumbnail.Freeze();
-
-                    var encoder = new JpegBitmapEncoder();
-                    encoder.QualityLevel = 80;
-                    encoder.Frames.Add(BitmapFrame.Create(thumbnail));
-
-                    using (var stream = new FileStream(thumbnailPath, FileMode.CreateNew))
-                    {
-                        encoder.Save(stream);
-                    }
-
-                    _thumbnailCache[0] = thumbnail;
-
-                    return thumbnail;
-                }
+                return thumbnail;
             }
             else
             {
