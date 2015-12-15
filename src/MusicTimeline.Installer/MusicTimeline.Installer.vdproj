@@ -15,6 +15,12 @@
     {
         "Entry"
         {
+        "MsmKey" = "8:_06741BC285F4E76E0FF1F79F43AD9273"
+        "OwnerKey" = "8:_8D63C15CB76C41ABA69E877916B75FA6"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_1451A1DAF09F0D0595C230F2FA4C1865"
         "OwnerKey" = "8:_8D63C15CB76C41ABA69E877916B75FA6"
         "MsmSig" = "8:_UNDEFINED"
@@ -40,12 +46,6 @@
         "Entry"
         {
         "MsmKey" = "8:_45900846640941D6AA1C17A892A15D40"
-        "OwnerKey" = "8:_8D63C15CB76C41ABA69E877916B75FA6"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
-        "MsmKey" = "8:_6FF08DFD07AFC21BFCCC18866AD97CA2"
         "OwnerKey" = "8:_8D63C15CB76C41ABA69E877916B75FA6"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -124,7 +124,7 @@
         "Entry"
         {
         "MsmKey" = "8:_9AD6CAE233B48920E8583D58AEABC4A7"
-        "OwnerKey" = "8:_6FF08DFD07AFC21BFCCC18866AD97CA2"
+        "OwnerKey" = "8:_06741BC285F4E76E0FF1F79F43AD9273"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -148,13 +148,13 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_8D63C15CB76C41ABA69E877916B75FA6"
+        "OwnerKey" = "8:_06741BC285F4E76E0FF1F79F43AD9273"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_6FF08DFD07AFC21BFCCC18866AD97CA2"
+        "OwnerKey" = "8:_8D63C15CB76C41ABA69E877916B75FA6"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -286,6 +286,37 @@
         }
         "File"
         {
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_06741BC285F4E76E0FF1F79F43AD9273"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:Timeline, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_06741BC285F4E76E0FF1F79F43AD9273"
+                    {
+                    "Name" = "8:Timeline.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:Timeline.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_BAB7F1D0A44343D287B864B3B60EFF97"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_1451A1DAF09F0D0595C230F2FA4C1865"
             {
             "AssemblyRegister" = "3:1"
@@ -393,37 +424,6 @@
                     }
                 }
             "SourcePath" = "8:HtmlToXamlConverter.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_BAB7F1D0A44343D287B864B3B60EFF97"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_6FF08DFD07AFC21BFCCC18866AD97CA2"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Timeline, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                    "_6FF08DFD07AFC21BFCCC18866AD97CA2"
-                    {
-                    "Name" = "8:Timeline.dll"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:Timeline.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_BAB7F1D0A44343D287B864B3B60EFF97"
@@ -746,7 +746,7 @@
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:MusicTimeline"
         "ProductCode" = "8:{36F224C9-8444-4E83-9986-A4CBE5AB7DBA}"
-        "PackageCode" = "8:{908FF209-459D-433B-B37D-AC97A7214A19}"
+        "PackageCode" = "8:{9683BF12-E0FC-4190-9347-CFD2AB9FE25D}"
         "UpgradeCode" = "8:{EC841AC9-7000-4D3D-BD8A-95DE5DCC074C}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
@@ -763,8 +763,8 @@
         "Keywords" = "8:"
         "ARPCOMMENTS" = "8:"
         "ARPURLINFOABOUT" = "8:"
-        "ARPPRODUCTICON" = "8:"
-        "ARPIconIndex" = "3:0"
+        "ARPPRODUCTICON" = "8:_8D63C15CB76C41ABA69E877916B75FA6"
+        "ARPIconIndex" = "3:32512"
         "SearchPath" = "8:"
         "UseSystemSearchPath" = "11:TRUE"
         "TargetPlatform" = "3:0"
