@@ -3,7 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <Application.Resources>
         <SolidColorBrush x:Key="BackgroundBrush" Color="#FF34373A" />
-        <SolidColorBrush x:Key="ForegroundBrush" Color="#FFDCDFE2" />
+        <SolidColorBrush x:Key="ForegroundBrush" Color="#FFC7C9CC" />
+        <!-- Old Foreground: DCDFE2 -->
         <!--  Alternative Foreground: FFDFE0E6  -->
         <SolidColorBrush x:Key="HeaderBrush" Color="#FF888888" />
         <SolidColorBrush x:Key="ScrollBarThumbBrush" Color="#FF4B5155" />
@@ -16,7 +17,7 @@
         <ControlTemplate x:Key="ChromelessButtonTemplate" TargetType="{x:Type Button}">
             <Border x:Name="border"
                     Background="Transparent"
-                    BorderBrush="{TemplateBinding BorderBrush}"
+                    BorderBrush="Transparent"
                     BorderThickness="0"
                     SnapsToDevicePixels="True">
                 <ContentPresenter x:Name="contentPresenter"

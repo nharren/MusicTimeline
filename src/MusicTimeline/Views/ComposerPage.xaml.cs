@@ -1,6 +1,4 @@
-﻿using CefSharp;
-using CefSharp.Wpf;
-using Microsoft.Win32;
+﻿using Microsoft.Win32;
 using NathanHarrenstein.MusicTimeline.Audio;
 using NathanHarrenstein.MusicTimeline.ClassicalMusicDb;
 using NathanHarrenstein.MusicTimeline.Controls;
@@ -11,6 +9,7 @@ using NAudio.Wave;
 using System;
 using System.Collections.Generic;
 using System.Data.Services.Client;
+using System.Diagnostics;
 using System.EDTF;
 using System.IO;
 using System.Linq;
@@ -28,7 +27,6 @@ namespace NathanHarrenstein.MusicTimeline.Views
 {
     public partial class ComposerPage : Page, IDisposable
     {
-        private readonly ChromiumWebBrowserDisplayHandler chromiumWebBrowserDisplayHandler;
         private ClassicalMusicContext classicalMusicContext;
         private Composer composer;
         private bool isDisposed;
@@ -36,19 +34,6 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
         public ComposerPage()
         {
-            if (!Cef.IsInitialized)
-            {
-                var cefSettings = new CefSettings();
-                cefSettings.CefCommandLineArgs.Add("disable-gpu", "1");
-
-                if (!Cef.Initialize(cefSettings))
-                {
-                    throw new Exception("Unable to Initialize Cef");
-                }
-            }
-
-            chromiumWebBrowserDisplayHandler = new ChromiumWebBrowserDisplayHandler(this);
-
             InitializeComponent();
 
             classicalMusicContext = new ClassicalMusicContext(new Uri("http://www.harrenstein.com/ClassicalMusic/ClassicalMusic.svc"));
@@ -180,25 +165,6 @@ namespace NathanHarrenstein.MusicTimeline.Views
             bornTextBlock.Visibility = Visibility.Visible;
             bornEditPanel.Visibility = Visibility.Collapsed;
             bornHeader.CanEdit = true;
-        }
-
-        private void ChromiumWebBrowser_Loaded(object sender, RoutedEventArgs e)
-        {
-            var chromiumWebBrowser = (ChromiumWebBrowser)sender;
-
-            if (chromiumWebBrowser.DisplayHandler == null)
-            {
-                chromiumWebBrowser.DisplayHandler = chromiumWebBrowserDisplayHandler;
-            }
-        }
-
-        private void ChromiumWebBrowser_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            if (e.WidthChanged)
-            {
-                var chromiumWebBrowser = (ChromiumWebBrowser)sender;
-                chromiumWebBrowser.Height = e.NewSize.Width * 0.75;
-            }
         }
 
         private void classicalMusicContext_SendingRequest2(object sender, SendingRequest2EventArgs e)
@@ -502,7 +468,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
             imagesEditButton.IsEnabled = true;
         }
 
-        private async void influence_Click(object sender, RoutedEventArgs e)
+        private async void influenceButton_Click(object sender, RoutedEventArgs e)
         {
             var button = (Button)sender;
 
@@ -999,6 +965,14 @@ namespace NathanHarrenstein.MusicTimeline.Views
             }
 
             return;
+        }
+
+        private void youTubeButton_Click(object sender, RoutedEventArgs e)
+        {
+            var button = (Button)sender;
+            var link = (Link)button.DataContext;
+
+            Process.Start(link.Url);
         }
     }
 }

@@ -92,7 +92,7 @@ namespace NathanHarrenstein.MusicTimeline.Controls
                 var compositionItemTextBlock = new TextBlock();
                 compositionItemTextBlock.FontFamily = new FontFamily("Cambria");
                 compositionItemTextBlock.FontSize = 17.333;
-                compositionItemTextBlock.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FFDFE0E6"));
+                compositionItemTextBlock.Foreground = (SolidColorBrush)App.Current.Resources["ForegroundBrush"];
                 compositionItemTextBlock.Text = BuildCompositionItemName(composition);
 
                 if (!isInitial)
@@ -138,7 +138,7 @@ namespace NathanHarrenstein.MusicTimeline.Controls
             var yearHeaderTextBlock = new TextBlock();
             yearHeaderTextBlock.FontFamily = new FontFamily("Cambria");
             yearHeaderTextBlock.FontSize = 24;
-            yearHeaderTextBlock.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#FF888888"));
+            yearHeaderTextBlock.Foreground = (SolidColorBrush)App.Current.Resources["HeaderBrush"];
             yearHeaderTextBlock.Text = header;
             yearHeaderTextBlock.Margin = new Thickness(0, 10, 0, 0);
 

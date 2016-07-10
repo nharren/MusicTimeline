@@ -2,7 +2,6 @@
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:c="clr-namespace:NathanHarrenstein.MusicTimeline.Controls"
-      xmlns:cefSharp="clr-namespace:CefSharp.Wpf;assembly=CefSharp.Wpf"
       xmlns:cv="clr-namespace:NathanHarrenstein.MusicTimeline.Converters"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
       xmlns:db="clr-namespace:NathanHarrenstein.MusicTimeline.ClassicalMusicDb"
@@ -30,32 +29,6 @@
         <cv:YouTubeToThumbConverter x:Key="YouTubeToThumbConverter" />
         <cv:YouTubeToEmbedConverter x:Key="YouTubeToEmbedConverter" />
         <cv:SpotifyToEmbedConverter x:Key="SpotifyToEmbedConverter" />
-
-
-        <Style x:Key="EditButtonStyle" TargetType="{x:Type Button}">
-            <Setter Property="VerticalAlignment" Value="Bottom" />
-            <Setter Property="Background" Value="Transparent" />
-            <Setter Property="BorderBrush" Value="Transparent" />
-            <Setter Property="Content" Value="&#xE0D8;" />
-            <Setter Property="Cursor" Value="Hand" />
-            <Setter Property="DockPanel.Dock" Value="Right" />
-            <Setter Property="FontFamily" Value="Segoe UI Symbol" />
-            <Setter Property="Foreground" Value="{StaticResource HeaderBrush}" />
-            <Setter Property="Template" Value="{StaticResource ChromelessButtonTemplate}" />
-            <Setter Property="Visibility" Value="Collapsed" />
-        </Style>
-
-        <Style x:Key="SmallEditButtonStyle"
-               BasedOn="{StaticResource EditButtonStyle}"
-               TargetType="{x:Type Button}">
-            <Setter Property="FontSize" Value="16" />
-        </Style>
-
-        <Style x:Key="LargeEditButtonStyle"
-               BasedOn="{StaticResource EditButtonStyle}"
-               TargetType="{x:Type Button}">
-            <Setter Property="FontSize" Value="18.6666666667" />
-        </Style>
 
     </Page.Resources>
 
@@ -201,8 +174,7 @@
                                     <Button x:Name="imagesEditButton"
                                             HorizontalAlignment="Right"
                                             VerticalAlignment="Top"
-                                            Click="imagesEditButton_Click"
-                                            Style="{StaticResource LargeEditButtonStyle}" />
+                                            Click="imagesEditButton_Click" />
                                     <Border Grid.Row="1"
                                             MinWidth="{Binding ActualWidth,
                                                                ElementName=selectedImage}"
@@ -264,7 +236,9 @@
                                      Foreground="{StaticResource ForegroundBrush}"
                                      Padding="8" />
                         </StackPanel>
-                        <TextBlock Name="bornTextBlock" FontSize="17.333333333333332" />
+                        <TextBlock Name="bornTextBlock"
+                                   FontSize="17.333333333333332"
+                                   Foreground="{StaticResource ForegroundBrush}" />
 
                         <!--  Died  -->
                         <c:EditableHeaderPanel x:Name="diedHeader"
@@ -290,7 +264,9 @@
                                      Foreground="{StaticResource ForegroundBrush}"
                                      Padding="8" />
                         </StackPanel>
-                        <TextBlock Name="diedTextBlock" FontSize="17.333333333333332" />
+                        <TextBlock Name="diedTextBlock"
+                                   FontSize="17.333333333333332"
+                                   Foreground="{StaticResource ForegroundBrush}" />
 
                         <!--  Influences  -->
                         <c:EditableHeaderPanel x:Name="influencesHeader"
@@ -326,12 +302,13 @@
                         <ItemsControl Name="influencesItemsControl">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate DataType="{x:Type db:Composer}">
-                                    <Button Margin="0,0,0,5"
-                                            Click="influence_Click"
+                                    <Button Name="influenceButton"
+                                            Margin="0,0,0,5"
+                                            Click="influenceButton_Click"
                                             Content="{Binding Name}"
                                             Cursor="Hand"
                                             FontSize="17.33333"
-                                            Foreground="White">
+                                            Foreground="{StaticResource ForegroundBrush}">
                                         <Button.Template>
                                             <ControlTemplate TargetType="{x:Type Button}">
                                                 <Grid>
@@ -340,6 +317,11 @@
                                             </ControlTemplate>
                                         </Button.Template>
                                     </Button>
+                                    <DataTemplate.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter TargetName="influenceButton" Property="Foreground" Value="White" />
+                                        </Trigger>
+                                    </DataTemplate.Triggers>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
@@ -378,12 +360,13 @@
                         <ItemsControl Name="influencedItemsControl">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate DataType="{x:Type db:Composer}">
-                                    <Button Margin="0,0,0,5"
-                                            Click="influence_Click"
+                                    <Button Name="influencedButton"
+                                            Margin="0,0,0,5"
+                                            Click="influenceButton_Click"
                                             Content="{Binding Name}"
                                             Cursor="Hand"
                                             FontSize="17.33333"
-                                            Foreground="White">
+                                            Foreground="{StaticResource ForegroundBrush}">
                                         <Button.Template>
                                             <ControlTemplate TargetType="{x:Type Button}">
                                                 <Grid>
@@ -392,6 +375,11 @@
                                             </ControlTemplate>
                                         </Button.Template>
                                     </Button>
+                                    <DataTemplate.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True">
+                                            <Setter TargetName="influencedButton" Property="Foreground" Value="White" />
+                                        </Trigger>
+                                    </DataTemplate.Triggers>
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
@@ -463,30 +451,37 @@
                                 <c:MediaDataTemplateSelector>
                                     <c:MediaDataTemplateSelector.YouTubeTemplate>
                                         <DataTemplate DataType="{x:Type db:Link}">
-                                            <StackPanel Margin="0,10">
+                                            <Button Name="youTubeButton"
+                                                    Margin="0,0,0,15"
+                                                    HorizontalContentAlignment="Stretch"
+                                                    Click="youTubeButton_Click"
+                                                    Cursor="Hand"
+                                                    Template="{StaticResource ChromelessButtonTemplate}">
                                                 <Grid>
                                                     <Grid.ColumnDefinitions>
-                                                        <ColumnDefinition Width="1*" />
-                                                        <ColumnDefinition Width="3*" />
-                                                        <ColumnDefinition Width="1*" />
+                                                        <ColumnDefinition Width="Auto" />
+                                                        <ColumnDefinition />
                                                     </Grid.ColumnDefinitions>
-                                                    <cefSharp:ChromiumWebBrowser Address="{Binding Url,
-                                                                                               Converter={StaticResource YouTubeToEmbedConverter},
-                                                                                               Mode=OneTime}"
-                                                                             Loaded="ChromiumWebBrowser_Loaded"
-                                                                             Height="200"
-                                                                                 Grid.Column="1"/>
+                                                    <Image Width="120"
+                                                           Height="75"
+                                                           Source="{Binding Url,
+                                                                            Converter={StaticResource YouTubeToThumbConverter}}" />
+                                                    <TextBlock x:Name="youTubeCaption"
+                                                               Grid.Column="2"
+                                                               Margin="8,0,0,0"
+                                                               HorizontalAlignment="Left"
+                                                               VerticalAlignment="Center"
+                                                               FontSize="17.333333333333332"
+                                                               Foreground="{StaticResource ForegroundBrush}"
+                                                               Text="{Binding Name}"
+                                                               TextWrapping="Wrap" />
                                                 </Grid>
-                                                
-                                                <TextBlock x:Name="youTubeCaption"
-                                                           Grid.Row="1"
-                                                           Margin="0,5,0,0"
-                                                           HorizontalAlignment="Center"
-                                                           FontFamily="Cambria"
-                                                           FontSize="17.333333333333332"
-                                                           Foreground="{StaticResource ForegroundBrush}"
-                                                           Text="{Binding Name}" />
-                                            </StackPanel>
+                                            </Button>
+                                            <DataTemplate.Triggers>
+                                                <Trigger Property="IsMouseOver" Value="True">
+                                                    <Setter TargetName="youTubeCaption" Property="Foreground" Value="White" />
+                                                </Trigger>
+                                            </DataTemplate.Triggers>
                                         </DataTemplate>
                                     </c:MediaDataTemplateSelector.YouTubeTemplate>
                                 </c:MediaDataTemplateSelector>
@@ -558,7 +553,8 @@
                                       MinHeight="16">
                             <ItemsControl.ItemTemplate>
                                 <DataTemplate DataType="{x:Type db:Link}">
-                                    <Button Margin="0,0,0,5"
+                                    <Button Name="linkButton"
+                                            Margin="0,0,0,5"
                                             Command="{Binding Url,
                                                               Converter={StaticResource UrlToCommandConverter},
                                                               Mode=OneWay,
@@ -575,13 +571,20 @@
                                                                             Converter={StaticResource UrlToFaviconConverter},
                                                                             Mode=OneWay,
                                                                             IsAsync=True}" />
-                                                    <TextBlock FontSize="17.333333333333332"
-                                                               Foreground="White"
+                                                    <TextBlock Name="linkTextBlock"
+                                                               FontSize="17.333333333333332"
+                                                               Foreground="{StaticResource ForegroundBrush}"
                                                                Text="{Binding Name}" />
                                                 </StackPanel>
+                                                <ControlTemplate.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter TargetName="linkTextBlock" Property="Foreground" Value="White" />
+                                                    </Trigger>
+                                                </ControlTemplate.Triggers>
                                             </ControlTemplate>
                                         </Button.Template>
                                     </Button>
+                                    <DataTemplate.Triggers />
                                 </DataTemplate>
                             </ItemsControl.ItemTemplate>
                         </ItemsControl>
