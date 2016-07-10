@@ -191,5 +191,5 @@ FakesAssemblies/
 # Visual Studio 6 workspace options file
 *.opt
 
-# Entity Framework Connection String
-[Aa]pp.config
+# The Shelf
+Shelf/

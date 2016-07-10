@@ -22,17 +22,5 @@ namespace NathanHarrenstein.MusicTimeline.Properties {
                 return defaultInstance;
             }
         }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string AudioDirectory {
-            get {
-                return ((string)(this["AudioDirectory"]));
-            }
-            set {
-                this["AudioDirectory"] = value;
-            }
-        }
     }
 }

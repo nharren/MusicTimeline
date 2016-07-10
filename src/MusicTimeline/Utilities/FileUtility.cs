@@ -10,20 +10,24 @@ namespace NathanHarrenstein.MusicTimeline.Utilities
 {
     internal static class FileUtility
     {
-        internal static byte[] GetImage(string filePath)
+        internal static bool TryGetImage(string path, out byte[] imageBytes)
         {
             Uri fileUri = null;
 
-            if (!Uri.TryCreate(filePath, UriKind.Absolute, out fileUri))
+            if (!Uri.TryCreate(path, UriKind.Absolute, out fileUri))
             {
-                return null;
+                imageBytes = null;
+
+                return false;
             }
 
             if (fileUri.IsFile)
             {
-                if (File.Exists(filePath))
+                if (File.Exists(path))
                 {
-                    return File.ReadAllBytes(filePath);
+                    imageBytes = File.ReadAllBytes(path);
+
+                    return true;
                 }
             }
             else
@@ -35,11 +39,9 @@ namespace NathanHarrenstein.MusicTimeline.Utilities
 
                     try
                     {
-                        return webClient.DownloadData(filePath);
-                    }
-                    catch (WebException e)
-                    {
-                        MessageBox.Show(e.Message);
+                        imageBytes = webClient.DownloadData(path);
+
+                        return true;
                     }
                     catch
                     {
@@ -47,7 +49,9 @@ namespace NathanHarrenstein.MusicTimeline.Utilities
                 }
             }
 
-            return null;
+            imageBytes = null;
+
+            return false;
         }
 
 
@@ -78,10 +82,6 @@ namespace NathanHarrenstein.MusicTimeline.Utilities
                     {
                         return await webClient.DownloadDataTaskAsync(filePath);
                     }
-                    catch (WebException e)
-                    {
-                        MessageBox.Show(e.Message);
-                    }
                     catch
                     {
                     }
@@ -89,26 +89,6 @@ namespace NathanHarrenstein.MusicTimeline.Utilities
             }
 
             return null;
-        }
-
-        internal static bool WebsiteExists(string url)
-        {
-            ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback((a, b, c, d) => true);
-            WebRequest webRequest = WebRequest.Create(url);
-            WebResponse webResponse;
-
-            try
-            {
-                webResponse = webRequest.GetResponse();
-            }
-            catch (WebException e)
-            {
-                Logger.Log(e.ToString(), "MusicTimeline.log");
-
-                return false;
-            }
-
-            return true;
         }
 
         internal static bool HasLine(Stream file, string line)

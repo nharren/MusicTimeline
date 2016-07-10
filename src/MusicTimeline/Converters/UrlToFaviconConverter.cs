@@ -11,7 +11,7 @@ namespace NathanHarrenstein.MusicTimeline.Converters
 {
     public class UrlToFaviconConverter : IValueConverter
     {
-        private static readonly Dictionary<string, BitmapImage> _faviconCache = new Dictionary<string, BitmapImage>();
+        private static readonly Dictionary<string, BitmapImage> cache = new Dictionary<string, BitmapImage>();
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
@@ -30,72 +30,57 @@ namespace NathanHarrenstein.MusicTimeline.Converters
 
             if (!Uri.TryCreate(url, UriKind.RelativeOrAbsolute, out uri))
             {
-                throw new ArgumentException($"A uri could not be created from the url: {url}");
+                return GetDefaultFavicon(url);
             }
 
-            if (_faviconCache.TryGetValue(uri.Host, out favicon))
+            if (cache.TryGetValue(uri.Host, out favicon))
             {
                 return favicon;
             }
 
-            Directory.CreateDirectory($@"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData, Environment.SpecialFolderOption.Create)}\Music Timeline\Resources\Favicons");
+            byte[] bytes;
 
-            var faviconPath = $@"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData, Environment.SpecialFolderOption.Create)}\Music Timeline\Resources\Favicons\{uri.Host}.ico";         
-
-            if (File.Exists(faviconPath))
+            if (FileUtility.TryGetImage($"http://{uri.Host}/favicon.ico", out bytes))
             {
                 favicon = new BitmapImage();
                 favicon.BeginInit();
                 favicon.DecodePixelHeight = 16;
                 favicon.DecodePixelWidth = 16;
-                favicon.StreamSource = new MemoryStream(File.ReadAllBytes(faviconPath));
+                favicon.StreamSource = new MemoryStream(bytes);
                 favicon.EndInit();
                 favicon.Freeze();
 
-                _faviconCache[url] = favicon;
+                cache[url] = favicon;
 
                 return favicon;
             }
             else
             {
-                var bytes = FileUtility.GetImage($"http://{uri.Host}/favicon.ico");
-
-                if (bytes != null)
-                {
-                    File.WriteAllBytes(faviconPath, bytes);
-
-                    favicon = new BitmapImage();
-                    favicon.BeginInit();
-                    favicon.DecodePixelHeight = 16;
-                    favicon.DecodePixelWidth = 16;
-                    favicon.StreamSource = new MemoryStream(bytes);
-                    favicon.EndInit();
-                    favicon.Freeze();
-
-                    _faviconCache[url] = favicon;
-                }
-                else
-                {
-                    if (!_faviconCache.TryGetValue("", out favicon))
-                    {
-                        var stream = Application.GetResourceStream(new Uri("pack://application:,,,/Resources/Favicons/Default.png", UriKind.Absolute)).Stream;
-
-                        File.WriteAllBytes(faviconPath, StreamUtility.ReadToEnd(stream));
-
-                        favicon = new BitmapImage();
-                        favicon.BeginInit();
-                        favicon.DecodePixelHeight = 16;
-                        favicon.DecodePixelWidth = 16;
-                        favicon.StreamSource = stream;
-                        favicon.EndInit();
-                        favicon.Freeze();
-
-                        _faviconCache[url] = favicon;
-                    }
-                }
-
-                return favicon;
+                return GetDefaultFavicon(url);
             }
+        }
+
+        private static BitmapImage GetDefaultFavicon(string url)
+        {
+            BitmapImage favicon;
+
+            if (!cache.TryGetValue("", out favicon))
+            {
+                var defaultFaviconUri = new Uri("pack://application:,,,/Resources/Favicons/Default.png", UriKind.Absolute);
+                var stream = Application.GetResourceStream(defaultFaviconUri).Stream;
+
+                favicon = new BitmapImage();
+                favicon.BeginInit();
+                favicon.DecodePixelHeight = 16;
+                favicon.DecodePixelWidth = 16;
+                favicon.StreamSource = stream;
+                favicon.EndInit();
+                favicon.Freeze();
+
+                cache[""] = favicon;
+            }
+
+            return favicon;
         }
     }
 }

@@ -3,20 +3,20 @@ using System.IO;
 
 namespace NathanHarrenstein.MusicTimeline.Logging
 {
-    public static class Logger
+    public class Logger
     {
-        public static void Log(string message, string filename)
+        private readonly string directoryPath;
+
+        public Logger()
         {
-            using (StreamWriter streamWriter = File.AppendText($@"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData, Environment.SpecialFolderOption.Create)}\{filename}"))
-            {
-                streamWriter.WriteLine($"{DateTime.Now.ToLongTimeString()} {DateTime.Now.ToLongDateString()}\r\n\r\n{message}\r\n-------------------------------");
-            }
+            directoryPath = $@"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData, Environment.SpecialFolderOption.Create)}\Logs";
         }
 
-        public static void Reset(string filename)
+        internal void Log(Exception exception)
         {
-            using (var log = File.Create($@"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData, Environment.SpecialFolderOption.Create)}\{filename}"))
+            using (var streamWriter = File.AppendText($@"{directoryPath}\{DateTimeOffset.Now}.log"))
             {
+                streamWriter.Write(exception);
             }
         }
     }

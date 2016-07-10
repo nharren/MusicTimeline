@@ -1,9 +1,42 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.IO;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Windows;
+using System.Windows.Documents;
+using System.Windows.Markup;
+using System.Windows.Media;
 
 namespace NathanHarrenstein.MusicTimeline.Utilities
 {
     public static class BiographyUtility
     {
+        public static FlowDocument LoadDocument(string flowDocumentString)
+        {
+            if (flowDocumentString == null)
+            {
+                return null;
+            }
+
+            var parserContext = new ParserContext();
+            parserContext.XmlnsDictionary.Add("", "http://schemas.microsoft.com/winfx/2006/xaml/presentation");
+            parserContext.XmlSpace = "preserve";
+
+            var flowDocumentBytes = Encoding.UTF8.GetBytes(flowDocumentString);
+
+            using (var flowDocumentMemoryStream = new MemoryStream(flowDocumentBytes))
+            {
+                var flowDocument = (FlowDocument)XamlReader.Load(flowDocumentMemoryStream, parserContext);
+                flowDocument.LineHeight = 24.0;
+                flowDocument.FontSize = 17.333333333333332;
+                flowDocument.FontFamily = new FontFamily("Cambria");
+                flowDocument.PagePadding = new Thickness(0.0, 5.0, 0.0, 0.0);
+                flowDocument.TextAlignment = TextAlignment.Left;
+                flowDocument.Foreground = (Brush)Application.Current.Resources["ForegroundBrush"];
+
+                return flowDocument;
+            }
+        }
+
         public static string CleanXaml(string xaml)
         {
             if (xaml == null)
@@ -21,6 +54,7 @@ namespace NathanHarrenstein.MusicTimeline.Utilities
             RemoveSection("See also", ref xaml);
             RemoveSection("External links", ref xaml);
             RemoveSection("Free scores", ref xaml);
+            RemoveSection("Scores", ref xaml);
             RemoveSection("Music scores", ref xaml);
             RemoveSection("Notes", ref xaml);
             RemoveSection("Further reading", ref xaml);
@@ -42,7 +76,7 @@ namespace NathanHarrenstein.MusicTimeline.Utilities
 
         private static void RemoveSection(string title, ref string xaml)
         {
-            xaml = Regex.Replace(xaml, $@"(<Paragraph Tag=""h\d""><Run>{title}<\/Run>.+?)(?=<Paragraph Tag=""h|<\/Section>)", "");
+            xaml = Regex.Replace(xaml, $@"(<Paragraph[^>]*?><Run[^>]*?>{title}<\/Run>.*?)(?=<Paragraph[^>]+?|<\/FlowDocument>)", "");
         }
     }
 }

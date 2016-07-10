@@ -1,4 +1,5 @@
 ﻿using NathanHarrenstein.MusicTimeline.ClassicalMusicDb;
+using NathanHarrenstein.MusicTimeline.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Data.Services.Client;
@@ -13,15 +14,15 @@ namespace NathanHarrenstein.MusicTimeline.Converters
 {
     internal class ComposerToThumbnailConverter : IValueConverter
     {
-        private static Dictionary<int, BitmapImage> _thumbnailCache = new Dictionary<int, BitmapImage>();
+        private static Dictionary<int, BitmapImage> cache = new Dictionary<int, BitmapImage>();
 
         public static BitmapImage ComposerToThumbnail(Composer composer)
         {
-            var thumbnail = (BitmapImage)null;
+            BitmapImage thumbnail;
 
-            if (_thumbnailCache.TryGetValue(composer.ComposerId, out thumbnail))
+            if (cache.TryGetValue(composer.ComposerId, out thumbnail))
             {
-                return _thumbnailCache[composer.ComposerId];
+                return cache[composer.ComposerId];
             }
 
             var directoryPath = $@"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData, Environment.SpecialFolderOption.Create)}\Music Timeline\Resources\Thumbnails\";
@@ -36,14 +37,9 @@ namespace NathanHarrenstein.MusicTimeline.Converters
 
             if (File.Exists(thumbnailPath))
             {
-                thumbnail = new BitmapImage();
-                thumbnail.BeginInit();
-                thumbnail.DecodePixelHeight = 50;
-                thumbnail.StreamSource = new MemoryStream(File.ReadAllBytes(thumbnailPath));
-                thumbnail.EndInit();
-                thumbnail.Freeze();
+                thumbnail = ImageUtility.CreateBitmapImage(File.ReadAllBytes(thumbnailPath), height: 50);
 
-                _thumbnailCache[composer.ComposerId] = thumbnail;
+                cache[composer.ComposerId] = thumbnail;
 
                 return thumbnail;
             }
@@ -63,7 +59,7 @@ namespace NathanHarrenstein.MusicTimeline.Converters
 
         internal static void ClearThumbnailCache()
         {
-            _thumbnailCache.Clear();
+            cache.Clear();
 
             var thumbnailDirectory = $@"{Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData, Environment.SpecialFolderOption.Create)}\Music Timeline\Resources\Thumbnails\";
             var thumbnailPaths = Directory.EnumerateFiles(thumbnailDirectory).ToArray();
@@ -83,13 +79,7 @@ namespace NathanHarrenstein.MusicTimeline.Converters
 
             if (image != null)
             {
-                thumbnail = new BitmapImage();
-                thumbnail.CacheOption = BitmapCacheOption.None;
-                thumbnail.BeginInit();
-                thumbnail.DecodePixelHeight = 40;
-                thumbnail.StreamSource = new MemoryStream(image);
-                thumbnail.EndInit();
-                thumbnail.Freeze();
+                thumbnail = ImageUtility.CreateBitmapImage(image, height: 40);
 
                 var encoder = new JpegBitmapEncoder();
                 encoder.QualityLevel = 60;
@@ -100,18 +90,18 @@ namespace NathanHarrenstein.MusicTimeline.Converters
                     encoder.Save(stream);
                 }
 
-                _thumbnailCache[composer.ComposerId] = thumbnail;
+                cache[composer.ComposerId] = thumbnail;
 
                 return thumbnail;
             }
-            else if (!_thumbnailCache.TryGetValue(0, out thumbnail))
+            else if (!cache.TryGetValue(0, out thumbnail))
             {
                 thumbnailPath = $@"pack://application:,,,/Resources/Composers/Unknown.jpg";
                 var thumbnailUri = new Uri(thumbnailPath, UriKind.Absolute);
 
                 thumbnail = new BitmapImage(thumbnailUri);
 
-                _thumbnailCache[0] = thumbnail;
+                cache[0] = thumbnail;
 
                 return thumbnail;
             }

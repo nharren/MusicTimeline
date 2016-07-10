@@ -1,8 +1,8 @@
-﻿using NAudio.CoreAudioApi;
+﻿using NathanHarrenstein.MusicTimeline.Generic;
+using NAudio.CoreAudioApi;
 using NAudio.CoreAudioApi.Interfaces;
 using NAudio.Wave;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Threading;
@@ -13,31 +13,29 @@ namespace NathanHarrenstein.MusicTimeline.Audio
 {
     public class Mp3Player : IDisposable, IAudioSessionEventsHandler
     {
-        private readonly LinkedList<Mp3FileReader> _playlist;
-        private AudioSessionControl _audioSessionControl;
-        private bool _canPlay;
-        private bool _canSkipBack;
-        private bool _canSkipForward;
-        private LinkedListNode<Mp3FileReader> _currentPlaylistItem;
-        private bool _isDisposed;
-        private bool _isMuted;
-        private MMDevice _playbackDevice;
-        private bool _playbackSubscribed;
-        private DispatcherTimer _playbackTimer;
-        private WaveOutEvent _player;
+        private AudioSessionControl audioSessionControl;
+        private bool isDisposed;
+        private MMDevice playbackDevice;
+        private bool playbackSubscribed;
+        private DispatcherTimer playbackTimer;
+        private WaveOutEvent player;
 
         public Mp3Player()
         {
-            _playlist = new LinkedList<Mp3FileReader>();
-            _playbackTimer = new DispatcherTimer();
-            _playbackTimer.Interval = new TimeSpan(1);
-            _playbackTimer.Tick += PlaybackTimer_Tick;
+            Playlist = new Mp3Playlist();
+            Playlist.CurrentItemChanged += Playlist_CurrentItemChanged;
+            Playlist.ItemAdded += Playlist_ItemAdded;
+            Playlist.ItemRemoved += Playlist_ItemRemoved;
 
-            _playbackDevice = GetPlaybackDevice();
-            _playbackDevice.AudioEndpointVolume.OnVolumeNotification += AudioEndpointVolume_OnVolumeNotification;
-            _playbackDevice.AudioSessionManager.OnSessionCreated += AudioSessionManager_OnSessionCreated;
+            playbackTimer = new DispatcherTimer();
+            playbackTimer.Interval = new TimeSpan(1);
+            playbackTimer.Tick += PlaybackTimer_Tick;
 
-            _isMuted = _playbackDevice.AudioEndpointVolume.Mute;
+            playbackDevice = GetPlaybackDevice();
+            playbackDevice.AudioEndpointVolume.OnVolumeNotification += AudioEndpointVolume_OnVolumeNotification;
+            playbackDevice.AudioSessionManager.OnSessionCreated += AudioSessionManager_OnSessionCreated;
+
+            IsMuted = playbackDevice.AudioEndpointVolume.Mute;
         }
 
         ~Mp3Player()
@@ -46,132 +44,83 @@ namespace NathanHarrenstein.MusicTimeline.Audio
         }
 
         public event EventHandler<CanPlayEventArgs> CanPlayChanged;
-
-        public event EventHandler<CanSkipBackEventArgs> CanSkipBackChanged;
-
-        public event EventHandler<CanSkipForwardEventArgs> CanSkipForwardChanged;
-
+        public event EventHandler<CanPlayNextEventArgs> CanPlayNextChanged;
+        public event EventHandler<CanPlayPreviousEventArgs> CanPlayPreviousChanged;
         public event EventHandler<TimeSpanEventArgs> CurrentTimeChanged;
-
         public event EventHandler<MuteEventArgs> IsMutedChanged;
-
         public event EventHandler<PlaybackStateEventArgs> PlaybackStateChanged;
-
         public event EventHandler<TimeSpanEventArgs> TotalTimeChanged;
-
         public event EventHandler<TrackEventArgs> TrackChanged;
-
         public event EventHandler<VolumeEventArgs> VolumeChanged;
-
-        public bool CanPlay
-        {
-            get
-            {
-                return _canPlay;
-            }
-        }
-
-        public bool CanSkipBack
-        {
-            get
-            {
-                return _canSkipBack;
-            }
-
-            set
-            {
-                _canSkipBack = value;
-            }
-        }
-
-        public bool CanSkipForward
-        {
-            get
-            {
-                return _canSkipForward;
-            }
-
-            set
-            {
-                _canSkipForward = value;
-            }
-        }
-
-        public LinkedListNode<Mp3FileReader> CurrentPlaylistItem
-        {
-            get
-            {
-                return _currentPlaylistItem;
-            }
-
-            set
-            {
-                _currentPlaylistItem = value;
-            }
-        }
+        public bool CanPlay { get; private set; }
+        public bool CanPlayNext { get; set; }
+        public bool CanPlayPrevious { get; set; }
 
         public TimeSpan CurrentTime
         {
             get
             {
-                if (_currentPlaylistItem == null || _currentPlaylistItem.Value == null)
+                if (Playlist.CurrentItem == null)
                 {
-                    throw new InvalidOperationException("The current time cannot be retrieved until a track has been loaded.");
+                    throw new InvalidOperationException("The current playlist item is null.");
                 }
 
-                return _currentPlaylistItem.Value.CurrentTime;
+                if (Playlist.CurrentItem.Stream == null)
+                {
+                    throw new InvalidOperationException("Could not load playlist item because it contains a null stream.");
+                }
+
+                return Playlist.CurrentItem.Stream.CurrentTime;
             }
 
             set
             {
-                if (_currentPlaylistItem == null || _currentPlaylistItem.Value == null)
+                if (Playlist.CurrentItem == null)
                 {
-                    throw new InvalidOperationException("The current time cannot be set until a track has been loaded.");
+                    throw new InvalidOperationException("The current playlist item is null.");
                 }
 
-                _currentPlaylistItem.Value.CurrentTime = value;
+                if (Playlist.CurrentItem.Stream == null)
+                {
+                    throw new InvalidOperationException("Could not load playlist item because it contains a null stream.");
+                }
+
+                Playlist.CurrentItem.Stream.CurrentTime = value;
             }
         }
 
-        public bool IsMuted
-        {
-            get
-            {
-                return _isMuted;
-            }
-        }
+        public bool IsMuted { get; private set; }
 
         public PlaybackState PlaybackState
         {
             get
             {
-                if (_player == null)
+                if (player == null)
                 {
                     throw new InvalidOperationException("The playback state cannot be retrieved until a track has been loaded.");
                 }
 
-                return _player.PlaybackState;
+                return player.PlaybackState;
             }
         }
 
-        public LinkedList<Mp3FileReader> Playlist
-        {
-            get
-            {
-                return _playlist;
-            }
-        }
+        public Mp3Playlist Playlist { get; private set; }
 
         public TimeSpan TotalTime
         {
             get
             {
-                if (_currentPlaylistItem == null || _currentPlaylistItem.Value == null)
+                if (Playlist.CurrentItem == null)
                 {
-                    throw new InvalidOperationException("The total time cannot be retrieved until a track has been loaded.");
+                    throw new InvalidOperationException("The current playlist item is null.");
                 }
 
-                return _currentPlaylistItem.Value.TotalTime;
+                if (Playlist.CurrentItem.Stream == null)
+                {
+                    throw new InvalidOperationException("Could not load playlist item because it contains a null stream.");
+                }
+
+                return Playlist.CurrentItem.Stream.TotalTime;
             }
         }
 
@@ -179,9 +128,9 @@ namespace NathanHarrenstein.MusicTimeline.Audio
         {
             get
             {
-                if (_audioSessionControl != null)
+                if (audioSessionControl != null)
                 {
-                    return _audioSessionControl.SimpleAudioVolume.Volume;
+                    return audioSessionControl.SimpleAudioVolume.Volume;
                 }
                 else
                 {
@@ -191,25 +140,16 @@ namespace NathanHarrenstein.MusicTimeline.Audio
 
             set
             {
-                if (_audioSessionControl != null)
+                if (audioSessionControl != null)
                 {
-                    _audioSessionControl.SimpleAudioVolume.Volume = value;
+                    audioSessionControl.SimpleAudioVolume.Volume = value;
                 }
             }
         }
 
-        public void AddToPlaylist(Mp3FileReader mp3FileReader)
+        public void AddToPlaylist(Mp3PlaylistItem mp3PlaylistItem)
         {
-            _playlist.AddLast(mp3FileReader);
-
-            if (_playlist.Count == 1)
-            {
-                Load(_playlist.First);
-            }
-
-            _canSkipForward = _currentPlaylistItem.Next != null;
-
-            App.Current.Dispatcher.Invoke(new Action(() => OnCanSkipForwardChanged(new CanSkipForwardEventArgs(_canSkipForward))));
+            Playlist.Add(mp3PlaylistItem);
         }
 
         public void Dispose()
@@ -217,6 +157,11 @@ namespace NathanHarrenstein.MusicTimeline.Audio
             Dispose(true);
 
             GC.SuppressFinalize(this);
+        }
+
+        public void Next()
+        {
+            Playlist.Next();
         }
 
         public void OnChannelVolumeChanged(uint channelCount, IntPtr newVolumes, uint channelIndex)
@@ -245,88 +190,79 @@ namespace NathanHarrenstein.MusicTimeline.Audio
 
         public void OnVolumeChanged(float volume, bool isMuted)
         {
-            UpdateVolume();
+            Application.Current.Dispatcher.Invoke(() => OnVolumeChanged(new VolumeEventArgs(audioSessionControl.SimpleAudioVolume.Volume)));
 
-            _isMuted = isMuted;
+            if (IsMuted != isMuted)
+            {
+                IsMuted = isMuted;
 
-            UpdateIsMuted();
+                Application.Current.Dispatcher.Invoke(() => OnIsMutedChanged(new MuteEventArgs(isMuted)));
+            }
         }
 
         public void Pause()
         {
-            if (_player == null)
+            if (player == null)
             {
                 return;
             }
 
-            _player.Pause();
-            UpdatePlaybackState();
+            player.Pause();
+
+            Application.Current.Dispatcher.Invoke(() => OnPlaybackStateChanged(new PlaybackStateEventArgs(player.PlaybackState)));
         }
 
         public void Play()
         {
-            if (_canPlay)
+            if (CanPlay)
             {
                 InternalPlay();
             }
             else
             {
-                if (!_playbackSubscribed)
+                if (!playbackSubscribed)
                 {
-                    CanPlayChanged += FlacPlayer_CanPlayChanged_StartPlayback;
+                    CanPlayChanged += Mp3Player_CanPlayChanged;
+
+                    playbackSubscribed = true;
                 }
             }
         }
 
-        public void SkipBack()
+        public void Previous()
         {
-            if (_currentPlaylistItem.Previous != null)
-            {
-                Stop();
-                Load(_currentPlaylistItem.Previous);
-                Play();
-            }
-        }
-
-        public void SkipForward()
-        {
-            if (_currentPlaylistItem.Next != null)
-            {
-                Stop();
-                Load(_currentPlaylistItem.Next);
-                Play();
-            }
+            Playlist.Previous();
         }
 
         public void Stop()
         {
-            if (_player == null || _currentPlaylistItem == null || _currentPlaylistItem.Value == null)
+            if (player == null || Playlist.CurrentItem == null || Playlist.CurrentItem.Stream == null || PlaybackState == PlaybackState.Stopped)
             {
                 return;
             }
 
-            _playbackTimer?.Stop();
-            _player.Stop();
+            playbackTimer?.Stop();
+            player.Stop();
 
-            _currentPlaylistItem.Value.Seek(0, SeekOrigin.Begin);
+            Playlist.CurrentItem.Stream.Seek(0, SeekOrigin.Begin);
 
-            UpdatePlaybackState();
-            UpdateCurrentTime();
+            Application.Current.Dispatcher.Invoke(() => OnPlaybackStateChanged(new PlaybackStateEventArgs(player.PlaybackState)));
+            Application.Current.Dispatcher.Invoke(() => OnCurrentTimeChanged(new TimeSpanEventArgs(Playlist.CurrentItem.Stream.CurrentTime)));
         }
 
         public void ToggleMute()
         {
-            if (_audioSessionControl == null)
+            if (audioSessionControl == null)
             {
                 return;
             }
 
-            if (_isMuted && _playbackDevice.AudioEndpointVolume.Mute)
+            if (IsMuted && playbackDevice.AudioEndpointVolume.Mute)
             {
-                _playbackDevice.AudioEndpointVolume.Mute = false;
+                playbackDevice.AudioEndpointVolume.Mute = false;
             }
 
-            _audioSessionControl.SimpleAudioVolume.Mute = !_isMuted;
+            audioSessionControl.SimpleAudioVolume.Mute = !IsMuted;
         }
 
         internal MMDevice GetPlaybackDevice()
@@ -343,24 +279,18 @@ namespace NathanHarrenstein.MusicTimeline.Audio
 
         protected virtual void Dispose(bool disposing)
         {
-            if (!_isDisposed)
+            if (!isDisposed)
             {
-                if (_player != null)
+                if (player != null)
                 {
-                    if (_player.PlaybackState != PlaybackState.Stopped)
-                    {
-                        Stop();
-                    }
+                    Stop();
 
-                    _player.Dispose();
+                    player.Dispose();
                 }
 
-                foreach (var playlistItem in _playlist)
-                {
-                    playlistItem.Dispose();
-                }
+                Playlist.Dispose();
 
-                _isDisposed = true;
+                isDisposed = true;
             }
         }
 
@@ -372,19 +302,19 @@ namespace NathanHarrenstein.MusicTimeline.Audio
             }
         }
 
-        protected virtual void OnCanSkipBackChanged(CanSkipBackEventArgs e)
+        protected virtual void OnCanPlayNextChanged(CanPlayNextEventArgs e)
         {
-            if (CanSkipBackChanged != null)
+            if (CanPlayNextChanged != null)
             {
-                CanSkipBackChanged(this, e);
+                CanPlayNextChanged(this, e);
             }
         }
 
-        protected virtual void OnCanSkipForwardChanged(CanSkipForwardEventArgs e)
+        protected virtual void OnCanPlayPreviousChanged(CanPlayPreviousEventArgs e)
         {
-            if (CanSkipForwardChanged != null)
+            if (CanPlayPreviousChanged != null)
             {
-                CanSkipForwardChanged(this, e);
+                CanPlayPreviousChanged(this, e);
             }
         }
 
@@ -438,113 +368,180 @@ namespace NathanHarrenstein.MusicTimeline.Audio
 
         private void AudioEndpointVolume_OnVolumeNotification(AudioVolumeNotificationData data)
         {
-            _isMuted = data.Muted;
+            IsMuted = data.Muted;
 
-            UpdateIsMuted();
+            Application.Current.Dispatcher.Invoke(() => OnIsMutedChanged(new MuteEventArgs(IsMuted)));
         }
 
         private void AudioSessionManager_OnSessionCreated(object sender, IAudioSessionControl newSession)
         {
             var audioSessionControl = new AudioSessionControl(newSession);
 
-            if (_audioSessionControl == null && audioSessionControl.GetProcessID == Process.GetCurrentProcess().Id)
+            if (this.audioSessionControl == null && audioSessionControl.GetProcessID == Process.GetCurrentProcess().Id)
             {
-                _audioSessionControl = audioSessionControl;
-                _audioSessionControl.RegisterEventClient(this);
+                this.audioSessionControl = audioSessionControl;
+                this.audioSessionControl.RegisterEventClient(this);
 
-                if (_audioSessionControl.SimpleAudioVolume.Mute)
+                if (this.audioSessionControl.SimpleAudioVolume.Mute)
                 {
-                    _isMuted = true;
+                    IsMuted = true;
                 }
 
-                UpdateVolume();
-                UpdateIsMuted();
-            }
-        }
-
-        private void FlacPlayer_CanPlayChanged_StartPlayback(object sender, CanPlayEventArgs e)
-        {
-            if (e.CanPlay)
-            {
-                InternalPlay();
-
-                CanPlayChanged -= FlacPlayer_CanPlayChanged_StartPlayback;
-                _playbackSubscribed = false;
+                Application.Current.Dispatcher.Invoke(() => OnVolumeChanged(new VolumeEventArgs(audioSessionControl.SimpleAudioVolume.Volume)));
+                Application.Current.Dispatcher.Invoke(() => OnIsMutedChanged(new MuteEventArgs(IsMuted)));
             }
         }
 
         private void InitializePlayer()
         {
-            if (_player != null)
-            {
-                _player.Dispose();
-            }
+            player = new WaveOutEvent();
+            player.Init(Playlist.CurrentItem.Stream);
 
-            _player = new WaveOutEvent();
-            _player.Init(_currentPlaylistItem.Value);
+            CanPlay = true;
 
-            _canPlay = true;
-
-            Application.Current.Dispatcher.Invoke(() => OnCanPlayChanged(new CanPlayEventArgs(_canPlay)));
-
-            UpdateTotalTime();
+            Application.Current.Dispatcher.Invoke(() => OnCanPlayChanged(new CanPlayEventArgs(CanPlay)));
+            Application.Current.Dispatcher.Invoke(() => OnTotalTimeChanged(new TimeSpanEventArgs(Playlist.CurrentItem.Stream.TotalTime)));
         }
 
         private void InternalPlay()
         {
-            if (!_playbackTimer.IsEnabled)
+            if (!playbackTimer.IsEnabled)
             {
-                _playbackTimer.Start();
+                playbackTimer.Start();
             }
 
-            _player.Play();
+            player.Play();
 
-            UpdatePlaybackState();
+            Application.Current.Dispatcher.Invoke(() => OnPlaybackStateChanged(new PlaybackStateEventArgs(player.PlaybackState)));
         }
 
-        private void Load(LinkedListNode<Mp3FileReader> playlistItem)
+        private void Load()
         {
-            if (playlistItem == null)
+            if (Playlist.CurrentItem == null)
             {
-                throw new ArgumentNullException(nameof(playlistItem));
+                throw new InvalidOperationException("The current playlist item is null.");
             }
 
-            if (_player != null && PlaybackState != PlaybackState.Stopped)
+            if (Playlist.CurrentItem.Stream == null)
+            {
+                throw new InvalidOperationException("Could not load playlist item because it contains a null stream.");
+            }
+
+            if (player != null && PlaybackState != PlaybackState.Stopped)
             {
                 Stop();
+                player.Dispose();
             }
 
-            _canPlay = false;
-            _currentPlaylistItem = playlistItem;
+            CanPlay = false;
 
-            _canSkipBack = _currentPlaylistItem.Previous != null;
-            _canSkipForward = _currentPlaylistItem.Next != null;
-
-            App.Current.Dispatcher.Invoke(new Action(() => OnCanSkipBackChanged(new CanSkipBackEventArgs(_canSkipBack))));
-            App.Current.Dispatcher.Invoke(new Action(() => OnCanSkipForwardChanged(new CanSkipForwardEventArgs(_canSkipForward))));
+            App.Current.Dispatcher.Invoke(new Action(() => OnCanPlayPreviousChanged(new CanPlayPreviousEventArgs(Playlist.HasPrevious()))));
+            App.Current.Dispatcher.Invoke(new Action(() => OnCanPlayNextChanged(new CanPlayNextEventArgs(Playlist.HasNext()))));
 
             StartPlaybackThread();
-            UpdateTrackChanged();
+
+            Application.Current.Dispatcher.Invoke(() => OnTrackChanged(new TrackEventArgs(Playlist.CurrentItem.Stream)));
+        }
+
+        private void Mp3Player_CanPlayChanged(object sender, CanPlayEventArgs e)
+        {
+            if (e.CanPlay)
+            {
+                InternalPlay();
+
+                CanPlayChanged -= Mp3Player_CanPlayChanged;
+
+                playbackSubscribed = false;
+            }
         }
 
         private void PlaybackTimer_Tick(object sender, EventArgs e)
         {
-            if (_player.PlaybackState == PlaybackState.Stopped)
+            if (player.PlaybackState == PlaybackState.Stopped)
             {
-                if (_canSkipForward)
+                if (Playlist.Next())
                 {
-                    SkipForward();
+                    player.Init(Playlist.CurrentItem.Stream);
+                    Play();
+
+                    Application.Current.Dispatcher.Invoke(() => OnTotalTimeChanged(new TimeSpanEventArgs(Playlist.CurrentItem.Stream.TotalTime)));
+                    App.Current.Dispatcher.Invoke(new Action(() => OnCanPlayPreviousChanged(new CanPlayPreviousEventArgs(Playlist.HasPrevious()))));
+                    App.Current.Dispatcher.Invoke(new Action(() => OnCanPlayNextChanged(new CanPlayNextEventArgs(Playlist.HasNext()))));
                 }
                 else
                 {
-                    _playbackTimer.Stop();
                     Stop();
                 }
 
                 return;
             }
 
-            UpdateCurrentTime();
+            Application.Current.Dispatcher.Invoke(() => OnCurrentTimeChanged(new TimeSpanEventArgs(Playlist.CurrentItem.Stream.CurrentTime)));
+        }
+
+        private void Playlist_CurrentItemChanged(object sender, ItemChangedEventArgs<Mp3PlaylistItem> e)
+        {
+            Load();
+
+            var canPlayPrevious = Playlist.HasPrevious();
+
+            if (canPlayPrevious != CanPlayPrevious)
+            {
+                CanPlayPrevious = canPlayPrevious;
+
+                App.Current.Dispatcher.Invoke(new Action(() => OnCanPlayPreviousChanged(new CanPlayPreviousEventArgs(CanPlayPrevious))));
+            }
+
+            var canPlayNext = Playlist.HasNext();
+
+            if (canPlayNext != CanPlayNext)
+            {
+                CanPlayNext = canPlayNext;
+
+                App.Current.Dispatcher.Invoke(new Action(() => OnCanPlayNextChanged(new CanPlayNextEventArgs(CanPlayNext))));
+            }
+        }
+
+        private void Playlist_ItemAdded(object sender, ItemAddedEventArgs<Mp3PlaylistItem> e)
+        {
+            var canPlayPrevious = Playlist.HasPrevious();
+
+            if (canPlayPrevious != CanPlayPrevious)
+            {
+                CanPlayPrevious = canPlayPrevious;
+
+                App.Current.Dispatcher.Invoke(new Action(() => OnCanPlayPreviousChanged(new CanPlayPreviousEventArgs(CanPlayPrevious))));
+            }
+
+            var canPlayNext = Playlist.HasNext();
+
+            if (canPlayNext != CanPlayNext)
+            {
+                CanPlayNext = canPlayNext;
+
+                App.Current.Dispatcher.Invoke(new Action(() => OnCanPlayNextChanged(new CanPlayNextEventArgs(CanPlayNext))));
+            }
+        }
+
+        private void Playlist_ItemRemoved(object sender, ItemRemovedEventArgs<Mp3PlaylistItem> e)
+        {
+            var canPlayPrevious = Playlist.HasPrevious();
+
+            if (canPlayPrevious != CanPlayPrevious)
+            {
+                CanPlayPrevious = canPlayPrevious;
+
+                App.Current.Dispatcher.Invoke(new Action(() => OnCanPlayPreviousChanged(new CanPlayPreviousEventArgs(CanPlayPrevious))));
+            }
+
+            var canPlayNext = Playlist.HasNext();
+
+            if (canPlayNext != CanPlayNext)
+            {
+                CanPlayNext = canPlayNext;
+
+                App.Current.Dispatcher.Invoke(new Action(() => OnCanPlayNextChanged(new CanPlayNextEventArgs(CanPlayNext))));
+            }
         }
 
         private void StartPlaybackThread()
@@ -555,36 +552,6 @@ namespace NathanHarrenstein.MusicTimeline.Audio
             playbackThread.Priority = ThreadPriority.Highest;
             playbackThread.SetApartmentState(ApartmentState.MTA);
             playbackThread.Start();
-        }
-
-        private void UpdateCurrentTime()
-        {
-            Application.Current.Dispatcher.Invoke(() => OnCurrentTimeChanged(new TimeSpanEventArgs(_currentPlaylistItem.Value.CurrentTime)));
-        }
-
-        private void UpdateIsMuted()
-        {
-            Application.Current.Dispatcher.Invoke(() => OnIsMutedChanged(new MuteEventArgs(_isMuted)));
-        }
-
-        private void UpdatePlaybackState()
-        {
-            Application.Current.Dispatcher.Invoke(() => OnPlaybackStateChanged(new PlaybackStateEventArgs(_player.PlaybackState)));
-        }
-
-        private void UpdateTotalTime()
-        {
-            Application.Current.Dispatcher.Invoke(() => OnTotalTimeChanged(new TimeSpanEventArgs(_currentPlaylistItem.Value.TotalTime)));
-        }
-
-        private void UpdateTrackChanged()
-        {
-            Application.Current.Dispatcher.Invoke(() => OnTrackChanged(new TrackEventArgs(_currentPlaylistItem.Value)));
-        }
-
-        private void UpdateVolume()
-        {
-            Application.Current.Dispatcher.Invoke(() => OnVolumeChanged(new VolumeEventArgs(_audioSessionControl.SimpleAudioVolume.Volume)));
         }
     }
 }

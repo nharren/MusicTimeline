@@ -1,0 +1,48 @@
+﻿<Window x:Class="NathanHarrenstein.MusicTimeline.Views.LoginDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:NathanHarrenstein.MusicTimeline.Views"
+        Title="Log In"
+        SizeToContent="WidthAndHeight"
+        Topmost="True"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="ToolWindow">
+    <Grid Margin="10">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition Width="7" />
+            <ColumnDefinition Width="200" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="7" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="10" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <TextBlock Text="Username:" />
+        <TextBox Name="UsernameBox"
+                 Grid.Column="2"
+                 Text="guest"
+                 TextChanged="UsernameBox_TextChanged" />
+        <TextBlock Grid.Row="2" Text="Password:" />
+        <PasswordBox Name="PasswordBox"
+                     Grid.Row="2"
+                     Grid.Column="2"
+                     Password="password"
+                     PasswordChanged="PasswordBox_PasswordChanged" />
+        <StackPanel Grid.Row="4"
+                    Grid.Column="2"
+                    HorizontalAlignment="Right"
+                    Orientation="Horizontal">
+            <Button Click="CancelButton_Click"
+                    Content="Cancel"
+                    Padding="7,2" />
+            <Button Margin="5,0,0,0"
+                    Click="LoginButton_Click"
+                    Content="Log In"
+                    IsDefault="True"
+                    Padding="7,2" />
+        </StackPanel>
+    </Grid>
+</Window>

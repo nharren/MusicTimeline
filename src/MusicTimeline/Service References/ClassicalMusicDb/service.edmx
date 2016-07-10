@@ -14,9 +14,9 @@
           <PropertyRef Name="RecordingId" />
         </Key>
         <Property Name="RecordingId" Type="Edm.Int32" Nullable="false" p6:StoreGeneratedPattern="Identity" xmlns:p6="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
-        <Property Name="TrackNumber" Type="Edm.Int32" />
-        <Property Name="Dates" Type="Edm.String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
         <Property Name="AlbumId" Type="Edm.Int32" />
+        <Property Name="Dates" Type="Edm.String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+        <Property Name="TrackNumber" Type="Edm.Int32" />
         <NavigationProperty Name="Album" Relationship="NathanHarrenstein.ClassicalMusicDb.Recording_Album" ToRole="Recording_Album_Target" FromRole="Recording_Album_Source" />
         <NavigationProperty Name="CompositionCollections" Relationship="NathanHarrenstein.ClassicalMusicDb.CompositionCollection_Recordings" ToRole="CompositionCollection_Recordings_Source" FromRole="CompositionCollection_Recordings_Target" />
         <NavigationProperty Name="Compositions" Relationship="NathanHarrenstein.ClassicalMusicDb.Composition_Recordings" ToRole="Composition_Recordings_Source" FromRole="Composition_Recordings_Target" />
@@ -29,8 +29,8 @@
           <PropertyRef Name="CompositionCollectionId" />
         </Key>
         <Property Name="CompositionCollectionId" Type="Edm.Int32" Nullable="false" p6:StoreGeneratedPattern="Identity" xmlns:p6="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
-        <Property Name="Name" Type="Edm.String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
         <Property Name="IsPopular" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="Name" Type="Edm.String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
         <NavigationProperty Name="CatalogNumbers" Relationship="NathanHarrenstein.ClassicalMusicDb.CatalogNumber_CompositionCollections" ToRole="CatalogNumber_CompositionCollections_Source" FromRole="CatalogNumber_CompositionCollections_Target" />
         <NavigationProperty Name="Composers" Relationship="NathanHarrenstein.ClassicalMusicDb.Composer_CompositionCollections" ToRole="Composer_CompositionCollections_Source" FromRole="Composer_CompositionCollections_Target" />
         <NavigationProperty Name="Compositions" Relationship="NathanHarrenstein.ClassicalMusicDb.Composition_CompositionCollection" ToRole="Composition_CompositionCollection_Source" FromRole="Composition_CompositionCollection_Target" />
@@ -41,8 +41,8 @@
           <PropertyRef Name="CatalogNumberId" />
         </Key>
         <Property Name="CatalogNumberId" Type="Edm.Int32" Nullable="false" p6:StoreGeneratedPattern="Identity" xmlns:p6="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
-        <Property Name="Value" Type="Edm.String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
         <Property Name="CatalogId" Type="Edm.Int32" Nullable="false" />
+        <Property Name="Value" Type="Edm.String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
         <NavigationProperty Name="Catalog" Relationship="NathanHarrenstein.ClassicalMusicDb.Catalog_CatalogNumbers" ToRole="Catalog_CatalogNumbers_Source" FromRole="Catalog_CatalogNumbers_Target" />
         <NavigationProperty Name="CompositionCollections" Relationship="NathanHarrenstein.ClassicalMusicDb.CatalogNumber_CompositionCollections" ToRole="CatalogNumber_CompositionCollections_Target" FromRole="CatalogNumber_CompositionCollections_Source" />
         <NavigationProperty Name="Compositions" Relationship="NathanHarrenstein.ClassicalMusicDb.CatalogNumber_Compositions" ToRole="CatalogNumber_Compositions_Target" FromRole="CatalogNumber_Compositions_Source" />
@@ -52,8 +52,8 @@
           <PropertyRef Name="CatalogId" />
         </Key>
         <Property Name="CatalogId" Type="Edm.Int32" Nullable="false" p6:StoreGeneratedPattern="Identity" xmlns:p6="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
-        <Property Name="Prefix" Type="Edm.String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
         <Property Name="ComposerId" Type="Edm.Int32" Nullable="false" />
+        <Property Name="Prefix" Type="Edm.String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
         <NavigationProperty Name="CatalogNumbers" Relationship="NathanHarrenstein.ClassicalMusicDb.Catalog_CatalogNumbers" ToRole="Catalog_CatalogNumbers_Target" FromRole="Catalog_CatalogNumbers_Source" />
         <NavigationProperty Name="Composer" Relationship="NathanHarrenstein.ClassicalMusicDb.Composer_Catalogs" ToRole="Composer_Catalogs_Source" FromRole="Composer_Catalogs_Target" />
       </EntityType>
@@ -61,20 +61,35 @@
         <Key>
           <PropertyRef Name="ComposerId" />
         </Key>
-        <Property Name="ComposerId" Type="Edm.Int32" Nullable="false" p6:StoreGeneratedPattern="None" xmlns:p6="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
-        <Property Name="Name" Type="Edm.String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+        <Property Name="ComposerId" Type="Edm.Int32" Nullable="false" p6:StoreGeneratedPattern="Identity" xmlns:p6="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
+        <Property Name="BirthLocationId" Type="Edm.Int32" />
+        <Property Name="Biography" Type="Edm.String" MaxLength="Max" FixedLength="false" Unicode="true" />
         <Property Name="Dates" Type="Edm.String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+        <Property Name="DeathLocationId" Type="Edm.Int32" />
+        <Property Name="IsPopular" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="Name" Type="Edm.String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+        <NavigationProperty Name="BirthLocation" Relationship="NathanHarrenstein.ClassicalMusicDb.Location_BirthLocationComposerCollection" ToRole="Location_BirthLocationComposerCollection_Source" FromRole="Location_BirthLocationComposerCollection_Target" />
         <NavigationProperty Name="Catalogs" Relationship="NathanHarrenstein.ClassicalMusicDb.Composer_Catalogs" ToRole="Composer_Catalogs_Target" FromRole="Composer_Catalogs_Source" />
         <NavigationProperty Name="ComposerImages" Relationship="NathanHarrenstein.ClassicalMusicDb.Composer_ComposerImages" ToRole="Composer_ComposerImages_Target" FromRole="Composer_ComposerImages_Source" />
         <NavigationProperty Name="CompositionCollections" Relationship="NathanHarrenstein.ClassicalMusicDb.Composer_CompositionCollections" ToRole="Composer_CompositionCollections_Target" FromRole="Composer_CompositionCollections_Source" />
         <NavigationProperty Name="Compositions" Relationship="NathanHarrenstein.ClassicalMusicDb.Composer_Compositions" ToRole="Composer_Compositions_Target" FromRole="Composer_Compositions_Source" />
-        <NavigationProperty Name="Details" Relationship="NathanHarrenstein.ClassicalMusicDb.Composer_Details" ToRole="Composer_Details_Target" FromRole="Composer_Details_Source" />
+        <NavigationProperty Name="DeathLocation" Relationship="NathanHarrenstein.ClassicalMusicDb.Location_DeathLocationComposerCollection" ToRole="Location_DeathLocationComposerCollection_Source" FromRole="Location_DeathLocationComposerCollection_Target" />
         <NavigationProperty Name="Eras" Relationship="NathanHarrenstein.ClassicalMusicDb.Composer_Eras" ToRole="Composer_Eras_Target" FromRole="Composer_Eras_Source" />
         <NavigationProperty Name="Influenced" Relationship="NathanHarrenstein.ClassicalMusicDb.Composer_Influences" ToRole="Composer_Influences_Source" FromRole="Composer_Influences_Target" />
         <NavigationProperty Name="Influences" Relationship="NathanHarrenstein.ClassicalMusicDb.Composer_Influences" ToRole="Composer_Influences_Target" FromRole="Composer_Influences_Source" />
         <NavigationProperty Name="Links" Relationship="NathanHarrenstein.ClassicalMusicDb.Composer_Links" ToRole="Composer_Links_Target" FromRole="Composer_Links_Source" />
         <NavigationProperty Name="Nationalities" Relationship="NathanHarrenstein.ClassicalMusicDb.Composer_Nationalities" ToRole="Composer_Nationalities_Target" FromRole="Composer_Nationalities_Source" />
         <NavigationProperty Name="Samples" Relationship="NathanHarrenstein.ClassicalMusicDb.Composer_Samples" ToRole="Composer_Samples_Target" FromRole="Composer_Samples_Source" />
+      </EntityType>
+      <EntityType Name="Location">
+        <Key>
+          <PropertyRef Name="LocationId" />
+        </Key>
+        <Property Name="LocationId" Type="Edm.Int32" Nullable="false" p6:StoreGeneratedPattern="Identity" xmlns:p6="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
+        <Property Name="Name" Type="Edm.String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+        <NavigationProperty Name="BirthLocationComposerCollection" Relationship="NathanHarrenstein.ClassicalMusicDb.Location_BirthLocationComposerCollection" ToRole="Location_BirthLocationComposerCollection_Target" FromRole="Location_BirthLocationComposerCollection_Source" />
+        <NavigationProperty Name="DeathLocationComposerCollection" Relationship="NathanHarrenstein.ClassicalMusicDb.Location_DeathLocationComposerCollection" ToRole="Location_DeathLocationComposerCollection_Target" FromRole="Location_DeathLocationComposerCollection_Source" />
+        <NavigationProperty Name="Recordings" Relationship="NathanHarrenstein.ClassicalMusicDb.Location_Recordings" ToRole="Location_Recordings_Target" FromRole="Location_Recordings_Source" />
       </EntityType>
       <EntityType Name="ComposerImage">
         <Key>
@@ -90,18 +105,18 @@
           <PropertyRef Name="CompositionId" />
         </Key>
         <Property Name="CompositionId" Type="Edm.Int32" Nullable="false" p6:StoreGeneratedPattern="Identity" xmlns:p6="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
-        <Property Name="Name" Type="Edm.String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-        <Property Name="Dates" Type="Edm.String" MaxLength="Max" FixedLength="false" Unicode="true" />
-        <Property Name="Nickname" Type="Edm.String" MaxLength="Max" FixedLength="false" Unicode="true" />
-        <Property Name="Premiere" Type="Edm.String" MaxLength="Max" FixedLength="false" Unicode="true" />
-        <Property Name="Dedication" Type="Edm.String" MaxLength="Max" FixedLength="false" Unicode="true" />
-        <Property Name="Occasion" Type="Edm.String" MaxLength="Max" FixedLength="false" Unicode="true" />
-        <Property Name="IsPopular" Type="Edm.Boolean" Nullable="false" />
         <Property Name="Comment" Type="Edm.String" MaxLength="Max" FixedLength="false" Unicode="true" />
-        <Property Name="KeyId" Type="Edm.Int32" />
+        <Property Name="CompositionCollectionId" Type="Edm.Int32" />
+        <Property Name="Dates" Type="Edm.String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        <Property Name="Dedication" Type="Edm.String" MaxLength="Max" FixedLength="false" Unicode="true" />
         <Property Name="GenreId" Type="Edm.Int32" />
         <Property Name="InstrumentationId" Type="Edm.Int32" />
-        <Property Name="CompositionCollectionId" Type="Edm.Int32" />
+        <Property Name="IsPopular" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="KeyId" Type="Edm.Int32" />
+        <Property Name="Name" Type="Edm.String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+        <Property Name="Nickname" Type="Edm.String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        <Property Name="Occasion" Type="Edm.String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        <Property Name="Premiere" Type="Edm.String" MaxLength="Max" FixedLength="false" Unicode="true" />
         <NavigationProperty Name="CatalogNumbers" Relationship="NathanHarrenstein.ClassicalMusicDb.CatalogNumber_Compositions" ToRole="CatalogNumber_Compositions_Source" FromRole="CatalogNumber_Compositions_Target" />
         <NavigationProperty Name="Composers" Relationship="NathanHarrenstein.ClassicalMusicDb.Composer_Compositions" ToRole="Composer_Compositions_Source" FromRole="Composer_Compositions_Target" />
         <NavigationProperty Name="CompositionCollection" Relationship="NathanHarrenstein.ClassicalMusicDb.Composition_CompositionCollection" ToRole="Composition_CompositionCollection_Target" FromRole="Composition_CompositionCollection_Source" />
@@ -151,43 +166,20 @@
           <PropertyRef Name="MovementId" />
         </Key>
         <Property Name="MovementId" Type="Edm.Int32" Nullable="false" p6:StoreGeneratedPattern="Identity" xmlns:p6="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
-        <Property Name="Number" Type="Edm.Int32" Nullable="false" />
-        <Property Name="Name" Type="Edm.String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-        <Property Name="IsPopular" Type="Edm.Boolean" Nullable="false" />
         <Property Name="CompositionId" Type="Edm.Int32" Nullable="false" />
+        <Property Name="IsPopular" Type="Edm.Boolean" Nullable="false" />
+        <Property Name="Name" Type="Edm.String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+        <Property Name="Number" Type="Edm.Int32" Nullable="false" />
         <NavigationProperty Name="Composition" Relationship="NathanHarrenstein.ClassicalMusicDb.Composition_Movements" ToRole="Composition_Movements_Source" FromRole="Composition_Movements_Target" />
         <NavigationProperty Name="Recordings" Relationship="NathanHarrenstein.ClassicalMusicDb.Movement_Recordings" ToRole="Movement_Recordings_Target" FromRole="Movement_Recordings_Source" />
-      </EntityType>
-      <EntityType Name="ComposerDetails">
-        <Key>
-          <PropertyRef Name="ComposerId" />
-        </Key>
-        <Property Name="ComposerId" Type="Edm.Int32" Nullable="false" p6:StoreGeneratedPattern="Identity" xmlns:p6="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
-        <Property Name="BirthLocationId" Type="Edm.Int32" />
-        <Property Name="DeathLocationId" Type="Edm.Int32" />
-        <Property Name="Biography" Type="Edm.String" MaxLength="Max" FixedLength="false" Unicode="true" />
-        <Property Name="IsPopular" Type="Edm.Boolean" Nullable="false" />
-        <NavigationProperty Name="BirthLocation" Relationship="NathanHarrenstein.ClassicalMusicDb.Location_BirthLocationComposerDetailsCollection" ToRole="Location_BirthLocationComposerDetailsCollection_Source" FromRole="Location_BirthLocationComposerDetailsCollection_Target" />
-        <NavigationProperty Name="Composer" Relationship="NathanHarrenstein.ClassicalMusicDb.Composer_Details" ToRole="Composer_Details_Source" FromRole="Composer_Details_Target" />
-        <NavigationProperty Name="DeathLocation" Relationship="NathanHarrenstein.ClassicalMusicDb.Location_DeathLocationComposerDetailsCollection" ToRole="Location_DeathLocationComposerDetailsCollection_Source" FromRole="Location_DeathLocationComposerDetailsCollection_Target" />
-      </EntityType>
-      <EntityType Name="Location">
-        <Key>
-          <PropertyRef Name="LocationId" />
-        </Key>
-        <Property Name="LocationId" Type="Edm.Int32" Nullable="false" p6:StoreGeneratedPattern="Identity" xmlns:p6="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
-        <Property Name="Name" Type="Edm.String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-        <NavigationProperty Name="BirthLocationComposerDetailsCollection" Relationship="NathanHarrenstein.ClassicalMusicDb.Location_BirthLocationComposerDetailsCollection" ToRole="Location_BirthLocationComposerDetailsCollection_Target" FromRole="Location_BirthLocationComposerDetailsCollection_Source" />
-        <NavigationProperty Name="DeathLocationComposerDetailsCollection" Relationship="NathanHarrenstein.ClassicalMusicDb.Location_DeathLocationComposerDetailsCollection" ToRole="Location_DeathLocationComposerDetailsCollection_Target" FromRole="Location_DeathLocationComposerDetailsCollection_Source" />
-        <NavigationProperty Name="Recordings" Relationship="NathanHarrenstein.ClassicalMusicDb.Location_Recordings" ToRole="Location_Recordings_Target" FromRole="Location_Recordings_Source" />
       </EntityType>
       <EntityType Name="Era">
         <Key>
           <PropertyRef Name="EraId" />
         </Key>
         <Property Name="EraId" Type="Edm.Int32" Nullable="false" p6:StoreGeneratedPattern="Identity" xmlns:p6="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
-        <Property Name="Name" Type="Edm.String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
         <Property Name="Dates" Type="Edm.String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+        <Property Name="Name" Type="Edm.String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
         <NavigationProperty Name="Composers" Relationship="NathanHarrenstein.ClassicalMusicDb.Composer_Eras" ToRole="Composer_Eras_Source" FromRole="Composer_Eras_Target" />
       </EntityType>
       <EntityType Name="Nationality">
@@ -203,10 +195,10 @@
           <PropertyRef Name="SampleId" />
         </Key>
         <Property Name="SampleId" Type="Edm.Int32" Nullable="false" p6:StoreGeneratedPattern="Identity" xmlns:p6="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
-        <Property Name="Title" Type="Edm.String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
         <Property Name="Artists" Type="Edm.String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
         <Property Name="Bytes" Type="Edm.Binary" Nullable="false" MaxLength="Max" FixedLength="false" />
         <Property Name="ComposerID" Type="Edm.Int32" Nullable="false" />
+        <Property Name="Title" Type="Edm.String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
         <NavigationProperty Name="Composer" Relationship="NathanHarrenstein.ClassicalMusicDb.Composer_Samples" ToRole="Composer_Samples_Source" FromRole="Composer_Samples_Target" />
       </EntityType>
       <EntityType Name="Performer">
@@ -297,6 +289,18 @@
           </Dependent>
         </ReferentialConstraint>
       </Association>
+      <Association Name="Location_BirthLocationComposerCollection">
+        <End Type="NathanHarrenstein.ClassicalMusicDb.Location" Role="Location_BirthLocationComposerCollection_Source" Multiplicity="0..1" />
+        <End Type="NathanHarrenstein.ClassicalMusicDb.Composer" Role="Location_BirthLocationComposerCollection_Target" Multiplicity="*" />
+        <ReferentialConstraint>
+          <Principal Role="Location_BirthLocationComposerCollection_Source">
+            <PropertyRef Name="LocationId" />
+          </Principal>
+          <Dependent Role="Location_BirthLocationComposerCollection_Target">
+            <PropertyRef Name="BirthLocationId" />
+          </Dependent>
+        </ReferentialConstraint>
+      </Association>
       <Association Name="Composer_ComposerImages">
         <End Type="NathanHarrenstein.ClassicalMusicDb.Composer" Role="Composer_ComposerImages_Source" Multiplicity="1" />
         <End Type="NathanHarrenstein.ClassicalMusicDb.ComposerImage" Role="Composer_ComposerImages_Target" Multiplicity="*" />
@@ -313,15 +317,15 @@
         <End Type="NathanHarrenstein.ClassicalMusicDb.Composition" Role="Composer_Compositions_Target" Multiplicity="*" />
         <End Type="NathanHarrenstein.ClassicalMusicDb.Composer" Role="Composer_Compositions_Source" Multiplicity="*" />
       </Association>
-      <Association Name="Composer_Details">
-        <End Type="NathanHarrenstein.ClassicalMusicDb.ComposerDetails" Role="Composer_Details_Target" Multiplicity="1" />
-        <End Type="NathanHarrenstein.ClassicalMusicDb.Composer" Role="Composer_Details_Source" Multiplicity="1" />
+      <Association Name="Location_DeathLocationComposerCollection">
+        <End Type="NathanHarrenstein.ClassicalMusicDb.Location" Role="Location_DeathLocationComposerCollection_Source" Multiplicity="0..1" />
+        <End Type="NathanHarrenstein.ClassicalMusicDb.Composer" Role="Location_DeathLocationComposerCollection_Target" Multiplicity="*" />
         <ReferentialConstraint>
-          <Principal Role="Composer_Details_Target">
-            <PropertyRef Name="ComposerId" />
+          <Principal Role="Location_DeathLocationComposerCollection_Source">
+            <PropertyRef Name="LocationId" />
           </Principal>
-          <Dependent Role="Composer_Details_Source">
-            <PropertyRef Name="ComposerId" />
+          <Dependent Role="Location_DeathLocationComposerCollection_Target">
+            <PropertyRef Name="DeathLocationId" />
           </Dependent>
         </ReferentialConstraint>
       </Association>
@@ -405,30 +409,6 @@
           </Dependent>
         </ReferentialConstraint>
       </Association>
-      <Association Name="Location_BirthLocationComposerDetailsCollection">
-        <End Type="NathanHarrenstein.ClassicalMusicDb.Location" Role="Location_BirthLocationComposerDetailsCollection_Source" Multiplicity="0..1" />
-        <End Type="NathanHarrenstein.ClassicalMusicDb.ComposerDetails" Role="Location_BirthLocationComposerDetailsCollection_Target" Multiplicity="*" />
-        <ReferentialConstraint>
-          <Principal Role="Location_BirthLocationComposerDetailsCollection_Source">
-            <PropertyRef Name="LocationId" />
-          </Principal>
-          <Dependent Role="Location_BirthLocationComposerDetailsCollection_Target">
-            <PropertyRef Name="BirthLocationId" />
-          </Dependent>
-        </ReferentialConstraint>
-      </Association>
-      <Association Name="Location_DeathLocationComposerDetailsCollection">
-        <End Type="NathanHarrenstein.ClassicalMusicDb.Location" Role="Location_DeathLocationComposerDetailsCollection_Source" Multiplicity="0..1" />
-        <End Type="NathanHarrenstein.ClassicalMusicDb.ComposerDetails" Role="Location_DeathLocationComposerDetailsCollection_Target" Multiplicity="*" />
-        <ReferentialConstraint>
-          <Principal Role="Location_DeathLocationComposerDetailsCollection_Source">
-            <PropertyRef Name="LocationId" />
-          </Principal>
-          <Dependent Role="Location_DeathLocationComposerDetailsCollection_Target">
-            <PropertyRef Name="DeathLocationId" />
-          </Dependent>
-        </ReferentialConstraint>
-      </Association>
       <EntityContainer Name="ClassicalMusicContext" m:IsDefaultEntityContainer="true">
         <EntitySet Name="Albums" EntityType="NathanHarrenstein.ClassicalMusicDb.Album" />
         <EntitySet Name="Recordings" EntityType="NathanHarrenstein.ClassicalMusicDb.Recording" />
@@ -436,6 +416,7 @@
         <EntitySet Name="CatalogNumbers" EntityType="NathanHarrenstein.ClassicalMusicDb.CatalogNumber" />
         <EntitySet Name="Catalogs" EntityType="NathanHarrenstein.ClassicalMusicDb.Catalog" />
         <EntitySet Name="Composers" EntityType="NathanHarrenstein.ClassicalMusicDb.Composer" />
+        <EntitySet Name="Locations" EntityType="NathanHarrenstein.ClassicalMusicDb.Location" />
         <EntitySet Name="ComposerImages" EntityType="NathanHarrenstein.ClassicalMusicDb.ComposerImage" />
         <EntitySet Name="Compositions" EntityType="NathanHarrenstein.ClassicalMusicDb.Composition" />
         <EntitySet Name="Genres" EntityType="NathanHarrenstein.ClassicalMusicDb.Genre" />
@@ -443,8 +424,6 @@
         <EntitySet Name="Keys" EntityType="NathanHarrenstein.ClassicalMusicDb.Key" />
         <EntitySet Name="Links" EntityType="NathanHarrenstein.ClassicalMusicDb.Link" />
         <EntitySet Name="Movements" EntityType="NathanHarrenstein.ClassicalMusicDb.Movement" />
-        <EntitySet Name="ComposerDetails" EntityType="NathanHarrenstein.ClassicalMusicDb.ComposerDetails" />
-        <EntitySet Name="Locations" EntityType="NathanHarrenstein.ClassicalMusicDb.Location" />
         <EntitySet Name="Eras" EntityType="NathanHarrenstein.ClassicalMusicDb.Era" />
         <EntitySet Name="Nationalities" EntityType="NathanHarrenstein.ClassicalMusicDb.Nationality" />
         <EntitySet Name="Samples" EntityType="NathanHarrenstein.ClassicalMusicDb.Sample" />
@@ -497,6 +476,10 @@
           <End Role="Composer_Catalogs_Target" EntitySet="Catalogs" />
           <End Role="Composer_Catalogs_Source" EntitySet="Composers" />
         </AssociationSet>
+        <AssociationSet Name="Location_BirthLocationComposerCollection" Association="NathanHarrenstein.ClassicalMusicDb.Location_BirthLocationComposerCollection">
+          <End Role="Location_BirthLocationComposerCollection_Target" EntitySet="Composers" />
+          <End Role="Location_BirthLocationComposerCollection_Source" EntitySet="Locations" />
+        </AssociationSet>
         <AssociationSet Name="Composer_ComposerImages" Association="NathanHarrenstein.ClassicalMusicDb.Composer_ComposerImages">
           <End Role="Composer_ComposerImages_Source" EntitySet="Composers" />
           <End Role="Composer_ComposerImages_Target" EntitySet="ComposerImages" />
@@ -505,9 +488,9 @@
           <End Role="Composer_Compositions_Source" EntitySet="Composers" />
           <End Role="Composer_Compositions_Target" EntitySet="Compositions" />
         </AssociationSet>
-        <AssociationSet Name="Composer_Details" Association="NathanHarrenstein.ClassicalMusicDb.Composer_Details">
-          <End Role="Composer_Details_Source" EntitySet="Composers" />
-          <End Role="Composer_Details_Target" EntitySet="ComposerDetails" />
+        <AssociationSet Name="Location_DeathLocationComposerCollection" Association="NathanHarrenstein.ClassicalMusicDb.Location_DeathLocationComposerCollection">
+          <End Role="Location_DeathLocationComposerCollection_Target" EntitySet="Composers" />
+          <End Role="Location_DeathLocationComposerCollection_Source" EntitySet="Locations" />
         </AssociationSet>
         <AssociationSet Name="Composer_Eras" Association="NathanHarrenstein.ClassicalMusicDb.Composer_Eras">
           <End Role="Composer_Eras_Source" EntitySet="Composers" />
@@ -548,14 +531,6 @@
         <AssociationSet Name="Composition_Movements" Association="NathanHarrenstein.ClassicalMusicDb.Composition_Movements">
           <End Role="Composition_Movements_Source" EntitySet="Compositions" />
           <End Role="Composition_Movements_Target" EntitySet="Movements" />
-        </AssociationSet>
-        <AssociationSet Name="Location_BirthLocationComposerDetailsCollection" Association="NathanHarrenstein.ClassicalMusicDb.Location_BirthLocationComposerDetailsCollection">
-          <End Role="Location_BirthLocationComposerDetailsCollection_Target" EntitySet="ComposerDetails" />
-          <End Role="Location_BirthLocationComposerDetailsCollection_Source" EntitySet="Locations" />
-        </AssociationSet>
-        <AssociationSet Name="Location_DeathLocationComposerDetailsCollection" Association="NathanHarrenstein.ClassicalMusicDb.Location_DeathLocationComposerDetailsCollection">
-          <End Role="Location_DeathLocationComposerDetailsCollection_Target" EntitySet="ComposerDetails" />
-          <End Role="Location_DeathLocationComposerDetailsCollection_Source" EntitySet="Locations" />
         </AssociationSet>
       </EntityContainer>
     </Schema>

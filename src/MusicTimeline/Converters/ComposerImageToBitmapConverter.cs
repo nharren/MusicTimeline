@@ -1,4 +1,5 @@
 ﻿using NathanHarrenstein.MusicTimeline.ClassicalMusicDb;
+using NathanHarrenstein.MusicTimeline.Utilities;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -10,7 +11,7 @@ namespace NathanHarrenstein.MusicTimeline.Converters
 {
     internal class ComposerImageToBitmapConverter : IValueConverter
     {
-        private Dictionary<int, BitmapImage> _bitmapCache = new Dictionary<int, BitmapImage>();
+        private Dictionary<int, BitmapImage> cache = new Dictionary<int, BitmapImage>();
 
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
@@ -29,22 +30,16 @@ namespace NathanHarrenstein.MusicTimeline.Converters
                 return null;
             }
 
-            var bitmap = (BitmapImage)null;
+            BitmapImage bitmapImage;
 
-            if (!_bitmapCache.TryGetValue(composerImage.ComposerImageId, out bitmap))
+            if (!cache.TryGetValue(composerImage.GetHashCode(), out bitmapImage))
             {
-                bitmap = new BitmapImage();
-                bitmap.BeginInit();
-                bitmap.StreamSource = new MemoryStream(composerImage.Bytes);
-                bitmap.EndInit();
-                bitmap.Freeze();
+                bitmapImage = ImageUtility.CreateBitmapImage(composerImage.Bytes);
 
-                _bitmapCache[composerImage.ComposerImageId] = bitmap;
-
-                return bitmap;
+                cache[composerImage.GetHashCode()] = bitmapImage;
             }
 
-            return bitmap;
+            return bitmapImage;
         }
     }
 }

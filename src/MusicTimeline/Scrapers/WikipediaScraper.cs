@@ -1,8 +1,6 @@
-﻿using NathanHarrenstein.MusicTimeline.Logging;
+﻿using NathanHarrenstein.MusicTimeline.Utilities;
 using System;
 using System.Linq;
-using System.Net;
-using System.Text;
 using System.Xml.Linq;
 
 namespace NathanHarrenstein.MusicTimeline.Scrapers
@@ -17,22 +15,7 @@ namespace NathanHarrenstein.MusicTimeline.Scrapers
             {
                 var wikiId = urlParts[1];
                 var requestUrl = $"http://en.wikipedia.org/w/api.php?action=query&prop=extracts&format=xml&exsectionformat=plain&titles={wikiId}&redirects=";
-                string xml = null;
-
-                using (WebClient client = new WebClient())
-                {
-                    client.Proxy = null;
-                    client.Encoding = Encoding.UTF8;
-
-                    try
-                    {
-                        xml = client.DownloadString(requestUrl);
-                    }
-                    catch (Exception e)
-                    {
-                        Logger.Log(e.ToString(), "MusicTimeline.log");
-                    }
-                }
+                string xml = WebUtility.GetHtml(requestUrl);
 
                 if (xml != null)
                 {
@@ -51,9 +34,13 @@ namespace NathanHarrenstein.MusicTimeline.Scrapers
             foreach (char c in s)
             {
                 if (Convert.ToInt32(c) > 127)
+                {
                     retVal += "&#" + Convert.ToInt32(c) + ";";
+                }
                 else
+                {
                     retVal += c;
+                }
             }
 
             return retVal;

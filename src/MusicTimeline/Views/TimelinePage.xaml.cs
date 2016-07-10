@@ -15,6 +15,16 @@ using System.Windows.Navigation;
 using System.Data.Services.Client;
 using System.Collections.Generic;
 using NathanHarrenstein.MusicTimeline.ViewModels;
+using NathanHarrenstein.MusicTimeline.Scrapers;
+using HTMLConverter;
+using NathanHarrenstein.MusicTimeline.Utilities;
+using System.Windows.Markup;
+using System.Windows.Documents;
+using System.IO;
+using System.Text;
+using System.Windows.Media;
+using System.Net;
+using System.Security;
 
 namespace NathanHarrenstein.MusicTimeline.Views
 {
@@ -176,7 +186,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
         private void EditMenuItem_Click(object sender, RoutedEventArgs e)
         {
-            //NavigationService.Navigate(new Uri(@"pack://application:,,,/Views/ComposersEditPage.xaml", UriKind.Absolute));
+            NavigationService.Navigate(new Uri(@"pack://application:,,,/Views/ComposersEditPage.xaml", UriKind.Absolute));
         }
 
         private void Exit(object obj)
