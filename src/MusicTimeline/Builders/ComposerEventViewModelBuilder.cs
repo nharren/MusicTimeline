@@ -14,57 +14,57 @@ namespace NathanHarrenstein.MusicTimeline.Builders
 {
     public static class ComposerEventViewModelBuilder
     {
-        public static List<ComposerEventViewModel> Build(IEnumerable<Composer> composers, IEnumerable<ComposerEraViewModel> musicEras, Timeline.Timeline timeline)
+        public static List<ComposerEventViewModel> Build(IEnumerable<Composer> composers, Timeline.Timeline timeline)
         {
             var eventList = new List<ComposerEventViewModel>();
 
             foreach (var composer in composers)
             {
-                var background = (Brush)null;
-                var composerEras = new List<ComposerEraViewModel>();
+                //var background = (Brush)null;
+                //var composerEras = new List<ComposerEraViewModel>();
 
-                foreach (var era in composer.Eras)
-                {
-                    foreach (var musicEra in musicEras)
-                    {
-                        if (era.Name == musicEra.Label)
-                        {
-                            composerEras.Add(musicEra);
-                        }
-                    }
-                }
+                //foreach (var era in composer.Eras)
+                //{
+                //    foreach (var musicEra in musicEras)
+                //    {
+                //        if (era.Name == musicEra.Label)
+                //        {
+                //            composerEras.Add(musicEra);
+                //        }
+                //    }
+                //}
 
-                var composerEraCount = composerEras.Count;
+                //var composerEraCount = composerEras.Count;
 
-                if (composerEraCount > 1)
-                {
-                    var linearGradientBrush = new LinearGradientBrush();
-                    linearGradientBrush.StartPoint = new Point(0, 0.5);
-                    linearGradientBrush.EndPoint = new Point(1, 0.5);
+                //if (composerEraCount > 1)
+                //{
+                //    var linearGradientBrush = new LinearGradientBrush();
+                //    linearGradientBrush.StartPoint = new Point(0, 0.5);
+                //    linearGradientBrush.EndPoint = new Point(1, 0.5);
 
-                    for (int i = 0; i < composerEraCount; i++)
-                    {
-                        linearGradientBrush.GradientStops.Add(new GradientStop(((SolidColorBrush)composerEras[i].Background).Color, i / (composerEraCount - 1)));
-                    }
+                //    for (int i = 0; i < composerEraCount; i++)
+                //    {
+                //        linearGradientBrush.GradientStops.Add(new GradientStop(((SolidColorBrush)composerEras[i].Background).Color, i / (composerEraCount - 1)));
+                //    }
 
-                    background = linearGradientBrush;
-                }
-                else if (composerEraCount == 1)
-                {
-                    background = composerEras[0].Background;
-                }
-                else
-                {
-                    background = Brushes.Black;
-                }
+                //    background = linearGradientBrush;
+                //}
+                //else if (composerEraCount == 1)
+                //{
+                //    background = composerEras[0].Background;
+                //}
+                //else
+                //{
+                //    background = Brushes.Black;
+                //}
 
                 var composerEvent = new ComposerEventViewModel(
                     NameUtility.ToFirstLast(composer.Name),
                     ExtendedDateTimeInterval.Parse(composer.Dates),
                     composer,
-                    background,
+                    BackgroundBrush,
                     Brushes.White,
-                    composerEras,
+                    //composerEras,
                     GetCommand(composer.ComposerId, timeline));
 
                 eventList.Add(composerEvent);
@@ -72,6 +72,8 @@ namespace NathanHarrenstein.MusicTimeline.Builders
 
             return eventList.OrderBy(e => e.Dates.Earliest()).ToList();
         }
+
+        private static readonly SolidColorBrush BackgroundBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#44000000"));
 
         private static DelegateCommand GetCommand(int composerId, Timeline.Timeline timeline)
         {

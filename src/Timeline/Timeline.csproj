@@ -54,6 +54,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BackgroundPanel.cs" />
+    <Compile Include="LinearGradientPanel.cs" />
     <Compile Include="Input\MouseHorizontalWheelEventArgs.cs" />
     <Compile Include="Input\MouseHorizontalWheelEventHandler.cs" />
     <Compile Include="Input\MouseHook.cs" />

@@ -16,7 +16,7 @@ namespace NathanHarrenstein.Timeline
         public static readonly DependencyProperty DatesProperty = DependencyProperty.Register("Dates", typeof(ExtendedDateTimeInterval), typeof(EventPanel));
         public static readonly DependencyProperty EventHeightProperty = DependencyProperty.Register("EventHeight", typeof(double), typeof(EventPanel));
         public static readonly DependencyProperty EventSpacingProperty = DependencyProperty.Register("EventSpacing", typeof(double), typeof(EventPanel));
-        public static readonly DependencyProperty EventsProperty = DependencyProperty.Register("Events", typeof(IReadOnlyList<ITimelineEvent>), typeof(EventPanel), new PropertyMetadata(new PropertyChangedCallback(EventPanel_EventsChanged)));
+        public static readonly DependencyProperty EventsProperty = DependencyProperty.Register("Events", typeof(ICollection<ITimelineEvent>), typeof(EventPanel), new PropertyMetadata(new PropertyChangedCallback(EventPanel_EventsChanged)));
         public static readonly DependencyProperty EventTemplatesProperty = DependencyProperty.Register("EventTemplates", typeof(List<DataTemplate>), typeof(EventPanel));
         public static readonly DependencyProperty HorizontalOffsetProperty = DependencyProperty.Register("HorizontalOffset", typeof(double), typeof(EventPanel));
         public static readonly DependencyProperty ResolutionProperty = DependencyProperty.Register("Resolution", typeof(TimeResolution), typeof(EventPanel));
@@ -87,11 +87,11 @@ namespace NathanHarrenstein.Timeline
             }
         }
 
-        public IReadOnlyList<ITimelineEvent> Events
+        public ICollection<ITimelineEvent> Events
         {
             get
             {
-                return (IReadOnlyList<ITimelineEvent>)GetValue(EventsProperty);
+                return (ICollection<ITimelineEvent>)GetValue(EventsProperty);
             }
             set
             {
@@ -193,7 +193,7 @@ namespace NathanHarrenstein.Timeline
 
         public Vector CoercePan(Vector delta)
         {
-            if (Ruler == null)
+            if (Ruler == null || Events == null)
             {
                 return delta;
             }
@@ -295,9 +295,9 @@ namespace NathanHarrenstein.Timeline
             foreach (var visibleCacheIndex in _visibleCacheIndexes)
             {
                 _cache[visibleCacheIndex].Arrange(new Rect(
-                    Ruler.ToPixels(Dates.Earliest() + Ruler.ToTimeSpan(HorizontalOffset), Events[visibleCacheIndex].Dates.Earliest()),
+                    Ruler.ToPixels(Dates.Earliest() + Ruler.ToTimeSpan(HorizontalOffset), Events.ElementAt(visibleCacheIndex).Dates.Earliest()),
                     visibleCacheIndex * (EventHeight + EventSpacing) - VerticalOffset,
-                    Ruler.ToPixels(Events[visibleCacheIndex].Dates),
+                    Ruler.ToPixels(Events.ElementAt(visibleCacheIndex).Dates),
                     EventHeight));
             }
 
@@ -316,6 +316,11 @@ namespace NathanHarrenstein.Timeline
 
         protected override Size MeasureOverride(Size availableSize)
         {
+            if (Events == null)
+            {
+                return availableSize;
+            }
+
             if (!_hasViewChanged)
             {
                 foreach (UIElement child in Children)
@@ -341,7 +346,7 @@ namespace NathanHarrenstein.Timeline
 
             for (int i = lowestPossibleIndex; i <= highestPossibleIndex; i++)
             {
-                var timelineEvent = Events[i];
+                var timelineEvent = Events.ElementAt(i);
 
                 if (timelineEvent.Dates.Latest() >= viewportLeftTime && timelineEvent.Dates.Earliest() < viewportRightTime)
                 {

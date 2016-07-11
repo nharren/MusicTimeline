@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="48599bf9-b5d6-4f43-addd-f9a9a233cf8c" xmlns="urn:schemas-microsoft-com:xml-dataservicemap">
+<ReferenceGroup xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ID="8d69ce5e-480a-4683-8fe6-7a7fe051a603" xmlns="urn:schemas-microsoft-com:xml-dataservicemap">
   <MetadataSources>
     <MetadataSource Address="http://www.harrenstein.com/ClassicalMusic/ClassicalMusic.svc" Protocol="http" SourceId="1" />
   </MetadataSources>
   <Metadata>
-    <MetadataFile FileName="service.edmx" MetadataType="Edmx" ID="7f8a416d-5dd3-4d51-ad44-37f25cd64777" SourceId="1" SourceUrl="http://www.harrenstein.com/ClassicalMusic/ClassicalMusic.svc" />
+    <MetadataFile FileName="service.edmx" MetadataType="Edmx" ID="0ffa072b-72c7-44e2-82c5-52111bb0266d" SourceId="1" SourceUrl="http://www.harrenstein.com/ClassicalMusic/ClassicalMusic.svc" />
   </Metadata>
   <Extensions />
   <Parameters>

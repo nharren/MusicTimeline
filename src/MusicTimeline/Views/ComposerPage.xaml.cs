@@ -84,7 +84,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
             biographyRichTextBox.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#33000000"));
             biographyRichTextBox.Padding = new Thickness(10.0);
-            biographyRichTextBox.Document = BiographyUtility.LoadDocument(composer.Biography);
+            biographyRichTextBox.Document = BiographyUtility.LoadDocument(composer.ComposerBiography.Biography);
         }
 
         private void biographyTextBox_RequestBringIntoView(object sender, RequestBringIntoViewEventArgs e)
@@ -99,14 +99,19 @@ namespace NathanHarrenstein.MusicTimeline.Views
             biographyEditPanel.Visibility = Visibility.Collapsed;
             biographyScrollViewer.Visibility = Visibility.Visible;
 
-            biographyScrollViewer.Document = BiographyUtility.LoadDocument(composer.Biography);
+            biographyScrollViewer.Document = BiographyUtility.LoadDocument(composer.ComposerBiography.Biography);
 
             biographyHeader.CanEdit = true;
         }
 
         private void biographyToolbar_Saving(object sender, EventArgs e)
         {
-            composer.Biography = XamlWriter.Save(biographyRichTextBox.Document);
+            if (composer.ComposerBiography == null)
+            {
+                composer.ComposerBiography = new ComposerBiography();
+            }
+
+            composer.ComposerBiography.Biography = XamlWriter.Save(biographyRichTextBox.Document);
 
             classicalMusicContext.UpdateObject(composer);
             classicalMusicContext.SaveChanges();
@@ -116,7 +121,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
             biographyEditPanel.Visibility = Visibility.Collapsed;
             biographyScrollViewer.Visibility = Visibility.Visible;
 
-            biographyScrollViewer.Document = BiographyUtility.LoadDocument(composer.Biography);
+            biographyScrollViewer.Document = BiographyUtility.LoadDocument(composer.ComposerBiography.Biography);
 
             biographyHeader.CanEdit = true;
         }
@@ -725,7 +730,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
             var composerId = (int)Application.Current.Properties["SelectedComposer"];
 
-            var composerUri = new Uri($"http://www.harrenstein.com/ClassicalMusic/ClassicalMusic.svc/Composers?$filter=ComposerId eq {composerId}&$expand=BirthLocation,DeathLocation,Nationalities,Influences,Influenced,Links");
+            var composerUri = new Uri($"http://www.harrenstein.com/ClassicalMusic/ClassicalMusic.svc/Composers?$filter=ComposerId eq {composerId}&$expand=BirthLocation,DeathLocation,ComposerBiography,Nationalities,Influences,Influenced,Links");
             var composerQuery = await classicalMusicContext.ExecuteAsync<Composer>(composerUri, null);
 
             composer = composerQuery.First();
@@ -735,7 +740,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
             bornTextBlock.Text = CreateBornText();
             diedTextBlock.Text = CreateDiedText();
 
-            biographyScrollViewer.Document = BiographyUtility.LoadDocument(composer.Biography);
+            biographyScrollViewer.Document = BiographyUtility.LoadDocument(composer.ComposerBiography.Biography);
 
             ComposerFlagsItemsControl.ItemsSource = composer.Nationalities;
 

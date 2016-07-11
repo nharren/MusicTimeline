@@ -1,6 +1,8 @@
 <ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:cm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
                     xmlns:l="clr-namespace:NathanHarrenstein.Timeline">
+
     <Style TargetType="{x:Type l:Timeline}">
         <Setter Property="Template">
             <Setter.Value>
@@ -35,7 +37,9 @@
                                         TextBlock.FontFamily="Cambria"
                                         TextBlock.FontSize="14"
                                         TextBlock.Foreground="Black" />
-                            <l:TimePanel Grid.Row="2"
+
+                            <l:LinearGradientPanel Grid.Row="2" Grid.RowSpan="2" GradientStops="{TemplateBinding GradientStops}" Dates="{TemplateBinding Dates}" Ruler="{TemplateBinding Ruler}" />
+                                                        <l:TimePanel Grid.Row="2"
                                          Height="24"
                                          Background="#33222222"
                                          Dates="{TemplateBinding Dates}"
@@ -50,12 +54,13 @@
                                               Grid.RowSpan="2"
                                               Dates="{TemplateBinding Dates}"
                                               IsHitTestVisible="False"
-                                              MajorBrush="#FF393939"
+                                              MajorBrush="#11000000"
                                               MajorFrequency="10"
-                                              MinorBrush="#FF393939"
+                                              MinorBrush="#11000000"
                                               Resolution="{TemplateBinding Resolution}"
                                               Ruler="{TemplateBinding Ruler}" />
                             <l:BackgroundPanel Grid.Row="3" BackgroundImage="{TemplateBinding BackgroundImage}" />
+
                             <l:EventPanel Grid.Row="3"
                                           Dates="{TemplateBinding Dates}"
                                           EventHeight="{TemplateBinding EventHeight}"

@@ -20,7 +20,7 @@
     <Page.InputBindings>
         <KeyBinding Key="F11" Command="{Binding FullScreenCommand}" />
     </Page.InputBindings>
-    <Grid Background="{StaticResource BackgroundBrush}">
+    <Grid Name="rootGrid">
         <t:Timeline Name="timeline"
                     Grid.Row="1"
                     BackgroundImage="{StaticResource BackgroundImage}"

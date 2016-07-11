@@ -186,6 +186,7 @@
     <Compile Include="Utilities\BiographyUtility.cs" />
     <Compile Include="Utilities\ImageUtility.cs" />
     <Compile Include="Utilities\LocationUtility.cs" />
+    <Compile Include="Utilities\ReflectionUtility.cs" />
     <Compile Include="Utilities\StreamUtility.cs" />
     <Compile Include="Utilities\VisualTreeUtility.cs" />
     <Compile Include="Utilities\WebUtility.cs" />

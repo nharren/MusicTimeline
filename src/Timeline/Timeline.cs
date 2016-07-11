@@ -1,8 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.EDTF;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Media;
 
 namespace NathanHarrenstein.Timeline
@@ -11,11 +13,11 @@ namespace NathanHarrenstein.Timeline
     {
         public static readonly DependencyProperty BackgroundImageProperty = DependencyProperty.Register("BackgroundImage", typeof(ImageSource), typeof(Timeline));
         public static readonly DependencyProperty DatesProperty = DependencyProperty.Register("Dates", typeof(ExtendedDateTimeInterval), typeof(Timeline));
-        public static readonly DependencyProperty ErasProperty = DependencyProperty.Register("Eras", typeof(IList), typeof(Timeline));
+        public static readonly DependencyProperty ErasProperty = DependencyProperty.Register("Eras", typeof(ICollection<ITimelineEra>), typeof(Timeline));
         public static readonly DependencyProperty EraTemplatesProperty = DependencyProperty.Register("EraTemplates", typeof(IList), typeof(Timeline));
         public static readonly DependencyProperty EventHeightProperty = DependencyProperty.Register("EventHeight", typeof(double), typeof(Timeline), new PropertyMetadata(26d));
         public static readonly DependencyProperty EventSpacingProperty = DependencyProperty.Register("EventSpacing", typeof(double), typeof(Timeline), new PropertyMetadata(1d));
-        public static readonly DependencyProperty EventsProperty = DependencyProperty.Register("Events", typeof(IList), typeof(Timeline));
+        public static readonly DependencyProperty EventsProperty = DependencyProperty.Register("Events", typeof(ICollection<ITimelineEvent>), typeof(Timeline));
         public static readonly DependencyProperty EventTemplatesProperty = DependencyProperty.Register("EventTemplates", typeof(IList), typeof(Timeline));
         public static readonly DependencyProperty HorizontalOffsetProperty = DependencyProperty.Register("HorizontalOffset", typeof(double), typeof(Timeline));
         public static readonly DependencyProperty LineStrokeProperty = DependencyProperty.Register("LineStroke", typeof(Brush), typeof(Timeline), new PropertyMetadata(Brushes.Black));
@@ -24,6 +26,24 @@ namespace NathanHarrenstein.Timeline
         public static readonly DependencyProperty TimeForegroundProperty = DependencyProperty.Register("TimeForeground", typeof(Brush), typeof(Timeline), new PropertyMetadata(Brushes.Black));
         public static readonly DependencyProperty VerticalOffsetProperty = DependencyProperty.Register("VerticalOffset", typeof(double), typeof(Timeline));
 
+
+        public GradientStopCollection GradientStops
+        {
+            get
+            {
+                return (GradientStopCollection)GetValue(GradientStopsProperty);
+            }
+
+            set
+            {
+                SetValue(GradientStopsProperty, value);
+            }
+        }
+
+        public static readonly DependencyProperty GradientStopsProperty = DependencyProperty.Register("GradientStops", typeof(GradientStopCollection), typeof(Timeline));
+
+
+
         static Timeline()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(Timeline), new FrameworkPropertyMetadata(typeof(Timeline)));
@@ -31,8 +51,8 @@ namespace NathanHarrenstein.Timeline
 
         public Timeline()
         {
-            Eras = new List<ITimelineEra>();
-            Events = new List<ITimelineEvent>();
+            Eras = new ObservableCollection<ITimelineEra>();
+            Events = new SortedSet<ITimelineEvent>(Comparer<ITimelineEvent>.Create((a,b) => a.Dates.Earliest().CompareTo(b.Dates.Earliest())));
             EventTemplates = new List<DataTemplate>();
             EraTemplates = new List<DataTemplate>();
         }
@@ -62,11 +82,11 @@ namespace NathanHarrenstein.Timeline
             }
         }
 
-        public IList Eras
+        public ICollection<ITimelineEra> Eras
         {
             get
             {
-                return (IList)GetValue(ErasProperty);
+                return (ICollection<ITimelineEra>)GetValue(ErasProperty);
             }
             set
             {
@@ -98,11 +118,11 @@ namespace NathanHarrenstein.Timeline
             }
         }
 
-        public IList Events
+        public ICollection<ITimelineEvent> Events
         {
             get
             {
-                return (IList)GetValue(EventsProperty);
+                return (ICollection<ITimelineEvent>)GetValue(EventsProperty);
             }
             set
             {

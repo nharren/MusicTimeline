@@ -13,18 +13,18 @@ namespace NathanHarrenstein.MusicTimeline.ViewModels
         private readonly ICommand _clickCommand;
         private readonly Composer _composer;
         private readonly ExtendedDateTimeInterval _dates;
-        private readonly IEnumerable<ComposerEraViewModel> _eras;
+        //private readonly IEnumerable<ComposerEraViewModel> _eras;
         private readonly Brush _foreground;
         private readonly string _label;
 
-        public ComposerEventViewModel(string label, ExtendedDateTimeInterval dates, Composer composer, Brush background, Brush foreground, IEnumerable<ComposerEraViewModel> eras, ICommand clickCommand)
+        public ComposerEventViewModel(string label, ExtendedDateTimeInterval dates, Composer composer, Brush background, Brush foreground, ICommand clickCommand)
         {
             _dates = dates;
             _composer = composer;
             _background = background;
             _foreground = foreground;
             _label = label;
-            _eras = eras;
+            //_eras = eras;
             _clickCommand = clickCommand;
         }
 
@@ -60,13 +60,13 @@ namespace NathanHarrenstein.MusicTimeline.ViewModels
             }
         }
 
-        public IEnumerable<ComposerEraViewModel> Eras
-        {
-            get
-            {
-                return _eras;
-            }
-        }
+        //public IEnumerable<ComposerEraViewModel> Eras
+        //{
+        //    get
+        //    {
+        //        return _eras;
+        //    }
+        //}
 
         public Brush Foreground
         {
