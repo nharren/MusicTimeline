@@ -11,7 +11,7 @@ using System.Windows.Threading;
 
 namespace NathanHarrenstein.MusicTimeline.Audio
 {
-    public class Mp3Player : IDisposable, IAudioSessionEventsHandler
+    public class AudioPlayer : IDisposable, IAudioSessionEventsHandler
     {
         private AudioSessionControl audioSessionControl;
         private bool isDisposed;
@@ -20,9 +20,9 @@ namespace NathanHarrenstein.MusicTimeline.Audio
         private DispatcherTimer playbackTimer;
         private WaveOutEvent player;
 
-        public Mp3Player()
+        public AudioPlayer()
         {
-            Playlist = new Mp3Playlist();
+            Playlist = new Playlist();
             Playlist.CurrentItemChanged += Playlist_CurrentItemChanged;
             Playlist.ItemAdded += Playlist_ItemAdded;
             Playlist.ItemRemoved += Playlist_ItemRemoved;
@@ -38,7 +38,7 @@ namespace NathanHarrenstein.MusicTimeline.Audio
             IsMuted = playbackDevice.AudioEndpointVolume.Mute;
         }
 
-        ~Mp3Player()
+        ~AudioPlayer()
         {
             Dispose(false);
         }
@@ -65,12 +65,12 @@ namespace NathanHarrenstein.MusicTimeline.Audio
                     throw new InvalidOperationException("The current playlist item is null.");
                 }
 
-                if (Playlist.CurrentItem.Stream == null)
+                if (Playlist.CurrentItem.GetStream == null)
                 {
                     throw new InvalidOperationException("Could not load playlist item because it contains a null stream.");
                 }
 
-                return Playlist.CurrentItem.Stream.CurrentTime;
+                return new TimeSpan();
             }
 
             set
@@ -80,12 +80,10 @@ namespace NathanHarrenstein.MusicTimeline.Audio
                     throw new InvalidOperationException("The current playlist item is null.");
                 }
 
-                if (Playlist.CurrentItem.Stream == null)
+                if (Playlist.CurrentItem.GetStream == null)
                 {
                     throw new InvalidOperationException("Could not load playlist item because it contains a null stream.");
                 }
-
-                Playlist.CurrentItem.Stream.CurrentTime = value;
             }
         }
 
@@ -104,7 +102,7 @@ namespace NathanHarrenstein.MusicTimeline.Audio
             }
         }
 
-        public Mp3Playlist Playlist { get; private set; }
+        public Playlist Playlist { get; private set; }
 
         public TimeSpan TotalTime
         {
@@ -115,12 +113,12 @@ namespace NathanHarrenstein.MusicTimeline.Audio
                     throw new InvalidOperationException("The current playlist item is null.");
                 }
 
-                if (Playlist.CurrentItem.Stream == null)
+                if (Playlist.CurrentItem.GetStream == null)
                 {
                     throw new InvalidOperationException("Could not load playlist item because it contains a null stream.");
                 }
 
-                return Playlist.CurrentItem.Stream.TotalTime;
+                return new TimeSpan();
             }
         }
 
@@ -147,7 +145,7 @@ namespace NathanHarrenstein.MusicTimeline.Audio
             }
         }
 
-        public void AddToPlaylist(Mp3PlaylistItem mp3PlaylistItem)
+        public void AddToPlaylist(PlaylistItem mp3PlaylistItem)
         {
             Playlist.Add(mp3PlaylistItem);
         }
@@ -236,7 +234,7 @@ namespace NathanHarrenstein.MusicTimeline.Audio
 
         public void Stop()
         {
-            if (player == null || Playlist.CurrentItem == null || Playlist.CurrentItem.Stream == null || PlaybackState == PlaybackState.Stopped)
+            if (player == null || Playlist.CurrentItem == null || Playlist.CurrentItem.GetStream == null || PlaybackState == PlaybackState.Stopped)
             {
                 return;
             }
@@ -244,10 +242,14 @@ namespace NathanHarrenstein.MusicTimeline.Audio
             playbackTimer?.Stop();
             player.Stop();
 
-            Playlist.CurrentItem.Stream.Seek(0, SeekOrigin.Begin);
+            Playlist.Refresh();
 
             Application.Current.Dispatcher.Invoke(() => OnPlaybackStateChanged(new PlaybackStateEventArgs(player.PlaybackState)));
-            Application.Current.Dispatcher.Invoke(() => OnCurrentTimeChanged(new TimeSpanEventArgs(Playlist.CurrentItem.Stream.CurrentTime)));
+
+            if (Playlist.CurrentStream.CanSeek)
+            {
+                Application.Current.Dispatcher.Invoke(() => OnCurrentTimeChanged(new TimeSpanEventArgs(Playlist.CurrentStream.CurrentTime)));
+            }
         }
 
         public void ToggleMute()
@@ -395,12 +397,12 @@ namespace NathanHarrenstein.MusicTimeline.Audio
         private void InitializePlayer()
         {
             player = new WaveOutEvent();
-            player.Init(Playlist.CurrentItem.Stream);
+            player.Init(Playlist.CurrentStream);
 
             CanPlay = true;
 
             Application.Current.Dispatcher.Invoke(() => OnCanPlayChanged(new CanPlayEventArgs(CanPlay)));
-            Application.Current.Dispatcher.Invoke(() => OnTotalTimeChanged(new TimeSpanEventArgs(Playlist.CurrentItem.Stream.TotalTime)));
+            Application.Current.Dispatcher.Invoke(() => OnTotalTimeChanged(new TimeSpanEventArgs(Playlist.CurrentStream.TotalTime)));
         }
 
         private void InternalPlay()
@@ -422,7 +424,7 @@ namespace NathanHarrenstein.MusicTimeline.Audio
                 throw new InvalidOperationException("The current playlist item is null.");
             }
 
-            if (Playlist.CurrentItem.Stream == null)
+            if (Playlist.CurrentItem.GetStream == null)
             {
                 throw new InvalidOperationException("Could not load playlist item because it contains a null stream.");
             }
@@ -440,7 +442,7 @@ namespace NathanHarrenstein.MusicTimeline.Audio
 
             StartPlaybackThread();
 
-            Application.Current.Dispatcher.Invoke(() => OnTrackChanged(new TrackEventArgs(Playlist.CurrentItem.Stream)));
+            Application.Current.Dispatcher.Invoke(() => OnTrackChanged(new TrackEventArgs(Playlist.CurrentStream)));
         }
 
         private void Mp3Player_CanPlayChanged(object sender, CanPlayEventArgs e)
@@ -461,12 +463,16 @@ namespace NathanHarrenstein.MusicTimeline.Audio
             {
                 if (Playlist.Next())
                 {
-                    player.Init(Playlist.CurrentItem.Stream);
+                    player.Init(Playlist.CurrentStream);
                     Play();
 
-                    Application.Current.Dispatcher.Invoke(() => OnTotalTimeChanged(new TimeSpanEventArgs(Playlist.CurrentItem.Stream.TotalTime)));
                     App.Current.Dispatcher.Invoke(new Action(() => OnCanPlayPreviousChanged(new CanPlayPreviousEventArgs(Playlist.HasPrevious()))));
                     App.Current.Dispatcher.Invoke(new Action(() => OnCanPlayNextChanged(new CanPlayNextEventArgs(Playlist.HasNext()))));
+
+                    if (Playlist.CurrentStream.CanSeek)
+                    {
+                        Application.Current.Dispatcher.Invoke(() => OnTotalTimeChanged(new TimeSpanEventArgs(Playlist.CurrentStream.TotalTime)));
+                    }
                 }
                 else
                 {
@@ -476,10 +482,13 @@ namespace NathanHarrenstein.MusicTimeline.Audio
                 return;
             }
 
-            Application.Current.Dispatcher.Invoke(() => OnCurrentTimeChanged(new TimeSpanEventArgs(Playlist.CurrentItem.Stream.CurrentTime)));
+            if (Playlist.CurrentStream.CanSeek)
+            {
+                Application.Current.Dispatcher.Invoke(() => OnCurrentTimeChanged(new TimeSpanEventArgs(Playlist.CurrentStream.CurrentTime)));
+            }
         }
 
-        private void Playlist_CurrentItemChanged(object sender, ItemChangedEventArgs<Mp3PlaylistItem> e)
+        private void Playlist_CurrentItemChanged(object sender, ItemChangedEventArgs<PlaylistItem> e)
         {
             Load();
 
@@ -502,7 +511,7 @@ namespace NathanHarrenstein.MusicTimeline.Audio
             }
         }
 
-        private void Playlist_ItemAdded(object sender, ItemAddedEventArgs<Mp3PlaylistItem> e)
+        private void Playlist_ItemAdded(object sender, ItemAddedEventArgs<PlaylistItem> e)
         {
             var canPlayPrevious = Playlist.HasPrevious();
 
@@ -523,7 +532,7 @@ namespace NathanHarrenstein.MusicTimeline.Audio
             }
         }
 
-        private void Playlist_ItemRemoved(object sender, ItemRemovedEventArgs<Mp3PlaylistItem> e)
+        private void Playlist_ItemRemoved(object sender, ItemRemovedEventArgs<PlaylistItem> e)
         {
             var canPlayPrevious = Playlist.HasPrevious();
 

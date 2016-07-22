@@ -1,4 +1,4 @@
-﻿using NathanHarrenstein.MusicTimeline.ClassicalMusicDb;
+﻿using NathanHarrenstein.MusicTimeline.Data;
 using NathanHarrenstein.MusicTimeline.Utilities;
 using System;
 using System.Collections.Generic;
@@ -34,7 +34,9 @@ namespace NathanHarrenstein.MusicTimeline.Converters
 
             if (!cache.TryGetValue(composerImage.GetHashCode(), out bitmapImage))
             {
-                bitmapImage = ImageUtility.CreateBitmapImage(composerImage.Bytes);
+                var readStream = App.ClassicalMusicContext.GetReadStream(composerImage).Stream;
+
+                bitmapImage = ImageUtility.CreateBitmapImage(readStream);
 
                 cache[composerImage.GetHashCode()] = bitmapImage;
             }

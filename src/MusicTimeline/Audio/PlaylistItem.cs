@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace NathanHarrenstein.MusicTimeline.Audio
 {
-    public class Mp3PlaylistItem
+    public class PlaylistItem
     {
-        public Mp3FileReader Stream { get; set; }
+        public Func<WaveStream> GetStream { get; set; }
         public Dictionary<string, string> Metadata { get; private set; } = new Dictionary<string, string>();
     }
 }

@@ -4,7 +4,7 @@
       xmlns:c="clr-namespace:NathanHarrenstein.MusicTimeline.Controls"
       xmlns:cv="clr-namespace:NathanHarrenstein.MusicTimeline.Converters"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-      xmlns:db="clr-namespace:NathanHarrenstein.MusicTimeline.ClassicalMusicDb"
+      xmlns:db="clr-namespace:NathanHarrenstein.MusicTimeline.Data"
       xmlns:generic="clr-namespace:NathanHarrenstein.MusicTimeline.Generic"
       xmlns:l="clr-namespace:NathanHarrenstein.MusicTimeline"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
@@ -18,7 +18,7 @@
       UseLayoutRounding="True"
       mc:Ignorable="d">
     <Page.Resources>
-        <cv:ComposerImageToBitmapConverter x:Key="ComposerImageToBitmapConverter" />
+        <cv:ComposerToBitmapImageConverter x:Key="ComposerToBitmapImageConverter" />
         <cv:NationalityToFlagConverter x:Key="NationalityToFlagConverter" />
         <cv:UrlToCommandConverter x:Key="UrlToCommandConverter" />
         <cv:UrlToFaviconConverter x:Key="UrlToFaviconConverter" />
@@ -153,9 +153,13 @@
                     <!--  Images  -->
                     <c:AddSaveToolbar x:Name="imagesToolbar"
                                       Height="31"
+                                      Adding="imagesToolbar_Adding"
                                       Background="#33555555"
                                       BorderBrush="Black"
                                       BorderThickness="0"
+                                      Cancelling="imagesToolbar_Cancelling"
+                                      Removing="imagesToolbar_Removing"
+                                      Saving="imagesToolbar_Saving"
                                       Visibility="Collapsed" />
                     <ListBox Name="imagesListBox"
                              HorizontalAlignment="Center"
@@ -168,13 +172,29 @@
                                 <Grid>
                                     <Image Name="selectedImage"
                                            DataContext="{TemplateBinding SelectedItem}"
-                                           Source="{Binding Converter={StaticResource ComposerImageToBitmapConverter},
-                                                            IsAsync=True}"
+                                           DataContextChanged="selectedImage_DataContextChanged"
                                            Stretch="Uniform" />
                                     <Button x:Name="imagesEditButton"
                                             HorizontalAlignment="Right"
                                             VerticalAlignment="Top"
-                                            Click="imagesEditButton_Click" />
+                                            Click="imagesEditButton_Click"
+                                            Cursor="Hand"
+                                            FontFamily="Segoe UI Symbol"
+                                            FontSize="18.6666666667"
+                                            Foreground="{StaticResource HeaderBrush}"
+                                            Visibility="Collapsed">
+                                        <Button.Template>
+                                            <ControlTemplate TargetType="{x:Type Button}">
+                                                <Border Name="border"
+                                                        Background="Transparent"
+                                                        BorderBrush="Transparent"
+                                                        BorderThickness="0"
+                                                        SnapsToDevicePixels="True">
+                                                    <TextBlock Text="&#xE0D8;" />
+                                                </Border>
+                                            </ControlTemplate>
+                                        </Button.Template>
+                                    </Button>
                                     <Border Grid.Row="1"
                                             MinWidth="{Binding ActualWidth,
                                                                ElementName=selectedImage}"
@@ -201,12 +221,12 @@
                             </Style>
                         </ListBox.ItemContainerStyle>
                         <ListBox.ItemTemplate>
-                            <DataTemplate>
-                                <Image Height="30"
+                            <DataTemplate DataType="db:ComposerImage">
+                                <Image Name="image"
+                                       Height="30"
                                        MaxWidth="30"
                                        Cursor="Hand"
-                                       Source="{Binding Converter={StaticResource ComposerImageToBitmapConverter},
-                                                        IsAsync=True}" />
+                                       Loaded="image_Loaded" />
                             </DataTemplate>
                         </ListBox.ItemTemplate>
                     </ListBox>
@@ -228,7 +248,9 @@
                                            Background="#33555555"
                                            BorderBrush="Black"
                                            BorderThickness="0"
-                                           DockPanel.Dock="Top" />
+                                           Cancelling="bornToolbar_Cancelling"
+                                           DockPanel.Dock="Top"
+                                           Saving="bornToolbar_Saving" />
                             <TextBox Name="bornTextBox"
                                      Background="#33000000"
                                      BorderThickness="0"
@@ -256,7 +278,9 @@
                                            Background="#33555555"
                                            BorderBrush="Black"
                                            BorderThickness="0"
-                                           DockPanel.Dock="Top" />
+                                           Cancelling="diedToolbar_Cancelling"
+                                           DockPanel.Dock="Top"
+                                           Saving="diedToolbar_Saving" />
                             <TextBox Name="diedTextBox"
                                      Background="#33000000"
                                      BorderThickness="0"
@@ -284,7 +308,9 @@
                                            Background="#33555555"
                                            BorderBrush="Black"
                                            BorderThickness="0"
-                                           DockPanel.Dock="Top" />
+                                           Cancelling="influencesToolbar_Cancelling"
+                                           DockPanel.Dock="Top"
+                                           Saving="influencesToolbar_Saving" />
                             <ListBox Name="influencesListBox"
                                      Background="#33000000"
                                      BorderThickness="0"
@@ -342,7 +368,9 @@
                                            Background="#33555555"
                                            BorderBrush="Black"
                                            BorderThickness="0"
-                                           DockPanel.Dock="Top" />
+                                           Cancelling="influencedToolbar_Cancelling"
+                                           DockPanel.Dock="Top"
+                                           Saving="influencedToolbar_Saving" />
                             <ListBox Name="influencedListBox"
                                      Background="#33000000"
                                      BorderThickness="0"
@@ -397,10 +425,14 @@
                         <StackPanel x:Name="mediaEditPanel" Visibility="Collapsed">
                             <c:AddSaveToolbar x:Name="mediaToolbar"
                                               Height="31"
+                                              Adding="mediaToolbar_Adding"
                                               Background="#33555555"
                                               BorderBrush="Black"
                                               BorderThickness="0"
-                                              DockPanel.Dock="Top" />
+                                              Cancelling="mediaToolbar_Cancelling"
+                                              DockPanel.Dock="Top"
+                                              Removing="mediaToolbar_Removing"
+                                              Saving="mediaToolbar_Saving" />
                             <ListBox Name="mediaListBox"
                                      Background="#33000000"
                                      BorderThickness="0"
@@ -501,10 +533,14 @@
                         <StackPanel x:Name="linksEditPanel" Visibility="Collapsed">
                             <c:AddSaveToolbar x:Name="linksToolbar"
                                               Height="31"
+                                              Adding="linksToolbar_Adding"
                                               Background="#33555555"
                                               BorderBrush="Black"
                                               BorderThickness="0"
-                                              DockPanel.Dock="Top" />
+                                              Cancelling="linksToolbar_Cancelling"
+                                              DockPanel.Dock="Top"
+                                              Removing="linksToolbar_Removing"
+                                              Saving="linksToolbar_Saving" />
                             <ListBox Name="linksListBox"
                                      Background="#33000000"
                                      BorderThickness="0"
@@ -614,13 +650,16 @@
                                             Background="#33555555"
                                             BorderBrush="Black"
                                             BorderThickness="0"
+                                            Cancelling="biographyToolbar_Cancelling"
                                             DockPanel.Dock="Top"
-                                            RichTextBox="{Binding ElementName=biographyRichTextBox}" />
+                                            RichTextBox="{Binding ElementName=biographyRichTextBox}"
+                                            Saving="biographyToolbar_Saving" />
                         <RichTextBox x:Name="biographyRichTextBox"
                                      BorderBrush="Black"
                                      BorderThickness="0"
                                      HorizontalScrollBarVisibility="Disabled"
                                      IsInactiveSelectionHighlightEnabled="True"
+                                     RequestBringIntoView="biographyTextBox_RequestBringIntoView"
                                      VerticalScrollBarVisibility="Disabled">
                             <RichTextBox.Template>
                                 <ControlTemplate TargetType="{x:Type TextBoxBase}">
@@ -666,10 +705,14 @@
                                 Visibility="Collapsed">
                         <c:AddSaveToolbar x:Name="compositionsToolbar"
                                           Height="31"
+                                          Adding="compositionsToolbar_Adding"
                                           Background="#33555555"
                                           BorderBrush="Black"
                                           BorderThickness="0"
-                                          DockPanel.Dock="Top" />
+                                          Cancelling="compositionsToolbar_Cancelling"
+                                          DockPanel.Dock="Top"
+                                          Removing="compositionsToolbar_Removing"
+                                          Saving="compositionsToolbar_Saving" />
                         <ListBox Name="compositionsListBox"
                                  Background="#33000000"
                                  BorderThickness="0"

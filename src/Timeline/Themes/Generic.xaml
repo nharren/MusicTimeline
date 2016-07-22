@@ -38,8 +38,12 @@
                                         TextBlock.FontSize="14"
                                         TextBlock.Foreground="Black" />
 
-                            <l:LinearGradientPanel Grid.Row="2" Grid.RowSpan="2" GradientStops="{TemplateBinding GradientStops}" Dates="{TemplateBinding Dates}" Ruler="{TemplateBinding Ruler}" />
-                                                        <l:TimePanel Grid.Row="2"
+                            <l:LinearGradientPanel Grid.Row="2"
+                                                   Grid.RowSpan="2"
+                                                   Dates="{TemplateBinding Dates}"
+                                                   GradientStops="{TemplateBinding GradientStops}"
+                                                   Ruler="{TemplateBinding Ruler}" />
+                            <l:TimePanel Grid.Row="2"
                                          Height="24"
                                          Background="#33222222"
                                          Dates="{TemplateBinding Dates}"

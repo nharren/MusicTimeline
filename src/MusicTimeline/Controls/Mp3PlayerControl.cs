@@ -10,7 +10,7 @@ namespace NathanHarrenstein.MusicTimeline.Controls
 {
     public class Mp3PlayerControl : Control, IDisposable
     {
-        private Mp3Player mp3Player;
+        private AudioPlayer mp3Player;
         private ToggleButton muteToggleButton;
         private TextBlock nowPlayingArtistTextBlock;
         private TextBlock nowPlayingTitleTextBlock;
@@ -28,10 +28,10 @@ namespace NathanHarrenstein.MusicTimeline.Controls
 
         public Mp3PlayerControl()
         {
-            mp3Player = new Mp3Player();
+            mp3Player = new AudioPlayer();
         }
 
-        public Mp3Playlist Playlist
+        public Playlist Playlist
         {
             get
             {

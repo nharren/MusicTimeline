@@ -1,8 +1,4 @@
 • Create and test SpotifyTemplate. (LOW)
-• Peformance goal: < 1s load time for each page. (HIGH)
-	• Increase shared code.
-		• Refactor ComposerPage into panels.
-	• Remove dead code.
 • Fix mp3Player exception about having to call PlayerInit. (HIGH)
 • Update EDTF to latest standard. (LOW)
 	• EDTF picker control
@@ -10,3 +6,4 @@
 • Add bullets, numbering, and indentation to biography edit box. (MEDIUM)
 • Disable edit buttons when no authority to edit. (MEDIUM)
 • Timeline menu for adding and removing composers. (HIGH)
+FIX BORN/DEAD SAVE

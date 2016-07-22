@@ -1,11 +1,9 @@
-﻿using NathanHarrenstein.MusicTimeline.ClassicalMusicDb;
-using NathanHarrenstein.MusicTimeline.Builders;
+﻿using NathanHarrenstein.MusicTimeline.Builders;
 using NathanHarrenstein.MusicTimeline.Converters;
 using NathanHarrenstein.MusicTimeline.Input;
 using NathanHarrenstein.Timeline;
 using System;
 using System.ComponentModel;
-using System.Data.Entity;
 using System.EDTF;
 using System.Linq;
 using System.Windows;
@@ -28,6 +26,7 @@ using System.Security;
 using System.Timers;
 using System.Reflection;
 using System.Diagnostics;
+using NathanHarrenstein.MusicTimeline.Data;
 
 namespace NathanHarrenstein.MusicTimeline.Views
 {
@@ -39,7 +38,6 @@ namespace NathanHarrenstein.MusicTimeline.Views
         public static readonly DependencyProperty GoToCommandProperty = DependencyProperty.Register("GoToCommand", typeof(ICommand), typeof(TimelinePage));
         public static readonly DependencyProperty RebuildThumbnailCacheCommandProperty = DependencyProperty.Register("RebuildThumbnailCacheCommand", typeof(ICommand), typeof(TimelinePage));
 
-        private ClassicalMusicContext classicalMusicContext;
         private bool isDisposed;
 
         private DelegateCommand GetCommand(int composerId)
@@ -77,32 +75,37 @@ namespace NathanHarrenstein.MusicTimeline.Views
             performanceStopwatch.Start();
 #endif
 
-            InitializeComponent();
+            try
+            {
+                InitializeComponent();
+            }
+            catch (Exception ex)
+            {
+                var e = ex;
+            }
 
             if (!DesignerProperties.GetIsInDesignMode(this))
             {
-                classicalMusicContext = new ClassicalMusicContext(new Uri("http://www.harrenstein.com/ClassicalMusic/ClassicalMusic.svc"));
+                var eras = new DataServiceCollection<Era>(App.ClassicalMusicContext, App.ClassicalMusicContext.Eras, TrackingMode.AutoChangeTracking, "Eras", null, null);
 
-                var composersUri = new Uri($"http://www.harrenstein.com/ClassicalMusic/ClassicalMusic.svc/Composers?$expand=Eras,Nationalities,BirthLocation,DeathLocation");
-                var composers = classicalMusicContext.Execute<Composer>(composersUri, "GET", false);
+                var composerQuery = App.ClassicalMusicContext.Composers
+                    .Expand(c => c.BirthLocation)
+                    .Expand(c => c.DeathLocation)
+                    .Expand(c => c.Nationalities)
+                    .Expand(c => c.ComposerImages)
+                    .Expand(c => c.Eras);
+
+                var composers = new DataServiceCollection<Composer>(App.ClassicalMusicContext, composerQuery, TrackingMode.AutoChangeTracking, "Composers", null, null);
+
+
+                var la = composers.Where(c => c.ComposerImages.Count > 1).ToList();
+
 
 #if TRACE
                 Console.WriteLine($"Data Loaded: {performanceStopwatch.Elapsed.TotalSeconds}");
 #endif
 
                 var backgroundBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#44000000"));
-
-                //timeline.Events = composers
-                //    .Select(composer => new ComposerEventViewModel(
-                //        NameUtility.ToFirstLast(composer.Name),
-                //        ExtendedDateTimeInterval.Parse(composer.Dates),
-                //        composer,
-                //        backgroundBrush,
-                //        Brushes.White,
-                //        //composerEras,
-                //        GetCommand(composer.ComposerId)))
-                //   .OrderBy(model => model.Dates.Earliest())
-                //   .ToList<ITimelineEvent>();
 
                 foreach (var composer in composers)
                 {
@@ -135,7 +138,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
                 ComposerEraViewModel previousEraViewModel = null;
 
-                foreach (var era in classicalMusicContext.Eras)
+                foreach (var era in eras)
                 {
                     var musicEra = new ComposerEraViewModel(era.Name, ExtendedDateTimeInterval.Parse(era.Dates), eraBrushes[era.Name], Brushes.White);
 
@@ -346,9 +349,9 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
         private void GoToEra(object obj)
         {
-            var eraQuery = classicalMusicContext.Eras.First(e => e.Name == (string)obj);
+            var eraQuery = App.ClassicalMusicContext.Eras.First(e => e.Name == (string)obj);
 
-            var composersSortedByDate = classicalMusicContext.Composers.ToArray()
+            var composersSortedByDate = App.ClassicalMusicContext.Composers.ToArray()
                 .Select(c => Tuple.Create(ExtendedDateTimeInterval.Parse(c.Dates).Earliest(), c))
                 .OrderBy(t => t.Item1);
 
@@ -380,7 +383,8 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
         private void RebuildThumbnailCache(object obj)
         {
-            ComposerToThumbnailConverter.ClearThumbnailCache();
+            var composerToBitmapImageConverter = new ComposerToBitmapImageConverter();
+            composerToBitmapImageConverter.ClearCache();
 
             Application.Current.Properties["HorizontalOffset"] = timeline.HorizontalOffset;
             Application.Current.Properties["VerticalOffset"] = timeline.VerticalOffset;

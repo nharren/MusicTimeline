@@ -7,6 +7,21 @@ namespace NathanHarrenstein.MusicTimeline.Extensions
 {
     public static class DataServiceContextExtensions
     {
+        public static Uri GetLoadPropertyUri(this DataServiceContext context, object entity, string property)
+        {
+            Uri entityUri = null;
+            if (context.TryGetUri(entity, out entityUri))
+            {
+                return new Uri(entityUri.AbsoluteUri + "/" + property);
+            }
+            throw new DataServiceClientException("Entity Uri not found.");
+        }
+
+        public static DataServiceRequest<T> GetLoadPropertyRequest<T>(this DataServiceContext context, object entity, string property)
+        {
+            return new DataServiceRequest<T>(context.GetLoadPropertyUri(entity, property));
+        }
+
         public static Task<IEnumerable<T>> ExecuteAsync<T>(this DataServiceContext context, DataServiceQueryContinuation<T> continuation, object state)
         {
             return Task.Factory.FromAsync<DataServiceQueryContinuation<T>, IEnumerable<T>>(context.BeginExecute<T>, context.EndExecute<T>, continuation, state);

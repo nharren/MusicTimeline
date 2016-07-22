@@ -1,4 +1,4 @@
-﻿using NathanHarrenstein.MusicTimeline.ClassicalMusicDb;
+﻿using NathanHarrenstein.MusicTimeline.Data;
 using System;
 using System.Collections.Generic;
 using System.EDTF;
@@ -68,7 +68,7 @@ namespace NathanHarrenstein.MusicTimeline.Controls
 
             var compositionYearGroups = datedCompositions
                 .OrderBy(c => c.Name)
-                .GroupBy(c => ExtendedDateTime.Parse(c.Dates).Earliest().Year)
+                .GroupBy(c => ExtendedDateTimeFormatParser.Parse(c.Dates).Earliest().Year)
                 .OrderBy(c => c.Key);
 
             foreach (var compositionYearGroup in compositionYearGroups)

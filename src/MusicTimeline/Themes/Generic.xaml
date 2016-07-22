@@ -3,7 +3,7 @@
                     xmlns:ComponentModel="clr-namespace:System.ComponentModel;assembly=WindowsBase"
                     xmlns:System="clr-namespace:System;assembly=mscorlib"
                     xmlns:c="clr-namespace:NathanHarrenstein.MusicTimeline.Controls"
-                    xmlns:t="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero2">
+                    xmlns:t="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero">
 
     <SolidColorBrush x:Key="ForegroundBrush" Color="#FFDCDFE2" />
 

@@ -1,4 +1,4 @@
-﻿using NathanHarrenstein.MusicTimeline.ClassicalMusicDb;
+﻿using NathanHarrenstein.MusicTimeline.Data;
 using System.Linq;
 
 namespace NathanHarrenstein.MusicTimeline.Utilities
@@ -7,14 +7,14 @@ namespace NathanHarrenstein.MusicTimeline.Utilities
     {
         public static bool IsOrphaned(Location location)
         {
-            return location.BirthLocationComposerCollection.Count + location.DeathLocationComposerCollection.Count + location.Recordings.Count == 0;
+            return location.BirthLocationComposers.Count + location.DeathLocationComposers.Count == 0;
         }
 
-        public static void RemoveBirthLocation(Location birthLocation, Composer composer, ClassicalMusicContext classicalMusicContext)
+        public static void RemoveBirthLocation(Location birthLocation, Composer composer, ClassicalMusicEntities classicalMusicContext)
         {
             composer.BirthLocation = null;
 
-            birthLocation.BirthLocationComposerCollection.Remove(composer);
+            birthLocation.BirthLocationComposers.Remove(composer);
 
             if (IsOrphaned(birthLocation))
             {
@@ -22,7 +22,7 @@ namespace NathanHarrenstein.MusicTimeline.Utilities
             }
         }
 
-        public static void UpdateBirthLocation(string birthLocationName, Composer composer, ClassicalMusicContext classicalMusicContext)
+        public static void UpdateBirthLocation(string birthLocationName, Composer composer, ClassicalMusicEntities classicalMusicContext)
         {
             if (composer.BirthLocation.Name == birthLocationName)
             {
@@ -39,11 +39,11 @@ namespace NathanHarrenstein.MusicTimeline.Utilities
             }
         }
 
-        public static void RemoveDeathLocation(Location deathLocation, Composer composer, ClassicalMusicContext classicalMusicContext)
+        public static void RemoveDeathLocation(Location deathLocation, Composer composer, ClassicalMusicEntities classicalMusicContext)
         {
             composer.DeathLocation = null;
 
-            deathLocation.DeathLocationComposerCollection.Remove(composer);
+            deathLocation.DeathLocationComposers.Remove(composer);
 
             if (IsOrphaned(deathLocation))
             {
@@ -51,7 +51,7 @@ namespace NathanHarrenstein.MusicTimeline.Utilities
             }
         }
 
-        public static void UpdateDeathLocation(string deathLocationName, Composer composer, ClassicalMusicContext classicalMusicContext)
+        public static void UpdateDeathLocation(string deathLocationName, Composer composer, ClassicalMusicEntities classicalMusicContext)
         {
             if (composer.DeathLocation.Name == deathLocationName)
             {
@@ -68,7 +68,7 @@ namespace NathanHarrenstein.MusicTimeline.Utilities
             }
         }
 
-        public static Location CreateLocation(string locationName, ClassicalMusicContext classicalMusicContext)
+        public static Location CreateLocation(string locationName, ClassicalMusicEntities classicalMusicContext)
         {
             var location = new Location();
             location.Name = locationName;

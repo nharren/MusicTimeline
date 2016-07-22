@@ -3,19 +3,19 @@
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:cv="clr-namespace:NathanHarrenstein.MusicTimeline.Converters"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-      xmlns:db="clr-namespace:NathanHarrenstein.MusicTimeline.ClassicalMusicDb"
+      xmlns:db="clr-namespace:NathanHarrenstein.MusicTimeline.Data"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:t="clr-namespace:NathanHarrenstein.Timeline;assembly=Timeline"
       xmlns:vm="clr-namespace:NathanHarrenstein.MusicTimeline.ViewModels"
       Name="page"
       Title="TimelinePage"
-      DataContext="{Binding RelativeSource={RelativeSource Self}}"
       d:DesignHeight="300"
       d:DesignWidth="300"
+      DataContext="{Binding RelativeSource={RelativeSource Self}}"
       mc:Ignorable="d">
     <Page.Resources>
         <cv:NationalityToFlagConverter x:Key="NationalityToFlagConverter" />
-        <cv:ComposerToThumbnailConverter x:Key="ComposerToThumbnailConverter" />
+        <cv:ComposerToBitmapImageConverter x:Key="ComposerToBitmapImageConverter" />
     </Page.Resources>
     <Page.InputBindings>
         <KeyBinding Key="F11" Command="{Binding FullScreenCommand}" />
@@ -24,7 +24,7 @@
         <t:Timeline Name="timeline"
                     Grid.Row="1"
                     BackgroundImage="{StaticResource BackgroundImage}"
-                    DataContext="{Binding }"
+                    DataContext="{Binding}"
                     EventHeight="40"
                     EventSpacing="1"
                     LineStroke="#FF333333"
@@ -33,7 +33,7 @@
             <t:Timeline.Ruler>
                 <t:TimeRuler TimeRulerUnit="Day" TimeUnitWidth="0.04109589041" />
             </t:Timeline.Ruler>
-            <!--<t:Timeline.ContextMenu>
+            <t:Timeline.ContextMenu>
                 <ContextMenu DataContext="{Binding PlacementTarget.DataContext, RelativeSource={RelativeSource Mode=Self}}">
                     <MenuItem Header="View">
                         <MenuItem Header="Resolution">
@@ -96,7 +96,7 @@
                               Click="EditMenuItem_Click"
                               Header="Edit..." />
                 </ContextMenu>
-            </t:Timeline.ContextMenu>-->
+            </t:Timeline.ContextMenu>
             <t:Timeline.EraTemplates>
                 <DataTemplate DataType="{x:Type vm:ComposerEraViewModel}">
                     <Grid Background="{Binding Background}" SnapsToDevicePixels="True">
@@ -134,7 +134,17 @@
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition />
                                 </Grid.ColumnDefinitions>
-                                <Image SnapsToDevicePixels="True" Source="{Binding Composer, Converter={StaticResource ComposerToThumbnailConverter}, IsAsync=True}" />
+                                <Image SnapsToDevicePixels="True">
+                                    <Image.Source>
+                                        <Binding Converter="{StaticResource ComposerToBitmapImageConverter}"
+                                                 IsAsync="True"
+                                                 Path="Composer">
+                                            <Binding.ConverterParameter>
+                                                <cv:ComposerToBitmapImageConverterSettings IsThumbnail="True" />
+                                            </Binding.ConverterParameter>
+                                        </Binding>
+                                    </Image.Source>
+                                </Image>
                                 <TextBlock Grid.Column="2"
                                            Margin="0,-1,0,0"
                                            VerticalAlignment="Center"

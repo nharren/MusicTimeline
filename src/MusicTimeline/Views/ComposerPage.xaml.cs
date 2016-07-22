@@ -1,10 +1,11 @@
 ﻿using Microsoft.Win32;
 using NathanHarrenstein.MusicTimeline.Audio;
-using NathanHarrenstein.MusicTimeline.ClassicalMusicDb;
 using NathanHarrenstein.MusicTimeline.Controls;
+using NathanHarrenstein.MusicTimeline.Data;
 using NathanHarrenstein.MusicTimeline.Extensions;
 using NathanHarrenstein.MusicTimeline.Parsers;
 using NathanHarrenstein.MusicTimeline.Utilities;
+using NathanHarrenstein.MusicTimeline.ViewModels;
 using NAudio.Wave;
 using System;
 using System.Collections.Generic;
@@ -22,23 +23,28 @@ using System.Windows.Input;
 using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Navigation;
+using System.Collections;
+using NathanHarrenstein.MusicTimeline.Converters;
 
 namespace NathanHarrenstein.MusicTimeline.Views
 {
     public partial class ComposerPage : Page, IDisposable
     {
-        private ClassicalMusicContext classicalMusicContext;
         private Composer composer;
         private bool isDisposed;
-        private CancellationTokenSource loadingCancellationTokenSource;
+
+#if TRACE
+        private Stopwatch performanceStopwatch = new Stopwatch();
+#endif
 
         public ComposerPage()
         {
-            InitializeComponent();
 
-            classicalMusicContext = new ClassicalMusicContext(new Uri("http://www.harrenstein.com/ClassicalMusic/ClassicalMusic.svc"));
-            classicalMusicContext.MergeOption = MergeOption.OverwriteChanges;
-            classicalMusicContext.SendingRequest2 += classicalMusicContext_SendingRequest2;
+#if TRACE
+            performanceStopwatch.Start();
+#endif
+
+            InitializeComponent();
 
             Loaded += ComposerPage_Loaded;
         }
@@ -61,7 +67,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
             {
                 if (disposing)
                 {
-                    loadingCancellationTokenSource.Cancel();
+
                 }
 
                 mp3PlayerControl.Dispose();
@@ -113,8 +119,8 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
             composer.ComposerBiography.Biography = XamlWriter.Save(biographyRichTextBox.Document);
 
-            classicalMusicContext.UpdateObject(composer);
-            classicalMusicContext.SaveChanges();
+            App.ClassicalMusicContext.UpdateObject(composer);
+            App.ClassicalMusicContext.SaveChanges();
 
             biographyRichTextBox.Document.Blocks.Clear();
 
@@ -162,9 +168,9 @@ namespace NathanHarrenstein.MusicTimeline.Views
                 return;
             }
 
-            LocationUtility.UpdateBirthLocation(splitBornText[1], composer, classicalMusicContext);
-            classicalMusicContext.UpdateObject(composer);
-            classicalMusicContext.SaveChanges();
+            LocationUtility.UpdateBirthLocation(splitBornText[1], composer, App.ClassicalMusicContext);
+            App.ClassicalMusicContext.UpdateObject(composer);
+            App.ClassicalMusicContext.SaveChanges();
 
             bornTextBlock.Text = CreateBornText();
             bornTextBlock.Visibility = Visibility.Visible;
@@ -172,64 +178,18 @@ namespace NathanHarrenstein.MusicTimeline.Views
             bornHeader.CanEdit = true;
         }
 
-        private void classicalMusicContext_SendingRequest2(object sender, SendingRequest2EventArgs e)
+
+        private void ComposerPage_Loaded(object sender, RoutedEventArgs e)
         {
-            var app = (App)App.Current;
-
-            if (app.Credential == null)
-            {
-                return;
-            }
-
-            var authorizationString = $"{app.Credential.UserName}:{app.Credential.Password}";
-            var authorizationBytes = Encoding.Default.GetBytes(authorizationString);
-            var authorizationBase64String = Convert.ToBase64String(authorizationBytes);
-
-            e.RequestMessage.SetHeader("Authorization", $"Basic {authorizationBase64String}");
+            LoadComposer();
         }
 
-        private async void ComposerPage_Loaded(object sender, RoutedEventArgs e)
-        {
-            imagesToolbar.Adding += imagesToolbar_Adding;
-            imagesToolbar.Removing += imagesToolbar_Removing;
-            imagesToolbar.Saving += imagesToolbar_Saving;
-            imagesToolbar.Cancelling += imagesToolbar_Cancelling;
-            bornToolbar.Saving += bornToolbar_Saving;
-            bornToolbar.Cancelling += bornToolbar_Cancelling;
-            diedToolbar.Saving += diedToolbar_Saving;
-            diedToolbar.Cancelling += diedToolbar_Cancelling;
-            influencesToolbar.Saving += influencesToolbar_Saving;
-            influencesToolbar.Cancelling += influencesToolbar_Cancelling;
-            influencedToolbar.Saving += influencedToolbar_Saving;
-            influencedToolbar.Cancelling += influencedToolbar_Cancelling;
-            mediaToolbar.Adding += mediaToolbar_Adding;
-            mediaToolbar.Removing += mediaToolbar_Removing;
-            mediaToolbar.Saving += mediaToolbar_Saving;
-            mediaToolbar.Cancelling += mediaToolbar_Cancelling;
-            linksToolbar.Adding += linksToolbar_Adding;
-            linksToolbar.Removing += linksToolbar_Removing;
-            linksToolbar.Saving += linksToolbar_Saving;
-            linksToolbar.Cancelling += linksToolbar_Cancelling;
-            biographyToolbar.Saving += biographyToolbar_Saving;
-            biographyToolbar.Cancelling += biographyToolbar_Cancelling;
-            biographyRichTextBox.RequestBringIntoView += biographyTextBox_RequestBringIntoView;
-            compositionsToolbar.Adding += compositionsToolbar_Adding;
-            compositionsToolbar.Removing += compositionsToolbar_Removing;
-            compositionsToolbar.Saving += compositionsToolbar_Saving;
-            compositionsToolbar.Cancelling += compositionsToolbar_Cancelling;
-
-            await LoadComposerAsync();
-        }
-
-        private async void compositionsHeader_ButtonClick(object sender, RoutedEventArgs e)
+        private void compositionsHeader_ButtonClick(object sender, RoutedEventArgs e)
         {
             compositionsPanel.Visibility = Visibility.Collapsed;
             compositionsEditPanel.Visibility = Visibility.Visible;
 
-            var compositionsUri = new Uri($"http://www.harrenstein.com/ClassicalMusic/ClassicalMusic.svc/Compositions?$filter=Composers/any(d:d/Name eq '{composer.Name}')&$expand=Genre,Key,Movements,CatalogNumbers,CatalogNumbers/Catalog");
-
-            var compositions = await classicalMusicContext.ExecuteAsync<Composition>(compositionsUri, null);
-            compositionsListBox.ItemsSource = new SortedSet<Composition>(compositions, Comparer<Composition>.Create((x, y) => string.Compare(x.Name, y.Name)));
+            compositionsListBox.ItemsSource = new SortedSet<Composition>(composer.Compositions, Comparer<Composition>.Create((x, y) => string.Compare(x.Name, y.Name)));
         }
 
         private void compositionsListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -243,7 +203,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
             composition.Name = "New Composition";
 
             composer.Compositions.Add(composition);
-            classicalMusicContext.AddToCompositions(composition);
+            App.ClassicalMusicContext.AddToCompositions(composition);
 
             var compositionsList = (ICollection<Composition>)compositionsListBox.ItemsSource;
 
@@ -270,7 +230,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
             var selectedComposition = (Composition)compositionsListBox.SelectedItem;
 
             RemoveComposition(selectedComposition);
-            classicalMusicContext.DeleteObject(selectedComposition);
+            App.ClassicalMusicContext.DeleteObject(selectedComposition);
 
             var compositionsList = (ICollection<Composition>)compositionsListBox.ItemsSource;
 
@@ -290,8 +250,8 @@ namespace NathanHarrenstein.MusicTimeline.Views
                 }
             }
 
-            classicalMusicContext.UpdateObject(composer);
-            classicalMusicContext.SaveChanges();
+            App.ClassicalMusicContext.UpdateObject(composer);
+            App.ClassicalMusicContext.SaveChanges();
 
             compositionsPanel.Compositions = composer.Compositions;
 
@@ -363,10 +323,10 @@ namespace NathanHarrenstein.MusicTimeline.Views
                 return;
             }
 
-            LocationUtility.UpdateDeathLocation(splitDiedText[1], composer, classicalMusicContext);
+            LocationUtility.UpdateDeathLocation(splitDiedText[1], composer, App.ClassicalMusicContext);
 
-            classicalMusicContext.UpdateObject(composer);
-            classicalMusicContext.SaveChanges();
+            App.ClassicalMusicContext.UpdateObject(composer);
+            App.ClassicalMusicContext.SaveChanges();
 
             diedTextBlock.Text = CreateDiedText();
 
@@ -374,17 +334,6 @@ namespace NathanHarrenstein.MusicTimeline.Views
             diedEditPanel.Visibility = Visibility.Collapsed;
 
             diedHeader.CanEdit = true;
-        }
-
-        private ComposerImage GetDefaultComposerImage()
-        {
-            var defaultComposerImageUri = new Uri("pack://application:,,,/Resources/Composers/Unknown.jpg", UriKind.Absolute);
-            var streamResourceInfo = Application.GetResourceStream(defaultComposerImageUri);
-
-            var composerImage = new ComposerImage();
-            composerImage.Bytes = StreamUtility.ReadToEnd(streamResourceInfo.Stream);
-
-            return composerImage;
         }
 
         private void imagesEditButton_Click(object sender, RoutedEventArgs e)
@@ -426,22 +375,35 @@ namespace NathanHarrenstein.MusicTimeline.Views
             {
                 string filename = openFileDialog.FileName;
 
-                composerImage.Bytes = File.ReadAllBytes(filename);
+                List<string> images;
+
+                if (addedImages.TryGetValue(composerImage, out images))
+                {
+                    images.Add(filename);
+                }
+                else
+                {
+                    addedImages.Add(composerImage, new List<string> { filename });
+                }
 
                 composer.ComposerImages.Add(composerImage);
 
-                classicalMusicContext.AddToComposerImages(composerImage);
+                App.ClassicalMusicContext.AddToComposerImages(composerImage);
 
                 imagesListBox.ItemsSource = composer.ComposerImages;
                 imagesListBox.SelectedItem = composerImage;
             }
         }
 
+        private Dictionary<ComposerImage, List<string>> addedImages = new Dictionary<ComposerImage, List<string>>();
+
         private void imagesToolbar_Cancelling(object sender, EventArgs e)
         {
+            addedImages.Clear();
+
             imagesToolbar.Visibility = Visibility.Collapsed;
 
-            var composerImagesQuery = classicalMusicContext.LoadProperty(composer, "ComposerImages");
+            var composerImagesQuery = App.ClassicalMusicContext.LoadProperty(composer, "ComposerImages");
             var composerImages = composerImagesQuery.Cast<ComposerImage>().ToList();
 
             imagesListBox.ItemsSource = composerImages;
@@ -457,15 +419,23 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
             composer.ComposerImages.Remove(image);
 
-            classicalMusicContext.DeleteObject(image);
+            App.ClassicalMusicContext.DeleteObject(image);
 
             imagesListBox.ItemsSource = composer.ComposerImages;
         }
 
         private void imagesToolbar_Saving(object sender, EventArgs e)
         {
-            classicalMusicContext.UpdateObject(composer);
-            classicalMusicContext.SaveChanges();
+            foreach (var image in addedImages)
+            {
+                foreach (var path in image.Value)
+                {
+                    App.ClassicalMusicContext.SetSaveStream(image.Key, File.OpenRead(path), true, null);
+                }
+            }
+
+            App.ClassicalMusicContext.UpdateObject(composer);
+            App.ClassicalMusicContext.SaveChanges();
 
             imagesToolbar.Visibility = Visibility.Collapsed;
 
@@ -473,13 +443,13 @@ namespace NathanHarrenstein.MusicTimeline.Views
             imagesEditButton.IsEnabled = true;
         }
 
-        private async void influenceButton_Click(object sender, RoutedEventArgs e)
+        private void influenceButton_Click(object sender, RoutedEventArgs e)
         {
             var button = (Button)sender;
 
             Application.Current.Properties["SelectedComposer"] = ((Composer)button.DataContext).ComposerId;
 
-            await LoadComposerAsync();
+            LoadComposer();
         }
 
         private void influencedHeader_ButtonClick(object sender, RoutedEventArgs e)
@@ -487,7 +457,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
             influencedEditPanel.Visibility = Visibility.Visible;
             influencedItemsControl.Visibility = Visibility.Collapsed;
 
-            influencedListBox.ItemsSource = classicalMusicContext.Composers.OrderBy(c => c.Name);
+            influencedListBox.ItemsSource = App.ClassicalMusicContext.Composers.OrderBy(c => c.Name);
 
             foreach (var composer in composer.Influenced)
             {
@@ -527,8 +497,8 @@ namespace NathanHarrenstein.MusicTimeline.Views
                 }
             }
 
-            classicalMusicContext.UpdateObject(composer);
-            classicalMusicContext.SaveChanges();
+            App.ClassicalMusicContext.UpdateObject(composer);
+            App.ClassicalMusicContext.SaveChanges();
 
             influencedItemsControl.ItemsSource = composer.Influenced;
             influencedItemsControl.Visibility = Visibility.Visible;
@@ -544,7 +514,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
             influencesEditPanel.Visibility = Visibility.Visible;
             influencesItemsControl.Visibility = Visibility.Collapsed;
 
-            influencesListBox.ItemsSource = classicalMusicContext.Composers.OrderBy(c => c.Name);
+            influencesListBox.ItemsSource = App.ClassicalMusicContext.Composers.OrderBy(c => c.Name);
 
             foreach (var composer in composer.Influences)
             {
@@ -584,8 +554,8 @@ namespace NathanHarrenstein.MusicTimeline.Views
                 }
             }
 
-            classicalMusicContext.UpdateObject(composer);
-            classicalMusicContext.SaveChanges();
+            App.ClassicalMusicContext.UpdateObject(composer);
+            App.ClassicalMusicContext.SaveChanges();
 
             influencesItemsControl.ItemsSource = composer.Influences;
             influencesItemsControl.Visibility = Visibility.Visible;
@@ -628,7 +598,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
             var link = new Link();
             link.Name = "New Link";
 
-            classicalMusicContext.AddRelatedObject(composer, "Links", link);
+            App.ClassicalMusicContext.AddRelatedObject(composer, "Links", link);
             composer.Links.Add(link);
 
             var linkList = (List<Link>)linksListBox.ItemsSource;
@@ -651,11 +621,11 @@ namespace NathanHarrenstein.MusicTimeline.Views
         {
             var link = (Link)linksListBox.SelectedItem;
 
-            classicalMusicContext.DeleteLink(composer, "Links", link);
+            App.ClassicalMusicContext.DeleteLink(composer, "Links", link);
 
             composer.Links.Remove(link);
 
-            classicalMusicContext.DeleteObject(link);
+            App.ClassicalMusicContext.DeleteObject(link);
 
             var linkList = (List<Link>)linksListBox.ItemsSource;
             linkList.Remove(link);
@@ -675,8 +645,8 @@ namespace NathanHarrenstein.MusicTimeline.Views
                 }
             }
 
-            classicalMusicContext.UpdateObject(composer);
-            classicalMusicContext.SaveChanges();
+            App.ClassicalMusicContext.UpdateObject(composer);
+            App.ClassicalMusicContext.SaveChanges();
 
             var youTubeParser = new YouTubeParser();
             var spotifyParser = new SpotifyParser();
@@ -719,10 +689,8 @@ namespace NathanHarrenstein.MusicTimeline.Views
             link.Name = WebUtility.GetTitle(url);
         }
 
-        private async Task LoadComposerAsync()
+        private void LoadComposer()
         {
-            loadingCancellationTokenSource = new CancellationTokenSource();
-
             if (ProgressBar.Visibility == Visibility.Collapsed)
             {
                 ProgressBar.Visibility = Visibility.Visible;
@@ -730,17 +698,38 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
             var composerId = (int)Application.Current.Properties["SelectedComposer"];
 
-            var composerUri = new Uri($"http://www.harrenstein.com/ClassicalMusic/ClassicalMusic.svc/Composers?$filter=ComposerId eq {composerId}&$expand=BirthLocation,DeathLocation,ComposerBiography,Nationalities,Influences,Influenced,Links");
-            var composerQuery = await classicalMusicContext.ExecuteAsync<Composer>(composerUri, null);
+            App.ClassicalMusicContext.MergeOption = MergeOption.OverwriteChanges;
 
-            composer = composerQuery.First();
+            //var composerQuery = (DataServiceQuery<Composer>);
+            //App.ClassicalMusicContext.CreateQuery<Composer>("ComposerData").AddQueryOption("id", composerId);
+#if TRACE
+            App.ClassicalMusicContext.SendingRequest2 += ClassicalMusicContext_SendingRequest2;
+            App.ClassicalMusicContext.ReceivingResponse += ClassicalMusicContext_ReceivingResponse;
+#endif
+
+            if (!App.ClassicalMusicContext.TryGetEntity(new Uri($"http://www.harrenstein.com/ClassicalMusic/ClassicalMusic.svc/Composers({composerId})"), out this.composer))
+            {
+                this.composer = App.ClassicalMusicContext.Execute<Composer>(new Uri($"http://www.harrenstein.com/ClassicalMusic/ClassicalMusic.svc/Composers({composerId})")).Single();
+            }
+
+            App.ClassicalMusicContext.LoadProperty(composer, "Compositions");
+            App.ClassicalMusicContext.LoadProperty(composer, "ComposerBiography");
+            App.ClassicalMusicContext.LoadProperty(composer, "ComposerImages");
+            App.ClassicalMusicContext.LoadProperty(composer, "Influences");
+            App.ClassicalMusicContext.LoadProperty(composer, "Influenced");
+            App.ClassicalMusicContext.LoadProperty(composer, "Samples");
+            App.ClassicalMusicContext.LoadProperty(composer, "Links");
+
+#if TRACE
+            Console.WriteLine($"Data Loaded: {performanceStopwatch.Elapsed.TotalSeconds}");
+#endif
 
             ComposerNameTextBlock.Text = NameUtility.ToFirstLast(composer.Name);
 
             bornTextBlock.Text = CreateBornText();
             diedTextBlock.Text = CreateDiedText();
 
-            biographyScrollViewer.Document = BiographyUtility.LoadDocument(composer.ComposerBiography.Biography);
+            biographyScrollViewer.Document = BiographyUtility.LoadDocument(composer.ComposerBiography?.Biography);
 
             ComposerFlagsItemsControl.ItemsSource = composer.Nationalities;
 
@@ -795,34 +784,30 @@ namespace NathanHarrenstein.MusicTimeline.Views
             linksItemsControl.Visibility = linksVisibility;
             linksHeader.Visibility = linksVisibility;
 
-            var composerImagesQuery = await classicalMusicContext.LoadPropertyAsync(composer, "ComposerImages");
-            var composerImages = composerImagesQuery.Cast<ComposerImage>().ToList();
-
-            if (composerImages.Count == 0)
+            if (composer.ComposerImages.Count == 0)
             {
-                imagesListBox.ItemsSource = new ComposerImage[] { GetDefaultComposerImage() };
+                var composerImage = new ComposerImage();
+                composerImage.Composer = composer;
+
+                imagesListBox.ItemsSource = new ComposerImage[] { composerImage };
             }
             else
             {
-                imagesListBox.ItemsSource = composerImages;
+                foreach (var image in composer.ComposerImages)
+                {
+                    image.Composer = composer;
+                }
+
+
+                imagesListBox.ItemsSource = composer.ComposerImages;
             }
 
             imagesListBox.SelectedIndex = 0;
 
-            var compositionsUri = new Uri($"http://www.harrenstein.com/ClassicalMusic/ClassicalMusic.svc/Compositions?$filter=Composers/any(d:d/Name eq '{composer.Name}')&$expand=Genre,Key,Movements,CatalogNumbers,CatalogNumbers/Catalog");
-
-            var compositions = await classicalMusicContext.ExecuteAsync<Composition>(compositionsUri, null);
-            compositionsPanel.Compositions = compositions;
-
-            var samplesQueryOperationResponse = await classicalMusicContext.LoadPropertyAsync(composer, "Samples");
-            var samples = samplesQueryOperationResponse.Cast<Sample>();
-
-            foreach (var sample in samples)
+            foreach (var sample in composer.Samples)
             {
-                var mp3FileReader = new Mp3FileReader(new MemoryStream(sample.Bytes));
-
-                var mp3PlaylistItem = new Mp3PlaylistItem();
-                mp3PlaylistItem.Stream = mp3FileReader;
+                var mp3PlaylistItem = new PlaylistItem();
+                mp3PlaylistItem.GetStream = () => new NetworkMp3FileReader(App.ClassicalMusicContext.GetReadStream(sample).Stream);
                 mp3PlaylistItem.Metadata.Add("Title", sample.Title);
                 mp3PlaylistItem.Metadata.Add("Artist", sample.Artists);
 
@@ -834,7 +819,30 @@ namespace NathanHarrenstein.MusicTimeline.Views
                 }
             }
 
+            compositionsPanel.Compositions = composer.Compositions;
+
             ProgressBar.Visibility = Visibility.Collapsed;
+        }
+
+        private void ClassicalMusicContext_ReadingEntity(object sender, ReadingWritingEntityEventArgs e)
+        {
+            Console.WriteLine($"Entities Read: {performanceStopwatch.Elapsed.TotalSeconds}");
+
+            App.ClassicalMusicContext.ReadingEntity -= ClassicalMusicContext_ReadingEntity;
+        }
+
+        private void ClassicalMusicContext_SendingRequest2(object sender, SendingRequest2EventArgs e)
+        {
+            Console.WriteLine($"Request Sent: {performanceStopwatch.Elapsed.TotalSeconds}");
+
+            App.ClassicalMusicContext.SendingRequest2 -= ClassicalMusicContext_SendingRequest2;
+        }
+
+        private void ClassicalMusicContext_ReceivingResponse(object sender, ReceivingResponseEventArgs e)
+        {
+            Console.WriteLine($"Received Response: {performanceStopwatch.Elapsed.TotalSeconds}");
+
+            App.ClassicalMusicContext.ReceivingResponse -= ClassicalMusicContext_ReceivingResponse;
         }
 
         private void mediaHeader_ButtonClick(object sender, RoutedEventArgs e)
@@ -870,7 +878,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
             var link = new Link();
             link.Name = "New Link";
 
-            classicalMusicContext.AddRelatedObject(composer, "Links", link);
+            App.ClassicalMusicContext.AddRelatedObject(composer, "Links", link);
             composer.Links.Add(link);
 
             var linkList = (List<Link>)mediaListBox.ItemsSource;
@@ -893,11 +901,11 @@ namespace NathanHarrenstein.MusicTimeline.Views
         {
             var link = (Link)mediaListBox.SelectedItem;
 
-            classicalMusicContext.DeleteLink(composer, "Links", link);
+            App.ClassicalMusicContext.DeleteLink(composer, "Links", link);
 
             composer.Links.Remove(link);
 
-            classicalMusicContext.DeleteObject(link);
+            App.ClassicalMusicContext.DeleteObject(link);
 
             var linkList = (List<Link>)mediaListBox.ItemsSource;
             linkList.Remove(link);
@@ -917,8 +925,8 @@ namespace NathanHarrenstein.MusicTimeline.Views
                 }
             }
 
-            classicalMusicContext.UpdateObject(composer);
-            classicalMusicContext.SaveChanges();
+            App.ClassicalMusicContext.UpdateObject(composer);
+            App.ClassicalMusicContext.SaveChanges();
 
             var youTubeParser = new YouTubeParser();
             var spotifyParser = new SpotifyParser();
@@ -978,6 +986,24 @@ namespace NathanHarrenstein.MusicTimeline.Views
             var link = (Link)button.DataContext;
 
             Process.Start(link.Url);
+        }
+
+        private void image_Loaded(object sender, RoutedEventArgs e)
+        {
+            var image = (Image)sender;
+            var composerImage = (ComposerImage)image.DataContext;
+            var converter = new ComposerToBitmapImageConverter();
+
+            image.Source = converter.Convert(composerImage.Composer, new Converters.ComposerToBitmapImageConverterSettings(composerImage.ComposerImageId, true));
+        }
+
+        private void selectedImage_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            var image = (Image)sender;
+            var composerImage = (ComposerImage)image.DataContext;
+            var converter = new ComposerToBitmapImageConverter();
+
+            image.Source = converter.Convert(composerImage.Composer, new Converters.ComposerToBitmapImageConverterSettings(composerImage.ComposerImageId, false));
         }
     }
 }

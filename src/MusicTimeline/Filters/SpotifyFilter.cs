@@ -1,4 +1,4 @@
-﻿using NathanHarrenstein.MusicTimeline.ClassicalMusicDb;
+﻿using NathanHarrenstein.MusicTimeline.Data;
 using System.Collections.Generic;
 
 namespace NathanHarrenstein.MusicTimeline.Filters
