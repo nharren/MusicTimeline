@@ -151,7 +151,7 @@ namespace NathanHarrenstein.Timeline
 
         protected override Size MeasureOverride(Size availableSize)
         {
-            if (_hasViewChanged)
+            if (_hasViewChanged && Dates != null && Ruler != null & availableSize != null)
             {
                 // In determining the number of guidelines to display, it must be kept in mind that
                 // the spacings between the lines might be variable depending on the

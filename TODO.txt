@@ -1,9 +1,12 @@
 • Create and test SpotifyTemplate. (LOW)
 • Fix mp3Player exception about having to call PlayerInit. (HIGH)
-• Update EDTF to latest standard. (LOW)
+
+
+• when navigating away from playing stream, stop stream.
+
+
+
+
+• Update EDTF to latest standard when standard is complete. (WAIT)
 	• EDTF picker control
 	• Visually display uncertainty and approximation in timeline.
-• Add bullets, numbering, and indentation to biography edit box. (MEDIUM)
-• Disable edit buttons when no authority to edit. (MEDIUM)
-• Timeline menu for adding and removing composers. (HIGH)
-FIX BORN/DEAD SAVE

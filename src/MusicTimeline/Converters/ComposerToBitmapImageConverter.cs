@@ -17,15 +17,10 @@ namespace NathanHarrenstein.MusicTimeline.Converters
     {
         private static BitmapImage defaultImage;
         private static BitmapImage defaultImageThumbnail;
-        private static Dictionary<int, BitmapImage> cache;
-        private static Dictionary<int, BitmapImage> thumbnailCache;
         private static readonly string cacheDirectory;
 
         static ComposerToBitmapImageConverter()
         {
-            cache = new Dictionary<int, BitmapImage>();
-            thumbnailCache = new Dictionary<int, BitmapImage>();
-
             var applicationDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData, Environment.SpecialFolderOption.Create);
             cacheDirectory = $@"{applicationDataPath}\Music Timeline\Resources\ComposerImages";
 
@@ -47,7 +42,7 @@ namespace NathanHarrenstein.MusicTimeline.Converters
                 settings.ComposerImageId = TryFindComposerImageId(composer);
             }
 
-            return SearchMemoryCache(composer, settings) ?? SearchFileCache(composer, settings) ?? CreateBitmapImage(composer, settings);
+            return SearchFileCache(composer, settings) ?? CreateBitmapImage(composer, settings);
         }
 
         private int TryFindComposerImageId(Composer composer)
@@ -68,9 +63,9 @@ namespace NathanHarrenstein.MusicTimeline.Converters
             }
             else
             {
-                App.ClassicalMusicContext.LoadProperty(composer, "ComposerImages");
+                App.ClassicalMusicContext.LoadProperty(composer, "Images");
 
-                var initialImage = composer.ComposerImages.FirstOrDefault();
+                var initialImage = composer.Images.FirstOrDefault();
 
                 if (initialImage != null)
                 {
@@ -83,19 +78,13 @@ namespace NathanHarrenstein.MusicTimeline.Converters
 
         private BitmapImage SearchFileCache(Composer composer, ComposerToBitmapImageConverterSettings settings)
         {
-            BitmapImage bitmapImage;
-
             if (settings.IsThumbnail)
             {
                 var thumbnailPath = $@"{cacheDirectory}\{composer.ComposerId}\{settings.ComposerImageId}.thumb.jpg";
 
                 if (File.Exists(thumbnailPath))
                 {
-                    bitmapImage = ImageUtility.CreateBitmapImage(File.ReadAllBytes(thumbnailPath), height: 50);
-
-                    thumbnailCache[settings.ComposerImageId] = bitmapImage;
-
-                    return bitmapImage;
+                    return ImageUtility.CreateBitmapImage(new Uri(thumbnailPath, UriKind.Absolute), height: 50);
                 }
             }
             else
@@ -104,33 +93,7 @@ namespace NathanHarrenstein.MusicTimeline.Converters
 
                 if (File.Exists(path))
                 {
-                    bitmapImage = ImageUtility.CreateBitmapImage(File.ReadAllBytes(path));
-
-                    cache[settings.ComposerImageId] = bitmapImage;
-
-                    return bitmapImage;
-                }
-            }
-
-            return null;
-        }
-
-        private BitmapImage SearchMemoryCache(Composer composer, ComposerToBitmapImageConverterSettings settings)
-        {
-            BitmapImage bitmapImage;
-
-            if (settings.IsThumbnail)
-            {
-                if (thumbnailCache.TryGetValue(settings.ComposerImageId, out bitmapImage))
-                {
-                    return bitmapImage;
-                }
-            }
-            else
-            {
-                if (cache.TryGetValue(settings.ComposerImageId, out bitmapImage))
-                {
-                    return bitmapImage;
+                    return ImageUtility.CreateBitmapImage(new Uri(path, UriKind.Absolute));
                 }
             }
 
@@ -147,7 +110,7 @@ namespace NathanHarrenstein.MusicTimeline.Converters
             throw new NotImplementedException();
         }
 
-        internal void ClearCache()
+        internal void ClearFileCache()
         {
             if (Directory.Exists(cacheDirectory))
             {
@@ -157,9 +120,9 @@ namespace NathanHarrenstein.MusicTimeline.Converters
 
         private BitmapImage CreateBitmapImage(Composer composer, ComposerToBitmapImageConverterSettings settings)
         {
-            App.ClassicalMusicContext.LoadProperty(composer, "ComposerImages");
+            App.ClassicalMusicContext.LoadProperty(composer, nameof(composer.Images));
 
-            var composerImage = composer.ComposerImages.FirstOrDefault(ci => ci.ComposerImageId == settings.ComposerImageId);
+            var composerImage = composer.Images.FirstOrDefault(ci => ci.ComposerImageId == settings.ComposerImageId);
 
             if (settings.IsThumbnail)
             {
@@ -179,12 +142,8 @@ namespace NathanHarrenstein.MusicTimeline.Converters
                 return defaultImage ?? CreateDefaultBitmapImage();
             }
 
-            var bytes = StreamUtility.ReadToEnd(App.ClassicalMusicContext.GetReadStream(composerImage).Stream);
-
-            var bitmapImage = ImageUtility.CreateBitmapImage(bytes);
-
-            SaveToFileCache(bitmapImage, composerImage);
-            cache[composerImage.ComposerImageId] = bitmapImage;
+            var bitmapImage = ImageUtility.CreateBitmapImage(App.ClassicalMusicContext.GetReadStreamUri(composerImage));
+            bitmapImage.DownloadCompleted += (o,e) => SaveToFileCache(bitmapImage, composerImage);
 
             return bitmapImage;
         }
@@ -222,12 +181,8 @@ namespace NathanHarrenstein.MusicTimeline.Converters
                 return defaultImageThumbnail ?? CreateDefaultBitmapImageThumbnail();
             }
 
-            var bytes = StreamUtility.ReadToEnd(App.ClassicalMusicContext.GetReadStream(composerImage).Stream);
-
-            var bitmapImage = ImageUtility.CreateBitmapImage(bytes, height: 50);
-
-            SaveToThumbnailFileCache(bitmapImage, composerImage);
-            thumbnailCache[composerImage.ComposerImageId] = bitmapImage;
+            var bitmapImage = ImageUtility.CreateBitmapImage(App.ClassicalMusicContext.GetReadStreamUri(composerImage), height: 50);
+            bitmapImage.DownloadCompleted += (o, e) => SaveToThumbnailFileCache(bitmapImage, composerImage);
 
             return bitmapImage;
         }

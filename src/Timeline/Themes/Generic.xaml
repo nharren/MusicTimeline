@@ -24,7 +24,6 @@
                                                 Eras="{TemplateBinding Eras}"
                                                 Resolution="{TemplateBinding Resolution}"
                                                 Ruler="{TemplateBinding Ruler}"
-                                                TextBlock.FontFamily="Cambria"
                                                 TextBlock.FontSize="12"
                                                 TextBlock.Foreground="Black" />
                             <l:EraPanel Grid.Row="1"
@@ -34,7 +33,6 @@
                                         IsHitTestVisible="False"
                                         Resolution="{TemplateBinding Resolution}"
                                         Ruler="{TemplateBinding Ruler}"
-                                        TextBlock.FontFamily="Cambria"
                                         TextBlock.FontSize="14"
                                         TextBlock.Foreground="Black" />
 
@@ -47,7 +45,6 @@
                                          Height="24"
                                          Background="#33222222"
                                          Dates="{TemplateBinding Dates}"
-                                         FontFamily="Calibri"
                                          FontSize="12"
                                          Foreground="{TemplateBinding TimeForeground}"
                                          IsHitTestVisible="False"
@@ -78,7 +75,6 @@
                                           PreloadDistance="500"
                                           Resolution="{TemplateBinding Resolution}"
                                           Ruler="{TemplateBinding Ruler}"
-                                          TextBlock.FontFamily="Cambria"
                                           TextBlock.FontSize="14"
                                           TextBlock.Foreground="Black"
                                           VerticalOffset="{Binding VerticalOffset,
@@ -111,7 +107,6 @@
                                                Eras="{TemplateBinding Eras}"
                                                Resolution="{TemplateBinding Resolution}"
                                                Ruler="{TemplateBinding Ruler}"
-                                               TextBlock.FontFamily="Cambria"
                                                TextBlock.FontSize="12"
                                                TextBlock.Foreground="Black" />
                             <Rectangle Fill="#55FFFFFF" />

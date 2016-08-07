@@ -27,8 +27,8 @@ namespace NathanHarrenstein.MusicTimeline.Utilities
             {
                 var flowDocument = (FlowDocument)XamlReader.Load(flowDocumentMemoryStream, parserContext);
                 flowDocument.LineHeight = 24.0;
-                flowDocument.FontSize = 17.333333333333332;
-                flowDocument.FontFamily = new FontFamily("Cambria");
+                flowDocument.FontSize = 15.3333333333;
+                flowDocument.FontFamily = new FontFamily("Segoe UI");
                 flowDocument.PagePadding = new Thickness(0.0, 5.0, 0.0, 0.0);
                 flowDocument.TextAlignment = TextAlignment.Left;
                 flowDocument.Foreground = (Brush)Application.Current.Resources["ForegroundBrush"];

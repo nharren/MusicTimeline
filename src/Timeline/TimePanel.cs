@@ -183,7 +183,7 @@ namespace NathanHarrenstein.Timeline
 
         protected override Size MeasureOverride(Size availableSize)
         {
-            if (_hasViewChanged)
+            if (_hasViewChanged && Dates != null && availableSize != null && Ruler != null)
             {
                 // In determining the labels to display, it must be kept in mind that the spacings between
                 // the labels might be variable depending on the current time unit. For instance, if the

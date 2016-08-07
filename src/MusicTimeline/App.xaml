@@ -4,13 +4,13 @@
     <Application.Resources>
         <SolidColorBrush x:Key="BackgroundBrush" Color="#FF34373A" />
         <SolidColorBrush x:Key="ForegroundBrush" Color="#FFC7C9CC" />
-        <!-- Old Foreground: DCDFE2 -->
+        <!--  Old Foreground: DCDFE2  -->
         <!--  Alternative Foreground: FFDFE0E6  -->
         <SolidColorBrush x:Key="HeaderBrush" Color="#FF888888" />
         <SolidColorBrush x:Key="ScrollBarThumbBrush" Color="#FF4B5155" />
         <SolidColorBrush x:Key="ScrollBarThumbHighlightBrush" Color="#FF565D61" />
         <SolidColorBrush x:Key="ShellBrush" Color="#FF5F6266" />
-        <SolidColorBrush x:Key="UnderlineBrush" Color="#AA6E6E6E" />
+        <SolidColorBrush x:Key="UnderlineBrush" Color="#17FFFFFF" />
 
         <BitmapImage x:Key="BackgroundImage" UriSource="pack://application:,,,/Resources/Background/NoiseOverlay.png" />
 

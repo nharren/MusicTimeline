@@ -316,7 +316,7 @@ namespace NathanHarrenstein.Timeline
 
         protected override Size MeasureOverride(Size availableSize)
         {
-            if (Events == null)
+            if (Events == null || Dates == null || Ruler == null)
             {
                 return availableSize;
             }

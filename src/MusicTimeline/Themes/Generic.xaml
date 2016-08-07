@@ -3,11 +3,9 @@
                     xmlns:ComponentModel="clr-namespace:System.ComponentModel;assembly=WindowsBase"
                     xmlns:System="clr-namespace:System;assembly=mscorlib"
                     xmlns:c="clr-namespace:NathanHarrenstein.MusicTimeline.Controls"
-                    xmlns:t="clr-namespace:Microsoft.Windows.Themes;assembly=PresentationFramework.Aero">
+                    xmlns:local="clr-namespace:NathanHarrenstein.MusicTimeline">
 
     <SolidColorBrush x:Key="ForegroundBrush" Color="#FFDCDFE2" />
-
-
 
     <Style TargetType="{x:Type c:CompositionsPanel}">
         <Setter Property="Template">
@@ -82,17 +80,6 @@
             <Setter.Value>
                 <ControlTemplate TargetType="{x:Type c:BiographyToolbar}">
                     <ControlTemplate.Resources>
-
-
-
-
-
-
-
-
-
-
-
                         <ControlTemplate x:Key="ComboBoxToggleButton" TargetType="{x:Type ToggleButton}">
                             <Grid>
                                 <Grid.ColumnDefinitions>
@@ -168,19 +155,15 @@
                                                        AllowsTransparency="True"
                                                        Focusable="False"
                                                        IsOpen="{TemplateBinding IsDropDownOpen}"
-                                                       Placement="Bottom"
-                                                       PopupAnimation="Slide">
+                                                       Placement="Bottom">
                                                     <Grid x:Name="DropDown"
                                                           MinWidth="{TemplateBinding ActualWidth}"
-                                                          MaxHeight="{TemplateBinding MaxDropDownHeight}"
                                                           SnapsToDevicePixels="True">
                                                         <Border x:Name="DropDownBorder"
                                                                 Background="#EE333333"
                                                                 BorderBrush="{TemplateBinding BorderBrush}"
                                                                 BorderThickness="1" />
-                                                        <ScrollViewer Margin="4,6,4,6" SnapsToDevicePixels="True">
-                                                            <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Contained" />
-                                                        </ScrollViewer>
+                                                        <StackPanel IsItemsHost="True" KeyboardNavigation.DirectionalNavigation="Contained" />
                                                     </Grid>
                                                 </Popup>
                                                 <ToggleButton x:Name="ToggleButton"
@@ -213,8 +196,10 @@
                                 <Setter.Value>
                                     <ControlTemplate TargetType="{x:Type ComboBoxItem}">
                                         <Border x:Name="Border"
+                                                Margin="2"
                                                 Background="Transparent"
-                                                Padding="2"
+                                                BorderBrush="Transparent"
+                                                BorderThickness="1"
                                                 SnapsToDevicePixels="true">
                                             <ContentPresenter x:Name="contentPresenter" />
                                             <VisualStateManager.VisualStateGroups>
@@ -224,11 +209,17 @@
                                                             <ColorAnimationUsingKeyFrames Storyboard.TargetName="Border" Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)">
                                                                 <EasingColorKeyFrame KeyTime="0" Value="Transparent" />
                                                             </ColorAnimationUsingKeyFrames>
+                                                            <ColorAnimationUsingKeyFrames Storyboard.TargetName="Border" Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Color)">
+                                                                <EasingColorKeyFrame KeyTime="0" Value="Transparent" />
+                                                            </ColorAnimationUsingKeyFrames>
                                                         </Storyboard>
                                                     </VisualState>
                                                     <VisualState x:Name="MouseOver">
                                                         <Storyboard>
                                                             <ColorAnimationUsingKeyFrames Storyboard.TargetName="Border" Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)">
+                                                                <EasingColorKeyFrame KeyTime="0" Value="#22FFFFFF" />
+                                                            </ColorAnimationUsingKeyFrames>
+                                                            <ColorAnimationUsingKeyFrames Storyboard.TargetName="Border" Storyboard.TargetProperty="(Border.BorderBrush).(SolidColorBrush.Color)">
                                                                 <EasingColorKeyFrame KeyTime="0" Value="#44FFFFFF" />
                                                             </ColorAnimationUsingKeyFrames>
                                                         </Storyboard>
@@ -241,16 +232,13 @@
                             </Setter>
                         </Style>
 
-
-
-
-
                     </ControlTemplate.Resources>
                     <Border Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}">
                         <Grid>
                             <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="Auto" />
                                 <ColumnDefinition Width="Auto" />
@@ -268,58 +256,145 @@
                                       Background="#33000000"
                                       BorderBrush="#22FFFFFF"
                                       BorderThickness="1"
-                                      FontSize="17.333333333333332"
+                                      FontSize="11.5pt"
                                       Foreground="#FFDCDFE2"
                                       IsEditable="True"
                                       IsTextSearchEnabled="False"
                                       Padding="0,-1,0,0">
                                 <ComboBox.ItemTemplate>
                                     <DataTemplate>
-                                        <TextBlock Text="{Binding}" />
+                                        <TextBlock Margin="10,0"
+                                                   FontSize="10pt"
+                                                   Text="{Binding}" />
                                     </DataTemplate>
                                 </ComboBox.ItemTemplate>
                             </ComboBox>
-                            <Separator Grid.Column="1" />
                             <ToggleButton x:Name="PART_BoldToggleButton"
-                                          Grid.Column="2"
+                                          Grid.Column="1"
                                           Width="31"
                                           Margin="1,0,0,0"
                                           Command="{x:Static EditingCommands.ToggleBold}"
                                           CommandTarget="{TemplateBinding RichTextBox}"
                                           Content="B"
-                                          FontSize="17.3333333333"
+                                          FontFamily="Cambria"
+                                          FontSize="13pt"
                                           FontWeight="Bold"
                                           IsEnabled="{Binding IsEnabledToolBarItems}"
                                           Padding="0,0,0,1"
                                           Template="{StaticResource ToolbarToggleButtonTemplate}"
                                           ToolTip="Bold" />
                             <ToggleButton x:Name="PART_ItalicToggleButton"
-                                          Grid.Column="3"
+                                          Grid.Column="2"
                                           Width="31"
-                                          Margin="1,0"
+                                          Margin="1,0,0,0"
                                           Command="{x:Static EditingCommands.ToggleItalic}"
                                           CommandTarget="{TemplateBinding RichTextBox}"
                                           Content="I"
-                                          FontSize="17.3333333333"
+                                          FontFamily="Cambria"
+                                          FontSize="13pt"
                                           FontStyle="Italic"
                                           IsEnabled="{Binding IsEnabledToolBarItems}"
                                           Padding="0,0,0,1"
                                           Template="{StaticResource ToolbarToggleButtonTemplate}"
                                           ToolTip="Italic" />
+                            <c:BulletStyleDropdownButton x:Name="PART_BulletStyleDropdownButton"
+                                                         Grid.Column="3"
+                                                         Margin="1,0,0,0"
+                                                         IsEnabled="{Binding IsEnabledToolBarItems}"
+                                                         ToolTip="List" />
+                            <Button x:Name="PART_DecreaseIndentButton"
+                                    Grid.Column="4"
+                                    Width="31"
+                                    Margin="1,0,0,0"
+                                    Command="{x:Static EditingCommands.DecreaseIndentation}"
+                                    CommandTarget="{TemplateBinding RichTextBox}"
+                                    IsEnabled="{Binding IsEnabledToolBarItems}"
+                                    ToolTip="Decrease Indent">
+                                <Button.Template>
+                                    <ControlTemplate TargetType="{x:Type Button}">
+                                        <Border x:Name="border"
+                                                Background="#22FFFFFF"
+                                                BorderBrush="Black"
+                                                BorderThickness="0"
+                                                SnapsToDevicePixels="True">
+                                            <Viewbox Height="13" Stretch="Uniform">
+                                                <Path Name="path"
+                                                      Fill="#FF888888"
+                                                      SnapsToDevicePixels="True"
+                                                      UseLayoutRounding="True">
+                                                    <Path.Data>
+                                                        <PathGeometry Figures="m 8.834 22.832 -8.723 -6.998 8.723 -7 0 13.998 z M 0 31.668 l 31.334 0 0 -5 -31.334 0 0 5 z m 12 -8.891 19.334 0 0 -5 -19.334 0 0 5 z m 0 -8.888 19.334 0 0 -5 -19.334 0 0 5 z M 31.334 0 l 0 5 L 0 5 0 0 l 31.334 0 0 0 z" FillRule="NonZero" />
+                                                    </Path.Data>
+                                                </Path>
+                                            </Viewbox>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="border" Property="Background" Value="#44FFFFFF" />
+                                                <Setter TargetName="path" Property="Path.Fill" Value="#FFDCDFE2" />
+                                            </Trigger>
+                                            <Trigger Property="IsPressed" Value="True">
+                                                <Setter TargetName="border" Property="Background" Value="#44FFFFFF" />
+                                                <Setter TargetName="path" Property="Path.Fill" Value="#FFDCDFE2" />
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Button.Template>
+                            </Button>
+                            <Button x:Name="PART_IncreaseIndentButton"
+                                    Grid.Column="5"
+                                    Width="31"
+                                    Margin="1,0,0,0"
+                                    Command="{x:Static EditingCommands.IncreaseIndentation}"
+                                    CommandTarget="{TemplateBinding RichTextBox}"
+                                    IsEnabled="{Binding IsEnabledToolBarItems}"
+                                    ToolTip="Increase Indent">
+                                <Button.Template>
+                                    <ControlTemplate TargetType="{x:Type Button}">
+                                        <Border x:Name="border"
+                                                Background="#22FFFFFF"
+                                                BorderBrush="Black"
+                                                BorderThickness="0"
+                                                SnapsToDevicePixels="True">
+                                            <Viewbox Height="13" Stretch="Uniform">
+                                                <Path Name="path"
+                                                      Fill="#FF888888"
+                                                      UseLayoutRounding="True">
+                                                    <Path.Data>
+                                                        <PathGeometry Figures="m 0.111 22.832003 8.723 -6.998 -8.723 -7.000001 0 13.998001 z m -0.111 8.836 31.334 0 0 -5 -31.334 0 0 5 z m 12 -8.891 19.334 0 0 -5 -19.334 0 0 5 z m 0 -8.888 19.334 0 0 -5.000001 -19.334 0 0 5.000001 z M 31.334 2.2e-6 l 0 4.9999999 -31.334 0 0 -4.9999999 31.334 0 0 0 z" FillRule="NonZero" />
+                                                    </Path.Data>
+                                                </Path>
+                                            </Viewbox>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="border" Property="Background" Value="#44FFFFFF" />
+                                                <Setter TargetName="path" Property="Path.Fill" Value="#FFDCDFE2" />
+                                            </Trigger>
+                                            <Trigger Property="IsPressed" Value="True">
+                                                <Setter TargetName="border" Property="Background" Value="#44FFFFFF" />
+                                                <Setter TargetName="path" Property="Path.Fill" Value="#FFDCDFE2" />
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Button.Template>
+                            </Button>
                             <Button x:Name="PART_CancelButton"
-                                    Grid.Column="6"
+                                    Grid.Column="7"
                                     Width="31"
                                     Margin="0,0,1,0"
                                     Content="&#x20E0;"
-                                    FontSize="17.3333333333"
+                                    FontSize="13pt"
                                     Foreground="Red"
+                                    Padding="0,0,0,1"
                                     Template="{StaticResource ToolbarButtonTemplate}" />
                             <Button x:Name="PART_SaveButton"
-                                    Grid.Column="7"
+                                    Grid.Column="8"
                                     Width="31"
                                     Content="&#x2714;"
-                                    FontSize="17.3333333333"
+                                    FontSize="13pt"
                                     Foreground="LimeGreen"
+                                    Padding="0,0,0,2"
                                     Template="{StaticResource ToolbarButtonTemplate}" />
                         </Grid>
                     </Border>
@@ -376,8 +451,7 @@
                                           Command="MediaCommands.TogglePlayPause"
                                           Cursor="Hand"
                                           FontSize="20"
-                                          Foreground="{StaticResource ForegroundBrush}"
-                                          IsEnabled="False">
+                                          Foreground="{StaticResource ForegroundBrush}">
                                 <ToggleButton.Template>
                                     <ControlTemplate TargetType="{x:Type ToggleButton}">
                                         <Grid>
@@ -596,7 +670,8 @@
                                     </ControlTemplate>
                                 </Button.Template>
                             </Button>
-                            <DockPanel Grid.Row="4" Grid.ColumnSpan="5">
+                            <DockPanel Grid.Row="4"
+                                       Grid.ColumnSpan="5">
                                 <ToggleButton Name="muteToggleButton"
                                               Command="MediaCommands.MuteVolume"
                                               Cursor="Hand"
@@ -661,7 +736,7 @@
                                     </ToggleButton.Template>
                                 </ToggleButton>
                                 <Slider Name="volumeSlider"
-                                        Margin="5,2,0,0"
+                                        Margin="5,4,0,0"
                                         Maximum="1"
                                         Minimum="0">
                                     <Slider.Template>
@@ -892,6 +967,7 @@
                             <TextBlock Name="progressStatus"
                                        Grid.Row="4"
                                        Grid.Column="7"
+                                       Margin="5,0,0,2"
                                        VerticalAlignment="Center"
                                        IsEnabled="False" />
                         </Grid>
@@ -1004,13 +1080,21 @@
                                 <RowDefinition Height="{TemplateBinding UnderlineOffset}" />
                                 <RowDefinition Height="Auto" />
                             </Grid.RowDefinitions>
-                            <DockPanel>
+                            <Grid>
+
+                                <TextBlock HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                           FontFamily="{TemplateBinding FontFamily}"
+                                           FontSize="{TemplateBinding FontSize}"
+                                           Foreground="{TemplateBinding Foreground}"
+                                           Text="{TemplateBinding Text}" />
                                 <Button x:Name="editButton"
+                                        Margin="{TemplateBinding ButtonMargin}"
+                                        HorizontalAlignment="Right"
                                         Cursor="Hand"
-                                        DockPanel.Dock="Right"
                                         FontFamily="Segoe UI Symbol"
                                         FontSize="{TemplateBinding ButtonSize}"
-                                        Foreground="{TemplateBinding ButtonForeground}">
+                                        Foreground="{TemplateBinding ButtonForeground}"
+                                        Visibility="Collapsed">
                                     <Button.Template>
                                         <ControlTemplate TargetType="{x:Type Button}">
                                             <Border Name="border"
@@ -1023,10 +1107,7 @@
                                         </ControlTemplate>
                                     </Button.Template>
                                 </Button>
-                                <TextBlock FontSize="{TemplateBinding FontSize}"
-                                           Foreground="{TemplateBinding Foreground}"
-                                           Text="{TemplateBinding Text}" />
-                            </DockPanel>
+                            </Grid>
                             <Line Grid.Row="2"
                                   Height="{TemplateBinding UnderlineThickness}"
                                   SnapsToDevicePixels="True"
@@ -1034,6 +1115,200 @@
                                   Stroke="{TemplateBinding UnderlineForeground}"
                                   StrokeThickness="{TemplateBinding UnderlineThickness}"
                                   X2="1" />
+                        </Grid>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <MultiDataTrigger>
+                            <MultiDataTrigger.Conditions>
+                                <Condition Binding="{Binding IsMouseOver}" Value="True" />
+                                <Condition Binding="{Binding Source={x:Static local:App.HasCredential}}" Value="True" />
+                                <Condition Binding="{Binding IsEnabled, ElementName=imagesEditButton}" Value="True" />
+                            </MultiDataTrigger.Conditions>
+                            <Setter TargetName="editButton" Property="Visibility" Value="Visible" />
+                        </MultiDataTrigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style TargetType="{x:Type c:BulletStyleDropdownButton}">
+        <Setter Property="Height" Value="31" />
+        <Setter Property="Width" Value="40" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type c:BulletStyleDropdownButton}">
+                    <ControlTemplate.Resources>
+                        <Style TargetType="{x:Type ListBoxItem}">
+                            <Setter Property="SnapsToDevicePixels" Value="True" />
+                            <Setter Property="Padding" Value="4,1" />
+                            <Setter Property="HorizontalContentAlignment" Value="{Binding HorizontalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
+                            <Setter Property="VerticalContentAlignment" Value="{Binding VerticalContentAlignment, RelativeSource={RelativeSource AncestorType={x:Type ItemsControl}}}" />
+                            <Setter Property="Background" Value="Transparent" />
+                            <Setter Property="BorderBrush" Value="Transparent" />
+                            <Setter Property="BorderThickness" Value="1" />
+                            <Setter Property="FocusVisualStyle" Value="{x:Null}" />
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                                        <Border x:Name="Bd"
+                                                Background="{TemplateBinding Background}"
+                                                BorderBrush="{TemplateBinding BorderBrush}"
+                                                BorderThickness="{TemplateBinding BorderThickness}"
+                                                Padding="{TemplateBinding Padding}"
+                                                SnapsToDevicePixels="true">
+                                            <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <MultiTrigger>
+                                                <MultiTrigger.Conditions>
+                                                    <Condition Property="IsMouseOver" Value="True" />
+                                                </MultiTrigger.Conditions>
+                                                <Setter TargetName="Bd" Property="Background" Value="#22FFFFFF" />
+                                                <Setter TargetName="Bd" Property="BorderBrush" Value="#44FFFFFF" />
+                                            </MultiTrigger>
+                                            <MultiTrigger>
+                                                <MultiTrigger.Conditions>
+                                                    <Condition Property="Selector.IsSelectionActive" Value="False" />
+                                                    <Condition Property="IsSelected" Value="True" />
+                                                </MultiTrigger.Conditions>
+                                                <Setter TargetName="Bd" Property="Background" Value="#22FFFFFF" />
+                                                <Setter TargetName="Bd" Property="BorderBrush" Value="#44FFFFFF" />
+                                            </MultiTrigger>
+                                            <MultiTrigger>
+                                                <MultiTrigger.Conditions>
+                                                    <Condition Property="Selector.IsSelectionActive" Value="True" />
+                                                    <Condition Property="IsSelected" Value="True" />
+                                                </MultiTrigger.Conditions>
+                                                <Setter TargetName="Bd" Property="Background" Value="#22FFFFFF" />
+                                                <Setter TargetName="Bd" Property="BorderBrush" Value="#44FFFFFF" />
+                                            </MultiTrigger>
+                                            <Trigger Property="IsEnabled" Value="False">
+                                                <Setter TargetName="Bd" Property="TextElement.Foreground" Value="{DynamicResource {x:Static SystemColors.GrayTextBrushKey}}" />
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </ControlTemplate.Resources>
+                    <Border BorderBrush="{TemplateBinding BorderBrush}" BorderThickness="0">
+                        <Grid Name="rootGrid">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition />
+                                <ColumnDefinition Width="1" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <Popup Name="popup"
+                                   AllowsTransparency="True"
+                                   IsOpen="{Binding IsChecked,
+                                                    ElementName=toggleDropdown}"
+                                   PlacementTarget="{Binding ElementName=rootGrid}">
+                                <ListBox Name="listBox"
+                                         Background="#EE333333"
+                                         BorderBrush="#22FFFFFF"
+                                         BorderThickness="1">
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate DataType="local:BulletStyle">
+                                            <Grid>
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="15" />
+                                                    <ColumnDefinition Width="5" />
+                                                    <ColumnDefinition Width="1" />
+                                                    <ColumnDefinition Width="5" />
+                                                    <ColumnDefinition />
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock HorizontalAlignment="Center"
+                                                           FontFamily="{Binding FontFamily}"
+                                                           FontSize="10pt"
+                                                           Foreground="#FFDCDFE2"
+                                                           Text="{Binding RepresentativeSymbol}"
+                                                           TextAlignment="Center" />
+                                                <Rectangle Grid.Column="2"
+                                                           Fill="#22FFFFFF"
+                                                           StrokeThickness="0" />
+                                                <TextBlock Grid.Column="4"
+                                                           FontSize="10pt"
+                                                           Foreground="#FFDCDFE2"
+                                                           Text="{Binding DisplayName}" />
+                                            </Grid>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+                            </Popup>
+
+                            <ToggleButton Name="toggleOnOff">
+                                <ToggleButton.Template>
+                                    <ControlTemplate TargetType="{x:Type ToggleButton}">
+                                        <Border x:Name="border"
+                                                Background="#22FFFFFF"
+                                                BorderBrush="Black"
+                                                BorderThickness="0"
+                                                SnapsToDevicePixels="True"
+                                                TextElement.Foreground="#FF888888">
+                                            <Viewbox Height="13"
+                                                     SnapsToDevicePixels="True"
+                                                     Stretch="Uniform"
+                                                     UseLayoutRounding="True">
+                                                <Path Name="bullets"
+                                                      Fill="#FF888888"
+                                                      SnapsToDevicePixels="True">
+                                                    <Path.Data>
+                                                        <PathGeometry Figures="m 16.319999 32.726144 28.394 0 0 7.793711 -28.394 0 z m 0 -15.783723 28.394 0 0 7.795158 -28.394 0 z m 0 -15.3947232 28.394 0 0 7.7966047 -28.394 0 z M 5.445 31.498 C 2.442 31.498 0 33.94 0 36.943 c 0 3.003 2.442 5.445 5.445 5.445 3.002 0 5.445 -2.442 5.445 -5.445 0 -3.003 -2.442 -5.445 -5.445 -5.445 z m 0 -16.101 C 2.442 15.397 0 17.839 0 20.842 c 0 3.001 2.442 5.441 5.445 5.441 3.002 0 5.445 -2.44 5.445 -5.441 0 -3.002 -2.442 -5.445 -5.445 -5.445 z M 5.445 1.1718747e-8 C 2.442 1.1718749e-8 0 2.4419995 0 5.4469995 0 8.4489995 2.442 10.892 5.445 10.892 8.447 10.892 10.89 8.4499995 10.89 5.4469995 10.89 2.4429995 8.448 1.1718747e-8 5.445 1.1718747e-8 Z" FillRule="NonZero" />
+                                                    </Path.Data>
+                                                </Path>
+
+                                            </Viewbox>
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="border" Property="Background" Value="#44FFFFFF" />
+                                                <Setter TargetName="bullets" Property="Path.Fill" Value="#FFDCDFE2" />
+                                            </Trigger>
+                                            <Trigger Property="IsChecked" Value="True">
+                                                <Setter TargetName="border" Property="Background" Value="#44FFFFFF" />
+                                                <Setter TargetName="bullets" Property="Path.Fill" Value="#FFDCDFE2" />
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </ToggleButton.Template>
+
+                            </ToggleButton>
+                            <Rectangle Grid.Column="1"
+                                       Fill="#22FFFFFF"
+                                       StrokeThickness="0" />
+                            <ToggleButton Name="toggleDropdown" Grid.Column="2">
+                                <ToggleButton.Template>
+                                    <ControlTemplate TargetType="{x:Type ToggleButton}">
+                                        <Border x:Name="border"
+                                                Background="#22FFFFFF"
+                                                BorderBrush="Black"
+                                                BorderThickness="0"
+                                                SnapsToDevicePixels="True"
+                                                TextElement.Foreground="#FF888888">
+                                            <Path Name="Arrow"
+                                                  Margin="1,0,1,0"
+                                                  HorizontalAlignment="Center"
+                                                  VerticalAlignment="Center"
+                                                  Data="M0,0 L2.5,3 5,0z"
+                                                  Fill="#FF888888" />
+                                        </Border>
+                                        <ControlTemplate.Triggers>
+                                            <Trigger Property="IsMouseOver" Value="True">
+                                                <Setter TargetName="border" Property="Background" Value="#44FFFFFF" />
+                                                <Setter TargetName="Arrow" Property="Path.Fill" Value="#FFDCDFE2" />
+                                            </Trigger>
+                                            <Trigger Property="IsChecked" Value="True">
+                                                <Setter TargetName="border" Property="Background" Value="#44FFFFFF" />
+                                                <Setter TargetName="Arrow" Property="Path.Fill" Value="#FFDCDFE2" />
+                                            </Trigger>
+                                        </ControlTemplate.Triggers>
+                                    </ControlTemplate>
+                                </ToggleButton.Template>
+
+                            </ToggleButton>
                         </Grid>
                     </Border>
                 </ControlTemplate>

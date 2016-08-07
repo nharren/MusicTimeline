@@ -33,20 +33,21 @@ namespace NathanHarrenstein.MusicTimeline.Views
         private Composer composer;
         private bool isDisposed;
 
-#if TRACE
-        private Stopwatch performanceStopwatch = new Stopwatch();
-#endif
-
         public ComposerPage()
         {
-
-#if TRACE
-            performanceStopwatch.Start();
-#endif
-
             InitializeComponent();
 
+            var mainWindow = (MainWindow)Application.Current.MainWindow;
+            mainWindow.Navigating += MainWindow_Navigating;
             Loaded += ComposerPage_Loaded;
+        }
+
+        private void MainWindow_Navigating(object sender, NavigatingCancelEventArgs e)
+        {
+            Dispose();
+
+            var mainWindow = (MainWindow)Application.Current.MainWindow;
+            mainWindow.Navigating -= MainWindow_Navigating;
         }
 
         ~ComposerPage()
@@ -63,17 +64,14 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
         protected virtual void Dispose(bool disposing)
         {
-            if (!isDisposed)
+            if (isDisposed)
             {
-                if (disposing)
-                {
-
-                }
-
-                mp3PlayerControl.Dispose();
-
-                isDisposed = true;
+                return;
             }
+
+            mp3PlayerControl.Dispose();
+
+            isDisposed = true;
         }
 
         private void backButton_Click(object sender, RoutedEventArgs e)
@@ -90,7 +88,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
             biographyRichTextBox.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#33000000"));
             biographyRichTextBox.Padding = new Thickness(10.0);
-            biographyRichTextBox.Document = BiographyUtility.LoadDocument(composer.ComposerBiography.Biography);
+            biographyRichTextBox.Document = BiographyUtility.LoadDocument(composer.Biography.Text);
         }
 
         private void biographyTextBox_RequestBringIntoView(object sender, RequestBringIntoViewEventArgs e)
@@ -105,31 +103,34 @@ namespace NathanHarrenstein.MusicTimeline.Views
             biographyEditPanel.Visibility = Visibility.Collapsed;
             biographyScrollViewer.Visibility = Visibility.Visible;
 
-            biographyScrollViewer.Document = BiographyUtility.LoadDocument(composer.ComposerBiography.Biography);
+            biographyScrollViewer.Document = BiographyUtility.LoadDocument(composer.Biography.Text);
 
-            biographyHeader.CanEdit = true;
+            biographyHeader.IsEnabled = true;
         }
 
         private void biographyToolbar_Saving(object sender, EventArgs e)
         {
-            if (composer.ComposerBiography == null)
-            {
-                composer.ComposerBiography = new ComposerBiography();
-            }
-
-            composer.ComposerBiography.Biography = XamlWriter.Save(biographyRichTextBox.Document);
+            composer.Biography.Text = XamlWriter.Save(biographyRichTextBox.Document);
 
             App.ClassicalMusicContext.UpdateObject(composer);
-            App.ClassicalMusicContext.SaveChanges();
+
+            try
+            {
+                App.ClassicalMusicContext.SaveChanges();
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Changes could not be saved.");
+            }
 
             biographyRichTextBox.Document.Blocks.Clear();
 
             biographyEditPanel.Visibility = Visibility.Collapsed;
             biographyScrollViewer.Visibility = Visibility.Visible;
 
-            biographyScrollViewer.Document = BiographyUtility.LoadDocument(composer.ComposerBiography.Biography);
+            biographyScrollViewer.Document = BiographyUtility.LoadDocument(composer.Biography.Text);
 
-            biographyHeader.CanEdit = true;
+            biographyHeader.IsEnabled = true;
         }
 
         private void bornHeader_ButtonClick(object sender, RoutedEventArgs e)
@@ -137,7 +138,11 @@ namespace NathanHarrenstein.MusicTimeline.Views
             bornEditPanel.Visibility = Visibility.Visible;
             bornTextBlock.Visibility = Visibility.Collapsed;
 
-            bornTextBox.Text = bornTextBlock.Text;
+            var dates = ExtendedDateTimeInterval.Parse(composer.Dates);
+            var birthDate = dates.Start;
+
+            birthDateTextBox.Text = birthDate.ToString();
+            birthLocationTextBox.Text = composer.BirthLocation?.Name;
         }
 
         private void bornToolbar_Cancelling(object sender, EventArgs e)
@@ -145,14 +150,13 @@ namespace NathanHarrenstein.MusicTimeline.Views
             bornTextBlock.Visibility = Visibility.Visible;
             bornEditPanel.Visibility = Visibility.Collapsed;
 
-            bornHeader.CanEdit = true;
+            bornHeader.IsEnabled = true;
         }
 
         private void bornToolbar_Saving(object sender, EventArgs e)
         {
-            var splitBornText = bornTextBox.Text.Split(new string[] { "; " }, StringSplitOptions.None);
-            var birthDateString = splitBornText[0];
-            var birthDate = ExtendedDateTimeInterval.Parse(splitBornText[0]);
+            var dates = ExtendedDateTimeInterval.Parse(composer.Dates);
+            var birthDate = ExtendedDateTime.Parse(birthDateTextBox.Text);
 
             if (birthDate == null)
             {
@@ -161,21 +165,19 @@ namespace NathanHarrenstein.MusicTimeline.Views
                 return;
             }
 
-            composer.Dates = birthDateString;
+            dates.Start = birthDate;
 
-            if (splitBornText.Length < 2)
-            {
-                return;
-            }
+            composer.Dates = dates.ToString();
 
-            LocationUtility.UpdateBirthLocation(splitBornText[1], composer, App.ClassicalMusicContext);
+            LocationUtility.UpdateBirthLocation(birthLocationTextBox.Text, composer, App.ClassicalMusicContext);
+
             App.ClassicalMusicContext.UpdateObject(composer);
             App.ClassicalMusicContext.SaveChanges();
 
             bornTextBlock.Text = CreateBornText();
             bornTextBlock.Visibility = Visibility.Visible;
             bornEditPanel.Visibility = Visibility.Collapsed;
-            bornHeader.CanEdit = true;
+            bornHeader.IsEnabled = true;
         }
 
 
@@ -222,7 +224,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
             compositionsPanel.Visibility = Visibility.Visible;
             compositionsEditPanel.Visibility = Visibility.Collapsed;
 
-            compositionsHeader.CanEdit = true;
+            compositionsHeader.IsEnabled = true;
         }
 
         private void compositionsToolbar_Removing(object sender, EventArgs e)
@@ -244,7 +246,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
             {
                 if (string.IsNullOrWhiteSpace(composition.Name))
                 {
-                    MessageBox.Show("Could not save because a composer has an empty Name.");
+                    MessageBox.Show("Could not save because a composition has an empty Name.");
 
                     return;
                 }
@@ -260,7 +262,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
             compositionsPanel.Visibility = Visibility.Visible;
             compositionsEditPanel.Visibility = Visibility.Collapsed;
 
-            compositionsHeader.CanEdit = true;
+            compositionsHeader.IsEnabled = true;
         }
 
         private string CreateBornText()
@@ -292,7 +294,11 @@ namespace NathanHarrenstein.MusicTimeline.Views
             diedEditPanel.Visibility = Visibility.Visible;
             diedTextBlock.Visibility = Visibility.Collapsed;
 
-            diedTextBox.Text = diedTextBlock.Text;
+            var dates = ExtendedDateTimeInterval.Parse(composer.Dates);
+            var deathDate = dates.End;
+
+            deathDateTextBox.Text = deathDate.ToString();
+            deathLocationTextBox.Text = composer.DeathLocation?.Name;
         }
 
         private void diedToolbar_Cancelling(object sender, EventArgs e)
@@ -300,14 +306,13 @@ namespace NathanHarrenstein.MusicTimeline.Views
             diedTextBlock.Visibility = Visibility.Visible;
             diedEditPanel.Visibility = Visibility.Collapsed;
 
-            diedHeader.CanEdit = true;
+            diedHeader.IsEnabled = true;
         }
 
         private void diedToolbar_Saving(object sender, EventArgs e)
         {
-            var splitDiedText = diedTextBox.Text.Split(new string[] { "; " }, StringSplitOptions.None);
-            var deathDateString = splitDiedText[0];
-            var deathDate = ExtendedDateTimeInterval.Parse(splitDiedText[0]);
+            var dates = ExtendedDateTimeInterval.Parse(composer.Dates);
+            var deathDate = ExtendedDateTime.Parse(deathDateTextBox.Text);
 
             if (deathDate == null)
             {
@@ -316,14 +321,11 @@ namespace NathanHarrenstein.MusicTimeline.Views
                 return;
             }
 
-            composer.Dates = deathDateString;
+            dates.End = deathDate;
 
-            if (splitDiedText.Length < 2)
-            {
-                return;
-            }
+            composer.Dates = dates.ToString();
 
-            LocationUtility.UpdateDeathLocation(splitDiedText[1], composer, App.ClassicalMusicContext);
+            LocationUtility.UpdateDeathLocation(birthLocationTextBox.Text, composer, App.ClassicalMusicContext);
 
             App.ClassicalMusicContext.UpdateObject(composer);
             App.ClassicalMusicContext.SaveChanges();
@@ -333,7 +335,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
             diedTextBlock.Visibility = Visibility.Visible;
             diedEditPanel.Visibility = Visibility.Collapsed;
 
-            diedHeader.CanEdit = true;
+            diedHeader.IsEnabled = true;
         }
 
         private void imagesEditButton_Click(object sender, RoutedEventArgs e)
@@ -343,23 +345,6 @@ namespace NathanHarrenstein.MusicTimeline.Views
             imagesEditButton.IsEnabled = false;
 
             imagesToolbar.Visibility = Visibility.Visible;
-        }
-
-        private void imagesListBox_MouseEnter(object sender, MouseEventArgs e)
-        {
-            var imagesEditButton = (Button)imagesListBox.Template.FindName("imagesEditButton", imagesListBox);
-
-            if (imagesEditButton.IsEnabled)
-            {
-                imagesEditButton.Visibility = Visibility.Visible;
-            }
-        }
-
-        private void imagesListBox_MouseLeave(object sender, MouseEventArgs e)
-        {
-            var imagesEditButton = (Button)imagesListBox.Template.FindName("imagesEditButton", imagesListBox);
-
-            imagesEditButton.Visibility = Visibility.Collapsed;
         }
 
         private void imagesToolbar_Adding(object sender, EventArgs e)
@@ -386,11 +371,11 @@ namespace NathanHarrenstein.MusicTimeline.Views
                     addedImages.Add(composerImage, new List<string> { filename });
                 }
 
-                composer.ComposerImages.Add(composerImage);
+                composer.Images.Add(composerImage);
 
                 App.ClassicalMusicContext.AddToComposerImages(composerImage);
 
-                imagesListBox.ItemsSource = composer.ComposerImages;
+                imagesListBox.ItemsSource = composer.Images;
                 imagesListBox.SelectedItem = composerImage;
             }
         }
@@ -403,7 +388,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
             imagesToolbar.Visibility = Visibility.Collapsed;
 
-            var composerImagesQuery = App.ClassicalMusicContext.LoadProperty(composer, "ComposerImages");
+            var composerImagesQuery = App.ClassicalMusicContext.LoadProperty(composer, nameof(composer.Images));
             var composerImages = composerImagesQuery.Cast<ComposerImage>().ToList();
 
             imagesListBox.ItemsSource = composerImages;
@@ -417,11 +402,11 @@ namespace NathanHarrenstein.MusicTimeline.Views
         {
             var image = (ComposerImage)imagesListBox.SelectedItem;
 
-            composer.ComposerImages.Remove(image);
+            composer.Images.Remove(image);
 
             App.ClassicalMusicContext.DeleteObject(image);
 
-            imagesListBox.ItemsSource = composer.ComposerImages;
+            imagesListBox.ItemsSource = composer.Images;
         }
 
         private void imagesToolbar_Saving(object sender, EventArgs e)
@@ -446,10 +431,12 @@ namespace NathanHarrenstein.MusicTimeline.Views
         private void influenceButton_Click(object sender, RoutedEventArgs e)
         {
             var button = (Button)sender;
+            var composer = (Composer)button.DataContext;
 
-            Application.Current.Properties["SelectedComposer"] = ((Composer)button.DataContext).ComposerId;
+            Application.Current.Properties["SelectedComposer"] = composer.ComposerId;
 
-            LoadComposer();
+            var mainWindow = (NavigationWindow)Application.Current.MainWindow;
+            mainWindow.NavigationService.Refresh();
         }
 
         private void influencedHeader_ButtonClick(object sender, RoutedEventArgs e)
@@ -474,7 +461,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
             influencedItemsControl.Visibility = Visibility.Visible;
             influencedEditPanel.Visibility = Visibility.Collapsed;
 
-            influencedHeader.CanEdit = true;
+            influencedHeader.IsEnabled = true;
         }
 
         private void influencedToolbar_Saving(object sender, EventArgs e)
@@ -506,7 +493,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
             influencedListBox.ItemsSource = null;
             influencedEditPanel.Visibility = Visibility.Collapsed;
 
-            influencedHeader.CanEdit = true;
+            influencedHeader.IsEnabled = true;
         }
 
         private void influencesHeader_ButtonClick(object sender, RoutedEventArgs e)
@@ -531,7 +518,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
             influencesItemsControl.Visibility = Visibility.Visible;
             influencesEditPanel.Visibility = Visibility.Collapsed;
 
-            influencesHeader.CanEdit = true;
+            influencesHeader.IsEnabled = true;
         }
 
         private void influencesToolbar_Saving(object sender, EventArgs e)
@@ -563,7 +550,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
             influencesListBox.ItemsSource = null;
             influencesEditPanel.Visibility = Visibility.Collapsed;
 
-            influencesHeader.CanEdit = true;
+            influencesHeader.IsEnabled = true;
         }
 
         private void linksHeader_ButtonClick(object sender, RoutedEventArgs e)
@@ -614,7 +601,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
             linksItemsControl.Visibility = Visibility.Visible;
             linksEditPanel.Visibility = Visibility.Collapsed;
 
-            linksHeader.CanEdit = true;
+            linksHeader.IsEnabled = true;
         }
 
         private void linksToolbar_Removing(object sender, EventArgs e)
@@ -667,7 +654,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
             linksListBox.ItemsSource = null;
             linksEditPanel.Visibility = Visibility.Collapsed;
 
-            linksHeader.CanEdit = true;
+            linksHeader.IsEnabled = true;
         }
 
         private void linkTextBox_LostFocus(object sender, RoutedEventArgs e)
@@ -700,36 +687,25 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
             App.ClassicalMusicContext.MergeOption = MergeOption.OverwriteChanges;
 
-            //var composerQuery = (DataServiceQuery<Composer>);
-            //App.ClassicalMusicContext.CreateQuery<Composer>("ComposerData").AddQueryOption("id", composerId);
-#if TRACE
-            App.ClassicalMusicContext.SendingRequest2 += ClassicalMusicContext_SendingRequest2;
-            App.ClassicalMusicContext.ReceivingResponse += ClassicalMusicContext_ReceivingResponse;
-#endif
-
             if (!App.ClassicalMusicContext.TryGetEntity(new Uri($"http://www.harrenstein.com/ClassicalMusic/ClassicalMusic.svc/Composers({composerId})"), out this.composer))
             {
                 this.composer = App.ClassicalMusicContext.Execute<Composer>(new Uri($"http://www.harrenstein.com/ClassicalMusic/ClassicalMusic.svc/Composers({composerId})")).Single();
             }
 
-            App.ClassicalMusicContext.LoadProperty(composer, "Compositions");
-            App.ClassicalMusicContext.LoadProperty(composer, "ComposerBiography");
-            App.ClassicalMusicContext.LoadProperty(composer, "ComposerImages");
-            App.ClassicalMusicContext.LoadProperty(composer, "Influences");
-            App.ClassicalMusicContext.LoadProperty(composer, "Influenced");
-            App.ClassicalMusicContext.LoadProperty(composer, "Samples");
-            App.ClassicalMusicContext.LoadProperty(composer, "Links");
-
-#if TRACE
-            Console.WriteLine($"Data Loaded: {performanceStopwatch.Elapsed.TotalSeconds}");
-#endif
+            App.ClassicalMusicContext.LoadProperty(composer, nameof(composer.Compositions));
+            App.ClassicalMusicContext.LoadProperty(composer, nameof(composer.Biography));
+            App.ClassicalMusicContext.LoadProperty(composer, nameof(composer.Images));
+            App.ClassicalMusicContext.LoadProperty(composer, nameof(composer.Influences));
+            App.ClassicalMusicContext.LoadProperty(composer, nameof(composer.Influenced));
+            App.ClassicalMusicContext.LoadProperty(composer, nameof(composer.Samples));
+            App.ClassicalMusicContext.LoadProperty(composer, nameof(composer.Links));
 
             ComposerNameTextBlock.Text = NameUtility.ToFirstLast(composer.Name);
 
             bornTextBlock.Text = CreateBornText();
             diedTextBlock.Text = CreateDiedText();
 
-            biographyScrollViewer.Document = BiographyUtility.LoadDocument(composer.ComposerBiography?.Biography);
+            biographyScrollViewer.Document = BiographyUtility.LoadDocument(composer.Biography.Text);
 
             ComposerFlagsItemsControl.ItemsSource = composer.Nationalities;
 
@@ -784,7 +760,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
             linksItemsControl.Visibility = linksVisibility;
             linksHeader.Visibility = linksVisibility;
 
-            if (composer.ComposerImages.Count == 0)
+            if (composer.Images.Count == 0)
             {
                 var composerImage = new ComposerImage();
                 composerImage.Composer = composer;
@@ -793,21 +769,22 @@ namespace NathanHarrenstein.MusicTimeline.Views
             }
             else
             {
-                foreach (var image in composer.ComposerImages)
+                foreach (var image in composer.Images)
                 {
                     image.Composer = composer;
                 }
 
 
-                imagesListBox.ItemsSource = composer.ComposerImages;
+                imagesListBox.ItemsSource = composer.Images;
             }
 
             imagesListBox.SelectedIndex = 0;
 
             foreach (var sample in composer.Samples)
             {
+
                 var mp3PlaylistItem = new PlaylistItem();
-                mp3PlaylistItem.GetStream = () => new NetworkMp3FileReader(App.ClassicalMusicContext.GetReadStream(sample).Stream);
+                mp3PlaylistItem.StreamUri = App.ClassicalMusicContext.GetReadStreamUri(sample);
                 mp3PlaylistItem.Metadata.Add("Title", sample.Title);
                 mp3PlaylistItem.Metadata.Add("Artist", sample.Artists);
 
@@ -822,27 +799,6 @@ namespace NathanHarrenstein.MusicTimeline.Views
             compositionsPanel.Compositions = composer.Compositions;
 
             ProgressBar.Visibility = Visibility.Collapsed;
-        }
-
-        private void ClassicalMusicContext_ReadingEntity(object sender, ReadingWritingEntityEventArgs e)
-        {
-            Console.WriteLine($"Entities Read: {performanceStopwatch.Elapsed.TotalSeconds}");
-
-            App.ClassicalMusicContext.ReadingEntity -= ClassicalMusicContext_ReadingEntity;
-        }
-
-        private void ClassicalMusicContext_SendingRequest2(object sender, SendingRequest2EventArgs e)
-        {
-            Console.WriteLine($"Request Sent: {performanceStopwatch.Elapsed.TotalSeconds}");
-
-            App.ClassicalMusicContext.SendingRequest2 -= ClassicalMusicContext_SendingRequest2;
-        }
-
-        private void ClassicalMusicContext_ReceivingResponse(object sender, ReceivingResponseEventArgs e)
-        {
-            Console.WriteLine($"Received Response: {performanceStopwatch.Elapsed.TotalSeconds}");
-
-            App.ClassicalMusicContext.ReceivingResponse -= ClassicalMusicContext_ReceivingResponse;
         }
 
         private void mediaHeader_ButtonClick(object sender, RoutedEventArgs e)
@@ -894,14 +850,14 @@ namespace NathanHarrenstein.MusicTimeline.Views
             mediaItemsControl.Visibility = Visibility.Visible;
             mediaEditPanel.Visibility = Visibility.Collapsed;
 
-            mediaHeader.CanEdit = true;
+            mediaHeader.IsEnabled = true;
         }
 
         private void mediaToolbar_Removing(object sender, EventArgs e)
         {
             var link = (Link)mediaListBox.SelectedItem;
 
-            App.ClassicalMusicContext.DeleteLink(composer, "Links", link);
+            App.ClassicalMusicContext.DeleteLink(composer, nameof(composer.Links), link);
 
             composer.Links.Remove(link);
 
@@ -947,7 +903,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
             mediaListBox.ItemsSource = null;
             mediaEditPanel.Visibility = Visibility.Collapsed;
 
-            mediaHeader.CanEdit = true;
+            mediaHeader.IsEnabled = true;
         }
 
         private void RemoveComposition(Composition selectedComposition)
@@ -964,18 +920,18 @@ namespace NathanHarrenstein.MusicTimeline.Views
                 }
             }
 
-            foreach (var compositionCollection in composer.CompositionCollections)
-            {
-                foreach (var composition in compositionCollection.Compositions)
-                {
-                    if (composition == selectedComposition)
-                    {
-                        compositionCollection.Compositions.Remove(composition);
+            //foreach (var compositionCollection in composer.CompositionCollections)
+            //{
+            //    foreach (var composition in compositionCollection.Compositions)
+            //    {
+            //        if (composition == selectedComposition)
+            //        {
+            //            compositionCollection.Compositions.Remove(composition);
 
-                        return;
-                    }
-                }
-            }
+            //            return;
+            //        }
+            //    }
+            //}
 
             return;
         }
@@ -994,7 +950,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
             var composerImage = (ComposerImage)image.DataContext;
             var converter = new ComposerToBitmapImageConverter();
 
-            image.Source = converter.Convert(composerImage.Composer, new Converters.ComposerToBitmapImageConverterSettings(composerImage.ComposerImageId, true));
+            image.Source = converter.Convert(composerImage.Composer, new ComposerToBitmapImageConverterSettings(composerImage.ComposerImageId, true));
         }
 
         private void selectedImage_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -1003,7 +959,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
             var composerImage = (ComposerImage)image.DataContext;
             var converter = new ComposerToBitmapImageConverter();
 
-            image.Source = converter.Convert(composerImage.Composer, new Converters.ComposerToBitmapImageConverterSettings(composerImage.ComposerImageId, false));
+            image.Source = converter.Convert(composerImage.Composer, new ComposerToBitmapImageConverterSettings(composerImage.ComposerImageId, false));
         }
     }
 }

@@ -11,48 +11,36 @@ namespace NathanHarrenstein.Timeline
 
         public double ToPixels(ExtendedDateTimeInterval dates)
         {
-            switch (TimeRulerUnit)
+            if (dates == null)
             {
-                case TimeRulerUnit.Day:
-                    return dates.Span().TotalDays * TimeUnitWidth;
-
-                case TimeRulerUnit.Hour:
-                    return dates.Span().TotalHours * TimeUnitWidth;
-
-                case TimeRulerUnit.Minute:
-                    return dates.Span().TotalMinutes * TimeUnitWidth;
-
-                case TimeRulerUnit.Second:
-                    return dates.Span().TotalSeconds * TimeUnitWidth;
-
-                default:
-                    return double.NaN;
+                throw new ArgumentNullException("dates");
             }
+
+            return ToPixels(dates.Span());
         }
 
         public double ToPixels(ExtendedDateTime start, ExtendedDateTime end)
         {
-            switch (TimeRulerUnit)
+            if (start == null)
             {
-                case TimeRulerUnit.Day:
-                    return (end - start).TotalDays * TimeUnitWidth;
-
-                case TimeRulerUnit.Hour:
-                    return (end - start).TotalHours * TimeUnitWidth;
-
-                case TimeRulerUnit.Minute:
-                    return (end - start).TotalMinutes * TimeUnitWidth;
-
-                case TimeRulerUnit.Second:
-                    return (end - start).TotalSeconds * TimeUnitWidth;
-
-                default:
-                    return double.NaN;
+                throw new ArgumentNullException("start");
             }
+
+            if (end == null)
+            {
+                throw new ArgumentNullException("end");
+            }
+
+            return ToPixels(end - start);
         }
 
         public double ToPixels(TimeSpan timeSpan)
         {
+            if (timeSpan == null)
+            {
+                throw new ArgumentNullException("timeSpan");
+            }
+
             switch (TimeRulerUnit)
             {
                 case TimeRulerUnit.Day:
@@ -79,6 +67,11 @@ namespace NathanHarrenstein.Timeline
 
         public TimeSpan ToTimeSpan(double pixels)
         {
+            if (double.IsNaN(TimeUnitWidth) || TimeUnitWidth == 0.0)
+            {
+                throw new InvalidOperationException("Could not calculate TimeSpan because TimeUnitWidth was an invalid number.");
+            }
+
             switch (TimeRulerUnit)
             {
                 case TimeRulerUnit.Day:
@@ -98,29 +91,34 @@ namespace NathanHarrenstein.Timeline
             }
         }
 
-        public TimeSpan ToTimeSpan(int timeUnitCount)
+        public TimeSpan ToTimeSpan(int timeUnits)
         {
             switch (TimeRulerUnit)
             {
                 case TimeRulerUnit.Day:
-                    return TimeSpan.FromDays(timeUnitCount);
+                    return TimeSpan.FromDays(timeUnits);
 
                 case TimeRulerUnit.Hour:
-                    return TimeSpan.FromHours(timeUnitCount);
+                    return TimeSpan.FromHours(timeUnits);
 
                 case TimeRulerUnit.Minute:
-                    return TimeSpan.FromMinutes(timeUnitCount);
+                    return TimeSpan.FromMinutes(timeUnits);
 
                 case TimeRulerUnit.Second:
-                    return TimeSpan.FromSeconds(timeUnitCount);
+                    return TimeSpan.FromSeconds(timeUnits);
 
                 default:
                     return TimeSpan.Zero;
             }
         }
 
-        public int ToUnitCount(double pixels)
+        public int ToTimeUnits(double pixels)
         {
+            if (TimeUnitWidth == 0 || double.IsNaN(TimeUnitWidth))
+            {
+                throw new InvalidOperationException("Could not calculate TimeUnits because TimeUnitWidth was an invalid number.");
+            }
+
             switch (TimeRulerUnit)
             {
                 case TimeRulerUnit.Day:
@@ -140,7 +138,7 @@ namespace NathanHarrenstein.Timeline
             }
         }
 
-        public int ToUnitCount(ExtendedTimeSpan timeSpan)
+        public int ToTimeUnits(ExtendedTimeSpan timeSpan)
         {
             switch (TimeRulerUnit)
             {

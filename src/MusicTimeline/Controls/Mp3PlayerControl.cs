@@ -10,7 +10,7 @@ namespace NathanHarrenstein.MusicTimeline.Controls
 {
     public class Mp3PlayerControl : Control, IDisposable
     {
-        private AudioPlayer mp3Player;
+        private Mp3StreamPlayer mp3Player;
         private ToggleButton muteToggleButton;
         private TextBlock nowPlayingArtistTextBlock;
         private TextBlock nowPlayingTitleTextBlock;
@@ -28,7 +28,7 @@ namespace NathanHarrenstein.MusicTimeline.Controls
 
         public Mp3PlayerControl()
         {
-            mp3Player = new AudioPlayer();
+            mp3Player = new Mp3StreamPlayer();
         }
 
         public Playlist Playlist
@@ -41,7 +41,7 @@ namespace NathanHarrenstein.MusicTimeline.Controls
 
         public override void OnApplyTemplate()
         {
-            if (Template.VisualTree != null)
+            if (isTemplateApplied)
             {
                 return;
             }
@@ -78,6 +78,8 @@ namespace NathanHarrenstein.MusicTimeline.Controls
             CommandManager.AddCanExecuteHandler(playNextButton, new CanExecuteRoutedEventHandler(playNextButton_CanExecute));
             CommandManager.AddExecutedHandler(muteToggleButton, new ExecutedRoutedEventHandler(muteToggleButton_Executed));
             CommandManager.AddCanExecuteHandler(muteToggleButton, new CanExecuteRoutedEventHandler(muteToggleButton_CanExecute));
+
+            isTemplateApplied = true;
         }
 
         public void Play()
@@ -113,7 +115,12 @@ namespace NathanHarrenstein.MusicTimeline.Controls
 
         private void mp3Player_PlaybackStateChanged(object sender, PlaybackStateEventArgs e)
         {
-            playPauseToggleButton.IsChecked = e.PlaybackState == PlaybackState.Playing;
+            playPauseToggleButton.IsChecked = e.PlaybackState == StreamingPlaybackState.Playing;
+
+            if (e.PlaybackState == StreamingPlaybackState.Stopped)
+            {
+                mp3Player.Next();
+            }
 
             CommandManager.InvalidateRequerySuggested();
         }
@@ -124,7 +131,7 @@ namespace NathanHarrenstein.MusicTimeline.Controls
             progressSlider.Maximum = e.TimeSpan.Ticks;
         }
 
-        private void mp3Player_TrackChanged(object sender, TrackEventArgs e)
+        private void mp3Player_TrackChanged(object sender, EventArgs e)
         {
             string title;
             string artist;
@@ -153,7 +160,7 @@ namespace NathanHarrenstein.MusicTimeline.Controls
 
         private void muteToggleButton_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            mp3Player.ToggleMute();
+            mp3Player.IsMuted = !mp3Player.IsMuted;
         }
 
         private void playNextButton_CanExecute(object sender, CanExecuteRoutedEventArgs e)
@@ -176,7 +183,7 @@ namespace NathanHarrenstein.MusicTimeline.Controls
 
         private void playPauseToggleButton_Executed(object sender, ExecutedRoutedEventArgs e)
         {
-            if (mp3Player.PlaybackState == PlaybackState.Playing)
+            if (mp3Player.PlaybackState == StreamingPlaybackState.Playing)
             {
                 mp3Player.Pause();
 
@@ -206,17 +213,20 @@ namespace NathanHarrenstein.MusicTimeline.Controls
         private void progressSlider_DragCompleted(object sender, RoutedEventArgs e)
         {
             mp3Player.CurrentTime = new TimeSpan((long)progressSlider.Value);
-            mp3Player.Play();
+
+            mp3Player.CurrentTimeChanged += mp3Player_CurrentTimeChanged;
+            mp3Player.TotalTimeChanged += mp3Player_TotalTimeChanged;
         }
 
         private void progressSlider_DragStarted(object sender, RoutedEventArgs e)
         {
-            mp3Player.Stop();
+            mp3Player.CurrentTimeChanged -= mp3Player_CurrentTimeChanged;
+            mp3Player.TotalTimeChanged -= mp3Player_TotalTimeChanged;
         }
 
         private void progressSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            progressStatus.Text = TimeSpan.FromTicks((long)progressSlider.Value).ToString(@"mm\:ss");
+            progressStatus.Text = $"{TimeSpan.FromTicks((long)progressSlider.Value).ToString(@"mm\:ss")} / {TimeSpan.FromTicks((long)progressSlider.Maximum).ToString(@"mm\:ss")}";
         }
 
         private void volumeSlider_ValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -228,22 +238,24 @@ namespace NathanHarrenstein.MusicTimeline.Controls
 
             mp3Player.Volume = (float)e.NewValue;
         }
-
+       
         private bool isDisposed = false;
+        private bool isTemplateApplied;
 
         protected virtual void Dispose(bool disposing)
         {
-            if (!isDisposed)
+            if (isDisposed)
             {
-                if (disposing)
-                {
-
-                }
-
-                mp3Player.Dispose();
-
-                isDisposed = true;
+                return;
             }
+
+            if (mp3Player != null)
+            {
+                mp3Player.PlaybackStateChanged -= mp3Player_PlaybackStateChanged;
+                mp3Player.Stop();
+            }
+
+            isDisposed = true;
         }
 
         ~Mp3PlayerControl()

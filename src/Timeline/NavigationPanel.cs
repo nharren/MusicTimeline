@@ -77,21 +77,24 @@ namespace NathanHarrenstein.Timeline
 
         protected override Size ArrangeOverride(Size finalSize)
         {
-            var pixelsUsed = 0d;
-            var totalSeconds = Dates.Span().TotalSeconds;
-
-            foreach (FrameworkElement child in Children)
+            if (Dates != null )
             {
-                var era = (ITimelineEra)child.DataContext;
-                var width = Math.Round((era.Dates.Span().TotalSeconds / totalSeconds) * finalSize.Width);
+                var pixelsUsed = 0d;
+                var totalSeconds = Dates.Span().TotalSeconds;
 
-                child.Arrange(new Rect(
-                    pixelsUsed,
-                    0,
-                    width,
-                    finalSize.Height));
+                foreach (FrameworkElement child in Children)
+                {
+                    var era = (ITimelineEra)child.DataContext;
+                    var width = Math.Round((era.Dates.Span().TotalSeconds / totalSeconds) * finalSize.Width);
 
-                pixelsUsed += width;
+                    child.Arrange(new Rect(
+                        pixelsUsed,
+                        0,
+                        width,
+                        finalSize.Height));
+
+                    pixelsUsed += width;
+                }
             }
 
             return finalSize;

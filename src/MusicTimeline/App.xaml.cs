@@ -1,10 +1,15 @@
-﻿using NathanHarrenstein.MusicTimeline.Data;
+﻿using HTMLConverter;
+using NathanHarrenstein.MusicTimeline.Data;
 using NathanHarrenstein.MusicTimeline.Logging;
+using NathanHarrenstein.MusicTimeline.Scrapers;
 using NathanHarrenstein.MusicTimeline.Security;
+using NathanHarrenstein.MusicTimeline.Utilities;
 using NathanHarrenstein.MusicTimeline.Views;
 using System;
+using System.ComponentModel;
 using System.Data.Services.Client;
 using System.IO;
+using System.Linq;
 using System.Net;
 using System.Reflection;
 using System.Text;
@@ -12,11 +17,26 @@ using System.Windows;
 
 namespace NathanHarrenstein.MusicTimeline
 {
-    public partial class App : Application
+    public partial class App : Application, INotifyPropertyChanged
     {
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+
         public static ClassicalMusicEntities ClassicalMusicContext { get; set; }
-        public Credential Credential { get; private set; }
+        public static Credential Credential { get; private set; }
         public static Logger Logger { get; private set; }
+        public static bool HasCredential
+        {
+            get
+            {
+                return Credential != null;
+            }
+        }
 
         static App()
         {
@@ -30,8 +50,6 @@ namespace NathanHarrenstein.MusicTimeline
 
         private static void ClassicalMusicContext_SendingRequest2(object sender, SendingRequest2EventArgs e)
         {
-            var currentApp = (App)App.Current;
-
             var requestMessage = e.RequestMessage as HttpWebRequestMessage;
 
             if (requestMessage == null)
@@ -42,11 +60,14 @@ namespace NathanHarrenstein.MusicTimeline
             var request = requestMessage.HttpWebRequest;
             request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
 
-            var authorizationString = $"{currentApp.Credential?.UserName}:{currentApp.Credential?.Password}";
-            var authorizationBytes = Encoding.Default.GetBytes(authorizationString);
-            var authorizationBase64String = Convert.ToBase64String(authorizationBytes);
+            if (HasCredential)
+            {
+                var authorizationString = $"{App.Credential.UserName}:{App.Credential.Password}";
+                var authorizationBytes = Encoding.Default.GetBytes(authorizationString);
+                var authorizationBase64String = Convert.ToBase64String(authorizationBytes);
 
-            requestMessage.SetHeader("Authorization", $"Basic {authorizationBase64String}");
+                requestMessage.SetHeader("Authorization", $"Basic {authorizationBase64String}");
+            } 
         }
 
         protected override void OnStartup(StartupEventArgs e)
@@ -56,15 +77,20 @@ namespace NathanHarrenstein.MusicTimeline
             MainWindow = new MainWindow();
             MainWindow.Show();
 
-            Credential = CredentialManager.ReadCredential("MusicTimeline");
-
-            if (Credential == null)
+            if (e.Args.Length > 0 && e.Args[0] == "-l")
             {
-                var loginDialog = new LoginDialog();
+                Credential = CredentialManager.ReadCredential("MusicTimeline");
 
-                if (loginDialog.ShowDialog() == true)
+                if (Credential == null)
                 {
-                    CredentialManager.WriteCredential("MusicTimeline", loginDialog.UserName, loginDialog.Password);
+                    var loginDialog = new LoginDialog();
+
+                    if (loginDialog.ShowDialog() == true)
+                    {
+                        CredentialManager.WriteCredential("MusicTimeline", loginDialog.UserName, loginDialog.Password);
+
+                        OnPropertyChanged("HasCredential");
+                    }
                 }
             }
         }

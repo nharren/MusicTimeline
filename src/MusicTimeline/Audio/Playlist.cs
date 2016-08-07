@@ -8,22 +8,14 @@ using System.Linq;
 
 namespace NathanHarrenstein.MusicTimeline.Audio
 {
-    public class Playlist : IList<PlaylistItem>, IDisposable
+    public class Playlist : IList<PlaylistItem>
     {
         private LinkedListNode<PlaylistItem> currentNode;
         private LinkedList<PlaylistItem> internalPlaylist;
 
-        private bool isDisposed;
-        private WaveStream currentStream;
-
         public Playlist()
         {
             internalPlaylist = new LinkedList<PlaylistItem>();
-        }
-
-        ~Playlist()
-        {
-            Dispose(false);
         }
 
         public event EventHandler<ItemChangedEventArgs<PlaylistItem>> CurrentItemChanged;
@@ -43,14 +35,6 @@ namespace NathanHarrenstein.MusicTimeline.Audio
             get
             {
                 return currentNode?.Value;
-            }
-        }
-
-        public WaveStream CurrentStream
-        {
-            get
-            {
-                return currentStream;
             }
         }
 
@@ -94,7 +78,6 @@ namespace NathanHarrenstein.MusicTimeline.Audio
             if (internalPlaylist.Count == 1)
             {
                 currentNode = internalPlaylist.Last;
-                currentStream = currentNode.Value.GetStream();
 
                 OnCurrentItemChanged(new ItemChangedEventArgs<PlaylistItem>(null, CurrentItem));
             }
@@ -102,6 +85,11 @@ namespace NathanHarrenstein.MusicTimeline.Audio
 
         public void Clear()
         {
+            if (internalPlaylist == null)
+            {
+                return;
+            }
+
             var playlistItems = internalPlaylist.ToArray();
 
             foreach (var playlistItem in playlistItems)
@@ -111,15 +99,13 @@ namespace NathanHarrenstein.MusicTimeline.Audio
                 OnItemRemoved(new ItemRemovedEventArgs<PlaylistItem>(playlistItem));
             }
 
-            currentStream.Dispose();
-
             var oldItem = CurrentItem;
 
             currentNode = null;
 
             if (oldItem != null)
             {
-                OnCurrentItemChanged(new ItemChangedEventArgs<PlaylistItem>(oldItem, null)); 
+                OnCurrentItemChanged(new ItemChangedEventArgs<PlaylistItem>(oldItem, null));
             }
         }
 
@@ -131,12 +117,6 @@ namespace NathanHarrenstein.MusicTimeline.Audio
         public void CopyTo(PlaylistItem[] array, int arrayIndex)
         {
             internalPlaylist.CopyTo(array, arrayIndex);
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
         }
 
         public IEnumerator<PlaylistItem> GetEnumerator()
@@ -216,30 +196,14 @@ namespace NathanHarrenstein.MusicTimeline.Audio
             OnItemAdded(new ItemAddedEventArgs<PlaylistItem>(item));
         }
 
-        public void Refresh()
-        {
-            if (currentStream != null)
-            {
-                currentStream.Dispose();
-            }
-
-            currentStream = currentNode.Value.GetStream();
-        }
-
         public bool Next()
         {
-            if (currentNode.Next == null)
+            if (currentNode == null || currentNode.Next == null)
             {
                 return false;
             }
 
-            if (currentStream != null)
-            {
-                currentStream.Dispose();
-            }
-
             currentNode = currentNode.Next;
-            currentStream = currentNode.Value.GetStream();
 
             OnCurrentItemChanged(new ItemChangedEventArgs<PlaylistItem>(currentNode.Previous.Value, CurrentItem));
 
@@ -248,14 +212,9 @@ namespace NathanHarrenstein.MusicTimeline.Audio
 
         public bool Previous()
         {
-            if (currentNode.Previous == null)
+            if (currentNode == null || currentNode.Previous == null)
             {
                 return false;
-            }
-
-            if (currentStream != null)
-            {
-                currentStream.Dispose();
             }
 
             currentNode = currentNode.Previous;
@@ -274,13 +233,6 @@ namespace NathanHarrenstein.MusicTimeline.Audio
 
             currentNode = currentNode.Next ?? currentNode.Previous;
 
-            if (currentStream != null)
-            {
-                currentStream.Dispose();
-            }
-
-            currentStream = currentNode.Value.GetStream();
-
             OnCurrentItemChanged(new ItemChangedEventArgs<PlaylistItem>(currentNode.Previous.Value, CurrentItem));
 
             return result;
@@ -296,22 +248,6 @@ namespace NathanHarrenstein.MusicTimeline.Audio
             }
 
             Remove(currentNode.Value);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!isDisposed)
-            {
-                if (disposing)
-                {
-                    if (currentStream != null)
-                    {
-                        currentStream.Dispose();
-                    }
-                }               
-
-                isDisposed = true;
-            }
         }
 
         protected virtual void OnCurrentItemChanged(ItemChangedEventArgs<PlaylistItem> e)

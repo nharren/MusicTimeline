@@ -49,7 +49,6 @@ namespace NathanHarrenstein.MusicTimeline.Controls
             }
         }
 
-        public bool CanEdit { get; set; } = true;
 
         public string Text
         {
@@ -63,6 +62,23 @@ namespace NathanHarrenstein.MusicTimeline.Controls
                 SetValue(TextProperty, value);
             }
         }
+
+        public Thickness ButtonMargin
+        {
+            get
+            {
+                return (Thickness)GetValue(ButtonMarginProperty);
+            }
+
+            set
+            {
+                SetValue(ButtonMarginProperty, value);
+            }
+        }
+
+        public static readonly DependencyProperty ButtonMarginProperty = DependencyProperty.Register("ButtonMargin", typeof(Thickness), typeof(EditableHeaderPanel), new PropertyMetadata(new Thickness()));
+
+
 
         public Brush UnderlineForeground
         {
@@ -111,11 +127,7 @@ namespace NathanHarrenstein.MusicTimeline.Controls
             }
 
             editButton = (Button)Template.FindName("editButton", this);
-            editButton.Visibility = Visibility.Collapsed;
-
             editButton.Click += editButton_Click;
-            MouseEnter += EditableHeaderPanel_MouseEnter;
-            MouseLeave += EditableHeaderPanel_MouseLeave;
         }
 
         protected virtual void OnButtonClick(RoutedEventArgs e)
@@ -123,22 +135,10 @@ namespace NathanHarrenstein.MusicTimeline.Controls
             ButtonClick?.Invoke(this, e);
         }
 
-        private void EditableHeaderPanel_MouseEnter(object sender, MouseEventArgs e)
-        {
-            if (CanEdit)
-            {
-                editButton.Visibility = Visibility.Visible;
-            }
-        }
-
-        private void EditableHeaderPanel_MouseLeave(object sender, MouseEventArgs e)
-        {
-            editButton.Visibility = Visibility.Collapsed;
-        }
 
         private void editButton_Click(object sender, RoutedEventArgs e)
         {
-            CanEdit = false;
+            IsEnabled = false;
 
             OnButtonClick(e);
         }

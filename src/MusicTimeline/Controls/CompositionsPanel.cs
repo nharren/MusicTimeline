@@ -90,8 +90,8 @@ namespace NathanHarrenstein.MusicTimeline.Controls
             foreach (var composition in compositions)
             {
                 var compositionItemTextBlock = new TextBlock();
-                compositionItemTextBlock.FontFamily = new FontFamily("Cambria");
-                compositionItemTextBlock.FontSize = 17.333;
+                compositionItemTextBlock.FontFamily = new FontFamily("Segoe UI");
+                compositionItemTextBlock.FontSize = 15.333333;
                 compositionItemTextBlock.Foreground = (SolidColorBrush)App.Current.Resources["ForegroundBrush"];
                 compositionItemTextBlock.Text = BuildCompositionItemName(composition);
 
@@ -136,9 +136,9 @@ namespace NathanHarrenstein.MusicTimeline.Controls
         private void BuildYearHeader(string header)
         {
             var yearHeaderTextBlock = new TextBlock();
-            yearHeaderTextBlock.FontFamily = new FontFamily("Cambria");
-            yearHeaderTextBlock.FontSize = 24;
-            yearHeaderTextBlock.Foreground = (SolidColorBrush)App.Current.Resources["HeaderBrush"];
+            yearHeaderTextBlock.FontFamily = new FontFamily("Segoe UI Light");
+            yearHeaderTextBlock.FontSize = 21.333333;
+            yearHeaderTextBlock.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#88B0C4DE"));
             yearHeaderTextBlock.Text = header;
             yearHeaderTextBlock.Margin = new Thickness(0, 10, 0, 0);
 

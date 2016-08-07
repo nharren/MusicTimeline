@@ -16,7 +16,7 @@ namespace NathanHarrenstein.MusicTimeline.Controls
         {
             if (selector == null)
             {
-                selector = VisualTreeUtility.FindVisualParent<Selector>(container);
+                selector = VisualTreeUtility.FindAncestor<Selector>(container);
             }
 
             if (item == selector.SelectedItem)

@@ -9,7 +9,7 @@
 //------------------------------------------------------------------------------
 
 // Original file name:
-// Generation date: 7/18/2016 5:06:08 PM
+// Generation date: 7/26/2016 12:26:41 AM
 namespace NathanHarrenstein.MusicTimeline.Data
 {
     
@@ -112,23 +112,6 @@ namespace NathanHarrenstein.MusicTimeline.Data
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
         private global::System.Data.Services.Client.DataServiceQuery<Composer> _Composers;
         /// <summary>
-        /// There are no comments for ComposerBiographies in the schema.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public global::System.Data.Services.Client.DataServiceQuery<ComposerBiography> ComposerBiographies
-        {
-            get
-            {
-                if ((this._ComposerBiographies == null))
-                {
-                    this._ComposerBiographies = base.CreateQuery<ComposerBiography>("ComposerBiographies");
-                }
-                return this._ComposerBiographies;
-            }
-        }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        private global::System.Data.Services.Client.DataServiceQuery<ComposerBiography> _ComposerBiographies;
-        /// <summary>
         /// There are no comments for ComposerImages in the schema.
         /// </summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
@@ -162,23 +145,6 @@ namespace NathanHarrenstein.MusicTimeline.Data
         }
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
         private global::System.Data.Services.Client.DataServiceQuery<Composition> _Compositions;
-        /// <summary>
-        /// There are no comments for CompositionCollections in the schema.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public global::System.Data.Services.Client.DataServiceQuery<CompositionCollection> CompositionCollections
-        {
-            get
-            {
-                if ((this._CompositionCollections == null))
-                {
-                    this._CompositionCollections = base.CreateQuery<CompositionCollection>("CompositionCollections");
-                }
-                return this._CompositionCollections;
-            }
-        }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        private global::System.Data.Services.Client.DataServiceQuery<CompositionCollection> _CompositionCollections;
         /// <summary>
         /// There are no comments for Eras in the schema.
         /// </summary>
@@ -248,23 +214,6 @@ namespace NathanHarrenstein.MusicTimeline.Data
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
         private global::System.Data.Services.Client.DataServiceQuery<Location> _Locations;
         /// <summary>
-        /// There are no comments for Movements in the schema.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public global::System.Data.Services.Client.DataServiceQuery<Movement> Movements
-        {
-            get
-            {
-                if ((this._Movements == null))
-                {
-                    this._Movements = base.CreateQuery<Movement>("Movements");
-                }
-                return this._Movements;
-            }
-        }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        private global::System.Data.Services.Client.DataServiceQuery<Movement> _Movements;
-        /// <summary>
         /// There are no comments for Nationalities in the schema.
         /// </summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
@@ -299,6 +248,40 @@ namespace NathanHarrenstein.MusicTimeline.Data
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
         private global::System.Data.Services.Client.DataServiceQuery<Sample> _Samples;
         /// <summary>
+        /// There are no comments for ComposerBiographies in the schema.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public global::System.Data.Services.Client.DataServiceQuery<ComposerBiography> ComposerBiographies
+        {
+            get
+            {
+                if ((this._ComposerBiographies == null))
+                {
+                    this._ComposerBiographies = base.CreateQuery<ComposerBiography>("ComposerBiographies");
+                }
+                return this._ComposerBiographies;
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        private global::System.Data.Services.Client.DataServiceQuery<ComposerBiography> _ComposerBiographies;
+        /// <summary>
+        /// There are no comments for ComposerShortBiographies in the schema.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public global::System.Data.Services.Client.DataServiceQuery<ComposerShortBiography> ComposerShortBiographies
+        {
+            get
+            {
+                if ((this._ComposerShortBiographies == null))
+                {
+                    this._ComposerShortBiographies = base.CreateQuery<ComposerShortBiography>("ComposerShortBiographies");
+                }
+                return this._ComposerShortBiographies;
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        private global::System.Data.Services.Client.DataServiceQuery<ComposerShortBiography> _ComposerShortBiographies;
+        /// <summary>
         /// There are no comments for Catalogs in the schema.
         /// </summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
@@ -323,14 +306,6 @@ namespace NathanHarrenstein.MusicTimeline.Data
             base.AddObject("Composers", composer);
         }
         /// <summary>
-        /// There are no comments for ComposerBiographies in the schema.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public void AddToComposerBiographies(ComposerBiography composerBiography)
-        {
-            base.AddObject("ComposerBiographies", composerBiography);
-        }
-        /// <summary>
         /// There are no comments for ComposerImages in the schema.
         /// </summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
@@ -345,14 +320,6 @@ namespace NathanHarrenstein.MusicTimeline.Data
         public void AddToCompositions(Composition composition)
         {
             base.AddObject("Compositions", composition);
-        }
-        /// <summary>
-        /// There are no comments for CompositionCollections in the schema.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public void AddToCompositionCollections(CompositionCollection compositionCollection)
-        {
-            base.AddObject("CompositionCollections", compositionCollection);
         }
         /// <summary>
         /// There are no comments for Eras in the schema.
@@ -387,14 +354,6 @@ namespace NathanHarrenstein.MusicTimeline.Data
             base.AddObject("Locations", location);
         }
         /// <summary>
-        /// There are no comments for Movements in the schema.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public void AddToMovements(Movement movement)
-        {
-            base.AddObject("Movements", movement);
-        }
-        /// <summary>
         /// There are no comments for Nationalities in the schema.
         /// </summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
@@ -409,6 +368,22 @@ namespace NathanHarrenstein.MusicTimeline.Data
         public void AddToSamples(Sample sample)
         {
             base.AddObject("Samples", sample);
+        }
+        /// <summary>
+        /// There are no comments for ComposerBiographies in the schema.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public void AddToComposerBiographies(ComposerBiography composerBiography)
+        {
+            base.AddObject("ComposerBiographies", composerBiography);
+        }
+        /// <summary>
+        /// There are no comments for ComposerShortBiographies in the schema.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public void AddToComposerShortBiographies(ComposerShortBiography composerShortBiography)
+        {
+            base.AddObject("ComposerShortBiographies", composerShortBiography);
         }
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
         private abstract class GeneratedEdmModel
@@ -437,296 +412,245 @@ namespace NathanHarrenstein.MusicTimeline.Data
                 "ble=\"false\" /><NavigationProperty Name=\"Catalog\" Relationship=\"ClassicalMusicMod" +
                 "el.FK_CatalogNumber_Catalog\" ToRole=\"Catalog\" FromRole=\"CatalogNumber\" /><Naviga" +
                 "tionProperty Name=\"Compositions\" Relationship=\"ClassicalMusicModel.CompositionCa" +
-                "talogNumber\" ToRole=\"Composition\" FromRole=\"CatalogNumber\" /><NavigationProperty" +
-                " Name=\"CompositionCollections\" Relationship=\"ClassicalMusicModel.CompositionColl" +
-                "ectionCatalogNumber\" ToRole=\"CompositionCollection\" FromRole=\"CatalogNumber\" /><" +
-                "/EntityType><EntityType Name=\"Composer\"><Key><PropertyRef Name=\"ComposerId\" /></" +
-                "Key><Property Name=\"ComposerId\" Type=\"Edm.Int32\" Nullable=\"false\" p6:StoreGenera" +
-                "tedPattern=\"Identity\" xmlns:p6=\"http://schemas.microsoft.com/ado/2009/02/edm/ann" +
-                "otation\" /><Property Name=\"Name\" Type=\"Edm.String\" Nullable=\"false\" MaxLength=\"M" +
-                "ax\" FixedLength=\"false\" Unicode=\"true\" /><Property Name=\"Dates\" Type=\"Edm.String" +
-                "\" Nullable=\"false\" MaxLength=\"Max\" FixedLength=\"false\" Unicode=\"true\" /><Propert" +
-                "y Name=\"BirthLocationId\" Type=\"Edm.Int32\" /><Property Name=\"DeathLocationId\" Typ" +
-                "e=\"Edm.Int32\" /><Property Name=\"IsPopular\" Type=\"Edm.Boolean\" Nullable=\"false\" /" +
-                "><NavigationProperty Name=\"Catalogs\" Relationship=\"ClassicalMusicModel.FK_Catalo" +
-                "g_Composer\" ToRole=\"Catalog\" FromRole=\"Composer\" /><NavigationProperty Name=\"Bir" +
-                "thLocation\" Relationship=\"ClassicalMusicModel.FK_Composer_BirthLocation\" ToRole=" +
-                "\"Location\" FromRole=\"Composer\" /><NavigationProperty Name=\"DeathLocation\" Relati" +
-                "onship=\"ClassicalMusicModel.FK_Composer_DeathLocation\" ToRole=\"Location\" FromRol" +
-                "e=\"Composer\" /><NavigationProperty Name=\"ComposerBiography\" Relationship=\"Classi" +
-                "calMusicModel.FK_ComposerBiography_Composer\" ToRole=\"ComposerBiography\" FromRole" +
-                "=\"Composer\" /><NavigationProperty Name=\"ComposerImages\" Relationship=\"ClassicalM" +
-                "usicModel.FK_ComposerImage_Composer\" ToRole=\"ComposerImage\" FromRole=\"Composer\" " +
-                "/><NavigationProperty Name=\"Samples\" Relationship=\"ClassicalMusicModel.FK_Sample" +
-                "_Composer\" ToRole=\"Sample\" FromRole=\"Composer\" /><NavigationProperty Name=\"Eras\"" +
-                " Relationship=\"ClassicalMusicModel.ComposerEra\" ToRole=\"Era\" FromRole=\"Composer\"" +
-                " /><NavigationProperty Name=\"Influences\" Relationship=\"ClassicalMusicModel.Compo" +
-                "serInfluence\" ToRole=\"Influence\" FromRole=\"Influenced\" /><NavigationProperty Nam" +
-                "e=\"Influenced\" Relationship=\"ClassicalMusicModel.ComposerInfluence\" ToRole=\"Infl" +
-                "uenced\" FromRole=\"Influence\" /><NavigationProperty Name=\"Links\" Relationship=\"Cl" +
-                "assicalMusicModel.ComposerLink\" ToRole=\"Link\" FromRole=\"Composer\" /><NavigationP" +
-                "roperty Name=\"Nationalities\" Relationship=\"ClassicalMusicModel.ComposerNationali" +
-                "ty\" ToRole=\"Nationality\" FromRole=\"Composer\" /><NavigationProperty Name=\"Composi" +
-                "tionCollections\" Relationship=\"ClassicalMusicModel.CompositionCollectionComposer" +
-                "\" ToRole=\"CompositionCollection\" FromRole=\"Composer\" /><NavigationProperty Name=" +
-                "\"Compositions\" Relationship=\"ClassicalMusicModel.CompositionComposer\" ToRole=\"Co" +
-                "mposition\" FromRole=\"Composer\" /></EntityType><EntityType Name=\"ComposerBiograph" +
-                "y\"><Key><PropertyRef Name=\"ComposerId\" /></Key><Property Name=\"ComposerId\" Type=" +
-                "\"Edm.Int32\" Nullable=\"false\" /><Property Name=\"Biography\" Type=\"Edm.String\" Null" +
-                "able=\"false\" MaxLength=\"Max\" FixedLength=\"false\" Unicode=\"true\" /><NavigationPro" +
-                "perty Name=\"Composer\" Relationship=\"ClassicalMusicModel.FK_ComposerBiography_Com" +
-                "poser\" ToRole=\"Composer\" FromRole=\"ComposerBiography\" /></EntityType><EntityType" +
-                " Name=\"ComposerImage\" m:HasStream=\"true\"><Key><PropertyRef Name=\"ComposerImageId" +
-                "\" /></Key><Property Name=\"ComposerImageId\" Type=\"Edm.Int32\" Nullable=\"false\" p7:" +
-                "StoreGeneratedPattern=\"Identity\" xmlns:p7=\"http://schemas.microsoft.com/ado/2009" +
-                "/02/edm/annotation\" /><Property Name=\"ComposerId\" Type=\"Edm.Int32\" Nullable=\"fal" +
-                "se\" /><NavigationProperty Name=\"Composer\" Relationship=\"ClassicalMusicModel.FK_C" +
-                "omposerImage_Composer\" ToRole=\"Composer\" FromRole=\"ComposerImage\" /></EntityType" +
-                "><EntityType Name=\"Composition\"><Key><PropertyRef Name=\"CompositionId\" /></Key><" +
-                "Property Name=\"CompositionId\" Type=\"Edm.Int32\" Nullable=\"false\" p6:StoreGenerate" +
-                "dPattern=\"Identity\" xmlns:p6=\"http://schemas.microsoft.com/ado/2009/02/edm/annot" +
-                "ation\" /><Property Name=\"Name\" Type=\"Edm.String\" Nullable=\"false\" MaxLength=\"Max" +
-                "\" FixedLength=\"false\" Unicode=\"true\" /><Property Name=\"Dates\" Type=\"Edm.String\" " +
-                "MaxLength=\"Max\" FixedLength=\"false\" Unicode=\"true\" /><Property Name=\"Nickname\" T" +
-                "ype=\"Edm.String\" MaxLength=\"Max\" FixedLength=\"false\" Unicode=\"true\" /><Property " +
-                "Name=\"Premiere\" Type=\"Edm.String\" MaxLength=\"Max\" FixedLength=\"false\" Unicode=\"t" +
-                "rue\" /><Property Name=\"Dedication\" Type=\"Edm.String\" MaxLength=\"Max\" FixedLength" +
-                "=\"false\" Unicode=\"true\" /><Property Name=\"Occasion\" Type=\"Edm.String\" MaxLength=" +
-                "\"Max\" FixedLength=\"false\" Unicode=\"true\" /><Property Name=\"IsPopular\" Type=\"Edm." +
-                "Boolean\" Nullable=\"false\" /><Property Name=\"Comment\" Type=\"Edm.String\" MaxLength" +
-                "=\"Max\" FixedLength=\"false\" Unicode=\"true\" /><Property Name=\"KeyId\" Type=\"Edm.Int" +
-                "32\" /><Property Name=\"GenreId\" Type=\"Edm.Int32\" /><Property Name=\"Instrumentatio" +
-                "nId\" Type=\"Edm.Int32\" /><Property Name=\"CompositionCollectionId\" Type=\"Edm.Int32" +
-                "\" /><NavigationProperty Name=\"CompositionCollection\" Relationship=\"ClassicalMusi" +
-                "cModel.FK_Composition_CompositionCollection\" ToRole=\"CompositionCollection\" From" +
-                "Role=\"Composition\" /><NavigationProperty Name=\"Key\" Relationship=\"ClassicalMusic" +
-                "Model.FK_Composition_Key\" ToRole=\"Key\" FromRole=\"Composition\" /><NavigationPrope" +
-                "rty Name=\"Movements\" Relationship=\"ClassicalMusicModel.FK_Movement_Composition\" " +
-                "ToRole=\"Movement\" FromRole=\"Composition\" /><NavigationProperty Name=\"CatalogNumb" +
-                "ers\" Relationship=\"ClassicalMusicModel.CompositionCatalogNumber\" ToRole=\"Catalog" +
-                "Number\" FromRole=\"Composition\" /><NavigationProperty Name=\"Composers\" Relationsh" +
-                "ip=\"ClassicalMusicModel.CompositionComposer\" ToRole=\"Composer\" FromRole=\"Composi" +
-                "tion\" /><NavigationProperty Name=\"Links\" Relationship=\"ClassicalMusicModel.Compo" +
-                "sitionLink\" ToRole=\"Link\" FromRole=\"Composition\" /></EntityType><EntityType Name" +
-                "=\"CompositionCollection\"><Key><PropertyRef Name=\"CompositionCollectionId\" /></Ke" +
-                "y><Property Name=\"CompositionCollectionId\" Type=\"Edm.Int32\"";
+                "talogNumber\" ToRole=\"Composition\" FromRole=\"CatalogNumber\" /></EntityType><Entit" +
+                "yType Name=\"Composer\"><Key><PropertyRef Name=\"ComposerId\" /></Key><Property Name" +
+                "=\"ComposerId\" Type=\"Edm.Int32\" Nullable=\"false\" p6:StoreGeneratedPattern=\"Identi" +
+                "ty\" xmlns:p6=\"http://schemas.microsoft.com/ado/2009/02/edm/annotation\" /><Proper" +
+                "ty Name=\"Name\" Type=\"Edm.String\" Nullable=\"false\" MaxLength=\"Max\" FixedLength=\"f" +
+                "alse\" Unicode=\"true\" /><Property Name=\"Dates\" Type=\"Edm.String\" Nullable=\"false\"" +
+                " MaxLength=\"Max\" FixedLength=\"false\" Unicode=\"true\" /><Property Name=\"BirthLocat" +
+                "ionId\" Type=\"Edm.Int32\" /><Property Name=\"DeathLocationId\" Type=\"Edm.Int32\" /><N" +
+                "avigationProperty Name=\"Catalogs\" Relationship=\"ClassicalMusicModel.FK_Catalog_C" +
+                "omposer\" ToRole=\"Catalog\" FromRole=\"Composer\" /><NavigationProperty Name=\"BirthL" +
+                "ocation\" Relationship=\"ClassicalMusicModel.FK_Composer_BirthLocation\" ToRole=\"Lo" +
+                "cation\" FromRole=\"Composer\" /><NavigationProperty Name=\"DeathLocation\" Relations" +
+                "hip=\"ClassicalMusicModel.FK_Composer_DeathLocation\" ToRole=\"Location\" FromRole=\"" +
+                "Composer\" /><NavigationProperty Name=\"Images\" Relationship=\"ClassicalMusicModel." +
+                "FK_ComposerImage_Composer\" ToRole=\"ComposerImage\" FromRole=\"Composer\" /><Navigat" +
+                "ionProperty Name=\"Samples\" Relationship=\"ClassicalMusicModel.FK_Sample_Composer\"" +
+                " ToRole=\"Sample\" FromRole=\"Composer\" /><NavigationProperty Name=\"Eras\" Relations" +
+                "hip=\"ClassicalMusicModel.ComposerEra\" ToRole=\"Era\" FromRole=\"Composer\" /><Naviga" +
+                "tionProperty Name=\"Influences\" Relationship=\"ClassicalMusicModel.ComposerInfluen" +
+                "ce\" ToRole=\"Influence\" FromRole=\"Influenced\" /><NavigationProperty Name=\"Influen" +
+                "ced\" Relationship=\"ClassicalMusicModel.ComposerInfluence\" ToRole=\"Influenced\" Fr" +
+                "omRole=\"Influence\" /><NavigationProperty Name=\"Links\" Relationship=\"ClassicalMus" +
+                "icModel.ComposerLink\" ToRole=\"Link\" FromRole=\"Composer\" /><NavigationProperty Na" +
+                "me=\"Nationalities\" Relationship=\"ClassicalMusicModel.ComposerNationality\" ToRole" +
+                "=\"Nationality\" FromRole=\"Composer\" /><NavigationProperty Name=\"Compositions\" Rel" +
+                "ationship=\"ClassicalMusicModel.CompositionComposer\" ToRole=\"Composition\" FromRol" +
+                "e=\"Composer\" /><NavigationProperty Name=\"Biography\" Relationship=\"ClassicalMusic" +
+                "Model.FK_ComposerBiography_Composer\" ToRole=\"ComposerBiography\" FromRole=\"Compos" +
+                "er\" /><NavigationProperty Name=\"ShortBiography\" Relationship=\"ClassicalMusicMode" +
+                "l.FK_ComposerShortBiography_Composer\" ToRole=\"ComposerShortBiography\" FromRole=\"" +
+                "Composer\" /></EntityType><EntityType Name=\"ComposerImage\" m:HasStream=\"true\"><Ke" +
+                "y><PropertyRef Name=\"ComposerImageId\" /></Key><Property Name=\"ComposerImageId\" T" +
+                "ype=\"Edm.Int32\" Nullable=\"false\" p7:StoreGeneratedPattern=\"Identity\" xmlns:p7=\"h" +
+                "ttp://schemas.microsoft.com/ado/2009/02/edm/annotation\" /><Property Name=\"Compos" +
+                "erId\" Type=\"Edm.Int32\" Nullable=\"false\" /><NavigationProperty Name=\"Composer\" Re" +
+                "lationship=\"ClassicalMusicModel.FK_ComposerImage_Composer\" ToRole=\"Composer\" Fro" +
+                "mRole=\"ComposerImage\" /></EntityType><EntityType Name=\"Composition\"><Key><Proper" +
+                "tyRef Name=\"CompositionId\" /></Key><Property Name=\"CompositionId\" Type=\"Edm.Int3" +
+                "2\" Nullable=\"false\" p6:StoreGeneratedPattern=\"Identity\" xmlns:p6=\"http://schemas" +
+                ".microsoft.com/ado/2009/02/edm/annotation\" /><Property Name=\"Name\" Type=\"Edm.Str" +
+                "ing\" Nullable=\"false\" MaxLength=\"Max\" FixedLength=\"false\" Unicode=\"true\" /><Prop" +
+                "erty Name=\"Dates\" Type=\"Edm.String\" MaxLength=\"Max\" FixedLength=\"false\" Unicode=" +
+                "\"true\" /><Property Name=\"Nickname\" Type=\"Edm.String\" MaxLength=\"Max\" FixedLength" +
+                "=\"false\" Unicode=\"true\" /><Property Name=\"KeyId\" Type=\"Edm.Int32\" /><NavigationP" +
+                "roperty Name=\"Key\" Relationship=\"ClassicalMusicModel.FK_Composition_Key\" ToRole=" +
+                "\"Key\" FromRole=\"Composition\" /><NavigationProperty Name=\"CatalogNumbers\" Relatio" +
+                "nship=\"ClassicalMusicModel.CompositionCatalogNumber\" ToRole=\"CatalogNumber\" From" +
+                "Role=\"Composition\" /><NavigationProperty Name=\"Composers\" Relationship=\"Classica" +
+                "lMusicModel.CompositionComposer\" ToRole=\"Composer\" FromRole=\"Composition\" /><Nav" +
+                "igationProperty Name=\"Links\" Relationship=\"ClassicalMusicModel.CompositionLink\" " +
+                "ToRole=\"Link\" FromRole=\"Composition\" /></EntityType><EntityType Name=\"Era\"><Key>" +
+                "<PropertyRef Name=\"EraId\" /></Key><Property Name=\"EraId\" Type=\"Edm.Int32\" Nullab" +
+                "le=\"false\" p6:StoreGeneratedPattern=\"Identity\" xmlns:p6=\"http://schemas.microsof" +
+                "t.com/ado/2009/02/edm/annotation\" /><Property Name=\"Name\" Type=\"Edm.String\" Null" +
+                "able=\"false\" MaxLength=\"Max\" FixedLength=\"false\" Unicode=\"true\" /><Property Name" +
+                "=\"Dates\" Type=\"Edm.String\" Nullable=\"false\" MaxLength=\"Max\" FixedLength=\"false\" " +
+                "Unicode=\"true\" /><NavigationProperty Name=\"Composers\" Relationship=\"ClassicalMus" +
+                "icModel.ComposerEra\" ToRole=\"Composer\" FromRole=\"Era\" /></EntityType><EntityType" +
+                " Name=\"Key\"><Key><PropertyRef Name=\"KeyId\" /></Key><Property Name=\"KeyId\" Type=\"" +
+                "Edm.Int32\" Nullable=\"false\" p6:StoreGeneratedPattern=\"Identity\" xmlns:p6=\"http:/" +
+                "/schemas.microsoft.com/ado/2009/02/edm/annotation\" /><Property Name=\"Name\" Type=" +
+                "\"Edm.String\" Nullable=\"false\" MaxLength=\"Max\" FixedLength=\"false\" Unicode=\"true\"" +
+                " /><NavigationProperty Name=\"Compositions\" Relationship=\"ClassicalMusicModel.FK_" +
+                "Composition_Key\" ToRole=\"Composition\" FromRole=\"Key\" /></EntityType><EntityType " +
+                "Name=\"Link\"><Key><PropertyRef Name=\"LinkId\" /></Key><Property Name=\"LinkId\" Type" +
+                "=\"Edm.Int32\" Nullable=\"false\" p6:StoreGeneratedPattern=\"Identity\" xmlns:p6=\"http" +
+                "://schemas.microsoft.com/ado/2009/02/edm/annotation\" /><Property Name=\"Name\" Typ" +
+                "e=\"Edm.String\" MaxLength=\"Max\" FixedLength=\"false\" Unicode=\"true\" /><Property Na" +
+                "me=\"Url\" Type=\"Edm.String\" Nullable=\"false\" MaxLength=\"Max\" FixedLength=\"false\" " +
+                "Unicode=\"true\" /><NavigationProperty Name=\"Composers\" Relationship=\"ClassicalMus" +
+                "icModel.ComposerLink\" ToRole=\"Composer\" FromRole=\"Link\" /><NavigationProperty Na" +
+                "me=\"Compositions\" Relationship=\"ClassicalMusicModel.CompositionLink\" ToRole=\"Com" +
+                "position\" FromRole=\"Link\" /></EntityType><EntityType Name=\"";
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-            private const string ModelPart1 = " Nullable=\"false\" p6:StoreGeneratedPattern=\"Identity\" xmlns:p6=\"http://schemas.mi" +
-                "crosoft.com/ado/2009/02/edm/annotation\" /><Property Name=\"Name\" Type=\"Edm.String" +
-                "\" Nullable=\"false\" MaxLength=\"Max\" FixedLength=\"false\" Unicode=\"true\" /><Propert" +
-                "y Name=\"IsPopular\" Type=\"Edm.Boolean\" Nullable=\"false\" /><NavigationProperty Nam" +
-                "e=\"Compositions\" Relationship=\"ClassicalMusicModel.FK_Composition_CompositionCol" +
-                "lection\" ToRole=\"Composition\" FromRole=\"CompositionCollection\" /><NavigationProp" +
-                "erty Name=\"CatalogNumbers\" Relationship=\"ClassicalMusicModel.CompositionCollecti" +
-                "onCatalogNumber\" ToRole=\"CatalogNumber\" FromRole=\"CompositionCollection\" /><Navi" +
-                "gationProperty Name=\"Composers\" Relationship=\"ClassicalMusicModel.CompositionCol" +
-                "lectionComposer\" ToRole=\"Composer\" FromRole=\"CompositionCollection\" /></EntityTy" +
-                "pe><EntityType Name=\"Era\"><Key><PropertyRef Name=\"EraId\" /></Key><Property Name=" +
-                "\"EraId\" Type=\"Edm.Int32\" Nullable=\"false\" p6:StoreGeneratedPattern=\"Identity\" xm" +
-                "lns:p6=\"http://schemas.microsoft.com/ado/2009/02/edm/annotation\" /><Property Nam" +
-                "e=\"Name\" Type=\"Edm.String\" Nullable=\"false\" MaxLength=\"Max\" FixedLength=\"false\" " +
-                "Unicode=\"true\" /><Property Name=\"Dates\" Type=\"Edm.String\" Nullable=\"false\" MaxLe" +
-                "ngth=\"Max\" FixedLength=\"false\" Unicode=\"true\" /><NavigationProperty Name=\"Compos" +
-                "ers\" Relationship=\"ClassicalMusicModel.ComposerEra\" ToRole=\"Composer\" FromRole=\"" +
-                "Era\" /></EntityType><EntityType Name=\"Key\"><Key><PropertyRef Name=\"KeyId\" /></Ke" +
-                "y><Property Name=\"KeyId\" Type=\"Edm.Int32\" Nullable=\"false\" p6:StoreGeneratedPatt" +
-                "ern=\"Identity\" xmlns:p6=\"http://schemas.microsoft.com/ado/2009/02/edm/annotation" +
-                "\" /><Property Name=\"Name\" Type=\"Edm.String\" Nullable=\"false\" MaxLength=\"Max\" Fix" +
-                "edLength=\"false\" Unicode=\"true\" /><NavigationProperty Name=\"Compositions\" Relati" +
-                "onship=\"ClassicalMusicModel.FK_Composition_Key\" ToRole=\"Composition\" FromRole=\"K" +
-                "ey\" /></EntityType><EntityType Name=\"Link\"><Key><PropertyRef Name=\"LinkId\" /></K" +
-                "ey><Property Name=\"LinkId\" Type=\"Edm.Int32\" Nullable=\"false\" p6:StoreGeneratedPa" +
-                "ttern=\"Identity\" xmlns:p6=\"http://schemas.microsoft.com/ado/2009/02/edm/annotati" +
-                "on\" /><Property Name=\"Name\" Type=\"Edm.String\" MaxLength=\"Max\" FixedLength=\"false" +
-                "\" Unicode=\"true\" /><Property Name=\"Url\" Type=\"Edm.String\" Nullable=\"false\" MaxLe" +
-                "ngth=\"Max\" FixedLength=\"false\" Unicode=\"true\" /><NavigationProperty Name=\"Compos" +
-                "ers\" Relationship=\"ClassicalMusicModel.ComposerLink\" ToRole=\"Composer\" FromRole=" +
-                "\"Link\" /><NavigationProperty Name=\"Compositions\" Relationship=\"ClassicalMusicMod" +
-                "el.CompositionLink\" ToRole=\"Composition\" FromRole=\"Link\" /></EntityType><EntityT" +
-                "ype Name=\"Location\"><Key><PropertyRef Name=\"LocationId\" /></Key><Property Name=\"" +
-                "LocationId\" Type=\"Edm.Int32\" Nullable=\"false\" p6:StoreGeneratedPattern=\"Identity" +
-                "\" xmlns:p6=\"http://schemas.microsoft.com/ado/2009/02/edm/annotation\" /><Property" +
-                " Name=\"Name\" Type=\"Edm.String\" Nullable=\"false\" MaxLength=\"Max\" FixedLength=\"fal" +
-                "se\" Unicode=\"true\" /><NavigationProperty Name=\"BirthLocationComposers\" Relations" +
-                "hip=\"ClassicalMusicModel.FK_Composer_BirthLocation\" ToRole=\"Composer\" FromRole=\"" +
-                "Location\" /><NavigationProperty Name=\"DeathLocationComposers\" Relationship=\"Clas" +
-                "sicalMusicModel.FK_Composer_DeathLocation\" ToRole=\"Composer\" FromRole=\"Location\"" +
-                " /></EntityType><EntityType Name=\"Movement\"><Key><PropertyRef Name=\"MovementId\" " +
-                "/></Key><Property Name=\"MovementId\" Type=\"Edm.Int32\" Nullable=\"false\" p6:StoreGe" +
-                "neratedPattern=\"Identity\" xmlns:p6=\"http://schemas.microsoft.com/ado/2009/02/edm" +
-                "/annotation\" /><Property Name=\"Number\" Type=\"Edm.Int32\" Nullable=\"false\" /><Prop" +
-                "erty Name=\"Name\" Type=\"Edm.String\" Nullable=\"false\" MaxLength=\"Max\" FixedLength=" +
-                "\"false\" Unicode=\"true\" /><Property Name=\"IsPopular\" Type=\"Edm.Boolean\" Nullable=" +
-                "\"false\" /><Property Name=\"CompositionId\" Type=\"Edm.Int32\" Nullable=\"false\" /><Na" +
-                "vigationProperty Name=\"Composition\" Relationship=\"ClassicalMusicModel.FK_Movemen" +
-                "t_Composition\" ToRole=\"Composition\" FromRole=\"Movement\" /></EntityType><EntityTy" +
-                "pe Name=\"Nationality\"><Key><PropertyRef Name=\"NationalityId\" /></Key><Property N" +
-                "ame=\"NationalityId\" Type=\"Edm.Int32\" Nullable=\"false\" p6:StoreGeneratedPattern=\"" +
-                "Identity\" xmlns:p6=\"http://schemas.microsoft.com/ado/2009/02/edm/annotation\" /><" +
-                "Property Name=\"Name\" Type=\"Edm.String\" Nullable=\"false\" MaxLength=\"Max\" FixedLen" +
-                "gth=\"false\" Unicode=\"true\" /><NavigationProperty Name=\"Composers\" Relationship=\"" +
-                "ClassicalMusicModel.ComposerNationality\" ToRole=\"Composer\" FromRole=\"Nationality" +
-                "\" /></EntityType><EntityType Name=\"Sample\" m:HasStream=\"true\"><Key><PropertyRef " +
-                "Name=\"SampleId\" /></Key><Property Name=\"SampleId\" Type=\"Edm.Int32\" Nullable=\"fal" +
-                "se\" p7:StoreGeneratedPattern=\"Identity\" xmlns:p7=\"http://schemas.microsoft.com/a" +
-                "do/2009/02/edm/annotation\" /><Property Name=\"Title\" Type=\"Edm.String\" Nullable=\"" +
-                "false\" MaxLength=\"Max\" FixedLength=\"false\" Unicode=\"true\" /><Property Name=\"Arti" +
-                "sts\" Type=\"Edm.String\" Nullable=\"false\" MaxLength=\"Max\" FixedLength=\"false\" Unic" +
-                "ode=\"true\" /><Property Name=\"ComposerID\" Type=\"Edm.Int32\" Nullable=\"false\" /><Na" +
-                "vigationProperty Name=\"Composer\" Relationship=\"ClassicalMusicModel.FK_Sample_Com" +
-                "poser\" ToRole=\"Composer\" FromRole=\"Sample\" /></EntityType><Association Name=\"FK_" +
-                "Catalog_Composer\"><End Type=\"ClassicalMusicModel.Composer\" Role=\"Composer\" Multi" +
-                "plicity=\"1\" /><End Type=\"ClassicalMusicModel.Catalog\" Role=\"Catalog\" Multiplicit" +
-                "y=\"*\" /><ReferentialConstraint><Principal Role=\"Composer\"><PropertyRef Name=\"Com" +
-                "poserId\" /></Principal><Dependent Role=\"Catalog\"><PropertyRef Name=\"ComposerId\" " +
-                "/></Dependent></ReferentialConstraint></Association><Association Name=\"FK_Catalo" +
-                "gNumber_Catalog\"><End Type=\"ClassicalMusicModel.Catalog\" Role=\"Catalog\" Multipli" +
-                "city=\"1\" /><End Type=\"ClassicalMusicModel.CatalogNumber\" Role=\"CatalogNumber\" Mu" +
-                "ltiplicity=\"*\" /><ReferentialConstraint><Principal Role=\"Catalog\"><PropertyRef N" +
-                "ame=\"CatalogId\" /></Principal><Dependent Role=\"CatalogNumber\"><PropertyRef Name=" +
-                "\"CatalogId\" /></Dependent></ReferentialConstraint></Association><Association Nam" +
-                "e=\"CompositionCatalogNumber\"><End Type=\"ClassicalMusicModel.Composition\" Role=\"C" +
-                "omposition\" Multiplicity=\"*\" /><End Type=\"ClassicalMusicModel.CatalogNumber\" Rol" +
-                "e=\"CatalogNumber\" Multiplicity=\"*\" /></Association><Association Name=\"Compositio" +
-                "nCollectionCatalogNumber\"><End Type=\"ClassicalMusicModel.CompositionCollection\" " +
-                "Role=\"CompositionCollection\" Multiplicity=\"*\" /><End Type=\"ClassicalMusicModel.C" +
-                "atalogNumber\" Role=\"CatalogNumber\" Multiplicity=\"*\" /></Association><Association" +
-                " Name=\"FK_Composer_BirthLocation\"><End Type=\"ClassicalMusicModel.Location\" Role=" +
-                "\"Location\" Multiplicity=\"0..1\" /><End Type=\"ClassicalMusicModel.Composer\" Role=\"" +
-                "Composer\" Multiplicity=\"*\" /><ReferentialConstraint><Principal Role=\"Location\"><" +
-                "PropertyRef Name=\"LocationId\" /></Principal><Dependent Role=\"Composer\"><Property" +
-                "Ref Name=\"BirthLocationId\" /></Dependent></ReferentialConstraint></Association><" +
-                "Association Name=\"FK_Composer_DeathLocation\"><End Type=\"ClassicalMusicModel.Loca" +
-                "tion\" Role=\"Location\" Multiplicity=\"0..1\" /><End Type=\"ClassicalMusicModel.Compo" +
-                "ser\" Role=\"Composer\" Multiplicity=\"*\" /><ReferentialConstraint><Principal Role=\"" +
-                "Location\"><PropertyRef Name=\"LocationId\" /></Principal><Dependent Role=\"Composer" +
-                "\"><PropertyRef Name=\"DeathLocationId\" /></Dependent></ReferentialConstraint></As" +
-                "sociation><Association Name=\"FK_ComposerBiography_Composer\"><End Type=\"Classical" +
-                "MusicModel.Composer\" Role=\"Composer\" Multiplicity=\"1\" /><End Type=\"ClassicalMusi" +
-                "cModel.ComposerBiography\" Role=\"ComposerBiography\" Multiplicity=\"0..1\" /><Refere" +
-                "ntialConstraint><Principal Role=\"Composer\"><PropertyRef Nam";
-            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-            private const string ModelPart2 = "e=\"ComposerId\" /></Principal><Dependent Role=\"ComposerBiography\"><PropertyRef Nam" +
-                "e=\"ComposerId\" /></Dependent></ReferentialConstraint></Association><Association " +
-                "Name=\"FK_ComposerImage_Composer\"><End Type=\"ClassicalMusicModel.Composer\" Role=\"" +
-                "Composer\" Multiplicity=\"1\" /><End Type=\"ClassicalMusicModel.ComposerImage\" Role=" +
-                "\"ComposerImage\" Multiplicity=\"*\" /><ReferentialConstraint><Principal Role=\"Compo" +
-                "ser\"><PropertyRef Name=\"ComposerId\" /></Principal><Dependent Role=\"ComposerImage" +
+            private const string ModelPart1 = "Location\"><Key><PropertyRef Name=\"LocationId\" /></Key><Property Name=\"LocationId\"" +
+                " Type=\"Edm.Int32\" Nullable=\"false\" p6:StoreGeneratedPattern=\"Identity\" xmlns:p6=" +
+                "\"http://schemas.microsoft.com/ado/2009/02/edm/annotation\" /><Property Name=\"Name" +
+                "\" Type=\"Edm.String\" Nullable=\"false\" MaxLength=\"Max\" FixedLength=\"false\" Unicode" +
+                "=\"true\" /><NavigationProperty Name=\"BirthLocationComposers\" Relationship=\"Classi" +
+                "calMusicModel.FK_Composer_BirthLocation\" ToRole=\"Composer\" FromRole=\"Location\" /" +
+                "><NavigationProperty Name=\"DeathLocationComposers\" Relationship=\"ClassicalMusicM" +
+                "odel.FK_Composer_DeathLocation\" ToRole=\"Composer\" FromRole=\"Location\" /></Entity" +
+                "Type><EntityType Name=\"Nationality\"><Key><PropertyRef Name=\"NationalityId\" /></K" +
+                "ey><Property Name=\"NationalityId\" Type=\"Edm.Int32\" Nullable=\"false\" p6:StoreGene" +
+                "ratedPattern=\"Identity\" xmlns:p6=\"http://schemas.microsoft.com/ado/2009/02/edm/a" +
+                "nnotation\" /><Property Name=\"Name\" Type=\"Edm.String\" Nullable=\"false\" MaxLength=" +
+                "\"Max\" FixedLength=\"false\" Unicode=\"true\" /><NavigationProperty Name=\"Composers\" " +
+                "Relationship=\"ClassicalMusicModel.ComposerNationality\" ToRole=\"Composer\" FromRol" +
+                "e=\"Nationality\" /></EntityType><EntityType Name=\"Sample\" m:HasStream=\"true\"><Key" +
+                "><PropertyRef Name=\"SampleId\" /></Key><Property Name=\"SampleId\" Type=\"Edm.Int32\"" +
+                " Nullable=\"false\" p7:StoreGeneratedPattern=\"Identity\" xmlns:p7=\"http://schemas.m" +
+                "icrosoft.com/ado/2009/02/edm/annotation\" /><Property Name=\"Title\" Type=\"Edm.Stri" +
+                "ng\" Nullable=\"false\" MaxLength=\"Max\" FixedLength=\"false\" Unicode=\"true\" /><Prope" +
+                "rty Name=\"Artists\" Type=\"Edm.String\" Nullable=\"false\" MaxLength=\"Max\" FixedLengt" +
+                "h=\"false\" Unicode=\"true\" /><Property Name=\"ComposerID\" Type=\"Edm.Int32\" Nullable" +
+                "=\"false\" /><NavigationProperty Name=\"Composer\" Relationship=\"ClassicalMusicModel" +
+                ".FK_Sample_Composer\" ToRole=\"Composer\" FromRole=\"Sample\" /></EntityType><EntityT" +
+                "ype Name=\"ComposerBiography\"><Key><PropertyRef Name=\"ComposerId\" /></Key><Proper" +
+                "ty Name=\"ComposerId\" Type=\"Edm.Int32\" Nullable=\"false\" p6:StoreGeneratedPattern=" +
+                "\"Identity\" xmlns:p6=\"http://schemas.microsoft.com/ado/2009/02/edm/annotation\" />" +
+                "<Property Name=\"Text\" Type=\"Edm.String\" MaxLength=\"Max\" FixedLength=\"false\" Unic" +
+                "ode=\"true\" /><NavigationProperty Name=\"Composer\" Relationship=\"ClassicalMusicMod" +
+                "el.FK_ComposerBiography_Composer\" ToRole=\"Composer\" FromRole=\"ComposerBiography\"" +
+                " /></EntityType><EntityType Name=\"ComposerShortBiography\"><Key><PropertyRef Name" +
+                "=\"ComposerId\" /></Key><Property Name=\"ComposerId\" Type=\"Edm.Int32\" Nullable=\"fal" +
+                "se\" p6:StoreGeneratedPattern=\"Identity\" xmlns:p6=\"http://schemas.microsoft.com/a" +
+                "do/2009/02/edm/annotation\" /><Property Name=\"Text\" Type=\"Edm.String\" MaxLength=\"" +
+                "Max\" FixedLength=\"false\" Unicode=\"true\" /><NavigationProperty Name=\"Composer\" Re" +
+                "lationship=\"ClassicalMusicModel.FK_ComposerShortBiography_Composer\" ToRole=\"Comp" +
+                "oser\" FromRole=\"ComposerShortBiography\" /></EntityType><Association Name=\"FK_Cat" +
+                "alog_Composer\"><End Type=\"ClassicalMusicModel.Composer\" Role=\"Composer\" Multipli" +
+                "city=\"1\" /><End Type=\"ClassicalMusicModel.Catalog\" Role=\"Catalog\" Multiplicity=\"" +
+                "*\" /><ReferentialConstraint><Principal Role=\"Composer\"><PropertyRef Name=\"Compos" +
+                "erId\" /></Principal><Dependent Role=\"Catalog\"><PropertyRef Name=\"ComposerId\" /><" +
+                "/Dependent></ReferentialConstraint></Association><Association Name=\"FK_CatalogNu" +
+                "mber_Catalog\"><End Type=\"ClassicalMusicModel.Catalog\" Role=\"Catalog\" Multiplicit" +
+                "y=\"1\" /><End Type=\"ClassicalMusicModel.CatalogNumber\" Role=\"CatalogNumber\" Multi" +
+                "plicity=\"*\" /><ReferentialConstraint><Principal Role=\"Catalog\"><PropertyRef Name" +
+                "=\"CatalogId\" /></Principal><Dependent Role=\"CatalogNumber\"><PropertyRef Name=\"Ca" +
+                "talogId\" /></Dependent></ReferentialConstraint></Association><Association Name=\"" +
+                "CompositionCatalogNumber\"><End Type=\"ClassicalMusicModel.Composition\" Role=\"Comp" +
+                "osition\" Multiplicity=\"*\" /><End Type=\"ClassicalMusicModel.CatalogNumber\" Role=\"" +
+                "CatalogNumber\" Multiplicity=\"*\" /></Association><Association Name=\"FK_Composer_B" +
+                "irthLocation\"><End Type=\"ClassicalMusicModel.Location\" Role=\"Location\" Multiplic" +
+                "ity=\"0..1\" /><End Type=\"ClassicalMusicModel.Composer\" Role=\"Composer\" Multiplici" +
+                "ty=\"*\" /><ReferentialConstraint><Principal Role=\"Location\"><PropertyRef Name=\"Lo" +
+                "cationId\" /></Principal><Dependent Role=\"Composer\"><PropertyRef Name=\"BirthLocat" +
+                "ionId\" /></Dependent></ReferentialConstraint></Association><Association Name=\"FK" +
+                "_Composer_DeathLocation\"><End Type=\"ClassicalMusicModel.Location\" Role=\"Location" +
+                "\" Multiplicity=\"0..1\" /><End Type=\"ClassicalMusicModel.Composer\" Role=\"Composer\"" +
+                " Multiplicity=\"*\" /><ReferentialConstraint><Principal Role=\"Location\"><PropertyR" +
+                "ef Name=\"LocationId\" /></Principal><Dependent Role=\"Composer\"><PropertyRef Name=" +
+                "\"DeathLocationId\" /></Dependent></ReferentialConstraint></Association><Associati" +
+                "on Name=\"FK_ComposerImage_Composer\"><End Type=\"ClassicalMusicModel.Composer\" Rol" +
+                "e=\"Composer\" Multiplicity=\"1\" /><End Type=\"ClassicalMusicModel.ComposerImage\" Ro" +
+                "le=\"ComposerImage\" Multiplicity=\"*\" /><ReferentialConstraint><Principal Role=\"Co" +
+                "mposer\"><PropertyRef Name=\"ComposerId\" /></Principal><Dependent Role=\"ComposerIm" +
+                "age\"><PropertyRef Name=\"ComposerId\" /></Dependent></ReferentialConstraint></Asso" +
+                "ciation><Association Name=\"FK_Sample_Composer\"><End Type=\"ClassicalMusicModel.Co" +
+                "mposer\" Role=\"Composer\" Multiplicity=\"1\" /><End Type=\"ClassicalMusicModel.Sample" +
+                "\" Role=\"Sample\" Multiplicity=\"*\" /><ReferentialConstraint><Principal Role=\"Compo" +
+                "ser\"><PropertyRef Name=\"ComposerId\" /></Principal><Dependent Role=\"Sample\"><Prop" +
+                "ertyRef Name=\"ComposerID\" /></Dependent></ReferentialConstraint></Association><A" +
+                "ssociation Name=\"ComposerEra\"><End Type=\"ClassicalMusicModel.Era\" Role=\"Era\" Mul" +
+                "tiplicity=\"*\" /><End Type=\"ClassicalMusicModel.Composer\" Role=\"Composer\" Multipl" +
+                "icity=\"*\" /></Association><Association Name=\"ComposerInfluence\"><End Type=\"Class" +
+                "icalMusicModel.Composer\" Role=\"Influence\" Multiplicity=\"*\" /><End Type=\"Classica" +
+                "lMusicModel.Composer\" Role=\"Influenced\" Multiplicity=\"*\" /></Association><Associ" +
+                "ation Name=\"ComposerLink\"><End Type=\"ClassicalMusicModel.Link\" Role=\"Link\" Multi" +
+                "plicity=\"*\" /><End Type=\"ClassicalMusicModel.Composer\" Role=\"Composer\" Multiplic" +
+                "ity=\"*\" /></Association><Association Name=\"ComposerNationality\"><End Type=\"Class" +
+                "icalMusicModel.Nationality\" Role=\"Nationality\" Multiplicity=\"*\" /><End Type=\"Cla" +
+                "ssicalMusicModel.Composer\" Role=\"Composer\" Multiplicity=\"*\" /></Association><Ass" +
+                "ociation Name=\"CompositionComposer\"><End Type=\"ClassicalMusicModel.Composition\" " +
+                "Role=\"Composition\" Multiplicity=\"*\" /><End Type=\"ClassicalMusicModel.Composer\" R" +
+                "ole=\"Composer\" Multiplicity=\"*\" /></Association><Association Name=\"FK_ComposerBi" +
+                "ography_Composer\"><End Type=\"ClassicalMusicModel.Composer\" Role=\"Composer\" Multi" +
+                "plicity=\"1\" /><End Type=\"ClassicalMusicModel.ComposerBiography\" Role=\"ComposerBi" +
+                "ography\" Multiplicity=\"0..1\" /><ReferentialConstraint><Principal Role=\"Composer\"" +
+                "><PropertyRef Name=\"ComposerId\" /></Principal><Dependent Role=\"ComposerBiography" +
                 "\"><PropertyRef Name=\"ComposerId\" /></Dependent></ReferentialConstraint></Associa" +
-                "tion><Association Name=\"FK_Sample_Composer\"><End Type=\"ClassicalMusicModel.Compo" +
-                "ser\" Role=\"Composer\" Multiplicity=\"1\" /><End Type=\"ClassicalMusicModel.Sample\" R" +
-                "ole=\"Sample\" Multiplicity=\"*\" /><ReferentialConstraint><Principal Role=\"Composer" +
-                "\"><PropertyRef Name=\"ComposerId\" /></Principal><Dependent Role=\"Sample\"><Propert" +
-                "yRef Name=\"ComposerID\" /></Dependent></ReferentialConstraint></Association><Asso" +
-                "ciation Name=\"ComposerEra\"><End Type=\"ClassicalMusicModel.Era\" Role=\"Era\" Multip" +
-                "licity=\"*\" /><End Type=\"ClassicalMusicModel.Composer\" Role=\"Composer\" Multiplici" +
-                "ty=\"*\" /></Association><Association Name=\"ComposerInfluence\"><End Type=\"Classica" +
-                "lMusicModel.Composer\" Role=\"Influence\" Multiplicity=\"*\" /><End Type=\"ClassicalMu" +
-                "sicModel.Composer\" Role=\"Influenced\" Multiplicity=\"*\" /></Association><Associati" +
-                "on Name=\"ComposerLink\"><End Type=\"ClassicalMusicModel.Link\" Role=\"Link\" Multipli" +
-                "city=\"*\" /><End Type=\"ClassicalMusicModel.Composer\" Role=\"Composer\" Multiplicity" +
-                "=\"*\" /></Association><Association Name=\"ComposerNationality\"><End Type=\"Classica" +
-                "lMusicModel.Nationality\" Role=\"Nationality\" Multiplicity=\"*\" /><End Type=\"Classi" +
-                "calMusicModel.Composer\" Role=\"Composer\" Multiplicity=\"*\" /></Association><Associ" +
-                "ation Name=\"CompositionCollectionComposer\"><End Type=\"ClassicalMusicModel.Compos" +
-                "itionCollection\" Role=\"CompositionCollection\" Multiplicity=\"*\" /><End Type=\"Clas" +
-                "sicalMusicModel.Composer\" Role=\"Composer\" Multiplicity=\"*\" /></Association><Asso" +
-                "ciation Name=\"CompositionComposer\"><End Type=\"ClassicalMusicModel.Composition\" R" +
-                "ole=\"Composition\" Multiplicity=\"*\" /><End Type=\"ClassicalMusicModel.Composer\" Ro" +
-                "le=\"Composer\" Multiplicity=\"*\" /></Association><Association Name=\"FK_Composition" +
-                "_CompositionCollection\"><End Type=\"ClassicalMusicModel.CompositionCollection\" Ro" +
-                "le=\"CompositionCollection\" Multiplicity=\"0..1\" /><End Type=\"ClassicalMusicModel." +
-                "Composition\" Role=\"Composition\" Multiplicity=\"*\" /><ReferentialConstraint><Princ" +
-                "ipal Role=\"CompositionCollection\"><PropertyRef Name=\"CompositionCollectionId\" />" +
-                "</Principal><Dependent Role=\"Composition\"><PropertyRef Name=\"CompositionCollecti" +
-                "onId\" /></Dependent></ReferentialConstraint></Association><Association Name=\"FK_" +
-                "Composition_Key\"><End Type=\"ClassicalMusicModel.Key\" Role=\"Key\" Multiplicity=\"0." +
-                ".1\" /><End Type=\"ClassicalMusicModel.Composition\" Role=\"Composition\" Multiplicit" +
-                "y=\"*\" /><ReferentialConstraint><Principal Role=\"Key\"><PropertyRef Name=\"KeyId\" /" +
-                "></Principal><Dependent Role=\"Composition\"><PropertyRef Name=\"KeyId\" /></Depende" +
-                "nt></ReferentialConstraint></Association><Association Name=\"FK_Movement_Composit" +
-                "ion\"><End Type=\"ClassicalMusicModel.Composition\" Role=\"Composition\" Multiplicity" +
-                "=\"1\" /><End Type=\"ClassicalMusicModel.Movement\" Role=\"Movement\" Multiplicity=\"*\"" +
-                " /><ReferentialConstraint><Principal Role=\"Composition\"><PropertyRef Name=\"Compo" +
-                "sitionId\" /></Principal><Dependent Role=\"Movement\"><PropertyRef Name=\"Compositio" +
-                "nId\" /></Dependent></ReferentialConstraint></Association><Association Name=\"Comp" +
-                "ositionLink\"><End Type=\"ClassicalMusicModel.Link\" Role=\"Link\" Multiplicity=\"*\" /" +
-                "><End Type=\"ClassicalMusicModel.Composition\" Role=\"Composition\" Multiplicity=\"*\"" +
-                " /></Association></Schema><Schema Namespace=\"ClassicalMusicDataService\" xmlns=\"h" +
-                "ttp://schemas.microsoft.com/ado/2008/09/edm\"><EntityContainer Name=\"ClassicalMus" +
-                "icEntities\" m:IsDefaultEntityContainer=\"true\" p6:LazyLoadingEnabled=\"true\" xmlns" +
-                ":p6=\"http://schemas.microsoft.com/ado/2009/02/edm/annotation\"><EntitySet Name=\"C" +
-                "atalogs\" EntityType=\"ClassicalMusicModel.Catalog\" /><EntitySet Name=\"CatalogNumb" +
-                "ers\" EntityType=\"ClassicalMusicModel.CatalogNumber\" /><EntitySet Name=\"Composers" +
-                "\" EntityType=\"ClassicalMusicModel.Composer\" /><EntitySet Name=\"ComposerBiographi" +
-                "es\" EntityType=\"ClassicalMusicModel.ComposerBiography\" /><EntitySet Name=\"Compos" +
-                "erImages\" EntityType=\"ClassicalMusicModel.ComposerImage\" /><EntitySet Name=\"Comp" +
-                "ositions\" EntityType=\"ClassicalMusicModel.Composition\" /><EntitySet Name=\"Compos" +
-                "itionCollections\" EntityType=\"ClassicalMusicModel.CompositionCollection\" /><Enti" +
-                "tySet Name=\"Eras\" EntityType=\"ClassicalMusicModel.Era\" /><EntitySet Name=\"Keys\" " +
-                "EntityType=\"ClassicalMusicModel.Key\" /><EntitySet Name=\"Links\" EntityType=\"Class" +
-                "icalMusicModel.Link\" /><EntitySet Name=\"Locations\" EntityType=\"ClassicalMusicMod" +
-                "el.Location\" /><EntitySet Name=\"Movements\" EntityType=\"ClassicalMusicModel.Movem" +
-                "ent\" /><EntitySet Name=\"Nationalities\" EntityType=\"ClassicalMusicModel.Nationali" +
-                "ty\" /><EntitySet Name=\"Samples\" EntityType=\"ClassicalMusicModel.Sample\" /><Assoc" +
-                "iationSet Name=\"FK_Catalog_Composer\" Association=\"ClassicalMusicModel.FK_Catalog" +
-                "_Composer\"><End Role=\"Catalog\" EntitySet=\"Catalogs\" /><End Role=\"Composer\" Entit" +
-                "ySet=\"Composers\" /></AssociationSet><AssociationSet Name=\"FK_CatalogNumber_Catal" +
-                "og\" Association=\"ClassicalMusicModel.FK_CatalogNumber_Catalog\"><End Role=\"Catalo" +
-                "g\" EntitySet=\"Catalogs\" /><End Role=\"CatalogNumber\" EntitySet=\"CatalogNumbers\" /" +
-                "></AssociationSet><AssociationSet Name=\"CompositionCatalogNumber\" Association=\"C" +
-                "lassicalMusicModel.CompositionCatalogNumber\"><End Role=\"CatalogNumber\" EntitySet" +
-                "=\"CatalogNumbers\" /><End Role=\"Composition\" EntitySet=\"Compositions\" /></Associa" +
-                "tionSet><AssociationSet Name=\"CompositionCollectionCatalogNumber\" Association=\"C" +
-                "lassicalMusicModel.CompositionCollectionCatalogNumber\"><End Role=\"CatalogNumber\"" +
-                " EntitySet=\"CatalogNumbers\" /><End Role=\"CompositionCollection\" EntitySet=\"Compo" +
-                "sitionCollections\" /></AssociationSet><AssociationSet Name=\"FK_Composer_BirthLoc" +
-                "ation\" Association=\"ClassicalMusicModel.FK_Composer_BirthLocation\"><End Role=\"Co" +
-                "mposer\" EntitySet=\"Composers\" /><End Role=\"Location\" EntitySet=\"Locations\" /></A" +
-                "ssociationSet><AssociationSet Name=\"FK_Composer_DeathLocation\" Association=\"Clas" +
-                "sicalMusicModel.FK_Composer_DeathLocation\"><End Role=\"Composer\" EntitySet=\"Compo" +
-                "sers\" /><End Role=\"Location\" EntitySet=\"Locations\" /></AssociationSet><Associati" +
-                "onSet Name=\"FK_ComposerBiography_Composer\" Association=\"ClassicalMusicModel.FK_C" +
-                "omposerBiography_Composer\"><End Role=\"Composer\" EntitySet=\"Composers\" /><End Rol" +
-                "e=\"ComposerBiography\" EntitySet=\"ComposerBiographies\" /></AssociationSet><Associ" +
-                "ationSet Name=\"FK_ComposerImage_Composer\" Association=\"ClassicalMusicModel.FK_Co" +
-                "mposerImage_Composer\"><End Role=\"Composer\" EntitySet=\"Composers\" /><End Role=\"Co" +
-                "mposerImage\" EntitySet=\"ComposerImages\" /></AssociationSet><AssociationSet Name=" +
-                "\"FK_Sample_Composer\" Association=\"ClassicalMusicModel.FK_Sample_Composer\"><End R" +
-                "ole=\"Composer\" EntitySet=\"Composers\" /><End Role=\"Sample\" EntitySet=\"Samples\" />" +
-                "</AssociationSet><AssociationSet Name=\"ComposerEra\" Association=\"ClassicalMusicM" +
-                "odel.ComposerEra\"><End Role=\"Composer\" EntitySet=\"Composers\" /><End Role=\"Era\" E" +
-                "ntitySet=\"Eras\" /></AssociationSet><AssociationSet Name=\"ComposerInfluence\" Asso" +
-                "ciation=\"ClassicalMusicModel.ComposerInfluence\"><End Role=\"Influenced\" EntitySet" +
-                "=\"Composers\" /><End Role=\"Influence\" EntitySet=\"Composers\" /></AssociationSet><A" +
-                "ssociationSet Name=\"ComposerLink\" Association=\"ClassicalMus";
+                "tion><Association Name=\"FK_ComposerShortBiography_Composer\"><End Type=\"Classical" +
+                "MusicModel.Composer\" Role=\"Composer\" Multiplicity=\"1\" /><End Type=\"ClassicalMusi" +
+                "cModel.ComposerShortBiography\" Role=\"ComposerShortBiography\" Multiplicity=\"0..1\"" +
+                " /><ReferentialConstraint><Principal Role=\"Composer\"><PropertyRef Name=\"Composer" +
+                "Id\" /></Principal><Dependent Role=\"ComposerShortBiography\"><PropertyRef Name=\"Co" +
+                "mposerId\" /></Dependent></ReferentialConstraint></Association><Association Name=" +
+                "\"FK_Composition_Key\"><End Type=\"ClassicalMusicModel.Key\" Ro";
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-            private const string ModelPart3 = "icModel.ComposerLink\"><End Role=\"Composer\" EntitySet=\"Composers\" /><End Role=\"Lin" +
-                "k\" EntitySet=\"Links\" /></AssociationSet><AssociationSet Name=\"ComposerNationalit" +
-                "y\" Association=\"ClassicalMusicModel.ComposerNationality\"><End Role=\"Composer\" En" +
-                "titySet=\"Composers\" /><End Role=\"Nationality\" EntitySet=\"Nationalities\" /></Asso" +
-                "ciationSet><AssociationSet Name=\"CompositionCollectionComposer\" Association=\"Cla" +
-                "ssicalMusicModel.CompositionCollectionComposer\"><End Role=\"Composer\" EntitySet=\"" +
-                "Composers\" /><End Role=\"CompositionCollection\" EntitySet=\"CompositionCollections" +
-                "\" /></AssociationSet><AssociationSet Name=\"CompositionComposer\" Association=\"Cla" +
-                "ssicalMusicModel.CompositionComposer\"><End Role=\"Composer\" EntitySet=\"Composers\"" +
-                " /><End Role=\"Composition\" EntitySet=\"Compositions\" /></AssociationSet><Associat" +
-                "ionSet Name=\"FK_Composition_CompositionCollection\" Association=\"ClassicalMusicMo" +
-                "del.FK_Composition_CompositionCollection\"><End Role=\"Composition\" EntitySet=\"Com" +
-                "positions\" /><End Role=\"CompositionCollection\" EntitySet=\"CompositionCollections" +
-                "\" /></AssociationSet><AssociationSet Name=\"FK_Composition_Key\" Association=\"Clas" +
-                "sicalMusicModel.FK_Composition_Key\"><End Role=\"Composition\" EntitySet=\"Compositi" +
-                "ons\" /><End Role=\"Key\" EntitySet=\"Keys\" /></AssociationSet><AssociationSet Name=" +
-                "\"FK_Movement_Composition\" Association=\"ClassicalMusicModel.FK_Movement_Compositi" +
-                "on\"><End Role=\"Composition\" EntitySet=\"Compositions\" /><End Role=\"Movement\" Enti" +
-                "tySet=\"Movements\" /></AssociationSet><AssociationSet Name=\"CompositionLink\" Asso" +
-                "ciation=\"ClassicalMusicModel.CompositionLink\"><End Role=\"Composition\" EntitySet=" +
-                "\"Compositions\" /><End Role=\"Link\" EntitySet=\"Links\" /></AssociationSet></EntityC" +
-                "ontainer></Schema></edmx:DataServices></edmx:Edmx>";
+            private const string ModelPart2 = "le=\"Key\" Multiplicity=\"0..1\" /><End Type=\"ClassicalMusicModel.Composition\" Role=\"" +
+                "Composition\" Multiplicity=\"*\" /><ReferentialConstraint><Principal Role=\"Key\"><Pr" +
+                "opertyRef Name=\"KeyId\" /></Principal><Dependent Role=\"Composition\"><PropertyRef " +
+                "Name=\"KeyId\" /></Dependent></ReferentialConstraint></Association><Association Na" +
+                "me=\"CompositionLink\"><End Type=\"ClassicalMusicModel.Link\" Role=\"Link\" Multiplici" +
+                "ty=\"*\" /><End Type=\"ClassicalMusicModel.Composition\" Role=\"Composition\" Multipli" +
+                "city=\"*\" /></Association></Schema><Schema Namespace=\"ClassicalMusicDataService\" " +
+                "xmlns=\"http://schemas.microsoft.com/ado/2008/09/edm\"><EntityContainer Name=\"Clas" +
+                "sicalMusicEntities\" m:IsDefaultEntityContainer=\"true\" p6:LazyLoadingEnabled=\"tru" +
+                "e\" xmlns:p6=\"http://schemas.microsoft.com/ado/2009/02/edm/annotation\"><EntitySet" +
+                " Name=\"Catalogs\" EntityType=\"ClassicalMusicModel.Catalog\" /><EntitySet Name=\"Cat" +
+                "alogNumbers\" EntityType=\"ClassicalMusicModel.CatalogNumber\" /><EntitySet Name=\"C" +
+                "omposers\" EntityType=\"ClassicalMusicModel.Composer\" /><EntitySet Name=\"ComposerI" +
+                "mages\" EntityType=\"ClassicalMusicModel.ComposerImage\" /><EntitySet Name=\"Composi" +
+                "tions\" EntityType=\"ClassicalMusicModel.Composition\" /><EntitySet Name=\"Eras\" Ent" +
+                "ityType=\"ClassicalMusicModel.Era\" /><EntitySet Name=\"Keys\" EntityType=\"Classical" +
+                "MusicModel.Key\" /><EntitySet Name=\"Links\" EntityType=\"ClassicalMusicModel.Link\" " +
+                "/><EntitySet Name=\"Locations\" EntityType=\"ClassicalMusicModel.Location\" /><Entit" +
+                "ySet Name=\"Nationalities\" EntityType=\"ClassicalMusicModel.Nationality\" /><Entity" +
+                "Set Name=\"Samples\" EntityType=\"ClassicalMusicModel.Sample\" /><EntitySet Name=\"Co" +
+                "mposerBiographies\" EntityType=\"ClassicalMusicModel.ComposerBiography\" /><EntityS" +
+                "et Name=\"ComposerShortBiographies\" EntityType=\"ClassicalMusicModel.ComposerShort" +
+                "Biography\" /><AssociationSet Name=\"FK_Catalog_Composer\" Association=\"ClassicalMu" +
+                "sicModel.FK_Catalog_Composer\"><End Role=\"Catalog\" EntitySet=\"Catalogs\" /><End Ro" +
+                "le=\"Composer\" EntitySet=\"Composers\" /></AssociationSet><AssociationSet Name=\"FK_" +
+                "CatalogNumber_Catalog\" Association=\"ClassicalMusicModel.FK_CatalogNumber_Catalog" +
+                "\"><End Role=\"Catalog\" EntitySet=\"Catalogs\" /><End Role=\"CatalogNumber\" EntitySet" +
+                "=\"CatalogNumbers\" /></AssociationSet><AssociationSet Name=\"CompositionCatalogNum" +
+                "ber\" Association=\"ClassicalMusicModel.CompositionCatalogNumber\"><End Role=\"Catal" +
+                "ogNumber\" EntitySet=\"CatalogNumbers\" /><End Role=\"Composition\" EntitySet=\"Compos" +
+                "itions\" /></AssociationSet><AssociationSet Name=\"FK_Composer_BirthLocation\" Asso" +
+                "ciation=\"ClassicalMusicModel.FK_Composer_BirthLocation\"><End Role=\"Composer\" Ent" +
+                "itySet=\"Composers\" /><End Role=\"Location\" EntitySet=\"Locations\" /></AssociationS" +
+                "et><AssociationSet Name=\"FK_Composer_DeathLocation\" Association=\"ClassicalMusicM" +
+                "odel.FK_Composer_DeathLocation\"><End Role=\"Composer\" EntitySet=\"Composers\" /><En" +
+                "d Role=\"Location\" EntitySet=\"Locations\" /></AssociationSet><AssociationSet Name=" +
+                "\"FK_ComposerImage_Composer\" Association=\"ClassicalMusicModel.FK_ComposerImage_Co" +
+                "mposer\"><End Role=\"Composer\" EntitySet=\"Composers\" /><End Role=\"ComposerImage\" E" +
+                "ntitySet=\"ComposerImages\" /></AssociationSet><AssociationSet Name=\"FK_Sample_Com" +
+                "poser\" Association=\"ClassicalMusicModel.FK_Sample_Composer\"><End Role=\"Composer\"" +
+                " EntitySet=\"Composers\" /><End Role=\"Sample\" EntitySet=\"Samples\" /></AssociationS" +
+                "et><AssociationSet Name=\"ComposerEra\" Association=\"ClassicalMusicModel.ComposerE" +
+                "ra\"><End Role=\"Composer\" EntitySet=\"Composers\" /><End Role=\"Era\" EntitySet=\"Eras" +
+                "\" /></AssociationSet><AssociationSet Name=\"ComposerInfluence\" Association=\"Class" +
+                "icalMusicModel.ComposerInfluence\"><End Role=\"Influenced\" EntitySet=\"Composers\" /" +
+                "><End Role=\"Influence\" EntitySet=\"Composers\" /></AssociationSet><AssociationSet " +
+                "Name=\"ComposerLink\" Association=\"ClassicalMusicModel.ComposerLink\"><End Role=\"Co" +
+                "mposer\" EntitySet=\"Composers\" /><End Role=\"Link\" EntitySet=\"Links\" /></Associati" +
+                "onSet><AssociationSet Name=\"ComposerNationality\" Association=\"ClassicalMusicMode" +
+                "l.ComposerNationality\"><End Role=\"Composer\" EntitySet=\"Composers\" /><End Role=\"N" +
+                "ationality\" EntitySet=\"Nationalities\" /></AssociationSet><AssociationSet Name=\"C" +
+                "ompositionComposer\" Association=\"ClassicalMusicModel.CompositionComposer\"><End R" +
+                "ole=\"Composer\" EntitySet=\"Composers\" /><End Role=\"Composition\" EntitySet=\"Compos" +
+                "itions\" /></AssociationSet><AssociationSet Name=\"FK_ComposerBiography_Composer\" " +
+                "Association=\"ClassicalMusicModel.FK_ComposerBiography_Composer\"><End Role=\"Compo" +
+                "ser\" EntitySet=\"Composers\" /><End Role=\"ComposerBiography\" EntitySet=\"ComposerBi" +
+                "ographies\" /></AssociationSet><AssociationSet Name=\"FK_ComposerShortBiography_Co" +
+                "mposer\" Association=\"ClassicalMusicModel.FK_ComposerShortBiography_Composer\"><En" +
+                "d Role=\"Composer\" EntitySet=\"Composers\" /><End Role=\"ComposerShortBiography\" Ent" +
+                "itySet=\"ComposerShortBiographies\" /></AssociationSet><AssociationSet Name=\"FK_Co" +
+                "mposition_Key\" Association=\"ClassicalMusicModel.FK_Composition_Key\"><End Role=\"C" +
+                "omposition\" EntitySet=\"Compositions\" /><End Role=\"Key\" EntitySet=\"Keys\" /></Asso" +
+                "ciationSet><AssociationSet Name=\"CompositionLink\" Association=\"ClassicalMusicMod" +
+                "el.CompositionLink\"><End Role=\"Composition\" EntitySet=\"Compositions\" /><End Role" +
+                "=\"Link\" EntitySet=\"Links\" /></AssociationSet></EntityContainer></Schema></edmx:D" +
+                "ataServices></edmx:Edmx>";
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
             private static string GetConcatenatedEdmxString()
             {
-                return string.Concat(ModelPart0, ModelPart1, ModelPart2, ModelPart3);
+                return string.Concat(ModelPart0, ModelPart1, ModelPart2);
             }
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
             public static global::Microsoft.Data.Edm.IEdmModel GetInstance()
@@ -1019,24 +943,6 @@ namespace NathanHarrenstein.MusicTimeline.Data
         }
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
         private global::System.Data.Services.Client.DataServiceCollection<Composition> _Compositions = new global::System.Data.Services.Client.DataServiceCollection<Composition>(null, global::System.Data.Services.Client.TrackingMode.None);
-        /// <summary>
-        /// There are no comments for CompositionCollections in the schema.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public global::System.Data.Services.Client.DataServiceCollection<CompositionCollection> CompositionCollections
-        {
-            get
-            {
-                return this._CompositionCollections;
-            }
-            set
-            {
-                this._CompositionCollections = value;
-                this.OnPropertyChanged("CompositionCollections");
-            }
-        }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        private global::System.Data.Services.Client.DataServiceCollection<CompositionCollection> _CompositionCollections = new global::System.Data.Services.Client.DataServiceCollection<CompositionCollection>(null, global::System.Data.Services.Client.TrackingMode.None);
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
         public event global::System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
@@ -1064,15 +970,13 @@ namespace NathanHarrenstein.MusicTimeline.Data
         /// <param name="composerId">Initial value of ComposerId.</param>
         /// <param name="name">Initial value of Name.</param>
         /// <param name="dates">Initial value of Dates.</param>
-        /// <param name="isPopular">Initial value of IsPopular.</param>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public static Composer CreateComposer(int composerId, string name, string dates, bool isPopular)
+        public static Composer CreateComposer(int composerId, string name, string dates)
         {
             Composer composer = new Composer();
             composer.ComposerId = composerId;
             composer.Name = name;
             composer.Dates = dates;
-            composer.IsPopular = isPopular;
             return composer;
         }
         /// <summary>
@@ -1186,28 +1090,6 @@ namespace NathanHarrenstein.MusicTimeline.Data
         partial void OnDeathLocationIdChanging(global::System.Nullable<int> value);
         partial void OnDeathLocationIdChanged();
         /// <summary>
-        /// There are no comments for Property IsPopular in the schema.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public bool IsPopular
-        {
-            get
-            {
-                return this._IsPopular;
-            }
-            set
-            {
-                this.OnIsPopularChanging(value);
-                this._IsPopular = value;
-                this.OnIsPopularChanged();
-                this.OnPropertyChanged("IsPopular");
-            }
-        }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        private bool _IsPopular;
-        partial void OnIsPopularChanging(bool value);
-        partial void OnIsPopularChanged();
-        /// <summary>
         /// There are no comments for Catalogs in the schema.
         /// </summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
@@ -1262,41 +1144,23 @@ namespace NathanHarrenstein.MusicTimeline.Data
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
         private Location _DeathLocation;
         /// <summary>
-        /// There are no comments for ComposerBiography in the schema.
+        /// There are no comments for Images in the schema.
         /// </summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public ComposerBiography ComposerBiography
+        public global::System.Data.Services.Client.DataServiceCollection<ComposerImage> Images
         {
             get
             {
-                return this._ComposerBiography;
+                return this._Images;
             }
             set
             {
-                this._ComposerBiography = value;
-                this.OnPropertyChanged("ComposerBiography");
+                this._Images = value;
+                this.OnPropertyChanged("Images");
             }
         }
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        private ComposerBiography _ComposerBiography;
-        /// <summary>
-        /// There are no comments for ComposerImages in the schema.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public global::System.Data.Services.Client.DataServiceCollection<ComposerImage> ComposerImages
-        {
-            get
-            {
-                return this._ComposerImages;
-            }
-            set
-            {
-                this._ComposerImages = value;
-                this.OnPropertyChanged("ComposerImages");
-            }
-        }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        private global::System.Data.Services.Client.DataServiceCollection<ComposerImage> _ComposerImages = new global::System.Data.Services.Client.DataServiceCollection<ComposerImage>(null, global::System.Data.Services.Client.TrackingMode.None);
+        private global::System.Data.Services.Client.DataServiceCollection<ComposerImage> _Images = new global::System.Data.Services.Client.DataServiceCollection<ComposerImage>(null, global::System.Data.Services.Client.TrackingMode.None);
         /// <summary>
         /// There are no comments for Samples in the schema.
         /// </summary>
@@ -1406,24 +1270,6 @@ namespace NathanHarrenstein.MusicTimeline.Data
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
         private global::System.Data.Services.Client.DataServiceCollection<Nationality> _Nationalities = new global::System.Data.Services.Client.DataServiceCollection<Nationality>(null, global::System.Data.Services.Client.TrackingMode.None);
         /// <summary>
-        /// There are no comments for CompositionCollections in the schema.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public global::System.Data.Services.Client.DataServiceCollection<CompositionCollection> CompositionCollections
-        {
-            get
-            {
-                return this._CompositionCollections;
-            }
-            set
-            {
-                this._CompositionCollections = value;
-                this.OnPropertyChanged("CompositionCollections");
-            }
-        }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        private global::System.Data.Services.Client.DataServiceCollection<CompositionCollection> _CompositionCollections = new global::System.Data.Services.Client.DataServiceCollection<CompositionCollection>(null, global::System.Data.Services.Client.TrackingMode.None);
-        /// <summary>
         /// There are no comments for Compositions in the schema.
         /// </summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
@@ -1441,67 +1287,11 @@ namespace NathanHarrenstein.MusicTimeline.Data
         }
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
         private global::System.Data.Services.Client.DataServiceCollection<Composition> _Compositions = new global::System.Data.Services.Client.DataServiceCollection<Composition>(null, global::System.Data.Services.Client.TrackingMode.None);
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public event global::System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        protected virtual void OnPropertyChanged(string property)
-        {
-            if ((this.PropertyChanged != null))
-            {
-                this.PropertyChanged(this, new global::System.ComponentModel.PropertyChangedEventArgs(property));
-            }
-        }
-    }
-    /// <summary>
-    /// There are no comments for ClassicalMusicModel.ComposerBiography in the schema.
-    /// </summary>
-    /// <KeyProperties>
-    /// ComposerId
-    /// </KeyProperties>
-    [global::System.Data.Services.Common.EntitySetAttribute("ComposerBiographies")]
-    [global::System.Data.Services.Common.DataServiceKeyAttribute("ComposerId")]
-    public partial class ComposerBiography : global::System.ComponentModel.INotifyPropertyChanged
-    {
         /// <summary>
-        /// Create a new ComposerBiography object.
-        /// </summary>
-        /// <param name="composerId">Initial value of ComposerId.</param>
-        /// <param name="biography">Initial value of Biography.</param>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public static ComposerBiography CreateComposerBiography(int composerId, string biography)
-        {
-            ComposerBiography composerBiography = new ComposerBiography();
-            composerBiography.ComposerId = composerId;
-            composerBiography.Biography = biography;
-            return composerBiography;
-        }
-        /// <summary>
-        /// There are no comments for Property ComposerId in the schema.
+        /// There are no comments for Biography in the schema.
         /// </summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public int ComposerId
-        {
-            get
-            {
-                return this._ComposerId;
-            }
-            set
-            {
-                this.OnComposerIdChanging(value);
-                this._ComposerId = value;
-                this.OnComposerIdChanged();
-                this.OnPropertyChanged("ComposerId");
-            }
-        }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        private int _ComposerId;
-        partial void OnComposerIdChanging(int value);
-        partial void OnComposerIdChanged();
-        /// <summary>
-        /// There are no comments for Property Biography in the schema.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public string Biography
+        public ComposerBiography Biography
         {
             get
             {
@@ -1509,34 +1299,30 @@ namespace NathanHarrenstein.MusicTimeline.Data
             }
             set
             {
-                this.OnBiographyChanging(value);
                 this._Biography = value;
-                this.OnBiographyChanged();
                 this.OnPropertyChanged("Biography");
             }
         }
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        private string _Biography;
-        partial void OnBiographyChanging(string value);
-        partial void OnBiographyChanged();
+        private ComposerBiography _Biography;
         /// <summary>
-        /// There are no comments for Composer in the schema.
+        /// There are no comments for ShortBiography in the schema.
         /// </summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public Composer Composer
+        public ComposerShortBiography ShortBiography
         {
             get
             {
-                return this._Composer;
+                return this._ShortBiography;
             }
             set
             {
-                this._Composer = value;
-                this.OnPropertyChanged("Composer");
+                this._ShortBiography = value;
+                this.OnPropertyChanged("ShortBiography");
             }
         }
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        private Composer _Composer;
+        private ComposerShortBiography _ShortBiography;
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
         public event global::System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
@@ -1660,14 +1446,12 @@ namespace NathanHarrenstein.MusicTimeline.Data
         /// </summary>
         /// <param name="compositionId">Initial value of CompositionId.</param>
         /// <param name="name">Initial value of Name.</param>
-        /// <param name="isPopular">Initial value of IsPopular.</param>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public static Composition CreateComposition(int compositionId, string name, bool isPopular)
+        public static Composition CreateComposition(int compositionId, string name)
         {
             Composition composition = new Composition();
             composition.CompositionId = compositionId;
             composition.Name = name;
-            composition.IsPopular = isPopular;
             return composition;
         }
         /// <summary>
@@ -1759,116 +1543,6 @@ namespace NathanHarrenstein.MusicTimeline.Data
         partial void OnNicknameChanging(string value);
         partial void OnNicknameChanged();
         /// <summary>
-        /// There are no comments for Property Premiere in the schema.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public string Premiere
-        {
-            get
-            {
-                return this._Premiere;
-            }
-            set
-            {
-                this.OnPremiereChanging(value);
-                this._Premiere = value;
-                this.OnPremiereChanged();
-                this.OnPropertyChanged("Premiere");
-            }
-        }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        private string _Premiere;
-        partial void OnPremiereChanging(string value);
-        partial void OnPremiereChanged();
-        /// <summary>
-        /// There are no comments for Property Dedication in the schema.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public string Dedication
-        {
-            get
-            {
-                return this._Dedication;
-            }
-            set
-            {
-                this.OnDedicationChanging(value);
-                this._Dedication = value;
-                this.OnDedicationChanged();
-                this.OnPropertyChanged("Dedication");
-            }
-        }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        private string _Dedication;
-        partial void OnDedicationChanging(string value);
-        partial void OnDedicationChanged();
-        /// <summary>
-        /// There are no comments for Property Occasion in the schema.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public string Occasion
-        {
-            get
-            {
-                return this._Occasion;
-            }
-            set
-            {
-                this.OnOccasionChanging(value);
-                this._Occasion = value;
-                this.OnOccasionChanged();
-                this.OnPropertyChanged("Occasion");
-            }
-        }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        private string _Occasion;
-        partial void OnOccasionChanging(string value);
-        partial void OnOccasionChanged();
-        /// <summary>
-        /// There are no comments for Property IsPopular in the schema.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public bool IsPopular
-        {
-            get
-            {
-                return this._IsPopular;
-            }
-            set
-            {
-                this.OnIsPopularChanging(value);
-                this._IsPopular = value;
-                this.OnIsPopularChanged();
-                this.OnPropertyChanged("IsPopular");
-            }
-        }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        private bool _IsPopular;
-        partial void OnIsPopularChanging(bool value);
-        partial void OnIsPopularChanged();
-        /// <summary>
-        /// There are no comments for Property Comment in the schema.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public string Comment
-        {
-            get
-            {
-                return this._Comment;
-            }
-            set
-            {
-                this.OnCommentChanging(value);
-                this._Comment = value;
-                this.OnCommentChanged();
-                this.OnPropertyChanged("Comment");
-            }
-        }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        private string _Comment;
-        partial void OnCommentChanging(string value);
-        partial void OnCommentChanged();
-        /// <summary>
         /// There are no comments for Property KeyId in the schema.
         /// </summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
@@ -1891,90 +1565,6 @@ namespace NathanHarrenstein.MusicTimeline.Data
         partial void OnKeyIdChanging(global::System.Nullable<int> value);
         partial void OnKeyIdChanged();
         /// <summary>
-        /// There are no comments for Property GenreId in the schema.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public global::System.Nullable<int> GenreId
-        {
-            get
-            {
-                return this._GenreId;
-            }
-            set
-            {
-                this.OnGenreIdChanging(value);
-                this._GenreId = value;
-                this.OnGenreIdChanged();
-                this.OnPropertyChanged("GenreId");
-            }
-        }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        private global::System.Nullable<int> _GenreId;
-        partial void OnGenreIdChanging(global::System.Nullable<int> value);
-        partial void OnGenreIdChanged();
-        /// <summary>
-        /// There are no comments for Property InstrumentationId in the schema.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public global::System.Nullable<int> InstrumentationId
-        {
-            get
-            {
-                return this._InstrumentationId;
-            }
-            set
-            {
-                this.OnInstrumentationIdChanging(value);
-                this._InstrumentationId = value;
-                this.OnInstrumentationIdChanged();
-                this.OnPropertyChanged("InstrumentationId");
-            }
-        }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        private global::System.Nullable<int> _InstrumentationId;
-        partial void OnInstrumentationIdChanging(global::System.Nullable<int> value);
-        partial void OnInstrumentationIdChanged();
-        /// <summary>
-        /// There are no comments for Property CompositionCollectionId in the schema.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public global::System.Nullable<int> CompositionCollectionId
-        {
-            get
-            {
-                return this._CompositionCollectionId;
-            }
-            set
-            {
-                this.OnCompositionCollectionIdChanging(value);
-                this._CompositionCollectionId = value;
-                this.OnCompositionCollectionIdChanged();
-                this.OnPropertyChanged("CompositionCollectionId");
-            }
-        }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        private global::System.Nullable<int> _CompositionCollectionId;
-        partial void OnCompositionCollectionIdChanging(global::System.Nullable<int> value);
-        partial void OnCompositionCollectionIdChanged();
-        /// <summary>
-        /// There are no comments for CompositionCollection in the schema.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public CompositionCollection CompositionCollection
-        {
-            get
-            {
-                return this._CompositionCollection;
-            }
-            set
-            {
-                this._CompositionCollection = value;
-                this.OnPropertyChanged("CompositionCollection");
-            }
-        }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        private CompositionCollection _CompositionCollection;
-        /// <summary>
         /// There are no comments for Key in the schema.
         /// </summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
@@ -1992,24 +1582,6 @@ namespace NathanHarrenstein.MusicTimeline.Data
         }
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
         private Key _Key;
-        /// <summary>
-        /// There are no comments for Movements in the schema.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public global::System.Data.Services.Client.DataServiceCollection<Movement> Movements
-        {
-            get
-            {
-                return this._Movements;
-            }
-            set
-            {
-                this._Movements = value;
-                this.OnPropertyChanged("Movements");
-            }
-        }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        private global::System.Data.Services.Client.DataServiceCollection<Movement> _Movements = new global::System.Data.Services.Client.DataServiceCollection<Movement>(null, global::System.Data.Services.Client.TrackingMode.None);
         /// <summary>
         /// There are no comments for CatalogNumbers in the schema.
         /// </summary>
@@ -2064,162 +1636,6 @@ namespace NathanHarrenstein.MusicTimeline.Data
         }
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
         private global::System.Data.Services.Client.DataServiceCollection<Link> _Links = new global::System.Data.Services.Client.DataServiceCollection<Link>(null, global::System.Data.Services.Client.TrackingMode.None);
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public event global::System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        protected virtual void OnPropertyChanged(string property)
-        {
-            if ((this.PropertyChanged != null))
-            {
-                this.PropertyChanged(this, new global::System.ComponentModel.PropertyChangedEventArgs(property));
-            }
-        }
-    }
-    /// <summary>
-    /// There are no comments for ClassicalMusicModel.CompositionCollection in the schema.
-    /// </summary>
-    /// <KeyProperties>
-    /// CompositionCollectionId
-    /// </KeyProperties>
-    [global::System.Data.Services.Common.EntitySetAttribute("CompositionCollections")]
-    [global::System.Data.Services.Common.DataServiceKeyAttribute("CompositionCollectionId")]
-    public partial class CompositionCollection : global::System.ComponentModel.INotifyPropertyChanged
-    {
-        /// <summary>
-        /// Create a new CompositionCollection object.
-        /// </summary>
-        /// <param name="compositionCollectionId">Initial value of CompositionCollectionId.</param>
-        /// <param name="name">Initial value of Name.</param>
-        /// <param name="isPopular">Initial value of IsPopular.</param>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public static CompositionCollection CreateCompositionCollection(int compositionCollectionId, string name, bool isPopular)
-        {
-            CompositionCollection compositionCollection = new CompositionCollection();
-            compositionCollection.CompositionCollectionId = compositionCollectionId;
-            compositionCollection.Name = name;
-            compositionCollection.IsPopular = isPopular;
-            return compositionCollection;
-        }
-        /// <summary>
-        /// There are no comments for Property CompositionCollectionId in the schema.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public int CompositionCollectionId
-        {
-            get
-            {
-                return this._CompositionCollectionId;
-            }
-            set
-            {
-                this.OnCompositionCollectionIdChanging(value);
-                this._CompositionCollectionId = value;
-                this.OnCompositionCollectionIdChanged();
-                this.OnPropertyChanged("CompositionCollectionId");
-            }
-        }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        private int _CompositionCollectionId;
-        partial void OnCompositionCollectionIdChanging(int value);
-        partial void OnCompositionCollectionIdChanged();
-        /// <summary>
-        /// There are no comments for Property Name in the schema.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public string Name
-        {
-            get
-            {
-                return this._Name;
-            }
-            set
-            {
-                this.OnNameChanging(value);
-                this._Name = value;
-                this.OnNameChanged();
-                this.OnPropertyChanged("Name");
-            }
-        }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        private string _Name;
-        partial void OnNameChanging(string value);
-        partial void OnNameChanged();
-        /// <summary>
-        /// There are no comments for Property IsPopular in the schema.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public bool IsPopular
-        {
-            get
-            {
-                return this._IsPopular;
-            }
-            set
-            {
-                this.OnIsPopularChanging(value);
-                this._IsPopular = value;
-                this.OnIsPopularChanged();
-                this.OnPropertyChanged("IsPopular");
-            }
-        }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        private bool _IsPopular;
-        partial void OnIsPopularChanging(bool value);
-        partial void OnIsPopularChanged();
-        /// <summary>
-        /// There are no comments for Compositions in the schema.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public global::System.Data.Services.Client.DataServiceCollection<Composition> Compositions
-        {
-            get
-            {
-                return this._Compositions;
-            }
-            set
-            {
-                this._Compositions = value;
-                this.OnPropertyChanged("Compositions");
-            }
-        }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        private global::System.Data.Services.Client.DataServiceCollection<Composition> _Compositions = new global::System.Data.Services.Client.DataServiceCollection<Composition>(null, global::System.Data.Services.Client.TrackingMode.None);
-        /// <summary>
-        /// There are no comments for CatalogNumbers in the schema.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public global::System.Data.Services.Client.DataServiceCollection<CatalogNumber> CatalogNumbers
-        {
-            get
-            {
-                return this._CatalogNumbers;
-            }
-            set
-            {
-                this._CatalogNumbers = value;
-                this.OnPropertyChanged("CatalogNumbers");
-            }
-        }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        private global::System.Data.Services.Client.DataServiceCollection<CatalogNumber> _CatalogNumbers = new global::System.Data.Services.Client.DataServiceCollection<CatalogNumber>(null, global::System.Data.Services.Client.TrackingMode.None);
-        /// <summary>
-        /// There are no comments for Composers in the schema.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public global::System.Data.Services.Client.DataServiceCollection<Composer> Composers
-        {
-            get
-            {
-                return this._Composers;
-            }
-            set
-            {
-                this._Composers = value;
-                this.OnPropertyChanged("Composers");
-            }
-        }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        private global::System.Data.Services.Client.DataServiceCollection<Composer> _Composers = new global::System.Data.Services.Client.DataServiceCollection<Composer>(null, global::System.Data.Services.Client.TrackingMode.None);
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
         public event global::System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
@@ -2698,174 +2114,6 @@ namespace NathanHarrenstein.MusicTimeline.Data
         }
     }
     /// <summary>
-    /// There are no comments for ClassicalMusicModel.Movement in the schema.
-    /// </summary>
-    /// <KeyProperties>
-    /// MovementId
-    /// </KeyProperties>
-    [global::System.Data.Services.Common.EntitySetAttribute("Movements")]
-    [global::System.Data.Services.Common.DataServiceKeyAttribute("MovementId")]
-    public partial class Movement : global::System.ComponentModel.INotifyPropertyChanged
-    {
-        /// <summary>
-        /// Create a new Movement object.
-        /// </summary>
-        /// <param name="movementId">Initial value of MovementId.</param>
-        /// <param name="number">Initial value of Number.</param>
-        /// <param name="name">Initial value of Name.</param>
-        /// <param name="isPopular">Initial value of IsPopular.</param>
-        /// <param name="compositionId">Initial value of CompositionId.</param>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public static Movement CreateMovement(int movementId, int number, string name, bool isPopular, int compositionId)
-        {
-            Movement movement = new Movement();
-            movement.MovementId = movementId;
-            movement.Number = number;
-            movement.Name = name;
-            movement.IsPopular = isPopular;
-            movement.CompositionId = compositionId;
-            return movement;
-        }
-        /// <summary>
-        /// There are no comments for Property MovementId in the schema.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public int MovementId
-        {
-            get
-            {
-                return this._MovementId;
-            }
-            set
-            {
-                this.OnMovementIdChanging(value);
-                this._MovementId = value;
-                this.OnMovementIdChanged();
-                this.OnPropertyChanged("MovementId");
-            }
-        }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        private int _MovementId;
-        partial void OnMovementIdChanging(int value);
-        partial void OnMovementIdChanged();
-        /// <summary>
-        /// There are no comments for Property Number in the schema.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public int Number
-        {
-            get
-            {
-                return this._Number;
-            }
-            set
-            {
-                this.OnNumberChanging(value);
-                this._Number = value;
-                this.OnNumberChanged();
-                this.OnPropertyChanged("Number");
-            }
-        }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        private int _Number;
-        partial void OnNumberChanging(int value);
-        partial void OnNumberChanged();
-        /// <summary>
-        /// There are no comments for Property Name in the schema.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public string Name
-        {
-            get
-            {
-                return this._Name;
-            }
-            set
-            {
-                this.OnNameChanging(value);
-                this._Name = value;
-                this.OnNameChanged();
-                this.OnPropertyChanged("Name");
-            }
-        }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        private string _Name;
-        partial void OnNameChanging(string value);
-        partial void OnNameChanged();
-        /// <summary>
-        /// There are no comments for Property IsPopular in the schema.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public bool IsPopular
-        {
-            get
-            {
-                return this._IsPopular;
-            }
-            set
-            {
-                this.OnIsPopularChanging(value);
-                this._IsPopular = value;
-                this.OnIsPopularChanged();
-                this.OnPropertyChanged("IsPopular");
-            }
-        }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        private bool _IsPopular;
-        partial void OnIsPopularChanging(bool value);
-        partial void OnIsPopularChanged();
-        /// <summary>
-        /// There are no comments for Property CompositionId in the schema.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public int CompositionId
-        {
-            get
-            {
-                return this._CompositionId;
-            }
-            set
-            {
-                this.OnCompositionIdChanging(value);
-                this._CompositionId = value;
-                this.OnCompositionIdChanged();
-                this.OnPropertyChanged("CompositionId");
-            }
-        }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        private int _CompositionId;
-        partial void OnCompositionIdChanging(int value);
-        partial void OnCompositionIdChanged();
-        /// <summary>
-        /// There are no comments for Composition in the schema.
-        /// </summary>
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public Composition Composition
-        {
-            get
-            {
-                return this._Composition;
-            }
-            set
-            {
-                this._Composition = value;
-                this.OnPropertyChanged("Composition");
-            }
-        }
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        private Composition _Composition;
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public event global::System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
-        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        protected virtual void OnPropertyChanged(string property)
-        {
-            if ((this.PropertyChanged != null))
-            {
-                this.PropertyChanged(this, new global::System.ComponentModel.PropertyChangedEventArgs(property));
-            }
-        }
-    }
-    /// <summary>
     /// There are no comments for ClassicalMusicModel.Nationality in the schema.
     /// </summary>
     /// <KeyProperties>
@@ -3077,6 +2325,194 @@ namespace NathanHarrenstein.MusicTimeline.Data
         private int _ComposerID;
         partial void OnComposerIDChanging(int value);
         partial void OnComposerIDChanged();
+        /// <summary>
+        /// There are no comments for Composer in the schema.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public Composer Composer
+        {
+            get
+            {
+                return this._Composer;
+            }
+            set
+            {
+                this._Composer = value;
+                this.OnPropertyChanged("Composer");
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        private Composer _Composer;
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public event global::System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        protected virtual void OnPropertyChanged(string property)
+        {
+            if ((this.PropertyChanged != null))
+            {
+                this.PropertyChanged(this, new global::System.ComponentModel.PropertyChangedEventArgs(property));
+            }
+        }
+    }
+    /// <summary>
+    /// There are no comments for ClassicalMusicModel.ComposerBiography in the schema.
+    /// </summary>
+    /// <KeyProperties>
+    /// ComposerId
+    /// </KeyProperties>
+    [global::System.Data.Services.Common.EntitySetAttribute("ComposerBiographies")]
+    [global::System.Data.Services.Common.DataServiceKeyAttribute("ComposerId")]
+    public partial class ComposerBiography : global::System.ComponentModel.INotifyPropertyChanged
+    {
+        /// <summary>
+        /// Create a new ComposerBiography object.
+        /// </summary>
+        /// <param name="composerId">Initial value of ComposerId.</param>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public static ComposerBiography CreateComposerBiography(int composerId)
+        {
+            ComposerBiography composerBiography = new ComposerBiography();
+            composerBiography.ComposerId = composerId;
+            return composerBiography;
+        }
+        /// <summary>
+        /// There are no comments for Property ComposerId in the schema.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public int ComposerId
+        {
+            get
+            {
+                return this._ComposerId;
+            }
+            set
+            {
+                this.OnComposerIdChanging(value);
+                this._ComposerId = value;
+                this.OnComposerIdChanged();
+                this.OnPropertyChanged("ComposerId");
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        private int _ComposerId;
+        partial void OnComposerIdChanging(int value);
+        partial void OnComposerIdChanged();
+        /// <summary>
+        /// There are no comments for Property Text in the schema.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public string Text
+        {
+            get
+            {
+                return this._Text;
+            }
+            set
+            {
+                this.OnTextChanging(value);
+                this._Text = value;
+                this.OnTextChanged();
+                this.OnPropertyChanged("Text");
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        private string _Text;
+        partial void OnTextChanging(string value);
+        partial void OnTextChanged();
+        /// <summary>
+        /// There are no comments for Composer in the schema.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public Composer Composer
+        {
+            get
+            {
+                return this._Composer;
+            }
+            set
+            {
+                this._Composer = value;
+                this.OnPropertyChanged("Composer");
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        private Composer _Composer;
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public event global::System.ComponentModel.PropertyChangedEventHandler PropertyChanged;
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        protected virtual void OnPropertyChanged(string property)
+        {
+            if ((this.PropertyChanged != null))
+            {
+                this.PropertyChanged(this, new global::System.ComponentModel.PropertyChangedEventArgs(property));
+            }
+        }
+    }
+    /// <summary>
+    /// There are no comments for ClassicalMusicModel.ComposerShortBiography in the schema.
+    /// </summary>
+    /// <KeyProperties>
+    /// ComposerId
+    /// </KeyProperties>
+    [global::System.Data.Services.Common.EntitySetAttribute("ComposerShortBiographies")]
+    [global::System.Data.Services.Common.DataServiceKeyAttribute("ComposerId")]
+    public partial class ComposerShortBiography : global::System.ComponentModel.INotifyPropertyChanged
+    {
+        /// <summary>
+        /// Create a new ComposerShortBiography object.
+        /// </summary>
+        /// <param name="composerId">Initial value of ComposerId.</param>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public static ComposerShortBiography CreateComposerShortBiography(int composerId)
+        {
+            ComposerShortBiography composerShortBiography = new ComposerShortBiography();
+            composerShortBiography.ComposerId = composerId;
+            return composerShortBiography;
+        }
+        /// <summary>
+        /// There are no comments for Property ComposerId in the schema.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public int ComposerId
+        {
+            get
+            {
+                return this._ComposerId;
+            }
+            set
+            {
+                this.OnComposerIdChanging(value);
+                this._ComposerId = value;
+                this.OnComposerIdChanged();
+                this.OnPropertyChanged("ComposerId");
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        private int _ComposerId;
+        partial void OnComposerIdChanging(int value);
+        partial void OnComposerIdChanged();
+        /// <summary>
+        /// There are no comments for Property Text in the schema.
+        /// </summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        public string Text
+        {
+            get
+            {
+                return this._Text;
+            }
+            set
+            {
+                this.OnTextChanging(value);
+                this._Text = value;
+                this.OnTextChanged();
+                this.OnPropertyChanged("Text");
+            }
+        }
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
+        private string _Text;
+        partial void OnTextChanging(string value);
+        partial void OnTextChanged();
         /// <summary>
         /// There are no comments for Composer in the schema.
         /// </summary>

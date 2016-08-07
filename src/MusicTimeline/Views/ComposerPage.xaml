@@ -13,18 +13,15 @@
       d:DesignHeight="600"
       d:DesignWidth="800"
       Background="{StaticResource BackgroundBrush}"
-      FontFamily="Cambria"
+      FontFamily="Segoe UI"
       Foreground="#FFDFE0E6"
-      UseLayoutRounding="True"
       mc:Ignorable="d">
     <Page.Resources>
         <cv:ComposerToBitmapImageConverter x:Key="ComposerToBitmapImageConverter" />
         <cv:NationalityToFlagConverter x:Key="NationalityToFlagConverter" />
         <cv:UrlToCommandConverter x:Key="UrlToCommandConverter" />
         <cv:UrlToFaviconConverter x:Key="UrlToFaviconConverter" />
-        <cv:DecimalToRomanConverter x:Key="DecimalToRomanConverter" />
         <cv:CompositionsToSortedCompositionsConverter x:Key="CompositionsToSortedCompositionsConverter" />
-        <cv:MovementsToSortedMovementsConverter x:Key="MovementsToSortedMovementsConverter" />
         <cv:CompositionToCompositionDisplayNameConverter x:Key="CompositionToCompositionDisplayNameConverter" />
         <cv:YouTubeToThumbConverter x:Key="YouTubeToThumbConverter" />
         <cv:YouTubeToEmbedConverter x:Key="YouTubeToEmbedConverter" />
@@ -85,10 +82,12 @@
                            Margin="25,-1,0,0"
                            HorizontalAlignment="Left"
                            VerticalAlignment="Center"
-                           FontSize="42.666" />
+                           FontFamily="Segoe UI Light"
+                           FontSize="34pt" />
                 <ItemsControl Name="ComposerFlagsItemsControl"
                               Grid.Column="2"
                               HorizontalAlignment="Left"
+                              Margin="0,8,0,0"
                               VerticalAlignment="Center">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
@@ -164,8 +163,6 @@
                     <ListBox Name="imagesListBox"
                              HorizontalAlignment="Center"
                              VerticalAlignment="Top"
-                             MouseEnter="imagesListBox_MouseEnter"
-                             MouseLeave="imagesListBox_MouseLeave"
                              SelectedIndex="0">
                         <ListBox.Template>
                             <ControlTemplate TargetType="{x:Type ListBox}">
@@ -175,6 +172,7 @@
                                            DataContextChanged="selectedImage_DataContextChanged"
                                            Stretch="Uniform" />
                                     <Button x:Name="imagesEditButton"
+                                            Margin="15"
                                             HorizontalAlignment="Right"
                                             VerticalAlignment="Top"
                                             Click="imagesEditButton_Click"
@@ -207,6 +205,16 @@
                                         </c:PanningScrollViewer>
                                     </Border>
                                 </Grid>
+                                <ControlTemplate.Triggers>
+                                    <MultiDataTrigger>
+                                        <MultiDataTrigger.Conditions>
+                                            <Condition Binding="{Binding IsMouseOver}" Value="True" />
+                                            <Condition Binding="{Binding Source={x:Static l:App.HasCredential}}" Value="True" />
+                                            <Condition Binding="{Binding IsEnabled, ElementName=imagesEditButton}" Value="True" />
+                                        </MultiDataTrigger.Conditions>
+                                        <Setter TargetName="imagesEditButton" Property="Visibility" Value="Visible" />
+                                    </MultiDataTrigger>
+                                </ControlTemplate.Triggers>
                             </ControlTemplate>
                         </ListBox.Template>
                         <ListBox.ItemsPanel>
@@ -238,6 +246,7 @@
                                                ButtonClick="bornHeader_ButtonClick"
                                                ButtonForeground="{StaticResource HeaderBrush}"
                                                ButtonSize="16.0"
+                                               FontFamily="Segoe UI Light"
                                                FontSize="18.667"
                                                Foreground="{StaticResource HeaderBrush}"
                                                Text="Born"
@@ -251,15 +260,21 @@
                                            Cancelling="bornToolbar_Cancelling"
                                            DockPanel.Dock="Top"
                                            Saving="bornToolbar_Saving" />
-                            <TextBox Name="bornTextBox"
+                            <TextBox Name="birthDateTextBox"
                                      Background="#33000000"
                                      BorderThickness="0"
-                                     FontSize="17.333333333333332"
+                                     FontSize="11.5pt"
+                                     Foreground="{StaticResource ForegroundBrush}"
+                                     Padding="8,8,8,0" />
+                            <TextBox Name="birthLocationTextBox"
+                                     Background="#33000000"
+                                     BorderThickness="0"
+                                     FontSize="11.5pt"
                                      Foreground="{StaticResource ForegroundBrush}"
                                      Padding="8" />
                         </StackPanel>
                         <TextBlock Name="bornTextBlock"
-                                   FontSize="17.333333333333332"
+                                   FontSize="11.5pt"
                                    Foreground="{StaticResource ForegroundBrush}" />
 
                         <!--  Died  -->
@@ -268,6 +283,7 @@
                                                ButtonClick="diedHeader_ButtonClick"
                                                ButtonForeground="{StaticResource HeaderBrush}"
                                                ButtonSize="16.0"
+                                               FontFamily="Segoe UI Light"
                                                FontSize="18.667"
                                                Foreground="{StaticResource HeaderBrush}"
                                                Text="Died"
@@ -281,15 +297,21 @@
                                            Cancelling="diedToolbar_Cancelling"
                                            DockPanel.Dock="Top"
                                            Saving="diedToolbar_Saving" />
-                            <TextBox Name="diedTextBox"
+                            <TextBox Name="deathDateTextBox"
                                      Background="#33000000"
                                      BorderThickness="0"
-                                     FontSize="17.333333333333332"
+                                     FontSize="11.5pt"
+                                     Foreground="{StaticResource ForegroundBrush}"
+                                     Padding="8,8,8,0" />
+                            <TextBox Name="deathLocationTextBox"
+                                     Background="#33000000"
+                                     BorderThickness="0"
+                                     FontSize="11.5pt"
                                      Foreground="{StaticResource ForegroundBrush}"
                                      Padding="8" />
                         </StackPanel>
                         <TextBlock Name="diedTextBlock"
-                                   FontSize="17.333333333333332"
+                                   FontSize="11.5pt"
                                    Foreground="{StaticResource ForegroundBrush}" />
 
                         <!--  Influences  -->
@@ -298,6 +320,7 @@
                                                ButtonClick="influencesHeader_ButtonClick"
                                                ButtonForeground="{StaticResource HeaderBrush}"
                                                ButtonSize="16.0"
+                                               FontFamily="Segoe UI Light"
                                                FontSize="18.667"
                                                Foreground="{StaticResource HeaderBrush}"
                                                Text="Influences"
@@ -333,7 +356,7 @@
                                             Click="influenceButton_Click"
                                             Content="{Binding Name}"
                                             Cursor="Hand"
-                                            FontSize="17.33333"
+                                            FontSize="11.5pt"
                                             Foreground="{StaticResource ForegroundBrush}">
                                         <Button.Template>
                                             <ControlTemplate TargetType="{x:Type Button}">
@@ -358,6 +381,7 @@
                                                ButtonClick="influencedHeader_ButtonClick"
                                                ButtonForeground="{StaticResource HeaderBrush}"
                                                ButtonSize="16.0"
+                                               FontFamily="Segoe UI Light"
                                                FontSize="18.667"
                                                Foreground="{StaticResource HeaderBrush}"
                                                Text="Influenced"
@@ -378,7 +402,7 @@
                                      SelectionMode="Multiple">
                                 <ListBox.ItemTemplate>
                                     <DataTemplate DataType="{x:Type db:Composer}">
-                                        <TextBlock FontSize="17.333333333333332"
+                                        <TextBlock FontSize="11.5pt"
                                                    Foreground="{StaticResource ForegroundBrush}"
                                                    Text="{Binding Name}" />
                                     </DataTemplate>
@@ -393,7 +417,7 @@
                                             Click="influenceButton_Click"
                                             Content="{Binding Name}"
                                             Cursor="Hand"
-                                            FontSize="17.33333"
+                                            FontSize="11.5pt"
                                             Foreground="{StaticResource ForegroundBrush}">
                                         <Button.Template>
                                             <ControlTemplate TargetType="{x:Type Button}">
@@ -418,6 +442,7 @@
                                                ButtonClick="mediaHeader_ButtonClick"
                                                ButtonForeground="{StaticResource HeaderBrush}"
                                                ButtonSize="16.0"
+                                               FontFamily="Segoe UI Light"
                                                FontSize="18.667"
                                                Foreground="{StaticResource HeaderBrush}"
                                                Text="Media"
@@ -457,7 +482,7 @@
                                                 <TextBox Name="mediaTextBox"
                                                          Background="#33000000"
                                                          BorderThickness="0"
-                                                         FontSize="17.333333333333332"
+                                                         FontSize="11.5pt"
                                                          Foreground="{StaticResource ForegroundBrush}"
                                                          LostFocus="linkTextBox_LostFocus"
                                                          Padding="8"
@@ -467,7 +492,7 @@
                                         <c:SelectionDataTemplateSelector.UnselectedTemplate>
                                             <DataTemplate DataType="{x:Type db:Link}">
                                                 <TextBlock Margin="0,0,0,5"
-                                                           FontSize="17.333333333333332"
+                                                           FontSize="11.5pt"
                                                            Foreground="{StaticResource ForegroundBrush}"
                                                            Text="{Binding Name}" />
                                             </DataTemplate>
@@ -503,7 +528,7 @@
                                                                Margin="8,0,0,0"
                                                                HorizontalAlignment="Left"
                                                                VerticalAlignment="Center"
-                                                               FontSize="17.333333333333332"
+                                                               FontSize="11.5pt"
                                                                Foreground="{StaticResource ForegroundBrush}"
                                                                Text="{Binding Name}"
                                                                TextWrapping="Wrap" />
@@ -526,6 +551,7 @@
                                                ButtonClick="linksHeader_ButtonClick"
                                                ButtonForeground="{StaticResource HeaderBrush}"
                                                ButtonSize="16.0"
+                                               FontFamily="Segoe UI Light"
                                                FontSize="18.667"
                                                Foreground="{StaticResource HeaderBrush}"
                                                Text="Links"
@@ -565,7 +591,7 @@
                                                 <TextBox Name="linkTextBox"
                                                          Background="#33000000"
                                                          BorderThickness="0"
-                                                         FontSize="17.333333333333332"
+                                                         FontSize="11.5pt"
                                                          Foreground="{StaticResource ForegroundBrush}"
                                                          LostFocus="linkTextBox_LostFocus"
                                                          Padding="8"
@@ -575,7 +601,7 @@
                                         <c:SelectionDataTemplateSelector.UnselectedTemplate>
                                             <DataTemplate DataType="{x:Type db:Link}">
                                                 <TextBlock Margin="0,0,0,5"
-                                                           FontSize="17.333333333333332"
+                                                           FontSize="11.5pt"
                                                            Foreground="{StaticResource ForegroundBrush}"
                                                            Text="{Binding Name}" />
                                             </DataTemplate>
@@ -608,7 +634,7 @@
                                                                             Mode=OneWay,
                                                                             IsAsync=True}" />
                                                     <TextBlock Name="linkTextBlock"
-                                                               FontSize="17.333333333333332"
+                                                               FontSize="11.5pt"
                                                                Foreground="{StaticResource ForegroundBrush}"
                                                                Text="{Binding Name}" />
                                                 </StackPanel>
@@ -635,6 +661,7 @@
                                            ButtonClick="biographyHeader_ButtonClick"
                                            ButtonForeground="{StaticResource HeaderBrush}"
                                            ButtonSize="18.6666666667"
+                                           FontFamily="Segoe UI Light"
                                            FontSize="24"
                                            Foreground="{StaticResource HeaderBrush}"
                                            Text="Biography"
@@ -655,6 +682,9 @@
                                             RichTextBox="{Binding ElementName=biographyRichTextBox}"
                                             Saving="biographyToolbar_Saving" />
                         <RichTextBox x:Name="biographyRichTextBox"
+                                     AcceptsReturn="True"
+                                     AcceptsTab="True"
+                                     Background="Transparent"
                                      BorderBrush="Black"
                                      BorderThickness="0"
                                      HorizontalScrollBarVisibility="Disabled"
@@ -694,6 +724,7 @@
                                            ButtonClick="compositionsHeader_ButtonClick"
                                            ButtonForeground="{StaticResource HeaderBrush}"
                                            ButtonSize="18.6666666667"
+                                           FontFamily="Segoe UI Light"
                                            FontSize="24"
                                            Foreground="{StaticResource HeaderBrush}"
                                            Text="Compositions"

@@ -116,15 +116,16 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Audio\BufferedWaveStream.cs" />
     <Compile Include="Audio\CanPlayEventArgs.cs" />
     <Compile Include="Audio\CanPlayPreviousEventArgs.cs" />
     <Compile Include="Audio\CanPlayNextEventArgs.cs" />
-    <Compile Include="Audio\INetworkMp3FrameDecompressor.cs" />
-    <Compile Include="Audio\NetworkAcmMp3FrameDecompressor.cs" />
-    <Compile Include="Audio\NetworkMp3FileReader.cs" />
-    <Compile Include="Audio\NetworkMp3Frame.cs" />
-    <Compile Include="Audio\NetworkXingHeader.cs" />
+    <Compile Include="Audio\Mp3StreamPlayer.cs" />
+    <Compile Include="Audio\ReadFullyStream.cs" />
+    <Compile Include="Audio\StreamingPlaybackState.cs" />
     <Compile Include="Controls\AddSaveToolbar.cs" />
+    <Compile Include="Controls\BulletStyle.cs" />
+    <Compile Include="Controls\BulletStyleDropdownButton.cs" />
     <Compile Include="Controls\EditableHeaderPanel.cs" />
     <Compile Include="Controls\MediaDataTemplateSelector.cs" />
     <Compile Include="Controls\PanningScrollViewer.cs" />
@@ -140,7 +141,6 @@
     <Compile Include="Generic\ItemAddedEventArgs.cs" />
     <Compile Include="Generic\ItemChangedEventArgs.cs" />
     <Compile Include="Generic\ItemRemovedEventArgs.cs" />
-    <Compile Include="Audio\AudioPlayer.cs" />
     <Compile Include="Audio\Playlist.cs" />
     <Compile Include="Audio\PlaylistItem.cs" />
     <Compile Include="Audio\MuteEventArgs.cs" />
@@ -152,7 +152,6 @@
     <Compile Include="Converters\ComposerToBitmapImageConverter.cs" />
     <Compile Include="Converters\CompositionsToSortedCompositionsConverter.cs" />
     <Compile Include="Converters\CompositionToCompositionDisplayNameConverter.cs" />
-    <Compile Include="Converters\MovementsToSortedMovementsConverter.cs" />
     <Compile Include="Converters\NationalityToFlagConverter.cs" />
     <Compile Include="Converters\UrlToCommandConverter.cs" />
     <Compile Include="Converters\UrlToFaviconConverter.cs" />
@@ -167,7 +166,6 @@
     <Compile Include="Builders\ComposerEraViewModelBuilder.cs" />
     <Compile Include="Builders\ComposerEventViewModelBuilder.cs" />
     <Compile Include="Audio\TimeSpanEventArgs.cs" />
-    <Compile Include="Audio\TrackEventArgs.cs" />
     <Compile Include="Converters\DecimalToRomanConverter.cs" />
     <Compile Include="Parsers\SpotifyParser.cs" />
     <Compile Include="Parsers\YouTubeParser.cs" />
@@ -183,6 +181,7 @@
     <Compile Include="Utilities\BiographyUtility.cs" />
     <Compile Include="Utilities\ImageUtility.cs" />
     <Compile Include="Utilities\LocationUtility.cs" />
+    <Compile Include="Utilities\LogicalTreeUtility.cs" />
     <Compile Include="Utilities\ReflectionUtility.cs" />
     <Compile Include="Utilities\StreamUtility.cs" />
     <Compile Include="Utilities\VisualTreeUtility.cs" />

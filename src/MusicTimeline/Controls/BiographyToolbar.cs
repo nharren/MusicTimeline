@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using NathanHarrenstein.MusicTimeline.Utilities;
+using System;
+using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
@@ -16,6 +18,8 @@ namespace NathanHarrenstein.MusicTimeline.Controls
         private ToggleButton italicToggleButton;
         private string[] systemFontSizes = { "8", "9", "10", "11", "12", "14", "16", "18", "20", "22", "24", "26", "28", "36", "48", "72" };
         private ToggleButton underlineToggleButton;
+        private bool isTemplateApplied;
+        private BulletStyleDropdownButton bulletStyleDropdownButton;
 
         static BiographyToolbar()
         {
@@ -37,7 +41,7 @@ namespace NathanHarrenstein.MusicTimeline.Controls
 
         public override void OnApplyTemplate()
         {
-            if (Template.VisualTree != null)
+            if (isTemplateApplied)
             {
                 return;
             }
@@ -46,6 +50,7 @@ namespace NathanHarrenstein.MusicTimeline.Controls
             boldToggleButton = (ToggleButton)Template.FindName("PART_BoldToggleButton", this);
             italicToggleButton = (ToggleButton)Template.FindName("PART_ItalicToggleButton", this);
             underlineToggleButton = (ToggleButton)Template.FindName("PART_UnderlineToggleButton", this);
+            bulletStyleDropdownButton = (BulletStyleDropdownButton)Template.FindName("PART_BulletStyleDropdownButton", this);
 
             fontSizeComboBox.ItemsSource = systemFontSizes.ToList();
 
@@ -53,7 +58,33 @@ namespace NathanHarrenstein.MusicTimeline.Controls
             fontSizeComboBox.PreviewKeyDown += FontSizeComboBox_PreviewKeyDown;
             fontSizeComboBox.SelectionChanged += FontSizeComboBox_SelectionChanged;
 
+            bulletStyleDropdownButton.SelectionChanged += bulletStyleDropdownButton_SelectionChanged;
+
+            isTemplateApplied = true;
+
             base.OnApplyTemplate();
+        }
+
+        private void bulletStyleDropdownButton_SelectionChanged(object sender, EventArgs e)
+        {
+            if (!isTemplateApplied)
+            {
+                return;
+            }
+
+            var textMarkerStyle = GetTextMarkerStyle();
+
+            if (textMarkerStyle == bulletStyleDropdownButton.SelectedTextMarkerStyle)
+            {
+                return;
+            }
+
+            if (textMarkerStyle == TextMarkerStyle.None)
+            {
+                EditingCommands.ToggleBullets.Execute(null, RichTextBox);
+            }
+
+            SetTextMarkerStyle(bulletStyleDropdownButton.SelectedTextMarkerStyle);
         }
 
         private static void RichTextBoxChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
@@ -85,7 +116,7 @@ namespace NathanHarrenstein.MusicTimeline.Controls
 
         private void FontSizeComboBox_LostFocus(object sender, RoutedEventArgs e)
         {
-            if (Template.VisualTree == null)
+            if (!isTemplateApplied)
             {
                 return;
             }
@@ -116,7 +147,7 @@ namespace NathanHarrenstein.MusicTimeline.Controls
 
         private void FontSizeComboBox_PreviewKeyDown(object sender, KeyEventArgs e)
         {
-            if (Template.VisualTree == null || e.Key != Key.Enter)
+            if (!isTemplateApplied || e.Key != Key.Enter)
             {
                 return;
             }
@@ -147,7 +178,7 @@ namespace NathanHarrenstein.MusicTimeline.Controls
 
         private void FontSizeComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (Template.VisualTree == null)
+            if (!isTemplateApplied)
             {
                 return;
             }
@@ -178,7 +209,7 @@ namespace NathanHarrenstein.MusicTimeline.Controls
 
         private void RichTextBox_PreviewMouseUp(object sender, MouseButtonEventArgs e)
         {
-            if (Template.VisualTree == null)
+            if (!isTemplateApplied)
             {
                 return;
             }
@@ -193,7 +224,8 @@ namespace NathanHarrenstein.MusicTimeline.Controls
             {
                 var fontSize = (double)fontSizeObject;
                 var fontSizeInPts = fontSize * (72.0 / 96.0);
-                fontSizeComboBox.Text = fontSizeInPts.ToString();
+                var roundedFontSize = Math.Round(fontSizeInPts, 1);
+                fontSizeComboBox.Text = roundedFontSize.ToString();
             }
 
             var boldObject = RichTextBox.Selection.GetPropertyValue(TextElement.FontWeightProperty);
@@ -216,6 +248,32 @@ namespace NathanHarrenstein.MusicTimeline.Controls
             else
             {
                 italicToggleButton.IsChecked = true;
+            }
+
+            bulletStyleDropdownButton.SelectedTextMarkerStyle = GetTextMarkerStyle();
+
+            CommandManager.InvalidateRequerySuggested();
+        }
+
+        private TextMarkerStyle GetTextMarkerStyle()
+        {
+            List list = LogicalTreeUtility.FindLogicalParent<List>(RichTextBox.Selection.Start.Parent);
+
+            if (list != null)
+            {
+                return list.MarkerStyle;
+            }
+
+            return TextMarkerStyle.None;
+        }
+
+        private void SetTextMarkerStyle(TextMarkerStyle textMarkerStyle)
+        {
+            List list = LogicalTreeUtility.FindLogicalParent<List>(RichTextBox.Selection.Start.Parent);
+
+            if (list != null)
+            {
+                list.MarkerStyle = textMarkerStyle;
             }
         }
     }

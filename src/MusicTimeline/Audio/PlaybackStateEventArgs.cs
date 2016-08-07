@@ -5,14 +5,14 @@ namespace NathanHarrenstein.MusicTimeline.Audio
 {
     public class PlaybackStateEventArgs : EventArgs
     {
-        private readonly PlaybackState _playbackState;
+        private readonly StreamingPlaybackState _playbackState;
 
-        public PlaybackStateEventArgs(PlaybackState playbackState)
+        public PlaybackStateEventArgs(StreamingPlaybackState playbackState)
         {
             _playbackState = playbackState;
         }
 
-        public PlaybackState PlaybackState
+        public StreamingPlaybackState PlaybackState
         {
             get
             {

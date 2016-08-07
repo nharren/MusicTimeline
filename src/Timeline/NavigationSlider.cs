@@ -138,7 +138,10 @@ namespace NathanHarrenstein.Timeline
 
         protected override Size MeasureOverride(Size constraint)
         {
-            _centerColumn.Width = new GridLength(constraint.Width * (constraint.Width / Ruler.ToPixels(Dates)));
+            if (Template.HasContent && Dates != null)
+            {
+                _centerColumn.Width = new GridLength(constraint.Width * (constraint.Width / Ruler.ToPixels(Dates)));
+            }
 
             return base.MeasureOverride(constraint);
         }

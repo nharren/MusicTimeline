@@ -161,7 +161,7 @@ namespace NathanHarrenstein.Timeline
 
         protected override Size MeasureOverride(Size availableSize)
         {
-            if (_hasViewChanged)
+            if (_hasViewChanged && Dates != null && Eras != null && Ruler != null && availableSize != null)
             {
                 if (_cache == null)
                 {
