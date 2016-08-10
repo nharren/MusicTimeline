@@ -6,7 +6,7 @@
         <SolidColorBrush x:Key="ForegroundBrush" Color="#FFC7C9CC" />
         <!--  Old Foreground: DCDFE2  -->
         <!--  Alternative Foreground: FFDFE0E6  -->
-        <SolidColorBrush x:Key="HeaderBrush" Color="#FF888888" />
+        <SolidColorBrush x:Key="HeaderBrush" Color="#AFA699" />
         <SolidColorBrush x:Key="ScrollBarThumbBrush" Color="#FF4B5155" />
         <SolidColorBrush x:Key="ScrollBarThumbHighlightBrush" Color="#FF565D61" />
         <SolidColorBrush x:Key="ShellBrush" Color="#FF5F6266" />

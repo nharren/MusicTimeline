@@ -8,7 +8,7 @@ using System.Windows.Media;
 
 namespace NathanHarrenstein.Timeline
 {
-    public class TimePanel : Panel, IPan
+    public class TimePanel : Panel, IScroll
     {
         public static readonly DependencyProperty DatesProperty = DependencyProperty.Register("Dates", typeof(ExtendedDateTimeInterval), typeof(TimePanel), new PropertyMetadata(LayoutPropertyChanged));
         public static readonly DependencyProperty FontFamilyProperty = DependencyProperty.Register("FontFamily", typeof(FontFamily), typeof(TimePanel), new PropertyMetadata(new FontFamily("Calibri")));
@@ -144,7 +144,7 @@ namespace NathanHarrenstein.Timeline
             }
         }
 
-        public Vector CoercePan(Vector delta)
+        public Vector ReviseScrollingDisplacement(Vector delta)
         {
             var extentWidth = Ruler.ToPixels(Dates);
 
@@ -161,7 +161,7 @@ namespace NathanHarrenstein.Timeline
             return delta;
         }
 
-        public void Pan(Vector delta)
+        public void Scroll(Vector delta)
         {
             HorizontalOffset += delta.X;
 

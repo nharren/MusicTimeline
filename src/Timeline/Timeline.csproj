@@ -60,10 +60,11 @@
     <Compile Include="Input\MouseHook.cs" />
     <Compile Include="NavigationPanel.cs" />
     <Compile Include="NavigationSlider.cs" />
-    <Compile Include="PanEventArgs.cs" />
-    <Compile Include="PanGrid.cs" />
-    <Compile Include="IPan.cs" />
+    <Compile Include="ScrollingEventArgs.cs" />
+    <Compile Include="ScrollingDirector.cs" />
+    <Compile Include="IScroll.cs" />
     <Compile Include="ITimelineEra.cs" />
+    <Compile Include="ScrollingPanel.cs" />
     <Compile Include="TimeRuler.cs" />
     <Compile Include="TimeRulerUnit.cs" />
     <Compile Include="TimeResolution.cs" />

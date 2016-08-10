@@ -5,7 +5,7 @@ using System.Windows.Media;
 
 namespace NathanHarrenstein.Timeline
 {
-    public class BackgroundPanel : Grid, IPan
+    public class BackgroundPanel : Grid, IScroll
     {
         public static readonly DependencyProperty BackgroundImageProperty = DependencyProperty.Register("BackgroundImage", typeof(ImageSource), typeof(BackgroundPanel), new PropertyMetadata(new PropertyChangedCallback(BackgroundImage_PropertyChanged)));
 
@@ -27,12 +27,12 @@ namespace NathanHarrenstein.Timeline
         }
 
 
-        public Vector CoercePan(Vector delta)
+        public Vector ReviseScrollingDisplacement(Vector delta)
         {
             return delta;
         }
 
-        public void Pan(Vector delta)
+        public void Scroll(Vector delta)
         {
             horizontalOffset += delta.X;
             verticalOffset += delta.Y;

@@ -127,6 +127,7 @@
     <Compile Include="Controls\BulletStyle.cs" />
     <Compile Include="Controls\BulletStyleDropdownButton.cs" />
     <Compile Include="Controls\EditableHeaderPanel.cs" />
+    <Compile Include="Controls\Marquee.cs" />
     <Compile Include="Controls\MediaDataTemplateSelector.cs" />
     <Compile Include="Controls\PanningScrollViewer.cs" />
     <Compile Include="Controls\SaveToolbar.cs" />
@@ -256,7 +257,6 @@
     </None>
     <AppDesigner Include="Properties\" />
     <None Include="Service References\Data\service.edmx" />
-    <Resource Include="Resources\Fonts\seguisym.ttf" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\Composers\Unknown.jpg" />

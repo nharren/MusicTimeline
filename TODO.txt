@@ -1,12 +1,7 @@
 • Create and test SpotifyTemplate. (LOW)
-• Fix mp3Player exception about having to call PlayerInit. (HIGH)
 
+Version 2
 
-• when navigating away from playing stream, stop stream.
-
-
-
-
-• Update EDTF to latest standard when standard is complete. (WAIT)
+• Update to latest EDTF standard when standard is released.
 	• EDTF picker control
 	• Visually display uncertainty and approximation in timeline.

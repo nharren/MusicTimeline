@@ -163,11 +163,11 @@ namespace NathanHarrenstein.Timeline
             }
             set
             {
-                var panGrid = Template.FindName("PART_PanGrid", this) as PanGrid;
+                var panGrid = Template.FindName("PART_PanGrid", this) as ScrollingDirector;
 
                 if (panGrid != null)
                 {
-                    panGrid.Pan(new Vector(value - HorizontalOffset, 0));
+                    panGrid.Scroll(new Vector(value - HorizontalOffset, 0));
                 }
             }
         }
@@ -230,11 +230,11 @@ namespace NathanHarrenstein.Timeline
             }
             set
             {
-                var panGrid = Template.FindName("PART_PanGrid", this) as PanGrid;
+                var panGrid = Template.FindName("PART_PanGrid", this) as ScrollingDirector;
 
                 if (panGrid != null)
                 {
-                    panGrid.Pan(new Vector(0, value - VerticalOffset));
+                    panGrid.Scroll(new Vector(0, value - VerticalOffset));
                 }
             }
         }

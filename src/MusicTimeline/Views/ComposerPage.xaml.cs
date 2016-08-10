@@ -920,19 +920,6 @@ namespace NathanHarrenstein.MusicTimeline.Views
                 }
             }
 
-            //foreach (var compositionCollection in composer.CompositionCollections)
-            //{
-            //    foreach (var composition in compositionCollection.Compositions)
-            //    {
-            //        if (composition == selectedComposition)
-            //        {
-            //            compositionCollection.Compositions.Remove(composition);
-
-            //            return;
-            //        }
-            //    }
-            //}
-
             return;
         }
 
@@ -960,6 +947,22 @@ namespace NathanHarrenstein.MusicTimeline.Views
             var converter = new ComposerToBitmapImageConverter();
 
             image.Source = converter.Convert(composerImage.Composer, new ComposerToBitmapImageConverterSettings(composerImage.ComposerImageId, false));
+        }
+
+        private void imagesListBox_MouseEnter(object sender, MouseEventArgs e)
+        {
+            var editButton = (Button)imagesListBox.Template.FindName("imagesEditButton", imagesListBox);
+
+            if (App.HasCredential && editButton.IsEnabled)
+            {
+                editButton.Visibility = Visibility.Visible;
+            }
+        }
+
+        private void imagesListBox_MouseLeave(object sender, MouseEventArgs e)
+        {
+            var editButton = (Button)imagesListBox.Template.FindName("imagesEditButton", imagesListBox);
+            editButton.Visibility = Visibility.Collapsed;
         }
     }
 }

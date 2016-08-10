@@ -9,7 +9,7 @@ using System.Windows.Shapes;
 
 namespace NathanHarrenstein.Timeline
 {
-    public class GuidelinePanel : Panel, IPan
+    public class GuidelinePanel : Panel, IScroll
     {
         public static readonly DependencyProperty DatesProperty = DependencyProperty.Register("Dates", typeof(ExtendedDateTimeInterval), typeof(GuidelinePanel));
         public static readonly DependencyProperty MajorBrushProperty = DependencyProperty.Register("MajorBrush", typeof(Brush), typeof(GuidelinePanel), new PropertyMetadata(Brushes.Black));
@@ -112,7 +112,7 @@ namespace NathanHarrenstein.Timeline
             }
         }
 
-        public Vector CoercePan(Vector delta)
+        public Vector ReviseScrollingDisplacement(Vector delta)
         {
             var extentWidth = Ruler.ToPixels(Dates);
 
@@ -129,7 +129,7 @@ namespace NathanHarrenstein.Timeline
             return delta;
         }
 
-        public void Pan(Vector delta)
+        public void Scroll(Vector delta)
         {
             _horizontalOffset += delta.X;
 

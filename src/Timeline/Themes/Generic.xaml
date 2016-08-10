@@ -10,15 +10,14 @@
                     <Border Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}">
-                        <l:PanGrid x:Name="PART_PanGrid"
-                                   Background="Transparent"
-                                   FocusVisualStyle="{x:Null}">
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="30" />
+                        <l:ScrollingDirector x:Name="PART_PanGrid"
+                                             Background="Transparent"
+                                             FocusVisualStyle="{x:Null}">
+                            <l:ScrollingDirector.RowDefinitions>
                                 <RowDefinition Height="30" />
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition />
-                            </Grid.RowDefinitions>
+                            </l:ScrollingDirector.RowDefinitions>
                             <l:NavigationSlider Dates="{TemplateBinding Dates}"
                                                 EraTemplates="{TemplateBinding EraTemplates}"
                                                 Eras="{TemplateBinding Eras}"
@@ -26,7 +25,7 @@
                                                 Ruler="{TemplateBinding Ruler}"
                                                 TextBlock.FontSize="12"
                                                 TextBlock.Foreground="Black" />
-                            <l:EraPanel Grid.Row="1"
+                            <!--<l:EraPanel Grid.Row="1"
                                         Dates="{TemplateBinding Dates}"
                                         EraTemplates="{TemplateBinding EraTemplates}"
                                         Eras="{TemplateBinding Eras}"
@@ -34,14 +33,14 @@
                                         Resolution="{TemplateBinding Resolution}"
                                         Ruler="{TemplateBinding Ruler}"
                                         TextBlock.FontSize="14"
-                                        TextBlock.Foreground="Black" />
+                                        TextBlock.Foreground="Black" />-->
 
-                            <l:LinearGradientPanel Grid.Row="2"
+                            <l:LinearGradientPanel Grid.Row="1"
                                                    Grid.RowSpan="2"
                                                    Dates="{TemplateBinding Dates}"
                                                    GradientStops="{TemplateBinding GradientStops}"
                                                    Ruler="{TemplateBinding Ruler}" />
-                            <l:TimePanel Grid.Row="2"
+                            <l:TimePanel Grid.Row="1"
                                          Height="24"
                                          Background="#33222222"
                                          Dates="{TemplateBinding Dates}"
@@ -51,7 +50,7 @@
                                          Resolution="{TemplateBinding Resolution}"
                                          Ruler="{TemplateBinding Ruler}"
                                          Stroke="{TemplateBinding LineStroke}" />
-                            <l:GuidelinePanel Grid.Row="2"
+                            <l:GuidelinePanel Grid.Row="1"
                                               Grid.RowSpan="2"
                                               Dates="{TemplateBinding Dates}"
                                               IsHitTestVisible="False"
@@ -60,9 +59,9 @@
                                               MinorBrush="#11000000"
                                               Resolution="{TemplateBinding Resolution}"
                                               Ruler="{TemplateBinding Ruler}" />
-                            <l:BackgroundPanel Grid.Row="3" BackgroundImage="{TemplateBinding BackgroundImage}" />
-
-                            <l:EventPanel Grid.Row="3"
+                            <l:BackgroundPanel Grid.Row="2" BackgroundImage="{TemplateBinding BackgroundImage}" />
+                            <l:ScrollingPanel Grid.Row="2" />
+                            <l:EventPanel Grid.Row="2"
                                           Dates="{TemplateBinding Dates}"
                                           EventHeight="{TemplateBinding EventHeight}"
                                           EventSpacing="{TemplateBinding EventSpacing}"
@@ -72,7 +71,7 @@
                                                                      RelativeSource={RelativeSource TemplatedParent},
                                                                      Mode=TwoWay,
                                                                      UpdateSourceTrigger=PropertyChanged}"
-                                          PreloadDistance="500"
+                                          PreloadingDistance="500"
                                           Resolution="{TemplateBinding Resolution}"
                                           Ruler="{TemplateBinding Ruler}"
                                           TextBlock.FontSize="14"
@@ -81,7 +80,7 @@
                                                                    RelativeSource={RelativeSource TemplatedParent},
                                                                    Mode=TwoWay,
                                                                    UpdateSourceTrigger=PropertyChanged}" />
-                        </l:PanGrid>
+                        </l:ScrollingDirector>
                     </Border>
                 </ControlTemplate>
             </Setter.Value>

@@ -8,7 +8,7 @@ using System.Windows.Controls;
 
 namespace NathanHarrenstein.Timeline
 {
-    public class EraPanel : Panel, IPan
+    public class EraPanel : Panel, IScroll
     {
         public static readonly DependencyProperty DatesProperty = DependencyProperty.Register("Dates", typeof(ExtendedDateTimeInterval), typeof(EraPanel));
         public static readonly DependencyProperty ErasProperty = DependencyProperty.Register("Eras", typeof(IReadOnlyList<ITimelineEra>), typeof(EraPanel), new PropertyMetadata(new PropertyChangedCallback(EraPanel_ErasChanged)));
@@ -104,7 +104,7 @@ namespace NathanHarrenstein.Timeline
             }
         }
 
-        public Vector CoercePan(Vector delta)
+        public Vector ReviseScrollingDisplacement(Vector delta)
         {
             if (Ruler == null)
             {
@@ -126,7 +126,7 @@ namespace NathanHarrenstein.Timeline
             return delta;
         }
 
-        public void Pan(Vector delta)
+        public void Scroll(Vector delta)
         {
             HorizontalOffset += delta.X;
 

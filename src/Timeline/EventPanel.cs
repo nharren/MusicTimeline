@@ -11,7 +11,7 @@ using System.Windows.Media;
 
 namespace NathanHarrenstein.Timeline
 {
-    public class EventPanel : Panel, IPan, IDisposable
+    public class EventPanel : Panel, IScroll
     {
         public static readonly DependencyProperty DatesProperty = DependencyProperty.Register("Dates", typeof(ExtendedDateTimeInterval), typeof(EventPanel));
         public static readonly DependencyProperty EventHeightProperty = DependencyProperty.Register("EventHeight", typeof(double), typeof(EventPanel));
@@ -23,44 +23,24 @@ namespace NathanHarrenstein.Timeline
         public static readonly DependencyProperty RulerProperty = DependencyProperty.Register("Ruler", typeof(TimeRuler), typeof(EventPanel));
         public static readonly DependencyProperty VerticalOffsetProperty = DependencyProperty.Register("VerticalOffset", typeof(double), typeof(EventPanel));
 
-        private readonly MouseHook _mouseHook;
-        private readonly RoutedEvent _panRequestedEvent;
-        private FrameworkElement[] _cache;
-        private bool _hasViewChanged = true;
-        private bool _isDisposed;
-        private Point _origin;
-        private double _preloadDistance;
-        private List<int> _previouslyVisibleCacheIndexes = new List<int>();
-        private List<int> _visibleCacheIndexes = new List<int>();
-
-        static EventPanel()
-        {
-            BackgroundProperty.AddOwner(typeof(EventPanel), new FrameworkPropertyMetadata(Brushes.Transparent));
-        }
+        private FrameworkElement[] cache;
+        private bool hasViewChanged = true;
+        private double preloadingDistance;
+        private List<int> previouslyVisibleCacheIndexes = new List<int>();
+        private List<int> visibleCacheIndexes = new List<int>();
 
         public EventPanel()
         {
-            _panRequestedEvent = EventManager.GetRoutedEvents().FirstOrDefault(re => re.Name == "PanRequested");
-
             ClipToBounds = true;
 
             if (DesignerProperties.GetIsInDesignMode(this))
             {
-                _hasViewChanged = false;
+                hasViewChanged = false;
             }
             else
             {
                 SizeChanged += EventPanel_SizeChanged;
-
-                _mouseHook = new MouseHook();
-                _mouseHook.MouseHorizontalWheel += EventPanel_MouseHorizontalWheel;
-                _mouseHook.StartMouseHook();
             }
-        }
-
-        ~EventPanel()
-        {
-            Dispose(false);
         }
 
         public ExtendedDateTimeInterval Dates
@@ -111,13 +91,12 @@ namespace NathanHarrenstein.Timeline
             }
         }
 
+        /// <remarks>
+        /// Data templates are stored here so that the content is not automatically generated. 
+        /// The data templates are applied only when needed, and then stored in a cache.
+        /// </remarks>
         public List<DataTemplate> EventTemplates
         {
-            // We store the templates in this property as opposed to using a global
-            // DataTemplate so that the content is not automatically generated. The
-            // DataTemplates are applied only when needed, and the generated content
-            // is then stored in the cache.
-
             get
             {
                 return (List<DataTemplate>)GetValue(EventTemplatesProperty);
@@ -141,16 +120,19 @@ namespace NathanHarrenstein.Timeline
             }
         }
 
-        public double PreloadDistance
+        /// <summary>
+        /// The distance from the viewport in pixels at which event content is generated.
+        /// </summary>
+        public double PreloadingDistance
         {
             get
             {
-                return _preloadDistance;
+                return preloadingDistance;
             }
 
             set
             {
-                _preloadDistance = value;
+                preloadingDistance = value;
             }
         }
 
@@ -191,7 +173,7 @@ namespace NathanHarrenstein.Timeline
             }
         }
 
-        public Vector CoercePan(Vector delta)
+        public Vector ReviseScrollingDisplacement(Vector delta)
         {
             if (Ruler == null || Events == null)
             {
@@ -222,13 +204,6 @@ namespace NathanHarrenstein.Timeline
             }
 
             return delta;
-        }
-
-        public void Dispose()
-        {
-            Dispose(true);
-
-            GC.SuppressFinalize(this);
         }
 
         public Vector? GetCenteringVector(ITimelineEvent target)
@@ -265,36 +240,30 @@ namespace NathanHarrenstein.Timeline
             return new Vector(); // new Vector(x - HorizontalOffset, y - VerticalOffset);
         }
 
-        public void Pan(Vector delta)
+        public void Scroll(Vector delta)
         {
             HorizontalOffset += delta.X;
             VerticalOffset += delta.Y;
 
-            _hasViewChanged = true;
-            _previouslyVisibleCacheIndexes = new List<int>(_visibleCacheIndexes);
-            _visibleCacheIndexes.Clear();
+            hasViewChanged = true;
+            previouslyVisibleCacheIndexes = new List<int>(visibleCacheIndexes);
+            visibleCacheIndexes.Clear();
             Children.Clear();
             InvalidateMeasure();
         }
 
-        public void RequestPan(Vector delta)
-        {
-            if (_panRequestedEvent != null)
-            {
-                RaiseEvent(new PanEventArgs(delta, _panRequestedEvent, this));
-            }
-        }
+
 
         protected override Size ArrangeOverride(Size finalSize)
         {
-            foreach (var previouslyVisibleCacheIndex in _previouslyVisibleCacheIndexes)
+            foreach (var previouslyVisibleCacheIndex in previouslyVisibleCacheIndexes)
             {
-                _cache[previouslyVisibleCacheIndex].Arrange(new Rect());
+                cache[previouslyVisibleCacheIndex].Arrange(new Rect());
             }
 
-            foreach (var visibleCacheIndex in _visibleCacheIndexes)
+            foreach (var visibleCacheIndex in visibleCacheIndexes)
             {
-                _cache[visibleCacheIndex].Arrange(new Rect(
+                cache[visibleCacheIndex].Arrange(new Rect(
                     Ruler.ToPixels(Dates.Earliest() + Ruler.ToTimeSpan(HorizontalOffset), Events.ElementAt(visibleCacheIndex).Dates.Earliest()),
                     visibleCacheIndex * (EventHeight + EventSpacing) - VerticalOffset,
                     Ruler.ToPixels(Events.ElementAt(visibleCacheIndex).Dates),
@@ -304,16 +273,6 @@ namespace NathanHarrenstein.Timeline
             return finalSize;
         }
 
-        protected virtual void Dispose(bool disposing)
-        {
-            if (!_isDisposed)
-            {
-                _mouseHook.Dispose();
-
-                _isDisposed = true;
-            }
-        }
-
         protected override Size MeasureOverride(Size availableSize)
         {
             if (Events == null || Dates == null || Ruler == null)
@@ -321,7 +280,7 @@ namespace NathanHarrenstein.Timeline
                 return availableSize;
             }
 
-            if (!_hasViewChanged)
+            if (!hasViewChanged)
             {
                 foreach (UIElement child in Children)
                 {
@@ -331,18 +290,18 @@ namespace NathanHarrenstein.Timeline
                 return availableSize;
             }
 
-            _hasViewChanged = false;
+            hasViewChanged = false;
 
-            if (_cache == null)
+            if (cache == null)
             {
-                _cache = new FrameworkElement[Events.Count];
+                cache = new FrameworkElement[Events.Count];
             }
 
-            var viewportLeftTime = Dates.Earliest() + Ruler.ToTimeSpan(Math.Max(0d, HorizontalOffset - _preloadDistance));
-            var viewportRightTime = viewportLeftTime + Ruler.ToTimeSpan(availableSize.Width + _preloadDistance * 2);
+            var viewportLeftTime = Dates.Earliest() + Ruler.ToTimeSpan(Math.Max(0d, HorizontalOffset - preloadingDistance));
+            var viewportRightTime = viewportLeftTime + Ruler.ToTimeSpan(availableSize.Width + preloadingDistance * 2);
 
-            var lowestPossibleIndex = (int)(Math.Max(VerticalOffset - _preloadDistance, 0) / (EventHeight + EventSpacing));
-            var highestPossibleIndex = Math.Min((int)((VerticalOffset + availableSize.Height + _preloadDistance) / (EventHeight + EventSpacing)), Events.Count - 1);
+            var lowestPossibleIndex = (int)(Math.Max(VerticalOffset - preloadingDistance, 0) / (EventHeight + EventSpacing));
+            var highestPossibleIndex = Math.Min((int)((VerticalOffset + availableSize.Height + preloadingDistance) / (EventHeight + EventSpacing)), Events.Count - 1);
 
             for (int i = lowestPossibleIndex; i <= highestPossibleIndex; i++)
             {
@@ -352,7 +311,7 @@ namespace NathanHarrenstein.Timeline
                 {
                     FrameworkElement eventFrameworkElement = null;
 
-                    if (_cache[i] == null)
+                    if (cache[i] == null)
                     {
                         var eventType = timelineEvent.GetType();
                         var template = EventTemplates.FirstOrDefault(et => (Type)et.DataType == eventType);
@@ -367,22 +326,22 @@ namespace NathanHarrenstein.Timeline
 
                         eventFrameworkElement.DataContext = timelineEvent;
 
-                        _cache[i] = eventFrameworkElement;
+                        cache[i] = eventFrameworkElement;
                     }
                     else
                     {
-                        eventFrameworkElement = _cache[i];
+                        eventFrameworkElement = cache[i];
                     }
 
                     Children.Add(eventFrameworkElement);
 
                     eventFrameworkElement.Measure(availableSize);
 
-                    _visibleCacheIndexes.Add(i);
+                    visibleCacheIndexes.Add(i);
 
-                    if (_previouslyVisibleCacheIndexes.Contains(i))
+                    if (previouslyVisibleCacheIndexes.Contains(i))
                     {
-                        _previouslyVisibleCacheIndexes.Remove(i);
+                        previouslyVisibleCacheIndexes.Remove(i);
                     }
                 }
             }
@@ -390,57 +349,7 @@ namespace NathanHarrenstein.Timeline
             return availableSize;
         }
 
-        protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
-        {
-            if (IsMouseOver)
-            {
-                _origin = e.GetPosition(this);
-
-                Cursor = Cursors.ScrollAll;
-
-                CaptureMouse();
-            }
-
-            base.OnMouseLeftButtonDown(e);
-        }
-
-        protected override void OnMouseLeftButtonUp(MouseButtonEventArgs e)
-        {
-            if (IsMouseCaptured)
-            {
-                Cursor = Cursors.Arrow;
-
-                ReleaseMouseCapture();
-            }
-
-            base.OnMouseLeftButtonUp(e);
-        }
-
-        protected override void OnMouseMove(MouseEventArgs e)
-        {
-            if (IsMouseCaptured)
-            {
-                var position = e.GetPosition(this);
-                var vector = _origin - position;
-
-                RequestPan(vector);
-
-                _origin = position;
-
-                return;
-            }
-
-            base.OnMouseMove(e);
-        }
-
-        protected override void OnMouseWheel(MouseWheelEventArgs e)
-        {
-            _origin = e.GetPosition(this);
-
-            RequestPan(new Vector(0, -e.Delta));
-
-            base.OnMouseWheel(e);
-        }
+       
 
         private static void EventPanel_EventsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
@@ -449,21 +358,18 @@ namespace NathanHarrenstein.Timeline
 
         private void ClearCache()
         {
-            _cache = null;
-            _hasViewChanged = true;
+            cache = null;
+            hasViewChanged = true;
             InvalidateMeasure();
         }
 
-        private void EventPanel_MouseHorizontalWheel(object sender, MouseHorizontalWheelEventArgs e)
-        {
-            RequestPan(new Vector(e.Delta, 0));
-        }
+
 
         private void EventPanel_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            _hasViewChanged = true;
-            _previouslyVisibleCacheIndexes = new List<int>(_visibleCacheIndexes);
-            _visibleCacheIndexes.Clear();
+            hasViewChanged = true;
+            previouslyVisibleCacheIndexes = new List<int>(visibleCacheIndexes);
+            visibleCacheIndexes.Clear();
             Children.Clear();
             InvalidateMeasure();
         }

@@ -13,7 +13,7 @@ namespace NathanHarrenstein.MusicTimeline.Controls
         private Mp3StreamPlayer mp3Player;
         private ToggleButton muteToggleButton;
         private TextBlock nowPlayingArtistTextBlock;
-        private TextBlock nowPlayingTitleTextBlock;
+        private Marquee nowPlayingTitleMarquee;
         private Button playNextButton;
         private ToggleButton playPauseToggleButton;
         private Button playPreviousButton;
@@ -52,7 +52,7 @@ namespace NathanHarrenstein.MusicTimeline.Controls
             progressSlider = (Slider)Template.FindName("progressSlider", this);
             progressStatus = (TextBlock)Template.FindName("progressStatus", this);
             muteToggleButton = (ToggleButton)Template.FindName("muteToggleButton", this);
-            nowPlayingTitleTextBlock = (TextBlock)Template.FindName("nowPlayingTitleTextBlock", this);
+            nowPlayingTitleMarquee = (Marquee)Template.FindName("nowPlayingTitleMarquee", this);
             nowPlayingArtistTextBlock = (TextBlock)Template.FindName("nowPlayingArtistTextBlock", this);
             volumeSlider = (Slider)Template.FindName("volumeSlider", this);
 
@@ -138,7 +138,7 @@ namespace NathanHarrenstein.MusicTimeline.Controls
 
             if (Playlist.CurrentItem.Metadata.TryGetValue("Title", out title))
             {
-                nowPlayingTitleTextBlock.Text = title;
+                nowPlayingTitleMarquee.Content = title;
             }
 
             if (Playlist.CurrentItem.Metadata.TryGetValue("Artist", out artist))

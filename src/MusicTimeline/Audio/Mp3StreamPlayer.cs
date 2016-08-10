@@ -128,7 +128,13 @@ namespace NathanHarrenstein.MusicTimeline.Audio
             {
                 if (volume != value)
                 {
-                    volume = audioSessionControl.SimpleAudioVolume.Volume = value;
+                    volume = value;
+
+                    if (audioSessionControl != null)
+                    {
+                        audioSessionControl.SimpleAudioVolume.Volume = volume;
+                    }
+
                     Application.Current.Dispatcher.Invoke(() => OnVolumeChanged(new VolumeEventArgs(Volume)));
                 }
             }

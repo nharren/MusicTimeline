@@ -60,7 +60,7 @@ namespace NathanHarrenstein.MusicTimeline
             var request = requestMessage.HttpWebRequest;
             request.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
 
-            if (HasCredential)
+            if (App.HasCredential)
             {
                 var authorizationString = $"{App.Credential.UserName}:{App.Credential.Password}";
                 var authorizationBytes = Encoding.Default.GetBytes(authorizationString);
@@ -88,7 +88,7 @@ namespace NathanHarrenstein.MusicTimeline
                     if (loginDialog.ShowDialog() == true)
                     {
                         CredentialManager.WriteCredential("MusicTimeline", loginDialog.UserName, loginDialog.Password);
-
+                        Credential = CredentialManager.ReadCredential("MusicTimeline");
                         OnPropertyChanged("HasCredential");
                     }
                 }

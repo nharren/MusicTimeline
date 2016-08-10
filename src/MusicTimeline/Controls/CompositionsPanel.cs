@@ -138,7 +138,7 @@ namespace NathanHarrenstein.MusicTimeline.Controls
             var yearHeaderTextBlock = new TextBlock();
             yearHeaderTextBlock.FontFamily = new FontFamily("Segoe UI Light");
             yearHeaderTextBlock.FontSize = 21.333333;
-            yearHeaderTextBlock.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#88B0C4DE"));
+            yearHeaderTextBlock.Foreground = (SolidColorBrush)App.Current.Resources["HeaderBrush"];
             yearHeaderTextBlock.Text = header;
             yearHeaderTextBlock.Margin = new Thickness(0, 10, 0, 0);
 

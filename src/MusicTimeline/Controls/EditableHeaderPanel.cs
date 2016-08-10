@@ -77,8 +77,7 @@ namespace NathanHarrenstein.MusicTimeline.Controls
         }
 
         public static readonly DependencyProperty ButtonMarginProperty = DependencyProperty.Register("ButtonMargin", typeof(Thickness), typeof(EditableHeaderPanel), new PropertyMetadata(new Thickness()));
-
-
+        private bool isTemplateApplied;
 
         public Brush UnderlineForeground
         {
@@ -121,13 +120,30 @@ namespace NathanHarrenstein.MusicTimeline.Controls
 
         public override void OnApplyTemplate()
         {
-            if (Template.VisualTree != null)
+            if (isTemplateApplied)
             {
                 return;
             }
 
             editButton = (Button)Template.FindName("editButton", this);
             editButton.Click += editButton_Click;
+            MouseEnter += EditableHeaderPanel_MouseEnter;
+            MouseLeave += EditableHeaderPanel_MouseLeave;
+
+            isTemplateApplied = true;
+        }
+
+        private void EditableHeaderPanel_MouseLeave(object sender, MouseEventArgs e)
+        {
+            editButton.Visibility = Visibility.Collapsed;
+        }
+
+        private void EditableHeaderPanel_MouseEnter(object sender, MouseEventArgs e)
+        {
+            if (App.HasCredential && editButton.IsEnabled)
+            {
+                editButton.Visibility = Visibility.Visible;
+            }
         }
 
         protected virtual void OnButtonClick(RoutedEventArgs e)

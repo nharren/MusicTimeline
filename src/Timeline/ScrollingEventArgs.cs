@@ -2,21 +2,21 @@
 
 namespace NathanHarrenstein.Timeline
 {
-    public class PanEventArgs : RoutedEventArgs
+    public class ScrollingEventArgs : RoutedEventArgs
     {
         private readonly Vector _delta;
 
-        public PanEventArgs(Vector delta) : base()
+        public ScrollingEventArgs(Vector delta) : base()
         {
             _delta = delta;
         }
 
-        public PanEventArgs(Vector delta, RoutedEvent routedEvent) : base(routedEvent)
+        public ScrollingEventArgs(Vector delta, RoutedEvent routedEvent) : base(routedEvent)
         {
             _delta = delta;
         }
 
-        public PanEventArgs(Vector delta, RoutedEvent routedEvent, object source) : base(routedEvent, source)
+        public ScrollingEventArgs(Vector delta, RoutedEvent routedEvent, object source) : base(routedEvent, source)
         {
             _delta = delta;
         }

@@ -8,7 +8,7 @@ using System.Windows.Input;
 
 namespace NathanHarrenstein.Timeline
 {
-    public class NavigationSlider : Control, IPan
+    public class NavigationSlider : Control, IScroll
     {
         public static readonly DependencyProperty DatesProperty = DependencyProperty.Register("Dates", typeof(ExtendedDateTimeInterval), typeof(NavigationSlider));
         public static readonly DependencyProperty ErasProperty = DependencyProperty.Register("Eras", typeof(IReadOnlyList<ITimelineEra>), typeof(NavigationSlider));
@@ -16,7 +16,7 @@ namespace NathanHarrenstein.Timeline
         public static readonly DependencyProperty ResolutionProperty = DependencyProperty.Register("Resolution", typeof(TimeResolution), typeof(NavigationSlider));
         public static readonly DependencyProperty RulerProperty = DependencyProperty.Register("Ruler", typeof(TimeRuler), typeof(NavigationSlider));
 
-        private readonly RoutedEvent _panRequestedEvent;
+        private readonly RoutedEvent scrollRequestEvent;
         private ColumnDefinition _centerColumn;
         private double _horizontalOffset;
         private ColumnDefinition _leftColumn;
@@ -31,7 +31,15 @@ namespace NathanHarrenstein.Timeline
         {
             EventManager.RegisterClassHandler(typeof(NavigationSlider), Thumb.DragDeltaEvent, new DragDeltaEventHandler(NavigationSlider_DragDelta));
 
-            _panRequestedEvent = EventManager.GetRoutedEvents().FirstOrDefault(re => re.Name == "PanRequested");
+            var routedEvents = EventManager.GetRoutedEvents();
+
+            foreach (var routedEvent in routedEvents)
+            {
+                if (routedEvent.Name == "ScrollRequest")
+                {
+                    scrollRequestEvent = routedEvent;
+                }
+            }
         }
 
         public ExtendedDateTimeInterval Dates
@@ -106,7 +114,7 @@ namespace NathanHarrenstein.Timeline
             }
         }
 
-        public Vector CoercePan(Vector delta)
+        public Vector ReviseScrollingDisplacement(Vector delta)
         {
             return delta;
         }
@@ -118,7 +126,7 @@ namespace NathanHarrenstein.Timeline
             _thumb = (Thumb)Template.FindName("PART_Thumb", this);
         }
 
-        public void Pan(Vector delta)
+        public void Scroll(Vector delta)
         {
             _horizontalOffset += delta.X;
 
@@ -128,11 +136,11 @@ namespace NathanHarrenstein.Timeline
             _leftColumn.Width = new GridLength(sliderLeftX);
         }
 
-        public void RequestPan(Vector delta)
+        public void RequestScroll(Vector displacement)
         {
-            if (_panRequestedEvent != null)
+            if (scrollRequestEvent != null)
             {
-                RaiseEvent(new PanEventArgs(delta, _panRequestedEvent, this));
+                RaiseEvent(new ScrollingEventArgs(displacement, scrollRequestEvent, this));
             }
         }
 
@@ -151,9 +159,9 @@ namespace NathanHarrenstein.Timeline
             var positionX = e.GetPosition(this).X;
             var ratio = positionX / ActualWidth;
             var extentCenterX = ratio * Ruler.ToPixels(Dates) - ActualWidth / 2;
-            var panVector = new Vector(extentCenterX - HorizontalOffset, 0);
+            var displacement = new Vector(extentCenterX - HorizontalOffset, 0);
 
-            RequestPan(panVector);
+            RequestScroll(displacement);
 
             base.OnMouseLeftButtonDown(e);
         }
@@ -162,9 +170,9 @@ namespace NathanHarrenstein.Timeline
         {
             var ratio = e.HorizontalChange / ActualWidth;
             var extentHorizontalChangeX = ratio * Ruler.ToPixels(Dates);
-            var panVector = new Vector(extentHorizontalChangeX, 0);
+            var displacement = new Vector(extentHorizontalChangeX, 0);
 
-            RequestPan(panVector);
+            RequestScroll(displacement);
 
             e.Handled = true;
         }

@@ -185,15 +185,14 @@
                     <Border Background="{TemplateBinding Background}"
                             BorderBrush="{TemplateBinding BorderBrush}"
                             BorderThickness="{TemplateBinding BorderThickness}">
-                        <t:PanGrid x:Name="PART_PanGrid"
-                                   Background="Transparent"
-                                   FocusVisualStyle="{x:Null}">
-                            <t:PanGrid.RowDefinitions>
+                        <t:ScrollingDirector x:Name="PART_PanGrid"
+                                             Background="Transparent"
+                                             FocusVisualStyle="{x:Null}">
+                            <t:ScrollingDirector.RowDefinitions>
                                 <RowDefinition Height="30" />
-
                                 <RowDefinition Height="Auto" />
                                 <RowDefinition />
-                            </t:PanGrid.RowDefinitions>
+                            </t:ScrollingDirector.RowDefinitions>
                             <t:NavigationSlider Dates="{TemplateBinding Dates}"
                                                 EraTemplates="{TemplateBinding EraTemplates}"
                                                 Eras="{TemplateBinding Eras}"
@@ -202,17 +201,6 @@
                                                 HorizontalOffset="0"
                                                 Resolution="{TemplateBinding Resolution}"
                                                 Ruler="{TemplateBinding Ruler}" />
-                            <!--<t:EraPanel Grid.Row="1"
-                                        ClipToBounds="True"
-                                        Dates="{TemplateBinding Dates}"
-                                        EraTemplates="{TemplateBinding EraTemplates}"
-                                        Eras="{TemplateBinding Eras}"
-                                        HorizontalOffset="0"
-                                        IsHitTestVisible="False"
-                                        Resolution="{TemplateBinding Resolution}"
-                                        Ruler="{TemplateBinding Ruler}"
-                                        TextElement.FontSize="14"
-                                        TextElement.Foreground="Black" />-->
                             <t:LinearGradientPanel Grid.Row="1"
                                                    Grid.RowSpan="2"
                                                    ClipToBounds="False"
@@ -245,6 +233,7 @@
                                               Resolution="{TemplateBinding Resolution}"
                                               Ruler="{TemplateBinding Ruler}" />
                             <t:BackgroundPanel Grid.Row="2" BackgroundImage="{TemplateBinding BackgroundImage}" />
+                            <t:ScrollingPanel Grid.Row="2" />
                             <t:EventPanel Grid.Row="2"
                                           ClipToBounds="True"
                                           Dates="{TemplateBinding Dates}"
@@ -256,7 +245,7 @@
                                                                      Mode=TwoWay,
                                                                      RelativeSource={RelativeSource TemplatedParent},
                                                                      UpdateSourceTrigger=PropertyChanged}"
-                                          PreloadDistance="500"
+                                          PreloadingDistance="500"
                                           Resolution="{TemplateBinding Resolution}"
                                           Ruler="{TemplateBinding Ruler}"
                                           TextElement.FontSize="14"
@@ -270,11 +259,8 @@
                                     Margin="15,13,15,15"
                                     HorizontalAlignment="Right"
                                     VerticalAlignment="Top"
-                                    Content="&#xE184;"
+                                    Height="30"
                                     Cursor="Hand"
-                                    FontFamily="Segoe UI Symbol"
-                                    FontSize="17pt"
-                                    Foreground="White"
                                     Opacity="0.4"
                                     Template="{StaticResource ChromelessButtonTemplate}"
                                     ToolTip="Go to…">
@@ -318,6 +304,13 @@
                                         </BeginStoryboard>
                                     </EventTrigger>
                                 </Button.Triggers>
+                                <Viewbox Stretch="Uniform">
+                                <Path Fill="White">
+                                  <Path.Data>
+                                    <PathGeometry Figures="m 3.3349609 3.334947 1.9042969 0 0 1.9043 -1.9042969 0 0 -1.9043 z m 4.765625 -3.335 q 0.087891 0 0.1708985 0.054 0.087891 0.054 0.1513672 0.1368 0.068359 0.078 0.1074218 0.1757 0.043945 0.093 0.043945 0.1807 l 0 7.5537 q 0 0.088 -0.043945 0.1758 -0.039063 0.088 -0.1074218 0.1514 -0.063477 0.068 -0.1513672 0.1074 -0.083008 0.044 -0.1708985 0.044 l -0.9570312 0 0 -0.4785 0.9570312 0 0 -6.1914 -7.62695309 0 0 6.1914 0.95214839 0 0 0.4785 -0.95214839 0 q -0.0878906 0 -0.17578125 -0.044 -0.0830078 -0.039 -0.15136719 -0.1074 Q 0.08300781 8.365047 0.0390625 8.276647 0 8.188447 0 8.100547 l 0 -7.5537 q 0 -0.088 0.0390625 -0.1807 0.04394531 -0.098 0.10742187 -0.1757 0.0683594 -0.083 0.15136719 -0.1368 0.0878906 -0.054 0.17578125 -0.054 l 7.62695309 0 z m -3.3398437 11.4356 -0.9521484 0 0 -3.5596 -1.4257813 1.3965 0 -1.1182 1.8994141 -1.958 1.9091796 1.958 0 1.1231 -1.430664 -1.4014 0 3.5596 z" FillRule="NonZero"/>
+                                  </Path.Data>
+                                </Path>
+                                    </Viewbox>
                             </Button>
                             <Grid Name="gotoList"
                                   Grid.Row="2"
@@ -405,8 +398,8 @@
                                                                 <TextBox Name="composerTextBox"
                                                                          Background="#77000000"
                                                                          BorderThickness="0"
-                                                                         Foreground="White"
                                                                          FontSize="11.5pt"
+                                                                         Foreground="White"
                                                                          Loaded="composerTextBox_Loaded"
                                                                          Padding="23,8,23,3"
                                                                          Text="{Binding Name}"
@@ -414,9 +407,9 @@
                                                                 <TextBox Name="composerDatesTextBox"
                                                                          Background="#77000000"
                                                                          BorderThickness="0"
+                                                                         FontSize="11.5pt"
                                                                          Foreground="#AAFFFFFF"
                                                                          Padding="23,3,23,8"
-                                                                         FontSize="11.5pt"
                                                                          Text="{Binding Dates}"
                                                                          TextAlignment="Left"
                                                                          TextChanged="composerDatesTextBox_TextChanged" />
@@ -486,7 +479,7 @@
 
                                 </ScrollViewer>
                             </Grid>
-                        </t:PanGrid>
+                        </t:ScrollingDirector>
                     </Border>
                 </ControlTemplate>
             </t:Timeline.Template>

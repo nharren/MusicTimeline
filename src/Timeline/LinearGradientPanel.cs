@@ -5,7 +5,7 @@ using System.Windows.Media;
 
 namespace NathanHarrenstein.Timeline
 {
-    public class LinearGradientPanel : Canvas, IPan
+    public class LinearGradientPanel : Canvas, IScroll
     {
         public static readonly DependencyProperty DatesProperty = DependencyProperty.Register("Dates", typeof(ExtendedDateTimeInterval), typeof(LinearGradientPanel), new PropertyMetadata(default(ExtendedDateTimeInterval), DatesChanged));
         public static readonly DependencyProperty GradientStopsProperty = DependencyProperty.Register("GradientStops", typeof(GradientStopCollection), typeof(LinearGradientPanel), new PropertyMetadata(default(GradientStopCollection), GradientStopsChanged));
@@ -61,7 +61,7 @@ namespace NathanHarrenstein.Timeline
             }
         }
 
-        public Vector CoercePan(Vector delta)
+        public Vector ReviseScrollingDisplacement(Vector delta)
         {
             return delta;
         }
@@ -76,7 +76,7 @@ namespace NathanHarrenstein.Timeline
             Background = gradientBrush;
         }
 
-        public void Pan(Vector delta)
+        public void Scroll(Vector delta)
         {
             transform.X -= delta.X;
         }
