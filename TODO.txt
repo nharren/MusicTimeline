@@ -5,3 +5,7 @@ Version 2
 • Update to latest EDTF standard when standard is released.
 	• EDTF picker control
 	• Visually display uncertainty and approximation in timeline.
+• Composer name pronounciation audio.
+• Timeline filters?
+	• Nationality
+• Composition Page

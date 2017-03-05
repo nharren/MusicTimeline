@@ -1,12 +1,9 @@
 ﻿using Microsoft.Win32;
 using NathanHarrenstein.MusicTimeline.Audio;
-using NathanHarrenstein.MusicTimeline.Controls;
+using NathanHarrenstein.MusicTimeline.Converters;
 using NathanHarrenstein.MusicTimeline.Data;
-using NathanHarrenstein.MusicTimeline.Extensions;
 using NathanHarrenstein.MusicTimeline.Parsers;
 using NathanHarrenstein.MusicTimeline.Utilities;
-using NathanHarrenstein.MusicTimeline.ViewModels;
-using NAudio.Wave;
 using System;
 using System.Collections.Generic;
 using System.Data.Services.Client;
@@ -14,24 +11,22 @@ using System.Diagnostics;
 using System.EDTF;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Markup;
 using System.Windows.Media;
 using System.Windows.Navigation;
-using System.Collections;
-using NathanHarrenstein.MusicTimeline.Converters;
 
 namespace NathanHarrenstein.MusicTimeline.Views
 {
     public partial class ComposerPage : Page, IDisposable
     {
+        private Dictionary<ComposerImage, List<string>> addedImages = new Dictionary<ComposerImage, List<string>>();
         private Composer composer;
         private bool isDisposed;
+        private Button nationalitiesEditButton;
+        private Button samplesEditButton;
 
         public ComposerPage()
         {
@@ -40,14 +35,6 @@ namespace NathanHarrenstein.MusicTimeline.Views
             var mainWindow = (MainWindow)Application.Current.MainWindow;
             mainWindow.Navigating += MainWindow_Navigating;
             Loaded += ComposerPage_Loaded;
-        }
-
-        private void MainWindow_Navigating(object sender, NavigatingCancelEventArgs e)
-        {
-            Dispose();
-
-            var mainWindow = (MainWindow)Application.Current.MainWindow;
-            mainWindow.Navigating -= MainWindow_Navigating;
         }
 
         ~ComposerPage()
@@ -86,8 +73,6 @@ namespace NathanHarrenstein.MusicTimeline.Views
             biographyScrollViewer.Visibility = Visibility.Collapsed;
             biographyEditPanel.Visibility = Visibility.Visible;
 
-            biographyRichTextBox.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#33000000"));
-            biographyRichTextBox.Padding = new Thickness(10.0);
             biographyRichTextBox.Document = BiographyUtility.LoadDocument(composer.Biography.Text);
         }
 
@@ -180,7 +165,6 @@ namespace NathanHarrenstein.MusicTimeline.Views
             bornHeader.IsEnabled = true;
         }
 
-
         private void ComposerPage_Loaded(object sender, RoutedEventArgs e)
         {
             LoadComposer();
@@ -190,80 +174,10 @@ namespace NathanHarrenstein.MusicTimeline.Views
         {
             compositionsPanel.Visibility = Visibility.Collapsed;
             compositionsEditPanel.Visibility = Visibility.Visible;
-
-            compositionsListBox.ItemsSource = new SortedSet<Composition>(composer.Compositions, Comparer<Composition>.Create((x, y) => string.Compare(x.Name, y.Name)));
         }
 
-        private void compositionsListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            compositionsListBox.Items.Refresh();
-        }
 
-        private void compositionsToolbar_Adding(object sender, EventArgs e)
-        {
-            var composition = new Composition();
-            composition.Name = "New Composition";
 
-            composer.Compositions.Add(composition);
-            App.ClassicalMusicContext.AddToCompositions(composition);
-
-            var compositionsList = (ICollection<Composition>)compositionsListBox.ItemsSource;
-
-            compositionsList.Add(composition);
-            compositionsListBox.Items.Refresh();
-
-            compositionsListBox.SelectedItem = composition;
-
-            compositionsListBox.ScrollIntoView(composition);
-        }
-
-        private void compositionsToolbar_Cancelling(object sender, EventArgs e)
-        {
-            compositionsListBox.ItemsSource = null;
-
-            compositionsPanel.Visibility = Visibility.Visible;
-            compositionsEditPanel.Visibility = Visibility.Collapsed;
-
-            compositionsHeader.IsEnabled = true;
-        }
-
-        private void compositionsToolbar_Removing(object sender, EventArgs e)
-        {
-            var selectedComposition = (Composition)compositionsListBox.SelectedItem;
-
-            RemoveComposition(selectedComposition);
-            App.ClassicalMusicContext.DeleteObject(selectedComposition);
-
-            var compositionsList = (ICollection<Composition>)compositionsListBox.ItemsSource;
-
-            compositionsList.Remove(selectedComposition);
-            compositionsListBox.Items.Refresh();
-        }
-
-        private void compositionsToolbar_Saving(object sender, EventArgs e)
-        {
-            foreach (var composition in composer.Compositions)
-            {
-                if (string.IsNullOrWhiteSpace(composition.Name))
-                {
-                    MessageBox.Show("Could not save because a composition has an empty Name.");
-
-                    return;
-                }
-            }
-
-            App.ClassicalMusicContext.UpdateObject(composer);
-            App.ClassicalMusicContext.SaveChanges();
-
-            compositionsPanel.Compositions = composer.Compositions;
-
-            compositionsListBox.ItemsSource = null;
-
-            compositionsPanel.Visibility = Visibility.Visible;
-            compositionsEditPanel.Visibility = Visibility.Collapsed;
-
-            compositionsHeader.IsEnabled = true;
-        }
 
         private string CreateBornText()
         {
@@ -338,95 +252,117 @@ namespace NathanHarrenstein.MusicTimeline.Views
             diedHeader.IsEnabled = true;
         }
 
-        private void imagesEditButton_Click(object sender, RoutedEventArgs e)
-        {
-            var imagesEditButton = (Button)sender;
+        //private void image_Loaded(object sender, RoutedEventArgs e)
+        //{
+        //    var image = (Image)sender;
+        //    var composerImage = (ComposerImage)image.DataContext;
+        //    var converter = new ComposerToBitmapImageConverter();
 
-            imagesEditButton.IsEnabled = false;
+        //    image.Source = converter.Convert(composerImage.Composer, new ComposerToBitmapImageConverterSettings(composerImage.ComposerImageId, true));
+        //}
 
-            imagesToolbar.Visibility = Visibility.Visible;
-        }
+        //private void imagesEditButton_Click(object sender, RoutedEventArgs e)
+        //{
+        //    var imagesEditButton = (Button)sender;
 
-        private void imagesToolbar_Adding(object sender, EventArgs e)
-        {
-            var composerImage = new ComposerImage();
+        //    imagesEditButton.IsEnabled = false;
 
-            var openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "Image files (*.jpg, *.jpeg, *.gif, *.png) | *.jpg; *.jpeg; *.gif; *.png";
+        //    imagesToolbar.Visibility = Visibility.Visible;
+        //}
 
-            bool? result = openFileDialog.ShowDialog();
+        //private void imagesListBox_MouseEnter(object sender, MouseEventArgs e)
+        //{
+        //    var editButton = (Button)imagesListBox.Template.FindName("imagesEditButton", imagesListBox);
 
-            if (result == true)
-            {
-                string filename = openFileDialog.FileName;
+        //    if (App.HasCredential && editButton.IsEnabled)
+        //    {
+        //        editButton.Visibility = Visibility.Visible;
+        //    }
+        //}
 
-                List<string> images;
+        //private void imagesListBox_MouseLeave(object sender, MouseEventArgs e)
+        //{
+        //    var editButton = (Button)imagesListBox.Template.FindName("imagesEditButton", imagesListBox);
+        //    editButton.Visibility = Visibility.Collapsed;
+        //}
 
-                if (addedImages.TryGetValue(composerImage, out images))
-                {
-                    images.Add(filename);
-                }
-                else
-                {
-                    addedImages.Add(composerImage, new List<string> { filename });
-                }
+        //private void imagesToolbar_Adding(object sender, EventArgs e)
+        //{
+        //    var composerImage = new ComposerImage();
 
-                composer.Images.Add(composerImage);
+        //    var openFileDialog = new OpenFileDialog();
+        //    openFileDialog.Filter = "Image files (*.jpg, *.jpeg, *.gif, *.png) | *.jpg; *.jpeg; *.gif; *.png";
 
-                App.ClassicalMusicContext.AddToComposerImages(composerImage);
+        //    bool? result = openFileDialog.ShowDialog();
 
-                imagesListBox.ItemsSource = composer.Images;
-                imagesListBox.SelectedItem = composerImage;
-            }
-        }
+        //    if (result == true)
+        //    {
+        //        string filename = openFileDialog.FileName;
 
-        private Dictionary<ComposerImage, List<string>> addedImages = new Dictionary<ComposerImage, List<string>>();
+        //        List<string> images;
 
-        private void imagesToolbar_Cancelling(object sender, EventArgs e)
-        {
-            addedImages.Clear();
+        //        if (addedImages.TryGetValue(composerImage, out images))
+        //        {
+        //            images.Add(filename);
+        //        }
+        //        else
+        //        {
+        //            addedImages.Add(composerImage, new List<string> { filename });
+        //        }
 
-            imagesToolbar.Visibility = Visibility.Collapsed;
+        //        App.ClassicalMusicContext.AddToComposerImages(composerImage);
+        //        composer.Images.Add(composerImage);
 
-            var composerImagesQuery = App.ClassicalMusicContext.LoadProperty(composer, nameof(composer.Images));
-            var composerImages = composerImagesQuery.Cast<ComposerImage>().ToList();
+        //        imagesListBox.ItemsSource = composer.Images;
+        //        imagesListBox.SelectedItem = composerImage;
+        //    }
+        //}
 
-            imagesListBox.ItemsSource = composerImages;
-            imagesListBox.SelectedIndex = 0;
+        //private void imagesToolbar_Cancelling(object sender, EventArgs e)
+        //{
+        //    addedImages.Clear();
 
-            var imagesEditButton = (Button)imagesListBox.Template.FindName("imagesEditButton", imagesListBox);
-            imagesEditButton.IsEnabled = true;
-        }
+        //    imagesToolbar.Visibility = Visibility.Collapsed;
 
-        private void imagesToolbar_Removing(object sender, EventArgs e)
-        {
-            var image = (ComposerImage)imagesListBox.SelectedItem;
+        //    var composerImagesQuery = App.ClassicalMusicContext.LoadProperty(composer, nameof(composer.Images));
+        //    var composerImages = composerImagesQuery.Cast<ComposerImage>().ToList();
 
-            composer.Images.Remove(image);
+        //    imagesListBox.ItemsSource = composerImages;
+        //    imagesListBox.SelectedIndex = 0;
 
-            App.ClassicalMusicContext.DeleteObject(image);
+        //    var imagesEditButton = (Button)imagesListBox.Template.FindName("imagesEditButton", imagesListBox);
+        //    imagesEditButton.IsEnabled = true;
+        //}
 
-            imagesListBox.ItemsSource = composer.Images;
-        }
+        //private void imagesToolbar_Removing(object sender, EventArgs e)
+        //{
+        //    var image = (ComposerImage)imagesListBox.SelectedItem;
 
-        private void imagesToolbar_Saving(object sender, EventArgs e)
-        {
-            foreach (var image in addedImages)
-            {
-                foreach (var path in image.Value)
-                {
-                    App.ClassicalMusicContext.SetSaveStream(image.Key, File.OpenRead(path), true, null);
-                }
-            }
+        //    composer.Images.Remove(image);
 
-            App.ClassicalMusicContext.UpdateObject(composer);
-            App.ClassicalMusicContext.SaveChanges();
+        //    App.ClassicalMusicContext.DeleteObject(image);
 
-            imagesToolbar.Visibility = Visibility.Collapsed;
+        //    imagesListBox.ItemsSource = composer.Images;
+        //}
 
-            var imagesEditButton = (Button)imagesListBox.Template.FindName("imagesEditButton", imagesListBox);
-            imagesEditButton.IsEnabled = true;
-        }
+        //private void imagesToolbar_Saving(object sender, EventArgs e)
+        //{
+        //    foreach (var image in addedImages)
+        //    {
+        //        foreach (var path in image.Value)
+        //        {
+        //            App.ClassicalMusicContext.SetSaveStream(image.Key, File.OpenRead(path), true, null);
+        //        }
+        //    }
+
+        //    App.ClassicalMusicContext.UpdateObject(composer);
+        //    App.ClassicalMusicContext.SaveChanges();
+
+        //    imagesToolbar.Visibility = Visibility.Collapsed;
+
+        //    var imagesEditButton = (Button)imagesListBox.Template.FindName("imagesEditButton", imagesListBox);
+        //    imagesEditButton.IsEnabled = true;
+        //}
 
         private void influenceButton_Click(object sender, RoutedEventArgs e)
         {
@@ -707,8 +643,6 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
             biographyScrollViewer.Document = BiographyUtility.LoadDocument(composer.Biography.Text);
 
-            ComposerFlagsItemsControl.ItemsSource = composer.Nationalities;
-
             influencesItemsControl.ItemsSource = composer.Influences;
 
             var influencesVisibility = composer.Influences.Count > 0 ? Visibility.Visible : Visibility.Collapsed;
@@ -760,29 +694,14 @@ namespace NathanHarrenstein.MusicTimeline.Views
             linksItemsControl.Visibility = linksVisibility;
             linksHeader.Visibility = linksVisibility;
 
-            if (composer.Images.Count == 0)
-            {
-                var composerImage = new ComposerImage();
-                composerImage.Composer = composer;
+            samplesEditButton = (Button)mp3PlayerControl.Template.FindName("samplesEditButton", mp3PlayerControl);
+            samplesEditButton.Click += samplesEditButton_Click;
 
-                imagesListBox.ItemsSource = new ComposerImage[] { composerImage };
-            }
-            else
-            {
-                foreach (var image in composer.Images)
-                {
-                    image.Composer = composer;
-                }
-
-
-                imagesListBox.ItemsSource = composer.Images;
-            }
-
-            imagesListBox.SelectedIndex = 0;
+            nationalitiesEditButton = (Button)nationalitiesPanel.Template.FindName("nationalitiesEditButton", nationalitiesPanel);
+            nationalitiesEditButton.Click += nationalitiesEditButton_Click;
 
             foreach (var sample in composer.Samples)
             {
-
                 var mp3PlaylistItem = new PlaylistItem();
                 mp3PlaylistItem.StreamUri = App.ClassicalMusicContext.GetReadStreamUri(sample);
                 mp3PlaylistItem.Metadata.Add("Title", sample.Title);
@@ -796,9 +715,22 @@ namespace NathanHarrenstein.MusicTimeline.Views
                 }
             }
 
+            imagesPanel.Composer = composer;
+            samplesEditPanel.Composer = composer;
+            nationalitiesPanel.Composer = composer;
+            nationalitiesEditPanel.Composer = composer;
             compositionsPanel.Compositions = composer.Compositions;
+            compositionsEditPanel.Composer = composer;
 
             ProgressBar.Visibility = Visibility.Collapsed;
+        }
+
+        private void MainWindow_Navigating(object sender, NavigatingCancelEventArgs e)
+        {
+            Dispose();
+
+            var mainWindow = (MainWindow)Application.Current.MainWindow;
+            mainWindow.Navigating -= MainWindow_Navigating;
         }
 
         private void mediaHeader_ButtonClick(object sender, RoutedEventArgs e)
@@ -808,7 +740,6 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
             var youTubeParser = new YouTubeParser();
             var spotifyParser = new SpotifyParser();
-
             var filteredItems = new List<Link>();
 
             foreach (var link in composer.Links)
@@ -820,7 +751,6 @@ namespace NathanHarrenstein.MusicTimeline.Views
             }
 
             mediaListBox.ItemsSource = filteredItems.ToList();
-
             mediaListBox.Focus();
         }
 
@@ -906,6 +836,41 @@ namespace NathanHarrenstein.MusicTimeline.Views
             mediaHeader.IsEnabled = true;
         }
 
+        private void mp3PlayerControl_MouseEnter(object sender, MouseEventArgs e)
+        {
+            if (App.HasCredential && samplesEditButton.IsEnabled)
+            {
+                samplesEditButton.Visibility = Visibility.Visible;
+            }
+        }
+
+        private void mp3PlayerControl_MouseLeave(object sender, MouseEventArgs e)
+        {
+            samplesEditButton.Visibility = Visibility.Hidden;
+        }
+
+        private void nationalitiesEditButton_Click(object sender, RoutedEventArgs e)
+        {
+            var nationalitiesEditButton = (Button)sender;
+            nationalitiesEditButton.IsEnabled = false;
+
+            nationalitiesPanel.Visibility = Visibility.Collapsed;
+            nationalitiesEditPanel.Visibility = Visibility.Visible;
+        }
+
+        private void nationalitiesPanel_MouseEnter(object sender, MouseEventArgs e)
+        {
+            if (App.HasCredential && nationalitiesEditButton.IsEnabled)
+            {
+                nationalitiesEditButton.Visibility = Visibility.Visible;
+            }
+        }
+
+        private void nationalitiesPanel_MouseLeave(object sender, MouseEventArgs e)
+        {
+            nationalitiesEditButton.Visibility = Visibility.Hidden;
+        }
+
         private void RemoveComposition(Composition selectedComposition)
         {
             var compositions = composer.Compositions.ToArray();
@@ -923,21 +888,46 @@ namespace NathanHarrenstein.MusicTimeline.Views
             return;
         }
 
-        private void youTubeButton_Click(object sender, RoutedEventArgs e)
+        private void samplesEditButton_Click(object sender, RoutedEventArgs e)
         {
-            var button = (Button)sender;
-            var link = (Link)button.DataContext;
+            var samplesEditButton = (Button)sender;
 
-            Process.Start(link.Url);
+            samplesEditButton.IsEnabled = false;
+
+            mp3PlayerControl.Stop();
+            mp3PlayerControl.Visibility = Visibility.Collapsed;
+            samplesEditPanel.Visibility = Visibility.Visible;
         }
 
-        private void image_Loaded(object sender, RoutedEventArgs e)
+        private void samplesEditPanel_Cancelling(object sender, EventArgs e)
         {
-            var image = (Image)sender;
-            var composerImage = (ComposerImage)image.DataContext;
-            var converter = new ComposerToBitmapImageConverter();
+            mp3PlayerControl.Visibility = Visibility.Visible;
+            samplesEditButton.IsEnabled = true;
+        }
 
-            image.Source = converter.Convert(composerImage.Composer, new ComposerToBitmapImageConverterSettings(composerImage.ComposerImageId, true));
+        private void samplesEditPanel_Saving(object sender, EventArgs e)
+        {
+            mp3PlayerControl.Playlist.Clear();
+
+            App.ClassicalMusicContext.LoadProperty(composer, "Samples");
+
+            foreach (var sample in composer.Samples)
+            {
+                var mp3PlaylistItem = new PlaylistItem();
+                mp3PlaylistItem.StreamUri = App.ClassicalMusicContext.GetReadStreamUri(sample);
+                mp3PlaylistItem.Metadata.Add("Title", sample.Title);
+                mp3PlaylistItem.Metadata.Add("Artist", sample.Artists);
+
+                mp3PlayerControl.Playlist.Add(mp3PlaylistItem);
+
+                if (mp3PlayerControl.Playlist.Count == 1)
+                {
+                    mp3PlayerControl.Play();
+                }
+            }
+
+            mp3PlayerControl.Visibility = Visibility.Visible;
+            samplesEditButton.IsEnabled = true;
         }
 
         private void selectedImage_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
@@ -949,20 +939,38 @@ namespace NathanHarrenstein.MusicTimeline.Views
             image.Source = converter.Convert(composerImage.Composer, new ComposerToBitmapImageConverterSettings(composerImage.ComposerImageId, false));
         }
 
-        private void imagesListBox_MouseEnter(object sender, MouseEventArgs e)
+        private void youTubeButton_Click(object sender, RoutedEventArgs e)
         {
-            var editButton = (Button)imagesListBox.Template.FindName("imagesEditButton", imagesListBox);
+            var button = (Button)sender;
+            var link = (Link)button.DataContext;
 
-            if (App.HasCredential && editButton.IsEnabled)
-            {
-                editButton.Visibility = Visibility.Visible;
-            }
+            Process.Start(link.Url);
         }
 
-        private void imagesListBox_MouseLeave(object sender, MouseEventArgs e)
+        private void nationalitiesEditPanel_Cancelling(object sender, EventArgs e)
         {
-            var editButton = (Button)imagesListBox.Template.FindName("imagesEditButton", imagesListBox);
-            editButton.Visibility = Visibility.Collapsed;
+            nationalitiesPanel.Visibility = Visibility.Visible;
+            nationalitiesEditButton.IsEnabled = true;
+        }
+
+        private void nationalitiesEditPanel_Saving(object sender, EventArgs e)
+        {
+            nationalitiesPanel.UpdateData();
+            nationalitiesPanel.Visibility = Visibility.Visible;
+            nationalitiesEditButton.IsEnabled = true;
+        }
+
+        private void compositionsEditPanel_Cancelling(object sender, EventArgs e)
+        {
+            compositionsPanel.Visibility = Visibility.Visible;
+            compositionsHeader.IsEnabled = true;
+        }
+
+        private void compositionsEditPanel_Saving(object sender, EventArgs e)
+        {
+            compositionsPanel.UpdateData();
+            compositionsPanel.Visibility = Visibility.Visible;
+            compositionsHeader.IsEnabled = true;
         }
     }
 }

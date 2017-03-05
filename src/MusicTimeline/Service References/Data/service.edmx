@@ -115,8 +115,8 @@
           <PropertyRef Name="SampleId" />
         </Key>
         <Property Name="SampleId" Type="Edm.Int32" Nullable="false" p7:StoreGeneratedPattern="Identity" xmlns:p7="http://schemas.microsoft.com/ado/2009/02/edm/annotation" />
-        <Property Name="Title" Type="Edm.String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-        <Property Name="Artists" Type="Edm.String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+        <Property Name="Title" Type="Edm.String" MaxLength="Max" FixedLength="false" Unicode="true" />
+        <Property Name="Artists" Type="Edm.String" MaxLength="Max" FixedLength="false" Unicode="true" />
         <Property Name="ComposerID" Type="Edm.Int32" Nullable="false" />
         <NavigationProperty Name="Composer" Relationship="ClassicalMusicModel.FK_Sample_Composer" ToRole="Composer" FromRole="Sample" />
       </EntityType>

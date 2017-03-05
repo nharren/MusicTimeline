@@ -1,27 +1,38 @@
 ﻿using NathanHarrenstein.MusicTimeline.Data;
-using System;
 using System.Collections.Generic;
 using System.EDTF;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace NathanHarrenstein.MusicTimeline.Controls
 {
     public class CompositionsPanel : Control
     {
+        public static readonly DependencyProperty CompositionItemStyleProperty = DependencyProperty.Register("CompositionItemStyle", typeof(Style), typeof(CompositionsPanel), new PropertyMetadata(null, new PropertyChangedCallback(CompositionItemStyle_Changed)));
+        public static readonly DependencyProperty CompositionsProperty = DependencyProperty.Register("Compositions", typeof(IEnumerable<Composition>), typeof(CompositionsPanel), new PropertyMetadata(null, CompositionsChanged));
+        public static readonly DependencyProperty YearHeaderStyleProperty = DependencyProperty.Register("YearHeaderStyle", typeof(Style), typeof(CompositionsPanel), new PropertyMetadata(null, new PropertyChangedCallback(YearHeaderStyle_Changed)));
+
+        private StackPanel stackPanel;
+
         static CompositionsPanel()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(CompositionsPanel), new FrameworkPropertyMetadata(typeof(CompositionsPanel)));
+        }
+
+        public Style CompositionItemStyle
+        {
+            get
+            {
+                return (Style)GetValue(CompositionItemStyleProperty);
+            }
+
+            set
+            {
+                SetValue(CompositionItemStyleProperty, value);
+            }
         }
 
         public IEnumerable<Composition> Compositions
@@ -37,19 +48,96 @@ namespace NathanHarrenstein.MusicTimeline.Controls
             }
         }
 
-        public override void OnApplyTemplate()
+        public Style YearHeaderStyle
         {
-            compositionStackPanel = (StackPanel)Template.FindName("PART_CompositionStackPanel", this);
+            get
+            {
+                return (Style)GetValue(YearHeaderStyleProperty);
+            }
+
+            set
+            {
+                SetValue(YearHeaderStyleProperty, value);
+            }
         }
 
-        private void Build()
+        public override void OnApplyTemplate()
         {
-            if (compositionStackPanel == null || Compositions == null)
+            base.OnApplyTemplate();
+
+            stackPanel = GetTemplateChild("stackPanel") as StackPanel;
+        }
+
+        private static void CompositionItemStyle_Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var compositionsPanel = (CompositionsPanel)d;
+            compositionsPanel.UpdateData();
+        }
+
+        private static void CompositionsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var compositionPanel = (CompositionsPanel)d;
+            compositionPanel.UpdateData();
+        }
+
+        private static void YearHeaderStyle_Changed(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            var compositionsPanel = (CompositionsPanel)d;
+            compositionsPanel.UpdateData();
+        }
+
+        private string BuildCompositionItemName(Composition composition)
+        {
+            var stringBuilder = new StringBuilder(composition.Name);
+
+            if (composition.Key != null)
+            {
+                stringBuilder.Append(" in ");
+                stringBuilder.Append(composition.Key.Name);
+            }
+
+            if (composition.CatalogNumbers.Count > 0)
+            {
+                var firstCatalogNumber = composition.CatalogNumbers.First();
+
+                stringBuilder.Append(", ");
+                stringBuilder.Append(firstCatalogNumber.Catalog.Prefix);
+                stringBuilder.Append(" ");
+                stringBuilder.Append(firstCatalogNumber.Value);
+            }
+
+            return stringBuilder.ToString();
+        }
+
+        private void BuildCompositionItems(IEnumerable<Composition> compositions)
+        {
+            foreach (var composition in compositions)
+            {
+                var compositionItemTextBox = new TextBox();
+                compositionItemTextBox.Style = CompositionItemStyle;
+                compositionItemTextBox.Text = BuildCompositionItemName(composition);
+
+                stackPanel.Children.Add(compositionItemTextBox);
+            }
+        }
+
+        private void BuildYearHeader(string header)
+        {
+            var yearHeaderTextBlock = new TextBlock();
+            yearHeaderTextBlock.Style = YearHeaderStyle;
+            yearHeaderTextBlock.Text = header;
+
+            stackPanel.Children.Add(yearHeaderTextBlock);
+        }
+
+        public void UpdateData()
+        {
+            if (stackPanel == null || Compositions == null)
             {
                 return;
             }
 
-            Clear();
+            stackPanel.Children.Clear();
 
             var undatedCompositions = new List<Composition>();
             var datedCompositions = new List<Composition>();
@@ -81,88 +169,6 @@ namespace NathanHarrenstein.MusicTimeline.Controls
 
             BuildYearHeader("Undated");
             BuildCompositionItems(undatedCompositions);
-        }
-
-        private void BuildCompositionItems(IEnumerable<Composition> compositions)
-        {
-            var isInitial = true;
-
-            foreach (var composition in compositions)
-            {
-                var compositionItemTextBlock = new TextBlock();
-                compositionItemTextBlock.FontFamily = new FontFamily("Segoe UI");
-                compositionItemTextBlock.FontSize = 15.333333;
-                compositionItemTextBlock.Foreground = (SolidColorBrush)App.Current.Resources["ForegroundBrush"];
-                compositionItemTextBlock.Text = BuildCompositionItemName(composition);
-
-                if (!isInitial)
-                {
-                    compositionItemTextBlock.Margin = new Thickness(0, 5, 0, 0);
-                }
-                else
-                {
-                    compositionItemTextBlock.Margin = new Thickness(0, 2, 0, 0);
-                }
-
-                compositionStackPanel.Children.Add(compositionItemTextBlock);
-
-                isInitial = false;
-            }
-        }
-
-        private string BuildCompositionItemName(Composition composition)
-        {
-            var stringBuilder = new StringBuilder(composition.Name);
-
-            if (composition.Key != null)
-            {
-                stringBuilder.Append(" in ");
-                stringBuilder.Append(composition.Key.Name);
-            }
-
-            if (composition.CatalogNumbers.Count > 0)
-            {
-                var firstCatalogNumber = composition.CatalogNumbers.First();
-
-                stringBuilder.Append(", ");
-                stringBuilder.Append(firstCatalogNumber.Catalog.Prefix);
-                stringBuilder.Append(" ");
-                stringBuilder.Append(firstCatalogNumber.Value);
-            }
-
-            return stringBuilder.ToString();
-        }
-
-        private void BuildYearHeader(string header)
-        {
-            var yearHeaderTextBlock = new TextBlock();
-            yearHeaderTextBlock.FontFamily = new FontFamily("Segoe UI Light");
-            yearHeaderTextBlock.FontSize = 21.333333;
-            yearHeaderTextBlock.Foreground = (SolidColorBrush)App.Current.Resources["HeaderBrush"];
-            yearHeaderTextBlock.Text = header;
-            yearHeaderTextBlock.Margin = new Thickness(0, 10, 0, 0);
-
-            compositionStackPanel.Children.Add(yearHeaderTextBlock);
-        }
-
-        private void Clear()
-        {
-            if (compositionStackPanel == null)
-            {
-                return;
-            }
-
-            compositionStackPanel.Children.Clear();
-        }
-
-        public static readonly DependencyProperty CompositionsProperty = DependencyProperty.Register("Compositions", typeof(IEnumerable<Composition>), typeof(CompositionsPanel), new PropertyMetadata(null, CompositionsChanged));
-        private StackPanel compositionStackPanel;
-
-        private static void CompositionsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
-        {
-            var compositionPanel = (CompositionsPanel)d;
-
-            compositionPanel.Build();
         }
     }
 }

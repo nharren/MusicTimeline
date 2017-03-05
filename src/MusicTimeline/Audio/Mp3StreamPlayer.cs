@@ -186,9 +186,9 @@ namespace NathanHarrenstein.MusicTimeline.Audio
             }
         }
 
-        public void Next()
+        public bool Next()
         {
-            Playlist.Next();
+            return Playlist.Next();
         }
 
         public void OnChannelVolumeChanged(uint channelCount, IntPtr newVolumes, uint channelIndex)
@@ -256,15 +256,17 @@ namespace NathanHarrenstein.MusicTimeline.Audio
             OnPlaybackStateChanged(new PlaybackStateEventArgs(playbackState));
         }
 
-        public void Previous()
+        public bool Previous()
         {
-            Playlist.Previous();
+            return Playlist.Previous();
         }
 
         public void Stop()
         {
             if (playbackState != StreamingPlaybackState.Stopped)
             {
+                playbackTimer.Stop();
+
                 if (!isDownloaded)
                 {
                     request.Abort();
@@ -424,45 +426,48 @@ namespace NathanHarrenstein.MusicTimeline.Audio
 
         private void PlaybackTimer_Tick(object sender, EventArgs e)
         {
-            if (playbackState != StreamingPlaybackState.Stopped)
+            if (playbackState == StreamingPlaybackState.Stopped)
             {
-                if (waveOut == null && bufferedWaveStream != null)
+                return;
+            }
+
+            if (waveOut == null && bufferedWaveStream != null)
+            {
+                Debug.WriteLine("Creating WaveOut Device");
+
+                waveOut = new WaveOutEvent();
+                waveOut.PlaybackStopped += OnPlaybackStopped;
+                waveOut.Init(bufferedWaveStream);
+            }
+            else if (bufferedWaveStream != null)
+            {
+                var waveOutEvent = (WaveOutEvent)waveOut;
+
+                currentTime = TimeSpan.FromSeconds(bufferedWaveStream.Position / (double)waveOutEvent.OutputWaveFormat.AverageBytesPerSecond);
+                Application.Current.Dispatcher.Invoke(() => OnCurrentTimeChanged(new TimeSpanEventArgs(currentTime)));
+
+                totalTime = TimeSpan.FromSeconds(totalBytes / (double)waveOutEvent.OutputWaveFormat.AverageBytesPerSecond);
+                Application.Current.Dispatcher.Invoke(() => OnTotalTimeChanged(new TimeSpanEventArgs(totalTime)));
+
+                var bufferedSeconds = bufferedWaveStream.BufferedDuration.TotalSeconds;
+
+                if (bufferedSeconds < 0.5 && playbackState == StreamingPlaybackState.Playing && !isDownloaded)
                 {
-                    Debug.WriteLine("Creating WaveOut Device");
-                    waveOut = new WaveOutEvent();
-                    waveOut.PlaybackStopped += OnPlaybackStopped;
-                    waveOut.Init(bufferedWaveStream);
+                    Buffer();
                 }
-                else if (bufferedWaveStream != null)
+                else if (playbackState == StreamingPlaybackState.Buffering)
                 {
-                    var waveOutEvent = (WaveOutEvent)waveOut;
+                    Play();
+                }
+                else if (isDownloaded && bufferedSeconds == 0)
+                {
+                    Debug.WriteLine("Reached end of stream");
 
-                    currentTime = TimeSpan.FromSeconds(bufferedWaveStream.Position / (double)waveOutEvent.OutputWaveFormat.AverageBytesPerSecond);
-                    Application.Current.Dispatcher.Invoke(() => OnCurrentTimeChanged(new TimeSpanEventArgs(currentTime)));
-
-                    totalTime = TimeSpan.FromSeconds(totalBytes / (double)waveOutEvent.OutputWaveFormat.AverageBytesPerSecond);
-                    Application.Current.Dispatcher.Invoke(() => OnTotalTimeChanged(new TimeSpanEventArgs(totalTime)));
-
-                    var bufferedSeconds = bufferedWaveStream.BufferedDuration.TotalSeconds;
-
-                    if (bufferedSeconds < 0.5 && playbackState == StreamingPlaybackState.Playing && !isDownloaded)
+                    if (!Next())
                     {
-                        Buffer();
-                    }
-                    else if (playbackState == StreamingPlaybackState.Buffering)
-                    {
-                        Play();
-                    }
-                    else if (isDownloaded && bufferedSeconds == 0)
-                    {
-                        Debug.WriteLine("Reached end of stream");
                         Stop();
                     }
                 }
-            }
-            else
-            {
-                playbackTimer.IsEnabled = false;
             }
         }
 

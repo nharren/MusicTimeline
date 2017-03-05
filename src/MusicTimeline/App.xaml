@@ -4,13 +4,23 @@
     <Application.Resources>
         <SolidColorBrush x:Key="BackgroundBrush" Color="#FF34373A" />
         <SolidColorBrush x:Key="ForegroundBrush" Color="#FFC7C9CC" />
-        <!--  Old Foreground: DCDFE2  -->
-        <!--  Alternative Foreground: FFDFE0E6  -->
         <SolidColorBrush x:Key="HeaderBrush" Color="#AFA699" />
         <SolidColorBrush x:Key="ScrollBarThumbBrush" Color="#FF4B5155" />
         <SolidColorBrush x:Key="ScrollBarThumbHighlightBrush" Color="#FF565D61" />
         <SolidColorBrush x:Key="ShellBrush" Color="#FF5F6266" />
         <SolidColorBrush x:Key="UnderlineBrush" Color="#17FFFFFF" />
+
+        <SolidColorBrush x:Key="LightBackgroundBrush" Color="#EEEADD" />
+        <SolidColorBrush x:Key="MediumBackgroundBrush" Color="#544A44" />
+        <SolidColorBrush x:Key="DarkBackgroundBrush" Color="#473F39" />
+
+        <SolidColorBrush x:Key="MenuBackgroundBrush" Color="#E3DFD3" />
+        <SolidColorBrush x:Key="MenuForegroundBrush" Color="Black" />
+        <SolidColorBrush x:Key="MenuHoverBrush" Color="#F8F6F3" />
+
+        <SolidColorBrush x:Key="InputBorderBrush" Color="#C8C5BB" />
+        <SolidColorBrush x:Key="InputBackgroundBrush" Color="#F5F2EB" />
+        <SolidColorBrush x:Key="InputForegroundBrush" Color="Black" />
 
         <BitmapImage x:Key="BackgroundImage" UriSource="pack://application:,,,/Resources/Background/NoiseOverlay.png" />
 

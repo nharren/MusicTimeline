@@ -9,7 +9,7 @@
 //------------------------------------------------------------------------------
 
 // Original file name:
-// Generation date: 7/26/2016 12:26:41 AM
+// Generation date: 8/14/2016 5:43:53 PM
 namespace NathanHarrenstein.MusicTimeline.Data
 {
     
@@ -504,149 +504,148 @@ namespace NathanHarrenstein.MusicTimeline.Data
                 "><PropertyRef Name=\"SampleId\" /></Key><Property Name=\"SampleId\" Type=\"Edm.Int32\"" +
                 " Nullable=\"false\" p7:StoreGeneratedPattern=\"Identity\" xmlns:p7=\"http://schemas.m" +
                 "icrosoft.com/ado/2009/02/edm/annotation\" /><Property Name=\"Title\" Type=\"Edm.Stri" +
-                "ng\" Nullable=\"false\" MaxLength=\"Max\" FixedLength=\"false\" Unicode=\"true\" /><Prope" +
-                "rty Name=\"Artists\" Type=\"Edm.String\" Nullable=\"false\" MaxLength=\"Max\" FixedLengt" +
-                "h=\"false\" Unicode=\"true\" /><Property Name=\"ComposerID\" Type=\"Edm.Int32\" Nullable" +
-                "=\"false\" /><NavigationProperty Name=\"Composer\" Relationship=\"ClassicalMusicModel" +
-                ".FK_Sample_Composer\" ToRole=\"Composer\" FromRole=\"Sample\" /></EntityType><EntityT" +
-                "ype Name=\"ComposerBiography\"><Key><PropertyRef Name=\"ComposerId\" /></Key><Proper" +
-                "ty Name=\"ComposerId\" Type=\"Edm.Int32\" Nullable=\"false\" p6:StoreGeneratedPattern=" +
-                "\"Identity\" xmlns:p6=\"http://schemas.microsoft.com/ado/2009/02/edm/annotation\" />" +
-                "<Property Name=\"Text\" Type=\"Edm.String\" MaxLength=\"Max\" FixedLength=\"false\" Unic" +
-                "ode=\"true\" /><NavigationProperty Name=\"Composer\" Relationship=\"ClassicalMusicMod" +
-                "el.FK_ComposerBiography_Composer\" ToRole=\"Composer\" FromRole=\"ComposerBiography\"" +
-                " /></EntityType><EntityType Name=\"ComposerShortBiography\"><Key><PropertyRef Name" +
-                "=\"ComposerId\" /></Key><Property Name=\"ComposerId\" Type=\"Edm.Int32\" Nullable=\"fal" +
-                "se\" p6:StoreGeneratedPattern=\"Identity\" xmlns:p6=\"http://schemas.microsoft.com/a" +
-                "do/2009/02/edm/annotation\" /><Property Name=\"Text\" Type=\"Edm.String\" MaxLength=\"" +
-                "Max\" FixedLength=\"false\" Unicode=\"true\" /><NavigationProperty Name=\"Composer\" Re" +
-                "lationship=\"ClassicalMusicModel.FK_ComposerShortBiography_Composer\" ToRole=\"Comp" +
-                "oser\" FromRole=\"ComposerShortBiography\" /></EntityType><Association Name=\"FK_Cat" +
-                "alog_Composer\"><End Type=\"ClassicalMusicModel.Composer\" Role=\"Composer\" Multipli" +
-                "city=\"1\" /><End Type=\"ClassicalMusicModel.Catalog\" Role=\"Catalog\" Multiplicity=\"" +
-                "*\" /><ReferentialConstraint><Principal Role=\"Composer\"><PropertyRef Name=\"Compos" +
-                "erId\" /></Principal><Dependent Role=\"Catalog\"><PropertyRef Name=\"ComposerId\" /><" +
-                "/Dependent></ReferentialConstraint></Association><Association Name=\"FK_CatalogNu" +
-                "mber_Catalog\"><End Type=\"ClassicalMusicModel.Catalog\" Role=\"Catalog\" Multiplicit" +
-                "y=\"1\" /><End Type=\"ClassicalMusicModel.CatalogNumber\" Role=\"CatalogNumber\" Multi" +
-                "plicity=\"*\" /><ReferentialConstraint><Principal Role=\"Catalog\"><PropertyRef Name" +
-                "=\"CatalogId\" /></Principal><Dependent Role=\"CatalogNumber\"><PropertyRef Name=\"Ca" +
-                "talogId\" /></Dependent></ReferentialConstraint></Association><Association Name=\"" +
-                "CompositionCatalogNumber\"><End Type=\"ClassicalMusicModel.Composition\" Role=\"Comp" +
-                "osition\" Multiplicity=\"*\" /><End Type=\"ClassicalMusicModel.CatalogNumber\" Role=\"" +
-                "CatalogNumber\" Multiplicity=\"*\" /></Association><Association Name=\"FK_Composer_B" +
-                "irthLocation\"><End Type=\"ClassicalMusicModel.Location\" Role=\"Location\" Multiplic" +
-                "ity=\"0..1\" /><End Type=\"ClassicalMusicModel.Composer\" Role=\"Composer\" Multiplici" +
-                "ty=\"*\" /><ReferentialConstraint><Principal Role=\"Location\"><PropertyRef Name=\"Lo" +
-                "cationId\" /></Principal><Dependent Role=\"Composer\"><PropertyRef Name=\"BirthLocat" +
-                "ionId\" /></Dependent></ReferentialConstraint></Association><Association Name=\"FK" +
-                "_Composer_DeathLocation\"><End Type=\"ClassicalMusicModel.Location\" Role=\"Location" +
-                "\" Multiplicity=\"0..1\" /><End Type=\"ClassicalMusicModel.Composer\" Role=\"Composer\"" +
-                " Multiplicity=\"*\" /><ReferentialConstraint><Principal Role=\"Location\"><PropertyR" +
-                "ef Name=\"LocationId\" /></Principal><Dependent Role=\"Composer\"><PropertyRef Name=" +
-                "\"DeathLocationId\" /></Dependent></ReferentialConstraint></Association><Associati" +
-                "on Name=\"FK_ComposerImage_Composer\"><End Type=\"ClassicalMusicModel.Composer\" Rol" +
-                "e=\"Composer\" Multiplicity=\"1\" /><End Type=\"ClassicalMusicModel.ComposerImage\" Ro" +
-                "le=\"ComposerImage\" Multiplicity=\"*\" /><ReferentialConstraint><Principal Role=\"Co" +
-                "mposer\"><PropertyRef Name=\"ComposerId\" /></Principal><Dependent Role=\"ComposerIm" +
-                "age\"><PropertyRef Name=\"ComposerId\" /></Dependent></ReferentialConstraint></Asso" +
-                "ciation><Association Name=\"FK_Sample_Composer\"><End Type=\"ClassicalMusicModel.Co" +
-                "mposer\" Role=\"Composer\" Multiplicity=\"1\" /><End Type=\"ClassicalMusicModel.Sample" +
-                "\" Role=\"Sample\" Multiplicity=\"*\" /><ReferentialConstraint><Principal Role=\"Compo" +
-                "ser\"><PropertyRef Name=\"ComposerId\" /></Principal><Dependent Role=\"Sample\"><Prop" +
-                "ertyRef Name=\"ComposerID\" /></Dependent></ReferentialConstraint></Association><A" +
-                "ssociation Name=\"ComposerEra\"><End Type=\"ClassicalMusicModel.Era\" Role=\"Era\" Mul" +
-                "tiplicity=\"*\" /><End Type=\"ClassicalMusicModel.Composer\" Role=\"Composer\" Multipl" +
-                "icity=\"*\" /></Association><Association Name=\"ComposerInfluence\"><End Type=\"Class" +
-                "icalMusicModel.Composer\" Role=\"Influence\" Multiplicity=\"*\" /><End Type=\"Classica" +
-                "lMusicModel.Composer\" Role=\"Influenced\" Multiplicity=\"*\" /></Association><Associ" +
-                "ation Name=\"ComposerLink\"><End Type=\"ClassicalMusicModel.Link\" Role=\"Link\" Multi" +
-                "plicity=\"*\" /><End Type=\"ClassicalMusicModel.Composer\" Role=\"Composer\" Multiplic" +
-                "ity=\"*\" /></Association><Association Name=\"ComposerNationality\"><End Type=\"Class" +
-                "icalMusicModel.Nationality\" Role=\"Nationality\" Multiplicity=\"*\" /><End Type=\"Cla" +
-                "ssicalMusicModel.Composer\" Role=\"Composer\" Multiplicity=\"*\" /></Association><Ass" +
-                "ociation Name=\"CompositionComposer\"><End Type=\"ClassicalMusicModel.Composition\" " +
-                "Role=\"Composition\" Multiplicity=\"*\" /><End Type=\"ClassicalMusicModel.Composer\" R" +
-                "ole=\"Composer\" Multiplicity=\"*\" /></Association><Association Name=\"FK_ComposerBi" +
-                "ography_Composer\"><End Type=\"ClassicalMusicModel.Composer\" Role=\"Composer\" Multi" +
-                "plicity=\"1\" /><End Type=\"ClassicalMusicModel.ComposerBiography\" Role=\"ComposerBi" +
-                "ography\" Multiplicity=\"0..1\" /><ReferentialConstraint><Principal Role=\"Composer\"" +
-                "><PropertyRef Name=\"ComposerId\" /></Principal><Dependent Role=\"ComposerBiography" +
-                "\"><PropertyRef Name=\"ComposerId\" /></Dependent></ReferentialConstraint></Associa" +
-                "tion><Association Name=\"FK_ComposerShortBiography_Composer\"><End Type=\"Classical" +
-                "MusicModel.Composer\" Role=\"Composer\" Multiplicity=\"1\" /><End Type=\"ClassicalMusi" +
-                "cModel.ComposerShortBiography\" Role=\"ComposerShortBiography\" Multiplicity=\"0..1\"" +
-                " /><ReferentialConstraint><Principal Role=\"Composer\"><PropertyRef Name=\"Composer" +
-                "Id\" /></Principal><Dependent Role=\"ComposerShortBiography\"><PropertyRef Name=\"Co" +
-                "mposerId\" /></Dependent></ReferentialConstraint></Association><Association Name=" +
-                "\"FK_Composition_Key\"><End Type=\"ClassicalMusicModel.Key\" Ro";
+                "ng\" MaxLength=\"Max\" FixedLength=\"false\" Unicode=\"true\" /><Property Name=\"Artists" +
+                "\" Type=\"Edm.String\" MaxLength=\"Max\" FixedLength=\"false\" Unicode=\"true\" /><Proper" +
+                "ty Name=\"ComposerID\" Type=\"Edm.Int32\" Nullable=\"false\" /><NavigationProperty Nam" +
+                "e=\"Composer\" Relationship=\"ClassicalMusicModel.FK_Sample_Composer\" ToRole=\"Compo" +
+                "ser\" FromRole=\"Sample\" /></EntityType><EntityType Name=\"ComposerBiography\"><Key>" +
+                "<PropertyRef Name=\"ComposerId\" /></Key><Property Name=\"ComposerId\" Type=\"Edm.Int" +
+                "32\" Nullable=\"false\" p6:StoreGeneratedPattern=\"Identity\" xmlns:p6=\"http://schema" +
+                "s.microsoft.com/ado/2009/02/edm/annotation\" /><Property Name=\"Text\" Type=\"Edm.St" +
+                "ring\" MaxLength=\"Max\" FixedLength=\"false\" Unicode=\"true\" /><NavigationProperty N" +
+                "ame=\"Composer\" Relationship=\"ClassicalMusicModel.FK_ComposerBiography_Composer\" " +
+                "ToRole=\"Composer\" FromRole=\"ComposerBiography\" /></EntityType><EntityType Name=\"" +
+                "ComposerShortBiography\"><Key><PropertyRef Name=\"ComposerId\" /></Key><Property Na" +
+                "me=\"ComposerId\" Type=\"Edm.Int32\" Nullable=\"false\" p6:StoreGeneratedPattern=\"Iden" +
+                "tity\" xmlns:p6=\"http://schemas.microsoft.com/ado/2009/02/edm/annotation\" /><Prop" +
+                "erty Name=\"Text\" Type=\"Edm.String\" MaxLength=\"Max\" FixedLength=\"false\" Unicode=\"" +
+                "true\" /><NavigationProperty Name=\"Composer\" Relationship=\"ClassicalMusicModel.FK" +
+                "_ComposerShortBiography_Composer\" ToRole=\"Composer\" FromRole=\"ComposerShortBiogr" +
+                "aphy\" /></EntityType><Association Name=\"FK_Catalog_Composer\"><End Type=\"Classica" +
+                "lMusicModel.Composer\" Role=\"Composer\" Multiplicity=\"1\" /><End Type=\"ClassicalMus" +
+                "icModel.Catalog\" Role=\"Catalog\" Multiplicity=\"*\" /><ReferentialConstraint><Princ" +
+                "ipal Role=\"Composer\"><PropertyRef Name=\"ComposerId\" /></Principal><Dependent Rol" +
+                "e=\"Catalog\"><PropertyRef Name=\"ComposerId\" /></Dependent></ReferentialConstraint" +
+                "></Association><Association Name=\"FK_CatalogNumber_Catalog\"><End Type=\"Classical" +
+                "MusicModel.Catalog\" Role=\"Catalog\" Multiplicity=\"1\" /><End Type=\"ClassicalMusicM" +
+                "odel.CatalogNumber\" Role=\"CatalogNumber\" Multiplicity=\"*\" /><ReferentialConstrai" +
+                "nt><Principal Role=\"Catalog\"><PropertyRef Name=\"CatalogId\" /></Principal><Depend" +
+                "ent Role=\"CatalogNumber\"><PropertyRef Name=\"CatalogId\" /></Dependent></Referenti" +
+                "alConstraint></Association><Association Name=\"CompositionCatalogNumber\"><End Typ" +
+                "e=\"ClassicalMusicModel.Composition\" Role=\"Composition\" Multiplicity=\"*\" /><End T" +
+                "ype=\"ClassicalMusicModel.CatalogNumber\" Role=\"CatalogNumber\" Multiplicity=\"*\" />" +
+                "</Association><Association Name=\"FK_Composer_BirthLocation\"><End Type=\"Classical" +
+                "MusicModel.Location\" Role=\"Location\" Multiplicity=\"0..1\" /><End Type=\"ClassicalM" +
+                "usicModel.Composer\" Role=\"Composer\" Multiplicity=\"*\" /><ReferentialConstraint><P" +
+                "rincipal Role=\"Location\"><PropertyRef Name=\"LocationId\" /></Principal><Dependent" +
+                " Role=\"Composer\"><PropertyRef Name=\"BirthLocationId\" /></Dependent></Referential" +
+                "Constraint></Association><Association Name=\"FK_Composer_DeathLocation\"><End Type" +
+                "=\"ClassicalMusicModel.Location\" Role=\"Location\" Multiplicity=\"0..1\" /><End Type=" +
+                "\"ClassicalMusicModel.Composer\" Role=\"Composer\" Multiplicity=\"*\" /><ReferentialCo" +
+                "nstraint><Principal Role=\"Location\"><PropertyRef Name=\"LocationId\" /></Principal" +
+                "><Dependent Role=\"Composer\"><PropertyRef Name=\"DeathLocationId\" /></Dependent></" +
+                "ReferentialConstraint></Association><Association Name=\"FK_ComposerImage_Composer" +
+                "\"><End Type=\"ClassicalMusicModel.Composer\" Role=\"Composer\" Multiplicity=\"1\" /><E" +
+                "nd Type=\"ClassicalMusicModel.ComposerImage\" Role=\"ComposerImage\" Multiplicity=\"*" +
+                "\" /><ReferentialConstraint><Principal Role=\"Composer\"><PropertyRef Name=\"Compose" +
+                "rId\" /></Principal><Dependent Role=\"ComposerImage\"><PropertyRef Name=\"ComposerId" +
+                "\" /></Dependent></ReferentialConstraint></Association><Association Name=\"FK_Samp" +
+                "le_Composer\"><End Type=\"ClassicalMusicModel.Composer\" Role=\"Composer\" Multiplici" +
+                "ty=\"1\" /><End Type=\"ClassicalMusicModel.Sample\" Role=\"Sample\" Multiplicity=\"*\" /" +
+                "><ReferentialConstraint><Principal Role=\"Composer\"><PropertyRef Name=\"ComposerId" +
+                "\" /></Principal><Dependent Role=\"Sample\"><PropertyRef Name=\"ComposerID\" /></Depe" +
+                "ndent></ReferentialConstraint></Association><Association Name=\"ComposerEra\"><End" +
+                " Type=\"ClassicalMusicModel.Era\" Role=\"Era\" Multiplicity=\"*\" /><End Type=\"Classic" +
+                "alMusicModel.Composer\" Role=\"Composer\" Multiplicity=\"*\" /></Association><Associa" +
+                "tion Name=\"ComposerInfluence\"><End Type=\"ClassicalMusicModel.Composer\" Role=\"Inf" +
+                "luence\" Multiplicity=\"*\" /><End Type=\"ClassicalMusicModel.Composer\" Role=\"Influe" +
+                "nced\" Multiplicity=\"*\" /></Association><Association Name=\"ComposerLink\"><End Typ" +
+                "e=\"ClassicalMusicModel.Link\" Role=\"Link\" Multiplicity=\"*\" /><End Type=\"Classical" +
+                "MusicModel.Composer\" Role=\"Composer\" Multiplicity=\"*\" /></Association><Associati" +
+                "on Name=\"ComposerNationality\"><End Type=\"ClassicalMusicModel.Nationality\" Role=\"" +
+                "Nationality\" Multiplicity=\"*\" /><End Type=\"ClassicalMusicModel.Composer\" Role=\"C" +
+                "omposer\" Multiplicity=\"*\" /></Association><Association Name=\"CompositionComposer" +
+                "\"><End Type=\"ClassicalMusicModel.Composition\" Role=\"Composition\" Multiplicity=\"*" +
+                "\" /><End Type=\"ClassicalMusicModel.Composer\" Role=\"Composer\" Multiplicity=\"*\" />" +
+                "</Association><Association Name=\"FK_ComposerBiography_Composer\"><End Type=\"Class" +
+                "icalMusicModel.Composer\" Role=\"Composer\" Multiplicity=\"1\" /><End Type=\"Classical" +
+                "MusicModel.ComposerBiography\" Role=\"ComposerBiography\" Multiplicity=\"0..1\" /><Re" +
+                "ferentialConstraint><Principal Role=\"Composer\"><PropertyRef Name=\"ComposerId\" />" +
+                "</Principal><Dependent Role=\"ComposerBiography\"><PropertyRef Name=\"ComposerId\" /" +
+                "></Dependent></ReferentialConstraint></Association><Association Name=\"FK_Compose" +
+                "rShortBiography_Composer\"><End Type=\"ClassicalMusicModel.Composer\" Role=\"Compose" +
+                "r\" Multiplicity=\"1\" /><End Type=\"ClassicalMusicModel.ComposerShortBiography\" Rol" +
+                "e=\"ComposerShortBiography\" Multiplicity=\"0..1\" /><ReferentialConstraint><Princip" +
+                "al Role=\"Composer\"><PropertyRef Name=\"ComposerId\" /></Principal><Dependent Role=" +
+                "\"ComposerShortBiography\"><PropertyRef Name=\"ComposerId\" /></Dependent></Referent" +
+                "ialConstraint></Association><Association Name=\"FK_Composition_Key\"><End Type=\"Cl" +
+                "assicalMusicModel.Key\" Role=\"Key\" Multiplicity=\"0..1\" /><En";
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-            private const string ModelPart2 = "le=\"Key\" Multiplicity=\"0..1\" /><End Type=\"ClassicalMusicModel.Composition\" Role=\"" +
-                "Composition\" Multiplicity=\"*\" /><ReferentialConstraint><Principal Role=\"Key\"><Pr" +
-                "opertyRef Name=\"KeyId\" /></Principal><Dependent Role=\"Composition\"><PropertyRef " +
-                "Name=\"KeyId\" /></Dependent></ReferentialConstraint></Association><Association Na" +
-                "me=\"CompositionLink\"><End Type=\"ClassicalMusicModel.Link\" Role=\"Link\" Multiplici" +
-                "ty=\"*\" /><End Type=\"ClassicalMusicModel.Composition\" Role=\"Composition\" Multipli" +
-                "city=\"*\" /></Association></Schema><Schema Namespace=\"ClassicalMusicDataService\" " +
-                "xmlns=\"http://schemas.microsoft.com/ado/2008/09/edm\"><EntityContainer Name=\"Clas" +
-                "sicalMusicEntities\" m:IsDefaultEntityContainer=\"true\" p6:LazyLoadingEnabled=\"tru" +
-                "e\" xmlns:p6=\"http://schemas.microsoft.com/ado/2009/02/edm/annotation\"><EntitySet" +
-                " Name=\"Catalogs\" EntityType=\"ClassicalMusicModel.Catalog\" /><EntitySet Name=\"Cat" +
-                "alogNumbers\" EntityType=\"ClassicalMusicModel.CatalogNumber\" /><EntitySet Name=\"C" +
-                "omposers\" EntityType=\"ClassicalMusicModel.Composer\" /><EntitySet Name=\"ComposerI" +
-                "mages\" EntityType=\"ClassicalMusicModel.ComposerImage\" /><EntitySet Name=\"Composi" +
-                "tions\" EntityType=\"ClassicalMusicModel.Composition\" /><EntitySet Name=\"Eras\" Ent" +
-                "ityType=\"ClassicalMusicModel.Era\" /><EntitySet Name=\"Keys\" EntityType=\"Classical" +
-                "MusicModel.Key\" /><EntitySet Name=\"Links\" EntityType=\"ClassicalMusicModel.Link\" " +
-                "/><EntitySet Name=\"Locations\" EntityType=\"ClassicalMusicModel.Location\" /><Entit" +
-                "ySet Name=\"Nationalities\" EntityType=\"ClassicalMusicModel.Nationality\" /><Entity" +
-                "Set Name=\"Samples\" EntityType=\"ClassicalMusicModel.Sample\" /><EntitySet Name=\"Co" +
-                "mposerBiographies\" EntityType=\"ClassicalMusicModel.ComposerBiography\" /><EntityS" +
-                "et Name=\"ComposerShortBiographies\" EntityType=\"ClassicalMusicModel.ComposerShort" +
-                "Biography\" /><AssociationSet Name=\"FK_Catalog_Composer\" Association=\"ClassicalMu" +
-                "sicModel.FK_Catalog_Composer\"><End Role=\"Catalog\" EntitySet=\"Catalogs\" /><End Ro" +
-                "le=\"Composer\" EntitySet=\"Composers\" /></AssociationSet><AssociationSet Name=\"FK_" +
-                "CatalogNumber_Catalog\" Association=\"ClassicalMusicModel.FK_CatalogNumber_Catalog" +
-                "\"><End Role=\"Catalog\" EntitySet=\"Catalogs\" /><End Role=\"CatalogNumber\" EntitySet" +
-                "=\"CatalogNumbers\" /></AssociationSet><AssociationSet Name=\"CompositionCatalogNum" +
-                "ber\" Association=\"ClassicalMusicModel.CompositionCatalogNumber\"><End Role=\"Catal" +
-                "ogNumber\" EntitySet=\"CatalogNumbers\" /><End Role=\"Composition\" EntitySet=\"Compos" +
-                "itions\" /></AssociationSet><AssociationSet Name=\"FK_Composer_BirthLocation\" Asso" +
-                "ciation=\"ClassicalMusicModel.FK_Composer_BirthLocation\"><End Role=\"Composer\" Ent" +
-                "itySet=\"Composers\" /><End Role=\"Location\" EntitySet=\"Locations\" /></AssociationS" +
-                "et><AssociationSet Name=\"FK_Composer_DeathLocation\" Association=\"ClassicalMusicM" +
-                "odel.FK_Composer_DeathLocation\"><End Role=\"Composer\" EntitySet=\"Composers\" /><En" +
-                "d Role=\"Location\" EntitySet=\"Locations\" /></AssociationSet><AssociationSet Name=" +
-                "\"FK_ComposerImage_Composer\" Association=\"ClassicalMusicModel.FK_ComposerImage_Co" +
-                "mposer\"><End Role=\"Composer\" EntitySet=\"Composers\" /><End Role=\"ComposerImage\" E" +
-                "ntitySet=\"ComposerImages\" /></AssociationSet><AssociationSet Name=\"FK_Sample_Com" +
-                "poser\" Association=\"ClassicalMusicModel.FK_Sample_Composer\"><End Role=\"Composer\"" +
-                " EntitySet=\"Composers\" /><End Role=\"Sample\" EntitySet=\"Samples\" /></AssociationS" +
-                "et><AssociationSet Name=\"ComposerEra\" Association=\"ClassicalMusicModel.ComposerE" +
-                "ra\"><End Role=\"Composer\" EntitySet=\"Composers\" /><End Role=\"Era\" EntitySet=\"Eras" +
-                "\" /></AssociationSet><AssociationSet Name=\"ComposerInfluence\" Association=\"Class" +
-                "icalMusicModel.ComposerInfluence\"><End Role=\"Influenced\" EntitySet=\"Composers\" /" +
-                "><End Role=\"Influence\" EntitySet=\"Composers\" /></AssociationSet><AssociationSet " +
-                "Name=\"ComposerLink\" Association=\"ClassicalMusicModel.ComposerLink\"><End Role=\"Co" +
-                "mposer\" EntitySet=\"Composers\" /><End Role=\"Link\" EntitySet=\"Links\" /></Associati" +
-                "onSet><AssociationSet Name=\"ComposerNationality\" Association=\"ClassicalMusicMode" +
-                "l.ComposerNationality\"><End Role=\"Composer\" EntitySet=\"Composers\" /><End Role=\"N" +
-                "ationality\" EntitySet=\"Nationalities\" /></AssociationSet><AssociationSet Name=\"C" +
-                "ompositionComposer\" Association=\"ClassicalMusicModel.CompositionComposer\"><End R" +
-                "ole=\"Composer\" EntitySet=\"Composers\" /><End Role=\"Composition\" EntitySet=\"Compos" +
-                "itions\" /></AssociationSet><AssociationSet Name=\"FK_ComposerBiography_Composer\" " +
-                "Association=\"ClassicalMusicModel.FK_ComposerBiography_Composer\"><End Role=\"Compo" +
-                "ser\" EntitySet=\"Composers\" /><End Role=\"ComposerBiography\" EntitySet=\"ComposerBi" +
-                "ographies\" /></AssociationSet><AssociationSet Name=\"FK_ComposerShortBiography_Co" +
-                "mposer\" Association=\"ClassicalMusicModel.FK_ComposerShortBiography_Composer\"><En" +
-                "d Role=\"Composer\" EntitySet=\"Composers\" /><End Role=\"ComposerShortBiography\" Ent" +
-                "itySet=\"ComposerShortBiographies\" /></AssociationSet><AssociationSet Name=\"FK_Co" +
-                "mposition_Key\" Association=\"ClassicalMusicModel.FK_Composition_Key\"><End Role=\"C" +
-                "omposition\" EntitySet=\"Compositions\" /><End Role=\"Key\" EntitySet=\"Keys\" /></Asso" +
-                "ciationSet><AssociationSet Name=\"CompositionLink\" Association=\"ClassicalMusicMod" +
-                "el.CompositionLink\"><End Role=\"Composition\" EntitySet=\"Compositions\" /><End Role" +
-                "=\"Link\" EntitySet=\"Links\" /></AssociationSet></EntityContainer></Schema></edmx:D" +
-                "ataServices></edmx:Edmx>";
+            private const string ModelPart2 = "d Type=\"ClassicalMusicModel.Composition\" Role=\"Composition\" Multiplicity=\"*\" /><R" +
+                "eferentialConstraint><Principal Role=\"Key\"><PropertyRef Name=\"KeyId\" /></Princip" +
+                "al><Dependent Role=\"Composition\"><PropertyRef Name=\"KeyId\" /></Dependent></Refer" +
+                "entialConstraint></Association><Association Name=\"CompositionLink\"><End Type=\"Cl" +
+                "assicalMusicModel.Link\" Role=\"Link\" Multiplicity=\"*\" /><End Type=\"ClassicalMusic" +
+                "Model.Composition\" Role=\"Composition\" Multiplicity=\"*\" /></Association></Schema>" +
+                "<Schema Namespace=\"ClassicalMusicDataService\" xmlns=\"http://schemas.microsoft.co" +
+                "m/ado/2008/09/edm\"><EntityContainer Name=\"ClassicalMusicEntities\" m:IsDefaultEnt" +
+                "ityContainer=\"true\" p6:LazyLoadingEnabled=\"true\" xmlns:p6=\"http://schemas.micros" +
+                "oft.com/ado/2009/02/edm/annotation\"><EntitySet Name=\"Catalogs\" EntityType=\"Class" +
+                "icalMusicModel.Catalog\" /><EntitySet Name=\"CatalogNumbers\" EntityType=\"Classical" +
+                "MusicModel.CatalogNumber\" /><EntitySet Name=\"Composers\" EntityType=\"ClassicalMus" +
+                "icModel.Composer\" /><EntitySet Name=\"ComposerImages\" EntityType=\"ClassicalMusicM" +
+                "odel.ComposerImage\" /><EntitySet Name=\"Compositions\" EntityType=\"ClassicalMusicM" +
+                "odel.Composition\" /><EntitySet Name=\"Eras\" EntityType=\"ClassicalMusicModel.Era\" " +
+                "/><EntitySet Name=\"Keys\" EntityType=\"ClassicalMusicModel.Key\" /><EntitySet Name=" +
+                "\"Links\" EntityType=\"ClassicalMusicModel.Link\" /><EntitySet Name=\"Locations\" Enti" +
+                "tyType=\"ClassicalMusicModel.Location\" /><EntitySet Name=\"Nationalities\" EntityTy" +
+                "pe=\"ClassicalMusicModel.Nationality\" /><EntitySet Name=\"Samples\" EntityType=\"Cla" +
+                "ssicalMusicModel.Sample\" /><EntitySet Name=\"ComposerBiographies\" EntityType=\"Cla" +
+                "ssicalMusicModel.ComposerBiography\" /><EntitySet Name=\"ComposerShortBiographies\"" +
+                " EntityType=\"ClassicalMusicModel.ComposerShortBiography\" /><AssociationSet Name=" +
+                "\"FK_Catalog_Composer\" Association=\"ClassicalMusicModel.FK_Catalog_Composer\"><End" +
+                " Role=\"Catalog\" EntitySet=\"Catalogs\" /><End Role=\"Composer\" EntitySet=\"Composers" +
+                "\" /></AssociationSet><AssociationSet Name=\"FK_CatalogNumber_Catalog\" Association" +
+                "=\"ClassicalMusicModel.FK_CatalogNumber_Catalog\"><End Role=\"Catalog\" EntitySet=\"C" +
+                "atalogs\" /><End Role=\"CatalogNumber\" EntitySet=\"CatalogNumbers\" /></AssociationS" +
+                "et><AssociationSet Name=\"CompositionCatalogNumber\" Association=\"ClassicalMusicMo" +
+                "del.CompositionCatalogNumber\"><End Role=\"CatalogNumber\" EntitySet=\"CatalogNumber" +
+                "s\" /><End Role=\"Composition\" EntitySet=\"Compositions\" /></AssociationSet><Associ" +
+                "ationSet Name=\"FK_Composer_BirthLocation\" Association=\"ClassicalMusicModel.FK_Co" +
+                "mposer_BirthLocation\"><End Role=\"Composer\" EntitySet=\"Composers\" /><End Role=\"Lo" +
+                "cation\" EntitySet=\"Locations\" /></AssociationSet><AssociationSet Name=\"FK_Compos" +
+                "er_DeathLocation\" Association=\"ClassicalMusicModel.FK_Composer_DeathLocation\"><E" +
+                "nd Role=\"Composer\" EntitySet=\"Composers\" /><End Role=\"Location\" EntitySet=\"Locat" +
+                "ions\" /></AssociationSet><AssociationSet Name=\"FK_ComposerImage_Composer\" Associ" +
+                "ation=\"ClassicalMusicModel.FK_ComposerImage_Composer\"><End Role=\"Composer\" Entit" +
+                "ySet=\"Composers\" /><End Role=\"ComposerImage\" EntitySet=\"ComposerImages\" /></Asso" +
+                "ciationSet><AssociationSet Name=\"FK_Sample_Composer\" Association=\"ClassicalMusic" +
+                "Model.FK_Sample_Composer\"><End Role=\"Composer\" EntitySet=\"Composers\" /><End Role" +
+                "=\"Sample\" EntitySet=\"Samples\" /></AssociationSet><AssociationSet Name=\"ComposerE" +
+                "ra\" Association=\"ClassicalMusicModel.ComposerEra\"><End Role=\"Composer\" EntitySet" +
+                "=\"Composers\" /><End Role=\"Era\" EntitySet=\"Eras\" /></AssociationSet><AssociationS" +
+                "et Name=\"ComposerInfluence\" Association=\"ClassicalMusicModel.ComposerInfluence\">" +
+                "<End Role=\"Influenced\" EntitySet=\"Composers\" /><End Role=\"Influence\" EntitySet=\"" +
+                "Composers\" /></AssociationSet><AssociationSet Name=\"ComposerLink\" Association=\"C" +
+                "lassicalMusicModel.ComposerLink\"><End Role=\"Composer\" EntitySet=\"Composers\" /><E" +
+                "nd Role=\"Link\" EntitySet=\"Links\" /></AssociationSet><AssociationSet Name=\"Compos" +
+                "erNationality\" Association=\"ClassicalMusicModel.ComposerNationality\"><End Role=\"" +
+                "Composer\" EntitySet=\"Composers\" /><End Role=\"Nationality\" EntitySet=\"Nationaliti" +
+                "es\" /></AssociationSet><AssociationSet Name=\"CompositionComposer\" Association=\"C" +
+                "lassicalMusicModel.CompositionComposer\"><End Role=\"Composer\" EntitySet=\"Composer" +
+                "s\" /><End Role=\"Composition\" EntitySet=\"Compositions\" /></AssociationSet><Associ" +
+                "ationSet Name=\"FK_ComposerBiography_Composer\" Association=\"ClassicalMusicModel.F" +
+                "K_ComposerBiography_Composer\"><End Role=\"Composer\" EntitySet=\"Composers\" /><End " +
+                "Role=\"ComposerBiography\" EntitySet=\"ComposerBiographies\" /></AssociationSet><Ass" +
+                "ociationSet Name=\"FK_ComposerShortBiography_Composer\" Association=\"ClassicalMusi" +
+                "cModel.FK_ComposerShortBiography_Composer\"><End Role=\"Composer\" EntitySet=\"Compo" +
+                "sers\" /><End Role=\"ComposerShortBiography\" EntitySet=\"ComposerShortBiographies\" " +
+                "/></AssociationSet><AssociationSet Name=\"FK_Composition_Key\" Association=\"Classi" +
+                "calMusicModel.FK_Composition_Key\"><End Role=\"Composition\" EntitySet=\"Composition" +
+                "s\" /><End Role=\"Key\" EntitySet=\"Keys\" /></AssociationSet><AssociationSet Name=\"C" +
+                "ompositionLink\" Association=\"ClassicalMusicModel.CompositionLink\"><End Role=\"Com" +
+                "position\" EntitySet=\"Compositions\" /><End Role=\"Link\" EntitySet=\"Links\" /></Asso" +
+                "ciationSet></EntityContainer></Schema></edmx:DataServices></edmx:Edmx>";
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
             private static string GetConcatenatedEdmxString()
             {
@@ -2224,16 +2223,12 @@ namespace NathanHarrenstein.MusicTimeline.Data
         /// Create a new Sample object.
         /// </summary>
         /// <param name="sampleId">Initial value of SampleId.</param>
-        /// <param name="title">Initial value of Title.</param>
-        /// <param name="artists">Initial value of Artists.</param>
         /// <param name="composerID">Initial value of ComposerID.</param>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Services.Design", "1.0.0")]
-        public static Sample CreateSample(int sampleId, string title, string artists, int composerID)
+        public static Sample CreateSample(int sampleId, int composerID)
         {
             Sample sample = new Sample();
             sample.SampleId = sampleId;
-            sample.Title = title;
-            sample.Artists = artists;
             sample.ComposerID = composerID;
             return sample;
         }

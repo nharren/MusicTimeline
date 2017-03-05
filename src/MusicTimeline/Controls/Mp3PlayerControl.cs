@@ -117,11 +117,6 @@ namespace NathanHarrenstein.MusicTimeline.Controls
         {
             playPauseToggleButton.IsChecked = e.PlaybackState == StreamingPlaybackState.Playing;
 
-            if (e.PlaybackState == StreamingPlaybackState.Stopped)
-            {
-                mp3Player.Next();
-            }
-
             CommandManager.InvalidateRequerySuggested();
         }
 
@@ -268,6 +263,11 @@ namespace NathanHarrenstein.MusicTimeline.Controls
             Dispose(true);
 
             GC.SuppressFinalize(this);
+        }
+
+        public void Stop()
+        {
+            mp3Player.Stop();
         }
     }
 }

@@ -30,8 +30,8 @@ namespace NathanHarrenstein.MusicTimeline.Utilities
                 flowDocument.FontSize = 15.3333333333;
                 flowDocument.FontFamily = new FontFamily("Segoe UI");
                 flowDocument.PagePadding = new Thickness(0.0, 5.0, 0.0, 0.0);
-                flowDocument.TextAlignment = TextAlignment.Left;
-                flowDocument.Foreground = (Brush)Application.Current.Resources["ForegroundBrush"];
+                flowDocument.Foreground = Brushes.Black;
+                flowDocument.IsHyphenationEnabled = true;
 
                 return flowDocument;
             }

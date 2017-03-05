@@ -126,10 +126,16 @@
     <Compile Include="Controls\AddSaveToolbar.cs" />
     <Compile Include="Controls\BulletStyle.cs" />
     <Compile Include="Controls\BulletStyleDropdownButton.cs" />
+    <Compile Include="Controls\CompositionsEditPanel.cs" />
     <Compile Include="Controls\EditableHeaderPanel.cs" />
+    <Compile Include="Controls\EditButton.cs" />
+    <Compile Include="Controls\ImagesPanel.cs" />
     <Compile Include="Controls\Marquee.cs" />
     <Compile Include="Controls\MediaDataTemplateSelector.cs" />
+    <Compile Include="Controls\NationalitiesEditPanel.cs" />
+    <Compile Include="Controls\NationalitiesPanel.cs" />
     <Compile Include="Controls\PanningScrollViewer.cs" />
+    <Compile Include="Controls\SamplesEditPanel.cs" />
     <Compile Include="Controls\SaveToolbar.cs" />
     <Compile Include="Converters\ComposerToBitmapImageConverterSettings.cs" />
     <Compile Include="Converters\SpotifyToEmbedConverter.cs" />
@@ -153,7 +159,6 @@
     <Compile Include="Converters\ComposerToBitmapImageConverter.cs" />
     <Compile Include="Converters\CompositionsToSortedCompositionsConverter.cs" />
     <Compile Include="Converters\CompositionToCompositionDisplayNameConverter.cs" />
-    <Compile Include="Converters\NationalityToFlagConverter.cs" />
     <Compile Include="Converters\UrlToCommandConverter.cs" />
     <Compile Include="Converters\UrlToFaviconConverter.cs" />
     <Compile Include="Converters\UrlToTitleConverter.cs" />
@@ -167,7 +172,6 @@
     <Compile Include="Builders\ComposerEraViewModelBuilder.cs" />
     <Compile Include="Builders\ComposerEventViewModelBuilder.cs" />
     <Compile Include="Audio\TimeSpanEventArgs.cs" />
-    <Compile Include="Converters\DecimalToRomanConverter.cs" />
     <Compile Include="Parsers\SpotifyParser.cs" />
     <Compile Include="Parsers\YouTubeParser.cs" />
     <Compile Include="Scrapers\WikipediaScraper.cs" />
@@ -183,7 +187,6 @@
     <Compile Include="Utilities\ImageUtility.cs" />
     <Compile Include="Utilities\LocationUtility.cs" />
     <Compile Include="Utilities\LogicalTreeUtility.cs" />
-    <Compile Include="Utilities\ReflectionUtility.cs" />
     <Compile Include="Utilities\StreamUtility.cs" />
     <Compile Include="Utilities\VisualTreeUtility.cs" />
     <Compile Include="Utilities\WebUtility.cs" />

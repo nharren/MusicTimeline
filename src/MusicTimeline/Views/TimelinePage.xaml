@@ -15,7 +15,6 @@
       DataContext="{Binding RelativeSource={RelativeSource Self}}"
       mc:Ignorable="d">
     <Page.Resources>
-        <cv:NationalityToFlagConverter x:Key="NationalityToFlagConverter" />
         <cv:ComposerToBitmapImageConverter x:Key="ComposerToBitmapImageConverter" />
         <Style TargetType="ScrollBar">
             <Setter Property="Opacity" Value="0.4" />
@@ -153,28 +152,10 @@
                                            VerticalAlignment="Center"
                                            FontSize="11.5pt"
                                            Text="{Binding Label}" />
-                                <ItemsControl Grid.Column="3"
-                                              Margin="5,0,0,0"
-                                              VerticalAlignment="Center"
-                                              ItemsSource="{Binding Composer.Nationalities}">
-                                    <ItemsControl.ItemsPanel>
-                                        <ItemsPanelTemplate>
-                                            <StackPanel Orientation="Horizontal" />
-                                        </ItemsPanelTemplate>
-                                    </ItemsControl.ItemsPanel>
-                                    <ItemsControl.ItemTemplate>
-                                        <DataTemplate DataType="{x:Type db:Nationality}">
-                                            <Image Width="16"
-                                                   Height="16"
-                                                   Margin="5,0,0,0"
-                                                   SnapsToDevicePixels="True"
-                                                   Source="{Binding Name,
-                                                                    Converter={StaticResource NationalityToFlagConverter},
-                                                                    IsAsync=True}"
-                                                   UseLayoutRounding="True" />
-                                        </DataTemplate>
-                                    </ItemsControl.ItemTemplate>
-                                </ItemsControl>
+                                <c:NationalitiesPanel Grid.Column="3"
+                                                      VerticalAlignment="Center"
+                                                      Composer="{Binding Composer}"
+                                                      FlagSeparation="6" />
                             </Grid>
                         </Button>
                     </Border>
@@ -256,12 +237,12 @@
                                                                    UpdateSourceTrigger=PropertyChanged}" />
                             <Button Name="gotoButton"
                                     Grid.Row="2"
-                                    Margin="15,13,15,15"
+                                    Height="30"
+                                    Margin="20,18,20,20"
                                     HorizontalAlignment="Right"
                                     VerticalAlignment="Top"
-                                    Height="30"
                                     Cursor="Hand"
-                                    Opacity="0.4"
+                                    Opacity="0.45"
                                     Template="{StaticResource ChromelessButtonTemplate}"
                                     ToolTip="Go to…">
                                 <Button.Triggers>
@@ -269,7 +250,7 @@
                                         <BeginStoryboard>
                                             <Storyboard Storyboard.TargetProperty="Opacity">
                                                 <DoubleAnimation Duration="0:0:0.1"
-                                                                 From="0.4"
+                                                                 From="0.45"
                                                                  To="1" />
                                             </Storyboard>
                                         </BeginStoryboard>
@@ -279,7 +260,7 @@
                                             <Storyboard Storyboard.TargetProperty="Opacity">
                                                 <DoubleAnimation Duration="0:0:0.1"
                                                                  From="1"
-                                                                 To="0.4" />
+                                                                 To="0.45" />
                                             </Storyboard>
                                         </BeginStoryboard>
                                     </EventTrigger>
@@ -305,12 +286,12 @@
                                     </EventTrigger>
                                 </Button.Triggers>
                                 <Viewbox Stretch="Uniform">
-                                <Path Fill="White">
-                                  <Path.Data>
-                                    <PathGeometry Figures="m 3.3349609 3.334947 1.9042969 0 0 1.9043 -1.9042969 0 0 -1.9043 z m 4.765625 -3.335 q 0.087891 0 0.1708985 0.054 0.087891 0.054 0.1513672 0.1368 0.068359 0.078 0.1074218 0.1757 0.043945 0.093 0.043945 0.1807 l 0 7.5537 q 0 0.088 -0.043945 0.1758 -0.039063 0.088 -0.1074218 0.1514 -0.063477 0.068 -0.1513672 0.1074 -0.083008 0.044 -0.1708985 0.044 l -0.9570312 0 0 -0.4785 0.9570312 0 0 -6.1914 -7.62695309 0 0 6.1914 0.95214839 0 0 0.4785 -0.95214839 0 q -0.0878906 0 -0.17578125 -0.044 -0.0830078 -0.039 -0.15136719 -0.1074 Q 0.08300781 8.365047 0.0390625 8.276647 0 8.188447 0 8.100547 l 0 -7.5537 q 0 -0.088 0.0390625 -0.1807 0.04394531 -0.098 0.10742187 -0.1757 0.0683594 -0.083 0.15136719 -0.1368 0.0878906 -0.054 0.17578125 -0.054 l 7.62695309 0 z m -3.3398437 11.4356 -0.9521484 0 0 -3.5596 -1.4257813 1.3965 0 -1.1182 1.8994141 -1.958 1.9091796 1.958 0 1.1231 -1.430664 -1.4014 0 3.5596 z" FillRule="NonZero"/>
-                                  </Path.Data>
-                                </Path>
-                                    </Viewbox>
+                                    <Path Fill="White">
+                                        <Path.Data>
+                                            <PathGeometry Figures="m 3.3349609 3.334947 1.9042969 0 0 1.9043 -1.9042969 0 0 -1.9043 z m 4.765625 -3.335 q 0.087891 0 0.1708985 0.054 0.087891 0.054 0.1513672 0.1368 0.068359 0.078 0.1074218 0.1757 0.043945 0.093 0.043945 0.1807 l 0 7.5537 q 0 0.088 -0.043945 0.1758 -0.039063 0.088 -0.1074218 0.1514 -0.063477 0.068 -0.1513672 0.1074 -0.083008 0.044 -0.1708985 0.044 l -0.9570312 0 0 -0.4785 0.9570312 0 0 -6.1914 -7.62695309 0 0 6.1914 0.95214839 0 0 0.4785 -0.95214839 0 q -0.0878906 0 -0.17578125 -0.044 -0.0830078 -0.039 -0.15136719 -0.1074 Q 0.08300781 8.365047 0.0390625 8.276647 0 8.188447 0 8.100547 l 0 -7.5537 q 0 -0.088 0.0390625 -0.1807 0.04394531 -0.098 0.10742187 -0.1757 0.0683594 -0.083 0.15136719 -0.1368 0.0878906 -0.054 0.17578125 -0.054 l 7.62695309 0 z m -3.3398437 11.4356 -0.9521484 0 0 -3.5596 -1.4257813 1.3965 0 -1.1182 1.8994141 -1.958 1.9091796 1.958 0 1.1231 -1.430664 -1.4014 0 3.5596 z" FillRule="NonZero" />
+                                        </Path.Data>
+                                    </Path>
+                                </Viewbox>
                             </Button>
                             <Grid Name="gotoList"
                                   Grid.Row="2"
