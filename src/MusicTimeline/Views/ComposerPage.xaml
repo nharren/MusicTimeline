@@ -14,7 +14,7 @@
       d:DesignWidth="800"
       Background="#EEEADD"
       FontFamily="Segoe UI"
-      Foreground="#E6DCCC"
+      Foreground="#FEFEFE"
       mc:Ignorable="d">
     <Page.Resources>
         <cv:ComposerToBitmapImageConverter x:Key="ComposerToBitmapImageConverter" />
@@ -39,7 +39,7 @@
 
         <!--#region Header-->
         <Border Grid.Row="1" BorderThickness="0">
-            <Grid Background="{StaticResource DarkBackgroundBrush}">
+            <Grid Background="#282828">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition />
@@ -66,7 +66,7 @@
                             </ControlTemplate>
                         </Button.Template>
                         <Viewbox Stretch="Uniform">
-                            <Path Fill="{StaticResource LightBackgroundBrush}">
+                            <Path Fill="White">
                                 <Path.Data>
                                     <PathGeometry Figures="m 0.96191406 5.5565993 q 0 0.6299 0.16601564 1.2158 0.1660156 0.5811 0.4638672 1.0938 0.2978515 0.5127 0.7128906 0.9326 0.4199219 0.4151 0.9277344 0.7129 0.5126953 0.2979 1.0986328 0.4639 0.5859375 0.1659997 1.2158203 0.1659997 0.6298828 0 1.2109375 -0.1659997 0.5859375 -0.166 1.0986328 -0.4688 0.5126953 -0.2978 0.9326172 -0.7129 0.4199219 -0.4199 0.7177734 -0.9277 0.3027344 -0.5127 0.46875 -1.0938 0.1660161 -0.5859 0.1660161 -1.2158 0 -0.6299 -0.1708989 -1.2109 -0.1660156 -0.586 -0.46875 -1.0986 -0.2978515 -0.5127 -0.7226562 -0.9327 -0.4199219 -0.4199 -0.9277344 -0.7177 -0.5078125 -0.3028 -1.09375 -0.4688 Q 6.1767578 0.96189932 5.546875 0.96189932 q -0.6298828 0 -1.2158203 0.16599998 -0.5859375 0.166 -1.0986328 0.4688 -0.5078125 0.2978 -0.9277344 0.7177 -0.4150391 0.42 -0.7128906 0.9327 -0.2978516 0.5126 -0.4638672 1.0986 -0.16601564 0.581 -0.16601564 1.2109 z m 3.77441404 -2.3584 1.6210938 0 -1.7041016 1.7432 3.7060547 0 0 1.2109 -3.7060547 0 1.7041016 1.7432 -1.6210938 0 L 2.5 5.5565993 l 0 -0.02 2.2363281 -2.3389 z M 0 5.5614993 q 0 -0.7617 0.20019531 -1.4697 0.20019532 -0.708 0.56640625 -1.3233 0.36621094 -0.6201 0.87402344 -1.1279 0.5078125 -0.5127 1.1230469 -0.87399998 0.6201172 -0.3662 1.3232422 -0.5664 Q 4.7949219 -6.807907e-7 5.5517578 -6.807907e-7 q 0.7568359 0 1.4599609 0.2051000007907 0.7080079 0.2002 1.3232422 0.5664 0.6201172 0.36619998 1.1279297 0.87889998 0.5126953 0.5078 0.8789064 1.1279 0.366211 0.6152 0.566406 1.3232 0.200195 0.7032 0.200195 1.46 0 0.7617 -0.200195 1.4697 -0.200195 0.7032 -0.566406 1.3233 -0.3662111 0.6152 -0.8789064 1.123 -0.5078125 0.5078 -1.1279297 0.8691997 -0.6152343 0.3613 -1.3232422 0.5615 -0.703125 0.2002 -1.4599609 0.2002 -0.7568359 0 -1.4648437 -0.2002 -0.703125 -0.2002 -1.3232422 -0.5664 Q 2.1484375 9.9755993 1.640625 9.4677993 1.1328125 8.9598993 0.76660156 8.3446993 0.40039063 7.7245993 0.20019531 7.0214993 0 6.3182993 0 5.5614993 Z" FillRule="NonZero" />
                                 </Path.Data>
@@ -80,7 +80,7 @@
                                VerticalAlignment="Center"
                                FontFamily="Segoe UI Light"
                                FontSize="34pt"
-                               Foreground="{StaticResource LightBackgroundBrush}" />
+                               Foreground="White" />
                     <c:NationalitiesPanel x:Name="nationalitiesPanel"
                                           Grid.Column="2"
                                           Height="120"
@@ -115,7 +115,8 @@
         <ScrollViewer Grid.Row="2"
                       PanningMode="VerticalOnly"
                       VerticalScrollBarVisibility="Auto">
-            <Grid>
+            <Grid SnapsToDevicePixels="True"
+                        UseLayoutRounding="True">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="2*" />
                     <ColumnDefinition Width="3*" />
@@ -561,7 +562,8 @@
                 <!--#region Middle Column-->
                 <Border Grid.Column="1"
                         Background="{StaticResource LightBackgroundBrush}"
-                        BorderThickness="0">
+                        BorderThickness="0"
+                        >
                     <Grid Grid.Column="1" Margin="30">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
@@ -574,7 +576,7 @@
                                                ButtonSize="14"
                                                FontFamily="Segoe UI Light"
                                                FontSize="24"
-                                               Foreground="Black"
+                                               Foreground="#FEFEFE"
                                                Text="Biography"
                                                UnderlineForeground="#11000000"
                                                UnderlineOffset="4" />
@@ -634,7 +636,7 @@
 
                 <!--#region Right Column-->
                 <Border Grid.Column="2"
-                        Background="{StaticResource LightBackgroundBrush}"
+                        Background="Black"
                         BorderThickness="0">
                     <Grid Margin="30">
                         <Grid.RowDefinitions>
@@ -648,7 +650,7 @@
                                                ButtonSize="14"
                                                FontFamily="Segoe UI Light"
                                                FontSize="24"
-                                               Foreground="Black"
+                                               Foreground="#FEFEFE"
                                                Text="Compositions"
                                                UnderlineForeground="#11000000"
                                                UnderlineOffset="4" />
@@ -658,7 +660,16 @@
                                                  Cancelling="compositionsEditPanel_Cancelling"
                                                  Saving="compositionsEditPanel_Saving"
                                                  Visibility="Collapsed" />
-                        <c:CompositionsPanel x:Name="compositionsPanel" Grid.Row="1" />
+                        <c:CompositionsPanel x:Name="compositionsPanel" Grid.Row="1">
+                            <c:CompositionsPanel.CompositionItemStyle>
+                                <Style TargetType="TextBox">
+                                    <Setter Property="Background" Value="Black" />
+                                    <Setter Property="Foreground" Value="White" />
+                                    <Setter Property="BorderThickness" Value="0" />
+                                    <Setter Property="FontSize" Value="11.5pt" />
+                                </Style>
+                            </c:CompositionsPanel.CompositionItemStyle>
+                        </c:CompositionsPanel>
                     </Grid>
                 </Border>
                 <!--#endregion-->

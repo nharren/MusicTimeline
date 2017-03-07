@@ -1,25 +1,38 @@
-﻿using NathanHarrenstein.Timeline.Input;
+﻿/*
+ 1. When the left mouse button is pressed, 
+
+ */
+
+
+
+using NathanHarrenstein.Timeline.Input;
 using System;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Threading;
 
 namespace NathanHarrenstein.Timeline
 {
     public class ScrollingPanel : Panel, IDisposable
     {
         private readonly RoutedEvent scrollRequestEvent;
-        private CancellationTokenSource decelerationCancellationTokenSource;
-        private TimeSpan decelerationDuration = TimeSpan.FromMilliseconds(500);
-        private TimeSpan decelerationInterval = TimeSpan.FromTicks(200);
         private bool isDisposed;
         private MouseHook mouseHook;
-        private Point previousCursorPosition;
-        private DateTime previousTime;
-        private Point originCursorPosition;
-        private DateTime originTime;
+        private Point cursorPosition;
+        private Vector velocity;
+        private DispatcherTimer timer;
+
+        private double flickDuration = 0.15;
+
+        public double FlickDuration
+        {
+            get { return flickDuration; }
+            set { flickDuration = value; }
+        }
+
 
         static ScrollingPanel()
         {
@@ -28,11 +41,13 @@ namespace NathanHarrenstein.Timeline
 
         public ScrollingPanel()
         {
-            decelerationCancellationTokenSource = new CancellationTokenSource();
-
             mouseHook = new MouseHook();
             mouseHook.MouseHorizontalWheel += EventPanel_MouseHorizontalWheel;
             mouseHook.StartMouseHook();
+
+            timer = new DispatcherTimer(DispatcherPriority.Background);
+            timer.Interval = TimeSpan.FromMilliseconds(15);
+            timer.Tick += Timer_Tick;
 
             var routedEvents = EventManager.GetRoutedEvents();
 
@@ -44,6 +59,37 @@ namespace NathanHarrenstein.Timeline
                 }
             }
         }
+
+        private void Timer_Tick(object sender, EventArgs e)
+        {
+            if (IsMouseCaptured)
+            {
+                var newCursorPosition = InputManager.Current.PrimaryMouseDevice.GetPosition(this);
+                var displacement = newCursorPosition - cursorPosition;
+                cursorPosition = newCursorPosition;
+
+                RequestScroll(-displacement);
+                velocity = displacement / timer.Interval.TotalSeconds;
+
+                return;
+            }
+
+            time += timer.Interval.TotalSeconds;
+
+            if (time >= FlickDuration)
+            {
+                timer.Stop();
+
+                return;
+            }
+
+            velocity = releaseVelocity - releaseVelocity * time * (1 / FlickDuration);
+
+            RequestScroll(-velocity * timer.Interval.TotalSeconds);
+        }
+
+        private double time;
+        private Vector releaseVelocity;
 
         ~ScrollingPanel()
         {
@@ -78,112 +124,32 @@ namespace NathanHarrenstein.Timeline
 
         protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
         {
-            decelerationCancellationTokenSource.Cancel();
-
-            originCursorPosition = previousCursorPosition = e.GetPosition(this);
-            originTime = previousTime = DateTime.Now;
+            cursorPosition = e.GetPosition(this);
 
             Cursor = Cursors.ScrollAll;
+
+            timer.Start();
 
             CaptureMouse();
         }
 
         protected override void OnMouseLeftButtonUp(MouseButtonEventArgs e)
         {
-            if (!IsMouseCaptured)
-            {
-                return;
-            }
-
-            var displacement = originCursorPosition - e.GetPosition(this);
-            var duration = DateTime.Now - originTime;
-
-            // Prevents infinite velocity (dividing by zero).
-            if (duration.Ticks == 0)
-            {
-                return;
-            }
-
-            var averageHorizontalVelocity = displacement.X / duration.TotalMilliseconds;
-            var averageVerticalVelocity = displacement.Y / duration.TotalMilliseconds;
-
-            decelerationCancellationTokenSource.Cancel();
-            decelerationCancellationTokenSource = new CancellationTokenSource();
-
-            Decelerate(averageHorizontalVelocity, averageVerticalVelocity, decelerationCancellationTokenSource.Token);
-
             Cursor = Cursors.Arrow;
+
+            releaseVelocity = velocity;
+            time = 0;
 
             ReleaseMouseCapture();
         }
 
-        protected override void OnMouseMove(MouseEventArgs e)
-        {
-            if (!IsMouseCaptured)
-            {
-                return;
-            }
-
-            var cursorPosition = e.GetPosition(this);
-
-            var displacement = previousCursorPosition - cursorPosition;
-
-            RequestScroll(displacement);
-
-            previousCursorPosition = cursorPosition;
-            previousTime = DateTime.Now;
-        }
-
         protected override void OnMouseWheel(MouseWheelEventArgs e)
         {
-            previousCursorPosition = e.GetPosition(this);
+            cursorPosition = e.GetPosition(this);
 
             RequestScroll(new Vector(0, -e.Delta));
 
             base.OnMouseWheel(e);
-        }
-
-        private void Decelerate(double horizontalVelocity, double verticalVelocity, CancellationToken cancellationToken)
-        {
-            var horizontalDeceleration = -horizontalVelocity / decelerationDuration.TotalMilliseconds;
-            var verticalDeceleration = -verticalVelocity / decelerationDuration.TotalMilliseconds;
-
-            var startTime = DateTime.Now;
-
-            var decelerationTimer = new System.Timers.Timer(decelerationInterval.TotalMilliseconds);
-            decelerationTimer.Elapsed += (o, e) =>
-            {
-                var time = DateTime.Now;
-
-                if (cancellationToken.IsCancellationRequested || (time - startTime) >= decelerationDuration)
-                {
-                    Dispatcher.BeginInvoke(new Action(() => decelerationTimer.Enabled = false));
-                }
-
-                var timeDifference = time - previousTime;
-
-                // This is a guard against lag spikes, which will inflate the velocity.
-                if (timeDifference.Milliseconds > 20)
-                {
-                    previousTime = time;
-
-                    return;
-                }
-
-                horizontalVelocity += horizontalDeceleration * timeDifference.TotalMilliseconds;
-                verticalVelocity += verticalDeceleration * timeDifference.TotalMilliseconds;
-
-                var displacement = new Vector(timeDifference.TotalMilliseconds * horizontalVelocity, timeDifference.TotalMilliseconds * verticalVelocity);
-
-                if (!double.IsNaN(displacement.X) && !double.IsNaN(displacement.Y))
-                {
-                    Dispatcher.BeginInvoke(new Action(() => RequestScroll(displacement)));
-
-                    previousTime = time;
-                }
-            };
-
-            decelerationTimer.Enabled = true;
         }
 
         private void EventPanel_MouseHorizontalWheel(object sender, MouseHorizontalWheelEventArgs e)

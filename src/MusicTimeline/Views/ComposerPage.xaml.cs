@@ -642,6 +642,7 @@ namespace NathanHarrenstein.MusicTimeline.Views
             diedTextBlock.Text = CreateDiedText();
 
             biographyScrollViewer.Document = BiographyUtility.LoadDocument(composer.Biography.Text);
+            biographyScrollViewer.Document.Foreground = Brushes.White;
 
             influencesItemsControl.ItemsSource = composer.Influences;
 
