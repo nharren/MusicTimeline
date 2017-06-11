@@ -1,4 +1,4 @@
-﻿using NathanHarrenstein.MusicTimeline.Data;
+﻿using MusicTimelineWebApi.Models;
 using System.Collections.Generic;
 using System.EDTF;
 using System.Linq;
@@ -93,17 +93,15 @@ namespace NathanHarrenstein.MusicTimeline.Controls
             if (composition.Key != null)
             {
                 stringBuilder.Append(" in ");
-                stringBuilder.Append(composition.Key.Name);
+                stringBuilder.Append(composition.Key);
             }
 
-            if (composition.CatalogNumbers.Count > 0)
+            if (composition.CatalogNumbers.Count() > 0)
             {
                 var firstCatalogNumber = composition.CatalogNumbers.First();
 
                 stringBuilder.Append(", ");
-                stringBuilder.Append(firstCatalogNumber.Catalog.Prefix);
-                stringBuilder.Append(" ");
-                stringBuilder.Append(firstCatalogNumber.Value);
+                stringBuilder.Append(firstCatalogNumber);
             }
 
             return stringBuilder.ToString();

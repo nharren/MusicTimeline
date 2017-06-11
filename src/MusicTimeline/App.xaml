@@ -3,8 +3,11 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <Application.Resources>
         <SolidColorBrush x:Key="BackgroundBrush" Color="#FF34373A" />
-        <SolidColorBrush x:Key="ForegroundBrush" Color="#FEFEFE" />
-        <SolidColorBrush x:Key="HeaderBrush" Color="#A0A0A0" />
+        <SolidColorBrush x:Key="ForegroundBrush" Color="#d3d3d3" />
+
+        <SolidColorBrush x:Key="HeaderBrush" Color="#888888" />
+        <FontFamily x:Key="HeaderFontFamily">Segoe UI Light</FontFamily>
+
         <SolidColorBrush x:Key="ScrollBarThumbBrush" Color="#FF4B5155" />
         <SolidColorBrush x:Key="ScrollBarThumbHighlightBrush" Color="#FF565D61" />
         <SolidColorBrush x:Key="ShellBrush" Color="#FF5F6266" />

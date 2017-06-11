@@ -1,4 +1,4 @@
-﻿using NathanHarrenstein.MusicTimeline.Data;
+﻿using MusicTimelineWebApi.Models;
 using System;
 using System.Collections.Generic;
 using System.Windows;
@@ -103,7 +103,7 @@ namespace NathanHarrenstein.MusicTimeline.Controls
 
             foreach (var nationality in Composer.Nationalities)
             {
-                var nationalityName = string.IsNullOrWhiteSpace(nationality.Name) ? "Unknown" : nationality.Name;
+                var nationalityName = string.IsNullOrWhiteSpace(nationality) ? "Unknown" : nationality;
                 var size = UseLargeFlags ? "32" : "16";
                 var uri = new Uri($@"pack://application:,,,/Resources/Flags/{size}/{nationalityName}.png", UriKind.Absolute);
                 var bitmapImage = new BitmapImage(uri);

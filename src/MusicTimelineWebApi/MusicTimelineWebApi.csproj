@@ -1,0 +1,547 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props" Condition="Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" />
+  <Import Project="..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props" Condition="Exists('..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{694AAAC6-8214-4A14-9FD4-AD0CD4783863}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ClassicalMusicDbService</RootNamespace>
+    <AssemblyName>ClassicalMusicDbService</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Xml.Linq" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\packages\Newtonsoft.Json.6.0.4\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Net.Http.Formatting">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Client.5.2.3\lib\net45\System.Net.Http.Formatting.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.Core.5.2.3\lib\net45\System.Web.Http.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Web.Http.WebHost">
+      <HintPath>..\packages\Microsoft.AspNet.WebApi.WebHost.5.2.3\lib\net45\System.Web.Http.WebHost.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Images\1.jpg" />
+    <Content Include="Images\1.thumb.jpg" />
+    <Content Include="Images\10.jpg" />
+    <Content Include="Images\10.thumb.jpg" />
+    <Content Include="Images\100.jpg" />
+    <Content Include="Images\100.thumb.jpg" />
+    <Content Include="Images\101.jpg" />
+    <Content Include="Images\101.thumb.jpg" />
+    <Content Include="Images\102.jpg" />
+    <Content Include="Images\102.thumb.jpg" />
+    <Content Include="Images\103.jpg" />
+    <Content Include="Images\103.thumb.jpg" />
+    <Content Include="Images\104.jpg" />
+    <Content Include="Images\104.thumb.jpg" />
+    <Content Include="Images\105.jpg" />
+    <Content Include="Images\105.thumb.jpg" />
+    <Content Include="Images\107.jpg" />
+    <Content Include="Images\107.thumb.jpg" />
+    <Content Include="Images\108.jpg" />
+    <Content Include="Images\108.thumb.jpg" />
+    <Content Include="Images\109.jpg" />
+    <Content Include="Images\109.thumb.jpg" />
+    <Content Include="Images\110.jpg" />
+    <Content Include="Images\110.thumb.jpg" />
+    <Content Include="Images\111.jpg" />
+    <Content Include="Images\111.thumb.jpg" />
+    <Content Include="Images\112.jpg" />
+    <Content Include="Images\112.thumb.jpg" />
+    <Content Include="Images\113.jpg" />
+    <Content Include="Images\113.thumb.jpg" />
+    <Content Include="Images\114.jpg" />
+    <Content Include="Images\114.thumb.jpg" />
+    <Content Include="Images\115.jpg" />
+    <Content Include="Images\115.thumb.jpg" />
+    <Content Include="Images\116.jpg" />
+    <Content Include="Images\116.thumb.jpg" />
+    <Content Include="Images\117.jpg" />
+    <Content Include="Images\117.thumb.jpg" />
+    <Content Include="Images\118.jpg" />
+    <Content Include="Images\118.thumb.jpg" />
+    <Content Include="Images\12.jpg" />
+    <Content Include="Images\12.thumb.jpg" />
+    <Content Include="Images\120.jpg" />
+    <Content Include="Images\120.thumb.jpg" />
+    <Content Include="Images\121.jpg" />
+    <Content Include="Images\121.thumb.jpg" />
+    <Content Include="Images\122.jpg" />
+    <Content Include="Images\122.thumb.jpg" />
+    <Content Include="Images\123.jpg" />
+    <Content Include="Images\123.thumb.jpg" />
+    <Content Include="Images\124.jpg" />
+    <Content Include="Images\124.thumb.jpg" />
+    <Content Include="Images\126.jpg" />
+    <Content Include="Images\126.thumb.jpg" />
+    <Content Include="Images\128.jpg" />
+    <Content Include="Images\128.thumb.jpg" />
+    <Content Include="Images\129.jpg" />
+    <Content Include="Images\129.thumb.jpg" />
+    <Content Include="Images\130.jpg" />
+    <Content Include="Images\130.thumb.jpg" />
+    <Content Include="Images\131.jpg" />
+    <Content Include="Images\131.thumb.jpg" />
+    <Content Include="Images\14.jpg" />
+    <Content Include="Images\14.thumb.jpg" />
+    <Content Include="Images\15.jpg" />
+    <Content Include="Images\15.thumb.jpg" />
+    <Content Include="Images\16.jpg" />
+    <Content Include="Images\16.thumb.jpg" />
+    <Content Include="Images\17.jpg" />
+    <Content Include="Images\17.thumb.jpg" />
+    <Content Include="Images\18.jpg" />
+    <Content Include="Images\18.thumb.jpg" />
+    <Content Include="Images\19.jpg" />
+    <Content Include="Images\19.thumb.jpg" />
+    <Content Include="Images\2.jpg" />
+    <Content Include="Images\2.thumb.jpg" />
+    <Content Include="Images\20.jpg" />
+    <Content Include="Images\20.thumb.jpg" />
+    <Content Include="Images\21.jpg" />
+    <Content Include="Images\21.thumb.jpg" />
+    <Content Include="Images\22.jpg" />
+    <Content Include="Images\22.thumb.jpg" />
+    <Content Include="Images\26.jpg" />
+    <Content Include="Images\26.thumb.jpg" />
+    <Content Include="Images\3.jpg" />
+    <Content Include="Images\3.thumb.jpg" />
+    <Content Include="Images\31.jpg" />
+    <Content Include="Images\31.thumb.jpg" />
+    <Content Include="Images\33.jpg" />
+    <Content Include="Images\33.thumb.jpg" />
+    <Content Include="Images\34.jpg" />
+    <Content Include="Images\34.thumb.jpg" />
+    <Content Include="Images\37.jpg" />
+    <Content Include="Images\37.thumb.jpg" />
+    <Content Include="Images\38.jpg" />
+    <Content Include="Images\38.thumb.jpg" />
+    <Content Include="Images\39.jpg" />
+    <Content Include="Images\39.thumb.jpg" />
+    <Content Include="Images\4.jpg" />
+    <Content Include="Images\4.thumb.jpg" />
+    <Content Include="Images\40.jpg" />
+    <Content Include="Images\40.thumb.jpg" />
+    <Content Include="Images\41.jpg" />
+    <Content Include="Images\41.thumb.jpg" />
+    <Content Include="Images\42.jpg" />
+    <Content Include="Images\42.thumb.jpg" />
+    <Content Include="Images\43.jpg" />
+    <Content Include="Images\43.thumb.jpg" />
+    <Content Include="Images\45.jpg" />
+    <Content Include="Images\45.thumb.jpg" />
+    <Content Include="Images\46.jpg" />
+    <Content Include="Images\46.thumb.jpg" />
+    <Content Include="Images\47.jpg" />
+    <Content Include="Images\47.thumb.jpg" />
+    <Content Include="Images\48.jpg" />
+    <Content Include="Images\48.thumb.jpg" />
+    <Content Include="Images\5.jpg" />
+    <Content Include="Images\5.thumb.jpg" />
+    <Content Include="Images\50.jpg" />
+    <Content Include="Images\50.thumb.jpg" />
+    <Content Include="Images\51.jpg" />
+    <Content Include="Images\51.thumb.jpg" />
+    <Content Include="Images\53.jpg" />
+    <Content Include="Images\53.thumb.jpg" />
+    <Content Include="Images\54.jpg" />
+    <Content Include="Images\54.thumb.jpg" />
+    <Content Include="Images\55.jpg" />
+    <Content Include="Images\55.thumb.jpg" />
+    <Content Include="Images\57.jpg" />
+    <Content Include="Images\57.thumb.jpg" />
+    <Content Include="Images\58.jpg" />
+    <Content Include="Images\58.thumb.jpg" />
+    <Content Include="Images\59.jpg" />
+    <Content Include="Images\59.thumb.jpg" />
+    <Content Include="Images\6.jpg" />
+    <Content Include="Images\6.thumb.jpg" />
+    <Content Include="Images\60.jpg" />
+    <Content Include="Images\60.thumb.jpg" />
+    <Content Include="Images\61.jpg" />
+    <Content Include="Images\61.thumb.jpg" />
+    <Content Include="Images\62.jpg" />
+    <Content Include="Images\62.thumb.jpg" />
+    <Content Include="Images\63.jpg" />
+    <Content Include="Images\63.thumb.jpg" />
+    <Content Include="Images\64.jpg" />
+    <Content Include="Images\64.thumb.jpg" />
+    <Content Include="Images\65.jpg" />
+    <Content Include="Images\65.thumb.jpg" />
+    <Content Include="Images\66.jpg" />
+    <Content Include="Images\66.thumb.jpg" />
+    <Content Include="Images\67.jpg" />
+    <Content Include="Images\67.thumb.jpg" />
+    <Content Include="Images\68.jpg" />
+    <Content Include="Images\68.thumb.jpg" />
+    <Content Include="Images\69.jpg" />
+    <Content Include="Images\69.thumb.jpg" />
+    <Content Include="Images\7.jpg" />
+    <Content Include="Images\7.thumb.jpg" />
+    <Content Include="Images\70.jpg" />
+    <Content Include="Images\70.thumb.jpg" />
+    <Content Include="Images\71.jpg" />
+    <Content Include="Images\71.thumb.jpg" />
+    <Content Include="Images\72.jpg" />
+    <Content Include="Images\72.thumb.jpg" />
+    <Content Include="Images\73.jpg" />
+    <Content Include="Images\73.thumb.jpg" />
+    <Content Include="Images\74.jpg" />
+    <Content Include="Images\74.thumb.jpg" />
+    <Content Include="Images\75.jpg" />
+    <Content Include="Images\75.thumb.jpg" />
+    <Content Include="Images\76.jpg" />
+    <Content Include="Images\76.thumb.jpg" />
+    <Content Include="Images\77.jpg" />
+    <Content Include="Images\77.thumb.jpg" />
+    <Content Include="Images\78.jpg" />
+    <Content Include="Images\78.thumb.jpg" />
+    <Content Include="Images\79.jpg" />
+    <Content Include="Images\79.thumb.jpg" />
+    <Content Include="Images\80.jpg" />
+    <Content Include="Images\80.thumb.jpg" />
+    <Content Include="Images\81.jpg" />
+    <Content Include="Images\81.thumb.jpg" />
+    <Content Include="Images\82.jpg" />
+    <Content Include="Images\82.thumb.jpg" />
+    <Content Include="Images\84.jpg" />
+    <Content Include="Images\84.thumb.jpg" />
+    <Content Include="Images\85.jpg" />
+    <Content Include="Images\85.thumb.jpg" />
+    <Content Include="Images\86.jpg" />
+    <Content Include="Images\86.thumb.jpg" />
+    <Content Include="Images\87.jpg" />
+    <Content Include="Images\87.thumb.jpg" />
+    <Content Include="Images\88.jpg" />
+    <Content Include="Images\88.thumb.jpg" />
+    <Content Include="Images\89.jpg" />
+    <Content Include="Images\89.thumb.jpg" />
+    <Content Include="Images\9.jpg" />
+    <Content Include="Images\9.thumb.jpg" />
+    <Content Include="Images\90.jpg" />
+    <Content Include="Images\90.thumb.jpg" />
+    <Content Include="Images\92.jpg" />
+    <Content Include="Images\92.thumb.jpg" />
+    <Content Include="Images\93.jpg" />
+    <Content Include="Images\93.thumb.jpg" />
+    <Content Include="Images\94.jpg" />
+    <Content Include="Images\94.thumb.jpg" />
+    <Content Include="Images\95.jpg" />
+    <Content Include="Images\95.thumb.jpg" />
+    <Content Include="Images\96.jpg" />
+    <Content Include="Images\96.thumb.jpg" />
+    <Content Include="Images\97.jpg" />
+    <Content Include="Images\97.thumb.jpg" />
+    <Content Include="Images\98.jpg" />
+    <Content Include="Images\98.thumb.jpg" />
+    <Content Include="Images\99.jpg" />
+    <Content Include="Images\99.thumb.jpg" />
+    <Content Include="Samples\1.mp3" />
+    <Content Include="Samples\10.mp3" />
+    <Content Include="Samples\11.mp3" />
+    <Content Include="Samples\12.mp3" />
+    <Content Include="Samples\13.mp3" />
+    <Content Include="Samples\14.mp3" />
+    <Content Include="Samples\15.mp3" />
+    <Content Include="Samples\16.mp3" />
+    <Content Include="Samples\17.mp3" />
+    <Content Include="Samples\18.mp3" />
+    <Content Include="Samples\19.mp3" />
+    <Content Include="Samples\2.mp3" />
+    <Content Include="Samples\20.mp3" />
+    <Content Include="Samples\21.mp3" />
+    <Content Include="Samples\22.mp3" />
+    <Content Include="Samples\23.mp3" />
+    <Content Include="Samples\24.mp3" />
+    <Content Include="Samples\25.mp3" />
+    <Content Include="Samples\26.mp3" />
+    <Content Include="Samples\27.mp3" />
+    <Content Include="Samples\28.mp3" />
+    <Content Include="Samples\29.mp3" />
+    <Content Include="Samples\3.mp3" />
+    <Content Include="Samples\30.mp3" />
+    <Content Include="Samples\31.mp3" />
+    <Content Include="Samples\32.mp3" />
+    <Content Include="Samples\35.mp3" />
+    <Content Include="Samples\36.mp3" />
+    <Content Include="Samples\37.mp3" />
+    <Content Include="Samples\38.mp3" />
+    <Content Include="Samples\39.mp3" />
+    <Content Include="Samples\4.mp3" />
+    <Content Include="Samples\40.mp3" />
+    <Content Include="Samples\41.mp3" />
+    <Content Include="Samples\42.mp3" />
+    <Content Include="Samples\43.mp3" />
+    <Content Include="Samples\44.mp3" />
+    <Content Include="Samples\45.mp3" />
+    <Content Include="Samples\46.mp3" />
+    <Content Include="Samples\47.mp3" />
+    <Content Include="Samples\48.mp3" />
+    <Content Include="Samples\49.mp3" />
+    <Content Include="Samples\5.mp3" />
+    <Content Include="Samples\50.mp3" />
+    <Content Include="Samples\51.mp3" />
+    <Content Include="Samples\52.mp3" />
+    <Content Include="Samples\53.mp3" />
+    <Content Include="Samples\54.mp3" />
+    <Content Include="Samples\55.mp3" />
+    <Content Include="Samples\56.mp3" />
+    <Content Include="Samples\57.mp3" />
+    <Content Include="Samples\58.mp3" />
+    <Content Include="Samples\59.mp3" />
+    <Content Include="Samples\6.mp3" />
+    <Content Include="Samples\60.mp3" />
+    <Content Include="Samples\61.mp3" />
+    <Content Include="Samples\62.mp3" />
+    <Content Include="Samples\63.mp3" />
+    <Content Include="Samples\64.mp3" />
+    <Content Include="Samples\7.mp3" />
+    <Content Include="Samples\8.mp3" />
+    <Content Include="Samples\9.mp3" />
+    <Content Include="Global.asax" />
+    <Content Include="Models\ClassicalMusicContext.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ClassicalMusicContext.edmx</DependentUpon>
+      <LastGenOutput>ClassicalMusicContext.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\ClassicalMusicContext.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ClassicalMusicContext.edmx</DependentUpon>
+      <LastGenOutput>ClassicalMusicContext.cs</LastGenOutput>
+    </Content>
+    <Content Include="Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="App_Start\WebApiConfig.cs" />
+    <Compile Include="Controllers\CatalogNumbersController.cs" />
+    <Compile Include="Controllers\CatalogsController.cs" />
+    <Compile Include="Controllers\ComposerBiographiesController.cs" />
+    <Compile Include="Controllers\ComposerImagesController.cs" />
+    <Compile Include="Controllers\ComposersController.cs" />
+    <Compile Include="Controllers\ComposerShortBiographiesController.cs" />
+    <Compile Include="Controllers\CompositionsController.cs" />
+    <Compile Include="Controllers\ErasController.cs" />
+    <Compile Include="Controllers\KeysController.cs" />
+    <Compile Include="Controllers\LinksController.cs" />
+    <Compile Include="Controllers\LocationsController.cs" />
+    <Compile Include="Controllers\NationalitiesController.cs" />
+    <Compile Include="Controllers\SamplesController.cs" />
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Album.cs">
+      <DependentUpon>ClassicalMusicContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Catalog.cs">
+      <DependentUpon>ClassicalMusicContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CatalogNumber.cs">
+      <DependentUpon>ClassicalMusicContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ClassicalMusicContext.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ClassicalMusicContext.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ClassicalMusicContext.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ClassicalMusicContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ClassicalMusicContext.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ClassicalMusicContext.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Composer.cs">
+      <DependentUpon>ClassicalMusicContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ComposerBiography.cs">
+      <DependentUpon>ClassicalMusicContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ComposerImage.cs">
+      <DependentUpon>ClassicalMusicContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\ComposerShortBiography.cs">
+      <DependentUpon>ClassicalMusicContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Composition.cs">
+      <DependentUpon>ClassicalMusicContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CompositionCollection.cs">
+      <DependentUpon>ClassicalMusicContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Era.cs">
+      <DependentUpon>ClassicalMusicContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Genre.cs">
+      <DependentUpon>ClassicalMusicContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Instrumentation.cs">
+      <DependentUpon>ClassicalMusicContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Key.cs">
+      <DependentUpon>ClassicalMusicContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Link.cs">
+      <DependentUpon>ClassicalMusicContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Location.cs">
+      <DependentUpon>ClassicalMusicContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Movement.cs">
+      <DependentUpon>ClassicalMusicContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Nationality.cs">
+      <DependentUpon>ClassicalMusicContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Performer.cs">
+      <DependentUpon>ClassicalMusicContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Recording.cs">
+      <DependentUpon>ClassicalMusicContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Sample.cs">
+      <DependentUpon>ClassicalMusicContext.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="packages.config" />
+    <EntityDeploy Include="Models\ClassicalMusicContext.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>ClassicalMusicContext.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\ClassicalMusicContext.edmx.diagram">
+      <DependentUpon>ClassicalMusicContext.edmx</DependentUpon>
+    </Content>
+    <None Include="Web.Debug.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+    <None Include="Web.Release.config">
+      <DependentUpon>Web.config</DependentUpon>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MusicTimelineWebApi.Models\MusicTimelineWebApi.Models.csproj">
+      <Project>{61445b55-100e-4acb-a6f2-11d5f2a02e72}</Project>
+      <Name>MusicTimelineWebApi.Models</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Data\" />
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>65140</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:65140/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Net.Compilers.1.0.0\build\Microsoft.Net.Compilers.props'))" />
+    <Error Condition="!Exists('..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\build\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.props'))" />
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

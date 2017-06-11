@@ -1,13 +1,5 @@
-﻿/*
- 1. When the left mouse button is pressed, 
-
- */
-
-
-
-using NathanHarrenstein.Timeline.Input;
+﻿using NathanHarrenstein.Timeline.Input;
 using System;
-using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -19,20 +11,16 @@ namespace NathanHarrenstein.Timeline
     public class ScrollingPanel : Panel, IDisposable
     {
         private readonly RoutedEvent scrollRequestEvent;
+        private double flickDuration = 0.5;
+        private double fps = 60;
         private bool isDisposed;
+        private Point lastCursorPosition;
+        private DateTime lastMoveTime;
         private MouseHook mouseHook;
-        private Point cursorPosition;
-        private Vector velocity;
+        private double sensitivity = 1.25;
+        private double time;
         private DispatcherTimer timer;
-
-        private double flickDuration = 0.15;
-
-        public double FlickDuration
-        {
-            get { return flickDuration; }
-            set { flickDuration = value; }
-        }
-
+        private Vector velocity;
 
         static ScrollingPanel()
         {
@@ -45,8 +33,8 @@ namespace NathanHarrenstein.Timeline
             mouseHook.MouseHorizontalWheel += EventPanel_MouseHorizontalWheel;
             mouseHook.StartMouseHook();
 
-            timer = new DispatcherTimer(DispatcherPriority.Background);
-            timer.Interval = TimeSpan.FromMilliseconds(15);
+            timer = new DispatcherTimer(DispatcherPriority.Normal);
+            timer.Interval = TimeSpan.FromSeconds(1 / fps);
             timer.Tick += Timer_Tick;
 
             var routedEvents = EventManager.GetRoutedEvents();
@@ -60,40 +48,15 @@ namespace NathanHarrenstein.Timeline
             }
         }
 
-        private void Timer_Tick(object sender, EventArgs e)
-        {
-            if (IsMouseCaptured)
-            {
-                var newCursorPosition = InputManager.Current.PrimaryMouseDevice.GetPosition(this);
-                var displacement = newCursorPosition - cursorPosition;
-                cursorPosition = newCursorPosition;
-
-                RequestScroll(-displacement);
-                velocity = displacement / timer.Interval.TotalSeconds;
-
-                return;
-            }
-
-            time += timer.Interval.TotalSeconds;
-
-            if (time >= FlickDuration)
-            {
-                timer.Stop();
-
-                return;
-            }
-
-            velocity = releaseVelocity - releaseVelocity * time * (1 / FlickDuration);
-
-            RequestScroll(-velocity * timer.Interval.TotalSeconds);
-        }
-
-        private double time;
-        private Vector releaseVelocity;
-
         ~ScrollingPanel()
         {
             Dispose(false);
+        }
+
+        public double FlickDuration
+        {
+            get { return flickDuration; }
+            set { flickDuration = value; }
         }
 
         public void Dispose()
@@ -104,7 +67,7 @@ namespace NathanHarrenstein.Timeline
 
         public void RequestScroll(Vector displacement)
         {
-            if (scrollRequestEvent != null)
+            if (scrollRequestEvent != null && !double.IsNaN(displacement.X) && !double.IsNaN(displacement.Y))
             {
                 RaiseEvent(new ScrollingEventArgs(displacement, scrollRequestEvent, this));
             }
@@ -112,7 +75,7 @@ namespace NathanHarrenstein.Timeline
 
         protected virtual void Dispose(bool disposeManagedObjects)
         {
-            if (isDisposed)
+            if (mouseHook == null || isDisposed)
             {
                 return;
             }
@@ -124,11 +87,14 @@ namespace NathanHarrenstein.Timeline
 
         protected override void OnMouseLeftButtonDown(MouseButtonEventArgs e)
         {
-            cursorPosition = e.GetPosition(this);
+            timer.Stop();
+            time = 0;
+
+            lastCursorPosition = e.GetPosition(this);
+            lastMoveTime = DateTime.Now;
+            velocity = new Vector();
 
             Cursor = Cursors.ScrollAll;
-
-            timer.Start();
 
             CaptureMouse();
         }
@@ -137,16 +103,44 @@ namespace NathanHarrenstein.Timeline
         {
             Cursor = Cursors.Arrow;
 
-            releaseVelocity = velocity;
-            time = 0;
+            var moveTime = DateTime.Now;
+            var cursorPosition = e.GetPosition(this);
+
+            var displacement = cursorPosition - lastCursorPosition;
+            var duration = moveTime - lastMoveTime;
+
+            if (displacement.Length == 0)
+            {
+                time += duration.TotalSeconds;
+            }
+
+            timer.Start();
 
             ReleaseMouseCapture();
         }
 
+        protected override void OnMouseMove(MouseEventArgs e)
+        {
+            if (!IsMouseCaptured)
+            {
+                return;
+            }
+
+            var moveTime = DateTime.Now;
+            var cursorPosition = e.GetPosition(this);
+
+            var displacement = (cursorPosition - lastCursorPosition) * sensitivity;
+            var duration = moveTime - lastMoveTime;
+            velocity = displacement / duration.TotalSeconds;
+
+            RequestScroll(-displacement);
+
+            lastMoveTime = DateTime.Now;
+            lastCursorPosition = cursorPosition;
+        }
+
         protected override void OnMouseWheel(MouseWheelEventArgs e)
         {
-            cursorPosition = e.GetPosition(this);
-
             RequestScroll(new Vector(0, -e.Delta));
 
             base.OnMouseWheel(e);
@@ -155,6 +149,22 @@ namespace NathanHarrenstein.Timeline
         private void EventPanel_MouseHorizontalWheel(object sender, MouseHorizontalWheelEventArgs e)
         {
             RequestScroll(new Vector(e.Delta, 0));
+        }
+
+        private void Timer_Tick(object sender, EventArgs e)
+        {
+            time += timer.Interval.TotalSeconds;
+
+            if (time >= FlickDuration)
+            {
+                timer.Stop();
+
+                return;
+            }
+
+            velocity -= velocity * time / FlickDuration;
+
+            RequestScroll(-velocity * timer.Interval.TotalSeconds);
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿using NathanHarrenstein.MusicTimeline.Data;
+﻿using MusicTimelineWebApi.Models;
 using System;
 using System.Globalization;
 using System.Linq;
@@ -34,9 +34,7 @@ namespace NathanHarrenstein.MusicTimeline.Converters
             if (catalogNumber != null)
             {
                 stringBuilder.Append(", ");
-                stringBuilder.Append(catalogNumber.Catalog.Prefix);
-                stringBuilder.Append(" ");
-                stringBuilder.Append(catalogNumber.Value);
+                stringBuilder.Append(catalogNumber);
             }
 
             return stringBuilder.ToString();

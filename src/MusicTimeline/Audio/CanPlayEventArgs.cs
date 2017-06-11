@@ -1,6 +1,8 @@
-﻿namespace NathanHarrenstein.MusicTimeline.Audio
+﻿using System;
+
+namespace NathanHarrenstein.MusicTimeline.Audio
 {
-    public class CanPlayEventArgs
+    public class CanPlayEventArgs : EventArgs
     {
         private readonly bool _canPlay;
 

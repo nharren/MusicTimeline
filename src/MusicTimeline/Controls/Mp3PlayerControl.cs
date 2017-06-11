@@ -248,6 +248,7 @@ namespace NathanHarrenstein.MusicTimeline.Controls
             {
                 mp3Player.PlaybackStateChanged -= mp3Player_PlaybackStateChanged;
                 mp3Player.Stop();
+                mp3Player.Dispose();
             }
 
             isDisposed = true;

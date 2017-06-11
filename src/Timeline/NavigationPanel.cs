@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.EDTF;
 using System.Linq;
 using System.Windows;
@@ -10,10 +12,14 @@ namespace NathanHarrenstein.Timeline
     public class NavigationPanel : Panel
     {
         public static readonly DependencyProperty DatesProperty = DependencyProperty.Register("Dates", typeof(ExtendedDateTimeInterval), typeof(NavigationPanel));
-        public static readonly DependencyProperty ErasProperty = DependencyProperty.Register("Eras", typeof(IReadOnlyList<ITimelineEra>), typeof(NavigationPanel), new PropertyMetadata(new PropertyChangedCallback(NavigationPanel_ErasPropertyChanged)));
-        public static readonly DependencyProperty EraTemplatesProperty = DependencyProperty.Register("EraTemplates", typeof(List<DataTemplate>), typeof(NavigationPanel), new PropertyMetadata(new PropertyChangedCallback(NavigationPanel_EraTemplatesPropertyChanged)));
+        public static readonly DependencyProperty ErasProperty = DependencyProperty.Register("Eras", typeof(ObservableCollection<ITimelineEra>), typeof(NavigationPanel), new PropertyMetadata(new PropertyChangedCallback(ProcessErasChange)));
+        public static readonly DependencyProperty EraTemplatesProperty = DependencyProperty.Register("EraTemplates", typeof(List<DataTemplate>), typeof(NavigationPanel), new PropertyMetadata(new PropertyChangedCallback(ProcessEraTemplatesChange)));
         public static readonly DependencyProperty ResolutionProperty = DependencyProperty.Register("Resolution", typeof(TimeResolution), typeof(NavigationPanel));
         public static readonly DependencyProperty RulerProperty = DependencyProperty.Register("Ruler", typeof(TimeRuler), typeof(NavigationPanel));
+
+        public NavigationPanel()
+        {
+        }
 
         public ExtendedDateTimeInterval Dates
         {
@@ -27,11 +33,11 @@ namespace NathanHarrenstein.Timeline
             }
         }
 
-        public IReadOnlyList<ITimelineEra> Eras
+        public ObservableCollection<ITimelineEra> Eras
         {
             get
             {
-                return (IReadOnlyList<ITimelineEra>)GetValue(ErasProperty);
+                return (ObservableCollection<ITimelineEra>)GetValue(ErasProperty);
             }
             set
             {
@@ -110,14 +116,34 @@ namespace NathanHarrenstein.Timeline
             return base.MeasureOverride(availableSize);
         }
 
-        private static void NavigationPanel_ErasPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void ProcessErasChange(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            ((NavigationPanel)d).UpdateChildren();
+            NavigationPanel navigationPanel = (NavigationPanel)d;
+            navigationPanel.UpdateChildren();
+
+            var oldEventsCollection = (ObservableCollection<ITimelineEra>)e.OldValue;
+            var newEventsCollection = (ObservableCollection<ITimelineEra>)e.NewValue;
+
+            if (oldEventsCollection != null)
+            {
+                oldEventsCollection.CollectionChanged -= navigationPanel.ProcessEraChange; 
+            }
+
+            if (newEventsCollection != null)
+            {
+                newEventsCollection.CollectionChanged += navigationPanel.ProcessEraChange; 
+            }
         }
 
-        private static void NavigationPanel_EraTemplatesPropertyChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private void ProcessEraChange(object sender, NotifyCollectionChangedEventArgs e)
         {
-            ((NavigationPanel)d).UpdateChildren();
+            UpdateChildren();
+        }
+
+        private static void ProcessEraTemplatesChange(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        {
+            NavigationPanel navigationPanel = (NavigationPanel)d;
+            navigationPanel.UpdateChildren();
         }
 
         private void UpdateChildren()

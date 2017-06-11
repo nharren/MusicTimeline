@@ -1,5 +1,4 @@
-﻿using NathanHarrenstein.MusicTimeline.Data;
-using NathanHarrenstein.MusicTimeline.Parsers;
+﻿using NathanHarrenstein.MusicTimeline.Parsers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,7 +16,7 @@ namespace NathanHarrenstein.MusicTimeline.Controls
 
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
         {
-            var link = item as Link;
+            var link = item as string;
 
             if (link == null)
             {
@@ -26,14 +25,14 @@ namespace NathanHarrenstein.MusicTimeline.Controls
 
             var youTubeParser = new YouTubeParser();
 
-            if (youTubeParser.IsValidVideoUrl(link.Url))
+            if (youTubeParser.IsValidVideoUrl(link))
             {
                 return YouTubeTemplate;               
             }
 
             var spotfiyParser = new SpotifyParser();
 
-            if (spotfiyParser.IsValidTrackUrl(link.Url))
+            if (spotfiyParser.IsValidTrackUrl(link))
             {
                 return SpotifyTemplate;
             }

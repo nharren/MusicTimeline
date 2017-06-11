@@ -2,9 +2,28 @@
 
 Version 2
 
-• Update to latest EDTF standard when standard is released.
-	• EDTF picker control
-	• Visually display uncertainty and approximation in timeline.
+• Switch from EDTF library to using DateTime with qualifiers table in database.
+
+
+QualifiedDate
+	- QualifiedDateId
+	- BaseDate
+	- Before
+	- After
+	- Around
+	- Possibly
+	- NoLaterThan
+	- NoEarlierThan
+	- Open
+
+QualifiedComposerDate
+	- QualifiedComposerDateId
+	- IsBirthDate
+	- ComposerId
+
+
+• Visually display uncertainty and approximation in timeline.
+• Spotify Integration?
 • Composer name pronounciation audio.
 • Timeline filters?
 	• Nationality

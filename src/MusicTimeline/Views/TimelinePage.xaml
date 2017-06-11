@@ -4,10 +4,10 @@
       xmlns:c="clr-namespace:NathanHarrenstein.MusicTimeline.Controls"
       xmlns:cv="clr-namespace:NathanHarrenstein.MusicTimeline.Converters"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-      xmlns:db="clr-namespace:NathanHarrenstein.MusicTimeline.Data"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:t="clr-namespace:NathanHarrenstein.Timeline;assembly=Timeline"
       xmlns:vm="clr-namespace:NathanHarrenstein.MusicTimeline.ViewModels"
+      xmlns:api="clr-namespace:MusicTimelineWebApi.Models;assembly=MusicTimelineWebApi.Models"
       Name="page"
       Title="TimelinePage"
       d:DesignHeight="648"
@@ -15,7 +15,6 @@
       DataContext="{Binding RelativeSource={RelativeSource Self}}"
       mc:Ignorable="d">
     <Page.Resources>
-        <cv:ComposerToBitmapImageConverter x:Key="ComposerToBitmapImageConverter" />
         <Style TargetType="ScrollBar">
             <Setter Property="Opacity" Value="0.4" />
         </Style>
@@ -94,10 +93,6 @@
                                   CommandParameter="21st Century"
                                   Header="21st Century" />
                     </MenuItem>
-                    <Separator />
-                    <MenuItem Name="EditMenuItem"
-                              Click="EditMenuItem_Click"
-                              Header="Edit..." />
                 </ContextMenu>
             </t:Timeline.ContextMenu>
             <t:Timeline.EraTemplates>
@@ -136,17 +131,7 @@
                                     <ColumnDefinition Width="Auto" />
                                     <ColumnDefinition />
                                 </Grid.ColumnDefinitions>
-                                <Image SnapsToDevicePixels="True">
-                                    <Image.Source>
-                                        <Binding Converter="{StaticResource ComposerToBitmapImageConverter}"
-                                                 IsAsync="True"
-                                                 Path="Composer">
-                                            <Binding.ConverterParameter>
-                                                <cv:ComposerToBitmapImageConverterSettings IsThumbnail="True" />
-                                            </Binding.ConverterParameter>
-                                        </Binding>
-                                    </Image.Source>
-                                </Image>
+                                <Image SnapsToDevicePixels="True" Source="{Binding Thumbnail}" />
                                 <TextBlock Grid.Column="2"
                                            Margin="0,-1,0,0"
                                            VerticalAlignment="Center"
@@ -309,10 +294,6 @@
                                                        Margin="0,10,0,0"
                                                        VerticalAlignment="Top"
                                                        HorizontalContentAlignment="Center"
-                                                       ButtonClick="composersHeader_ButtonClick"
-                                                       ButtonForeground="White"
-                                                       ButtonMargin="0,0,15,0"
-                                                       ButtonSize="16.0"
                                                        FontSize="18.667"
                                                        Foreground="White"
                                                        Text="Composers"
@@ -349,91 +330,15 @@
                                         </EventTrigger>
                                     </Button.Triggers>
                                 </Button>
-                                <Grid x:Name="composersEditPanel"
-                                      Grid.Row="1"
-                                      Visibility="Collapsed">
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition />
-                                    </Grid.RowDefinitions>
-                                    <c:AddSaveToolbar x:Name="composersToolbar"
-                                                      Height="31"
-                                                      Adding="composersToolbar_Adding"
-                                                      Background="#33555555"
-                                                      BorderBrush="Black"
-                                                      BorderThickness="0"
-                                                      Cancelling="composersToolbar_Cancelling"
-                                                      Removing="composersToolbar_Removing"
-                                                      Saving="composersToolbar_Saving" />
-                                    <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
-                                        <ListBox Name="composersListBox"
-                                                 Background="#33000000"
-                                                 BorderThickness="0"
-                                                 Padding="0,15"
-                                                 SelectionChanged="composersListBox_SelectionChanged">
-                                            <ListBox.ItemTemplateSelector>
-                                                <c:SelectionDataTemplateSelector>
-                                                    <c:SelectionDataTemplateSelector.SelectedTemplate>
-                                                        <DataTemplate DataType="{x:Type db:Composer}">
-                                                            <StackPanel Width="381" Margin="0,0,0,5">
-                                                                <TextBox Name="composerTextBox"
-                                                                         Background="#77000000"
-                                                                         BorderThickness="0"
-                                                                         FontSize="11.5pt"
-                                                                         Foreground="White"
-                                                                         Loaded="composerTextBox_Loaded"
-                                                                         Padding="23,8,23,3"
-                                                                         Text="{Binding Name}"
-                                                                         TextChanged="composerTextBox_TextChanged" />
-                                                                <TextBox Name="composerDatesTextBox"
-                                                                         Background="#77000000"
-                                                                         BorderThickness="0"
-                                                                         FontSize="11.5pt"
-                                                                         Foreground="#AAFFFFFF"
-                                                                         Padding="23,3,23,8"
-                                                                         Text="{Binding Dates}"
-                                                                         TextAlignment="Left"
-                                                                         TextChanged="composerDatesTextBox_TextChanged" />
-                                                            </StackPanel>
-                                                        </DataTemplate>
-                                                    </c:SelectionDataTemplateSelector.SelectedTemplate>
-                                                    <c:SelectionDataTemplateSelector.UnselectedTemplate>
-                                                        <DataTemplate DataType="{x:Type db:Composer}">
-                                                            <TextBlock Margin="25,0,15,5"
-                                                                       FontSize="11.5pt"
-                                                                       Foreground="#AAFFFFFF"
-                                                                       Text="{Binding Name}" />
-                                                        </DataTemplate>
-                                                    </c:SelectionDataTemplateSelector.UnselectedTemplate>
-                                                </c:SelectionDataTemplateSelector>
-                                            </ListBox.ItemTemplateSelector>
-                                            <ListBox.ItemContainerStyle>
-                                                <Style TargetType="ListBoxItem">
-                                                    <Setter Property="IsSelected" Value="{Binding Content.IsSelected, Mode=TwoWay, RelativeSource={RelativeSource Self}}" />
-                                                    <Setter Property="Template">
-                                                        <Setter.Value>
-                                                            <ControlTemplate TargetType="ListBoxItem">
-                                                                <ContentPresenter />
-                                                            </ControlTemplate>
-                                                        </Setter.Value>
-                                                    </Setter>
-                                                </Style>
-                                            </ListBox.ItemContainerStyle>
-                                        </ListBox>
-
-
-                                    </ScrollViewer>
-                                </Grid>
 
                                 <ScrollViewer Name="composersScrollViewer"
                                               Grid.Row="1"
                                               VerticalScrollBarVisibility="Auto">
 
-                                    <ItemsControl Name="composersItemsControl"
-                                                  Margin="27,10,0,15"
-                                                  Loaded="composersItemsControl_Loaded">
+                                    <ItemsControl x:Name="composersItemsControl"
+                                                  Margin="27,10,0,15">
                                         <ItemsControl.ItemTemplate>
-                                            <DataTemplate DataType="{x:Type db:Composer}">
+                                            <DataTemplate DataType="{x:Type api:Composer}">
                                                 <Button Name="composerButton"
                                                         Margin="0,0,0,5"
                                                         Click="composerButton_Click"

@@ -1,0 +1,1883 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="ClassicalMusicModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Album">
+          <Key>
+            <PropertyRef Name="AlbumId" />
+          </Key>
+          <Property Name="AlbumId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Catalog">
+          <Key>
+            <PropertyRef Name="CatalogId" />
+          </Key>
+          <Property Name="CatalogId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Prefix" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="ComposerId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CatalogNumber">
+          <Key>
+            <PropertyRef Name="CatalogNumberId" />
+          </Key>
+          <Property Name="CatalogNumberId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Value" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="CatalogId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Composer">
+          <Key>
+            <PropertyRef Name="ComposerId" />
+          </Key>
+          <Property Name="ComposerId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Dates" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="BirthLocationId" Type="int" />
+          <Property Name="DeathLocationId" Type="int" />
+          <Property Name="IsPopular" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ComposerBiography">
+          <Key>
+            <PropertyRef Name="ComposerId" />
+          </Key>
+          <Property Name="ComposerId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Text" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="ComposerEra">
+          <Key>
+            <PropertyRef Name="EraId" />
+            <PropertyRef Name="ComposerId" />
+          </Key>
+          <Property Name="EraId" Type="int" Nullable="false" />
+          <Property Name="ComposerId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ComposerImage">
+          <Key>
+            <PropertyRef Name="ComposerImageId" />
+          </Key>
+          <Property Name="ComposerImageId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ComposerId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ComposerInfluence">
+          <Key>
+            <PropertyRef Name="ComposerId" />
+            <PropertyRef Name="InfluenceId" />
+          </Key>
+          <Property Name="ComposerId" Type="int" Nullable="false" />
+          <Property Name="InfluenceId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ComposerLink">
+          <Key>
+            <PropertyRef Name="LinkId" />
+            <PropertyRef Name="ComposerId" />
+          </Key>
+          <Property Name="LinkId" Type="int" Nullable="false" />
+          <Property Name="ComposerId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ComposerNationality">
+          <Key>
+            <PropertyRef Name="ComposerId" />
+            <PropertyRef Name="NationalityId" />
+          </Key>
+          <Property Name="ComposerId" Type="int" Nullable="false" />
+          <Property Name="NationalityId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ComposerShortBiography">
+          <Key>
+            <PropertyRef Name="ComposerId" />
+          </Key>
+          <Property Name="ComposerId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Text" Type="nvarchar(max)" />
+        </EntityType>
+        <EntityType Name="Composition">
+          <Key>
+            <PropertyRef Name="CompositionId" />
+          </Key>
+          <Property Name="CompositionId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Dates" Type="nvarchar(max)" />
+          <Property Name="Nickname" Type="nvarchar(max)" />
+          <Property Name="Premiere" Type="nvarchar(max)" />
+          <Property Name="Dedication" Type="nvarchar(max)" />
+          <Property Name="Occasion" Type="nvarchar(max)" />
+          <Property Name="IsPopular" Type="bit" Nullable="false" />
+          <Property Name="Comment" Type="nvarchar(max)" />
+          <Property Name="KeyId" Type="int" />
+          <Property Name="GenreId" Type="int" />
+          <Property Name="InstrumentationId" Type="int" />
+          <Property Name="CompositionCollectionId" Type="int" />
+        </EntityType>
+        <EntityType Name="CompositionCatalogNumber">
+          <Key>
+            <PropertyRef Name="CompositionId" />
+            <PropertyRef Name="CatalogNumberId" />
+          </Key>
+          <Property Name="CompositionId" Type="int" Nullable="false" />
+          <Property Name="CatalogNumberId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CompositionCollection">
+          <Key>
+            <PropertyRef Name="CompositionCollectionId" />
+          </Key>
+          <Property Name="CompositionCollectionId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="IsPopular" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CompositionCollectionCatalogNumber">
+          <Key>
+            <PropertyRef Name="CompositionCollectionId" />
+            <PropertyRef Name="CatalogNumberId" />
+          </Key>
+          <Property Name="CompositionCollectionId" Type="int" Nullable="false" />
+          <Property Name="CatalogNumberId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CompositionCollectionComposer">
+          <Key>
+            <PropertyRef Name="ComposerId" />
+            <PropertyRef Name="CompositionCollectionId" />
+          </Key>
+          <Property Name="ComposerId" Type="int" Nullable="false" />
+          <Property Name="CompositionCollectionId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CompositionCollectionRecording">
+          <Key>
+            <PropertyRef Name="CompositionCollectionId" />
+            <PropertyRef Name="RecordingId" />
+          </Key>
+          <Property Name="CompositionCollectionId" Type="int" Nullable="false" />
+          <Property Name="RecordingId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CompositionComposer">
+          <Key>
+            <PropertyRef Name="ComposerId" />
+            <PropertyRef Name="CompositionId" />
+          </Key>
+          <Property Name="ComposerId" Type="int" Nullable="false" />
+          <Property Name="CompositionId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CompositionLink">
+          <Key>
+            <PropertyRef Name="LinkId" />
+            <PropertyRef Name="CompositionId" />
+          </Key>
+          <Property Name="LinkId" Type="int" Nullable="false" />
+          <Property Name="CompositionId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="CompositionRecording">
+          <Key>
+            <PropertyRef Name="CompositionId" />
+            <PropertyRef Name="RecordingId" />
+          </Key>
+          <Property Name="CompositionId" Type="int" Nullable="false" />
+          <Property Name="RecordingId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Era">
+          <Key>
+            <PropertyRef Name="EraId" />
+          </Key>
+          <Property Name="EraId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Dates" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'ClassicalMusic.dbo.Genre' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="Genre">
+          <Key>
+            <PropertyRef Name="GenreId" />
+            <PropertyRef Name="Name" />
+          </Key>
+          <Property Name="GenreId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="255" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Instrumentation">
+          <Key>
+            <PropertyRef Name="InstrumentationId" />
+          </Key>
+          <Property Name="InstrumentationId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Key">
+          <Key>
+            <PropertyRef Name="KeyId" />
+          </Key>
+          <Property Name="KeyId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Link">
+          <Key>
+            <PropertyRef Name="LinkId" />
+          </Key>
+          <Property Name="LinkId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" />
+          <Property Name="Url" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Location">
+          <Key>
+            <PropertyRef Name="LocationId" />
+          </Key>
+          <Property Name="LocationId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Movement">
+          <Key>
+            <PropertyRef Name="MovementId" />
+          </Key>
+          <Property Name="MovementId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Number" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="IsPopular" Type="bit" Nullable="false" />
+          <Property Name="CompositionId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="MovementRecording">
+          <Key>
+            <PropertyRef Name="MovementId" />
+            <PropertyRef Name="RecordingId" />
+          </Key>
+          <Property Name="MovementId" Type="int" Nullable="false" />
+          <Property Name="RecordingId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Nationality">
+          <Key>
+            <PropertyRef Name="NationalityId" />
+          </Key>
+          <Property Name="NationalityId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Performer">
+          <Key>
+            <PropertyRef Name="PerformerId" />
+          </Key>
+          <Property Name="PerformerId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Recording">
+          <Key>
+            <PropertyRef Name="RecordingId" />
+          </Key>
+          <Property Name="RecordingId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TrackNumber" Type="int" />
+          <Property Name="Dates" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="AlbumId" Type="int" />
+        </EntityType>
+        <EntityType Name="RecordingLocation">
+          <Key>
+            <PropertyRef Name="RecordingId" />
+            <PropertyRef Name="LocationId" />
+          </Key>
+          <Property Name="RecordingId" Type="int" Nullable="false" />
+          <Property Name="LocationId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="RecordingPerformer">
+          <Key>
+            <PropertyRef Name="RecordingId" />
+            <PropertyRef Name="PerformerId" />
+          </Key>
+          <Property Name="RecordingId" Type="int" Nullable="false" />
+          <Property Name="PerformerId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Sample">
+          <Key>
+            <PropertyRef Name="SampleId" />
+          </Key>
+          <Property Name="SampleId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Title" Type="nvarchar(max)" />
+          <Property Name="Artists" Type="nvarchar(max)" />
+          <Property Name="ComposerID" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Catalog_Composer">
+          <End Role="Composer" Type="Self.Composer" Multiplicity="1" />
+          <End Role="Catalog" Type="Self.Catalog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Composer">
+              <PropertyRef Name="ComposerId" />
+            </Principal>
+            <Dependent Role="Catalog">
+              <PropertyRef Name="ComposerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CatalogNumber_Catalog">
+          <End Role="Catalog" Type="Self.Catalog" Multiplicity="1" />
+          <End Role="CatalogNumber" Type="Self.CatalogNumber" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Catalog">
+              <PropertyRef Name="CatalogId" />
+            </Principal>
+            <Dependent Role="CatalogNumber">
+              <PropertyRef Name="CatalogId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Composer_Location">
+          <End Role="Location" Type="Self.Location" Multiplicity="0..1" />
+          <End Role="Composer" Type="Self.Composer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Location">
+              <PropertyRef Name="LocationId" />
+            </Principal>
+            <Dependent Role="Composer">
+              <PropertyRef Name="BirthLocationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Composer_Location1">
+          <End Role="Location" Type="Self.Location" Multiplicity="0..1" />
+          <End Role="Composer" Type="Self.Composer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Location">
+              <PropertyRef Name="LocationId" />
+            </Principal>
+            <Dependent Role="Composer">
+              <PropertyRef Name="DeathLocationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ComposerBiography_Composer">
+          <End Role="Composer" Type="Self.Composer" Multiplicity="1" />
+          <End Role="ComposerBiography" Type="Self.ComposerBiography" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Composer">
+              <PropertyRef Name="ComposerId" />
+            </Principal>
+            <Dependent Role="ComposerBiography">
+              <PropertyRef Name="ComposerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ComposerEra_Composer">
+          <End Role="Composer" Type="Self.Composer" Multiplicity="1" />
+          <End Role="ComposerEra" Type="Self.ComposerEra" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Composer">
+              <PropertyRef Name="ComposerId" />
+            </Principal>
+            <Dependent Role="ComposerEra">
+              <PropertyRef Name="ComposerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ComposerEra_Era">
+          <End Role="Era" Type="Self.Era" Multiplicity="1" />
+          <End Role="ComposerEra" Type="Self.ComposerEra" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Era">
+              <PropertyRef Name="EraId" />
+            </Principal>
+            <Dependent Role="ComposerEra">
+              <PropertyRef Name="EraId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ComposerImage_Composer">
+          <End Role="Composer" Type="Self.Composer" Multiplicity="1" />
+          <End Role="ComposerImage" Type="Self.ComposerImage" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Composer">
+              <PropertyRef Name="ComposerId" />
+            </Principal>
+            <Dependent Role="ComposerImage">
+              <PropertyRef Name="ComposerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ComposerInfluence_Composer">
+          <End Role="Composer" Type="Self.Composer" Multiplicity="1" />
+          <End Role="ComposerInfluence" Type="Self.ComposerInfluence" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Composer">
+              <PropertyRef Name="ComposerId" />
+            </Principal>
+            <Dependent Role="ComposerInfluence">
+              <PropertyRef Name="ComposerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ComposerInfluence_Composer1">
+          <End Role="Composer" Type="Self.Composer" Multiplicity="1" />
+          <End Role="ComposerInfluence" Type="Self.ComposerInfluence" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Composer">
+              <PropertyRef Name="ComposerId" />
+            </Principal>
+            <Dependent Role="ComposerInfluence">
+              <PropertyRef Name="InfluenceId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ComposerLink_Composer">
+          <End Role="Composer" Type="Self.Composer" Multiplicity="1" />
+          <End Role="ComposerLink" Type="Self.ComposerLink" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Composer">
+              <PropertyRef Name="ComposerId" />
+            </Principal>
+            <Dependent Role="ComposerLink">
+              <PropertyRef Name="ComposerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ComposerLink_Link">
+          <End Role="Link" Type="Self.Link" Multiplicity="1" />
+          <End Role="ComposerLink" Type="Self.ComposerLink" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Link">
+              <PropertyRef Name="LinkId" />
+            </Principal>
+            <Dependent Role="ComposerLink">
+              <PropertyRef Name="LinkId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ComposerNationality_Composer">
+          <End Role="Composer" Type="Self.Composer" Multiplicity="1" />
+          <End Role="ComposerNationality" Type="Self.ComposerNationality" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Composer">
+              <PropertyRef Name="ComposerId" />
+            </Principal>
+            <Dependent Role="ComposerNationality">
+              <PropertyRef Name="ComposerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ComposerNationality_Nationality">
+          <End Role="Nationality" Type="Self.Nationality" Multiplicity="1" />
+          <End Role="ComposerNationality" Type="Self.ComposerNationality" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Nationality">
+              <PropertyRef Name="NationalityId" />
+            </Principal>
+            <Dependent Role="ComposerNationality">
+              <PropertyRef Name="NationalityId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ComposerShortBiography_Composer">
+          <End Role="Composer" Type="Self.Composer" Multiplicity="1" />
+          <End Role="ComposerShortBiography" Type="Self.ComposerShortBiography" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Composer">
+              <PropertyRef Name="ComposerId" />
+            </Principal>
+            <Dependent Role="ComposerShortBiography">
+              <PropertyRef Name="ComposerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Composition_CompositionCollection">
+          <End Role="CompositionCollection" Type="Self.CompositionCollection" Multiplicity="0..1" />
+          <End Role="Composition" Type="Self.Composition" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CompositionCollection">
+              <PropertyRef Name="CompositionCollectionId" />
+            </Principal>
+            <Dependent Role="Composition">
+              <PropertyRef Name="CompositionCollectionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Composition_Instrumentation">
+          <End Role="Instrumentation" Type="Self.Instrumentation" Multiplicity="0..1" />
+          <End Role="Composition" Type="Self.Composition" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Instrumentation">
+              <PropertyRef Name="InstrumentationId" />
+            </Principal>
+            <Dependent Role="Composition">
+              <PropertyRef Name="InstrumentationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Composition_Key">
+          <End Role="Key" Type="Self.Key" Multiplicity="0..1" />
+          <End Role="Composition" Type="Self.Composition" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Key">
+              <PropertyRef Name="KeyId" />
+            </Principal>
+            <Dependent Role="Composition">
+              <PropertyRef Name="KeyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CompositionCollectionCatalogNumber_CatalogNumber">
+          <End Role="CatalogNumber" Type="Self.CatalogNumber" Multiplicity="1" />
+          <End Role="CompositionCollectionCatalogNumber" Type="Self.CompositionCollectionCatalogNumber" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CatalogNumber">
+              <PropertyRef Name="CatalogNumberId" />
+            </Principal>
+            <Dependent Role="CompositionCollectionCatalogNumber">
+              <PropertyRef Name="CatalogNumberId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CompositionCollectionCatalogNumber_CompositionCollection">
+          <End Role="CompositionCollection" Type="Self.CompositionCollection" Multiplicity="1" />
+          <End Role="CompositionCollectionCatalogNumber" Type="Self.CompositionCollectionCatalogNumber" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CompositionCollection">
+              <PropertyRef Name="CompositionCollectionId" />
+            </Principal>
+            <Dependent Role="CompositionCollectionCatalogNumber">
+              <PropertyRef Name="CompositionCollectionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CompositionCollectionComposer_Composer">
+          <End Role="Composer" Type="Self.Composer" Multiplicity="1" />
+          <End Role="CompositionCollectionComposer" Type="Self.CompositionCollectionComposer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Composer">
+              <PropertyRef Name="ComposerId" />
+            </Principal>
+            <Dependent Role="CompositionCollectionComposer">
+              <PropertyRef Name="ComposerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CompositionCollectionComposer_CompositionCollection">
+          <End Role="CompositionCollection" Type="Self.CompositionCollection" Multiplicity="1" />
+          <End Role="CompositionCollectionComposer" Type="Self.CompositionCollectionComposer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CompositionCollection">
+              <PropertyRef Name="CompositionCollectionId" />
+            </Principal>
+            <Dependent Role="CompositionCollectionComposer">
+              <PropertyRef Name="CompositionCollectionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CompositionCollectionRecording_CompositionCollectionRecording">
+          <End Role="CompositionCollection" Type="Self.CompositionCollection" Multiplicity="1" />
+          <End Role="CompositionCollectionRecording" Type="Self.CompositionCollectionRecording" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CompositionCollection">
+              <PropertyRef Name="CompositionCollectionId" />
+            </Principal>
+            <Dependent Role="CompositionCollectionRecording">
+              <PropertyRef Name="CompositionCollectionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CompositionCollectionRecording_Recording">
+          <End Role="Recording" Type="Self.Recording" Multiplicity="1" />
+          <End Role="CompositionCollectionRecording" Type="Self.CompositionCollectionRecording" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Recording">
+              <PropertyRef Name="RecordingId" />
+            </Principal>
+            <Dependent Role="CompositionCollectionRecording">
+              <PropertyRef Name="RecordingId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CompositionComposer_Composer">
+          <End Role="Composer" Type="Self.Composer" Multiplicity="1" />
+          <End Role="CompositionComposer" Type="Self.CompositionComposer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Composer">
+              <PropertyRef Name="ComposerId" />
+            </Principal>
+            <Dependent Role="CompositionComposer">
+              <PropertyRef Name="ComposerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CompositionComposer_Composition">
+          <End Role="Composition" Type="Self.Composition" Multiplicity="1" />
+          <End Role="CompositionComposer" Type="Self.CompositionComposer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Composition">
+              <PropertyRef Name="CompositionId" />
+            </Principal>
+            <Dependent Role="CompositionComposer">
+              <PropertyRef Name="CompositionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CompositionLink_Composition">
+          <End Role="Composition" Type="Self.Composition" Multiplicity="1" />
+          <End Role="CompositionLink" Type="Self.CompositionLink" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Composition">
+              <PropertyRef Name="CompositionId" />
+            </Principal>
+            <Dependent Role="CompositionLink">
+              <PropertyRef Name="CompositionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CompositionLink_Link">
+          <End Role="Link" Type="Self.Link" Multiplicity="1" />
+          <End Role="CompositionLink" Type="Self.CompositionLink" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Link">
+              <PropertyRef Name="LinkId" />
+            </Principal>
+            <Dependent Role="CompositionLink">
+              <PropertyRef Name="LinkId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CompositionRecording_Composition">
+          <End Role="Composition" Type="Self.Composition" Multiplicity="1" />
+          <End Role="CompositionRecording" Type="Self.CompositionRecording" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Composition">
+              <PropertyRef Name="CompositionId" />
+            </Principal>
+            <Dependent Role="CompositionRecording">
+              <PropertyRef Name="CompositionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CompositionRecording_Recording">
+          <End Role="Recording" Type="Self.Recording" Multiplicity="1" />
+          <End Role="CompositionRecording" Type="Self.CompositionRecording" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Recording">
+              <PropertyRef Name="RecordingId" />
+            </Principal>
+            <Dependent Role="CompositionRecording">
+              <PropertyRef Name="RecordingId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CompostionCatalogNumber_CatalogNumber">
+          <End Role="CatalogNumber" Type="Self.CatalogNumber" Multiplicity="1" />
+          <End Role="CompositionCatalogNumber" Type="Self.CompositionCatalogNumber" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CatalogNumber">
+              <PropertyRef Name="CatalogNumberId" />
+            </Principal>
+            <Dependent Role="CompositionCatalogNumber">
+              <PropertyRef Name="CatalogNumberId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CompostionCatalogNumber_Composition">
+          <End Role="Composition" Type="Self.Composition" Multiplicity="1" />
+          <End Role="CompositionCatalogNumber" Type="Self.CompositionCatalogNumber" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Composition">
+              <PropertyRef Name="CompositionId" />
+            </Principal>
+            <Dependent Role="CompositionCatalogNumber">
+              <PropertyRef Name="CompositionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Movement_Composition">
+          <End Role="Composition" Type="Self.Composition" Multiplicity="1" />
+          <End Role="Movement" Type="Self.Movement" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Composition">
+              <PropertyRef Name="CompositionId" />
+            </Principal>
+            <Dependent Role="Movement">
+              <PropertyRef Name="CompositionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MovementRecording_Movement">
+          <End Role="Movement" Type="Self.Movement" Multiplicity="1" />
+          <End Role="MovementRecording" Type="Self.MovementRecording" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Movement">
+              <PropertyRef Name="MovementId" />
+            </Principal>
+            <Dependent Role="MovementRecording">
+              <PropertyRef Name="MovementId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_MovementRecording_Recording">
+          <End Role="Recording" Type="Self.Recording" Multiplicity="1" />
+          <End Role="MovementRecording" Type="Self.MovementRecording" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Recording">
+              <PropertyRef Name="RecordingId" />
+            </Principal>
+            <Dependent Role="MovementRecording">
+              <PropertyRef Name="RecordingId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Recording_Album">
+          <End Role="Album" Type="Self.Album" Multiplicity="0..1" />
+          <End Role="Recording" Type="Self.Recording" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Album">
+              <PropertyRef Name="AlbumId" />
+            </Principal>
+            <Dependent Role="Recording">
+              <PropertyRef Name="AlbumId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RecordingLocation_Location">
+          <End Role="Location" Type="Self.Location" Multiplicity="1" />
+          <End Role="RecordingLocation" Type="Self.RecordingLocation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Location">
+              <PropertyRef Name="LocationId" />
+            </Principal>
+            <Dependent Role="RecordingLocation">
+              <PropertyRef Name="LocationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RecordingLocation_Recording">
+          <End Role="Recording" Type="Self.Recording" Multiplicity="1" />
+          <End Role="RecordingLocation" Type="Self.RecordingLocation" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Recording">
+              <PropertyRef Name="RecordingId" />
+            </Principal>
+            <Dependent Role="RecordingLocation">
+              <PropertyRef Name="RecordingId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RecordingPerformer_Performer">
+          <End Role="Performer" Type="Self.Performer" Multiplicity="1" />
+          <End Role="RecordingPerformer" Type="Self.RecordingPerformer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Performer">
+              <PropertyRef Name="PerformerId" />
+            </Principal>
+            <Dependent Role="RecordingPerformer">
+              <PropertyRef Name="PerformerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_RecordingPerformer_Recording">
+          <End Role="Recording" Type="Self.Recording" Multiplicity="1" />
+          <End Role="RecordingPerformer" Type="Self.RecordingPerformer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Recording">
+              <PropertyRef Name="RecordingId" />
+            </Principal>
+            <Dependent Role="RecordingPerformer">
+              <PropertyRef Name="RecordingId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Sample_Composer">
+          <End Role="Composer" Type="Self.Composer" Multiplicity="1" />
+          <End Role="Sample" Type="Self.Sample" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Composer">
+              <PropertyRef Name="ComposerId" />
+            </Principal>
+            <Dependent Role="Sample">
+              <PropertyRef Name="ComposerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ClassicalMusicModelStoreContainer">
+          <EntitySet Name="Album" EntityType="Self.Album" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Catalog" EntityType="Self.Catalog" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CatalogNumber" EntityType="Self.CatalogNumber" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Composer" EntityType="Self.Composer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ComposerBiography" EntityType="Self.ComposerBiography" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ComposerEra" EntityType="Self.ComposerEra" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ComposerImage" EntityType="Self.ComposerImage" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ComposerInfluence" EntityType="Self.ComposerInfluence" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ComposerLink" EntityType="Self.ComposerLink" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ComposerNationality" EntityType="Self.ComposerNationality" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ComposerShortBiography" EntityType="Self.ComposerShortBiography" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Composition" EntityType="Self.Composition" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CompositionCatalogNumber" EntityType="Self.CompositionCatalogNumber" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CompositionCollection" EntityType="Self.CompositionCollection" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CompositionCollectionCatalogNumber" EntityType="Self.CompositionCollectionCatalogNumber" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CompositionCollectionComposer" EntityType="Self.CompositionCollectionComposer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CompositionCollectionRecording" EntityType="Self.CompositionCollectionRecording" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CompositionComposer" EntityType="Self.CompositionComposer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CompositionLink" EntityType="Self.CompositionLink" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CompositionRecording" EntityType="Self.CompositionRecording" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Era" EntityType="Self.Era" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Instrumentation" EntityType="Self.Instrumentation" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Key" EntityType="Self.Key" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Link" EntityType="Self.Link" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Location" EntityType="Self.Location" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Movement" EntityType="Self.Movement" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="MovementRecording" EntityType="Self.MovementRecording" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Nationality" EntityType="Self.Nationality" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Performer" EntityType="Self.Performer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Recording" EntityType="Self.Recording" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RecordingLocation" EntityType="Self.RecordingLocation" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="RecordingPerformer" EntityType="Self.RecordingPerformer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Sample" EntityType="Self.Sample" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Genre" EntityType="Self.Genre" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [Genre].[GenreId] AS [GenreId], 
+    [Genre].[Name] AS [Name]
+    FROM [dbo].[Genre] AS [Genre]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_Catalog_Composer" Association="Self.FK_Catalog_Composer">
+            <End Role="Composer" EntitySet="Composer" />
+            <End Role="Catalog" EntitySet="Catalog" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CatalogNumber_Catalog" Association="Self.FK_CatalogNumber_Catalog">
+            <End Role="Catalog" EntitySet="Catalog" />
+            <End Role="CatalogNumber" EntitySet="CatalogNumber" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Composer_Location" Association="Self.FK_Composer_Location">
+            <End Role="Location" EntitySet="Location" />
+            <End Role="Composer" EntitySet="Composer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Composer_Location1" Association="Self.FK_Composer_Location1">
+            <End Role="Location" EntitySet="Location" />
+            <End Role="Composer" EntitySet="Composer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ComposerBiography_Composer" Association="Self.FK_ComposerBiography_Composer">
+            <End Role="Composer" EntitySet="Composer" />
+            <End Role="ComposerBiography" EntitySet="ComposerBiography" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ComposerEra_Composer" Association="Self.FK_ComposerEra_Composer">
+            <End Role="Composer" EntitySet="Composer" />
+            <End Role="ComposerEra" EntitySet="ComposerEra" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ComposerEra_Era" Association="Self.FK_ComposerEra_Era">
+            <End Role="Era" EntitySet="Era" />
+            <End Role="ComposerEra" EntitySet="ComposerEra" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ComposerImage_Composer" Association="Self.FK_ComposerImage_Composer">
+            <End Role="Composer" EntitySet="Composer" />
+            <End Role="ComposerImage" EntitySet="ComposerImage" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ComposerInfluence_Composer" Association="Self.FK_ComposerInfluence_Composer">
+            <End Role="Composer" EntitySet="Composer" />
+            <End Role="ComposerInfluence" EntitySet="ComposerInfluence" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ComposerInfluence_Composer1" Association="Self.FK_ComposerInfluence_Composer1">
+            <End Role="Composer" EntitySet="Composer" />
+            <End Role="ComposerInfluence" EntitySet="ComposerInfluence" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ComposerLink_Composer" Association="Self.FK_ComposerLink_Composer">
+            <End Role="Composer" EntitySet="Composer" />
+            <End Role="ComposerLink" EntitySet="ComposerLink" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ComposerLink_Link" Association="Self.FK_ComposerLink_Link">
+            <End Role="Link" EntitySet="Link" />
+            <End Role="ComposerLink" EntitySet="ComposerLink" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ComposerNationality_Composer" Association="Self.FK_ComposerNationality_Composer">
+            <End Role="Composer" EntitySet="Composer" />
+            <End Role="ComposerNationality" EntitySet="ComposerNationality" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ComposerNationality_Nationality" Association="Self.FK_ComposerNationality_Nationality">
+            <End Role="Nationality" EntitySet="Nationality" />
+            <End Role="ComposerNationality" EntitySet="ComposerNationality" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ComposerShortBiography_Composer" Association="Self.FK_ComposerShortBiography_Composer">
+            <End Role="Composer" EntitySet="Composer" />
+            <End Role="ComposerShortBiography" EntitySet="ComposerShortBiography" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Composition_CompositionCollection" Association="Self.FK_Composition_CompositionCollection">
+            <End Role="CompositionCollection" EntitySet="CompositionCollection" />
+            <End Role="Composition" EntitySet="Composition" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Composition_Instrumentation" Association="Self.FK_Composition_Instrumentation">
+            <End Role="Instrumentation" EntitySet="Instrumentation" />
+            <End Role="Composition" EntitySet="Composition" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Composition_Key" Association="Self.FK_Composition_Key">
+            <End Role="Key" EntitySet="Key" />
+            <End Role="Composition" EntitySet="Composition" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CompositionCollectionCatalogNumber_CatalogNumber" Association="Self.FK_CompositionCollectionCatalogNumber_CatalogNumber">
+            <End Role="CatalogNumber" EntitySet="CatalogNumber" />
+            <End Role="CompositionCollectionCatalogNumber" EntitySet="CompositionCollectionCatalogNumber" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CompositionCollectionCatalogNumber_CompositionCollection" Association="Self.FK_CompositionCollectionCatalogNumber_CompositionCollection">
+            <End Role="CompositionCollection" EntitySet="CompositionCollection" />
+            <End Role="CompositionCollectionCatalogNumber" EntitySet="CompositionCollectionCatalogNumber" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CompositionCollectionComposer_Composer" Association="Self.FK_CompositionCollectionComposer_Composer">
+            <End Role="Composer" EntitySet="Composer" />
+            <End Role="CompositionCollectionComposer" EntitySet="CompositionCollectionComposer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CompositionCollectionComposer_CompositionCollection" Association="Self.FK_CompositionCollectionComposer_CompositionCollection">
+            <End Role="CompositionCollection" EntitySet="CompositionCollection" />
+            <End Role="CompositionCollectionComposer" EntitySet="CompositionCollectionComposer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CompositionCollectionRecording_CompositionCollectionRecording" Association="Self.FK_CompositionCollectionRecording_CompositionCollectionRecording">
+            <End Role="CompositionCollection" EntitySet="CompositionCollection" />
+            <End Role="CompositionCollectionRecording" EntitySet="CompositionCollectionRecording" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CompositionCollectionRecording_Recording" Association="Self.FK_CompositionCollectionRecording_Recording">
+            <End Role="Recording" EntitySet="Recording" />
+            <End Role="CompositionCollectionRecording" EntitySet="CompositionCollectionRecording" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CompositionComposer_Composer" Association="Self.FK_CompositionComposer_Composer">
+            <End Role="Composer" EntitySet="Composer" />
+            <End Role="CompositionComposer" EntitySet="CompositionComposer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CompositionComposer_Composition" Association="Self.FK_CompositionComposer_Composition">
+            <End Role="Composition" EntitySet="Composition" />
+            <End Role="CompositionComposer" EntitySet="CompositionComposer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CompositionLink_Composition" Association="Self.FK_CompositionLink_Composition">
+            <End Role="Composition" EntitySet="Composition" />
+            <End Role="CompositionLink" EntitySet="CompositionLink" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CompositionLink_Link" Association="Self.FK_CompositionLink_Link">
+            <End Role="Link" EntitySet="Link" />
+            <End Role="CompositionLink" EntitySet="CompositionLink" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CompositionRecording_Composition" Association="Self.FK_CompositionRecording_Composition">
+            <End Role="Composition" EntitySet="Composition" />
+            <End Role="CompositionRecording" EntitySet="CompositionRecording" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CompositionRecording_Recording" Association="Self.FK_CompositionRecording_Recording">
+            <End Role="Recording" EntitySet="Recording" />
+            <End Role="CompositionRecording" EntitySet="CompositionRecording" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CompostionCatalogNumber_CatalogNumber" Association="Self.FK_CompostionCatalogNumber_CatalogNumber">
+            <End Role="CatalogNumber" EntitySet="CatalogNumber" />
+            <End Role="CompositionCatalogNumber" EntitySet="CompositionCatalogNumber" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CompostionCatalogNumber_Composition" Association="Self.FK_CompostionCatalogNumber_Composition">
+            <End Role="Composition" EntitySet="Composition" />
+            <End Role="CompositionCatalogNumber" EntitySet="CompositionCatalogNumber" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Movement_Composition" Association="Self.FK_Movement_Composition">
+            <End Role="Composition" EntitySet="Composition" />
+            <End Role="Movement" EntitySet="Movement" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MovementRecording_Movement" Association="Self.FK_MovementRecording_Movement">
+            <End Role="Movement" EntitySet="Movement" />
+            <End Role="MovementRecording" EntitySet="MovementRecording" />
+          </AssociationSet>
+          <AssociationSet Name="FK_MovementRecording_Recording" Association="Self.FK_MovementRecording_Recording">
+            <End Role="Recording" EntitySet="Recording" />
+            <End Role="MovementRecording" EntitySet="MovementRecording" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Recording_Album" Association="Self.FK_Recording_Album">
+            <End Role="Album" EntitySet="Album" />
+            <End Role="Recording" EntitySet="Recording" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RecordingLocation_Location" Association="Self.FK_RecordingLocation_Location">
+            <End Role="Location" EntitySet="Location" />
+            <End Role="RecordingLocation" EntitySet="RecordingLocation" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RecordingLocation_Recording" Association="Self.FK_RecordingLocation_Recording">
+            <End Role="Recording" EntitySet="Recording" />
+            <End Role="RecordingLocation" EntitySet="RecordingLocation" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RecordingPerformer_Performer" Association="Self.FK_RecordingPerformer_Performer">
+            <End Role="Performer" EntitySet="Performer" />
+            <End Role="RecordingPerformer" EntitySet="RecordingPerformer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_RecordingPerformer_Recording" Association="Self.FK_RecordingPerformer_Recording">
+            <End Role="Recording" EntitySet="Recording" />
+            <End Role="RecordingPerformer" EntitySet="RecordingPerformer" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Sample_Composer" Association="Self.FK_Sample_Composer">
+            <End Role="Composer" EntitySet="Composer" />
+            <End Role="Sample" EntitySet="Sample" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="ClassicalMusicModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Catalog">
+          <Key>
+            <PropertyRef Name="CatalogId" />
+          </Key>
+          <Property Name="CatalogId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Prefix" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ComposerId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Composer" Relationship="Self.FK_Catalog_Composer" FromRole="Catalog" ToRole="Composer" />
+          <NavigationProperty Name="CatalogNumbers" Relationship="Self.FK_CatalogNumber_Catalog" FromRole="Catalog" ToRole="CatalogNumber" />
+        </EntityType>
+        <EntityType Name="CatalogNumber">
+          <Key>
+            <PropertyRef Name="CatalogNumberId" />
+          </Key>
+          <Property Name="CatalogNumberId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Value" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CatalogId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Catalog" Relationship="Self.FK_CatalogNumber_Catalog" FromRole="CatalogNumber" ToRole="Catalog" />
+          <NavigationProperty Name="Compositions" Relationship="ClassicalMusicModel.CompositionCatalogNumber" FromRole="CatalogNumber" ToRole="Composition" />
+          <NavigationProperty Name="CompositionCollections" Relationship="ClassicalMusicModel.CompositionCollectionCatalogNumber" FromRole="CatalogNumber" ToRole="CompositionCollection" />
+        </EntityType>
+        <EntityType Name="Composer">
+          <Key>
+            <PropertyRef Name="ComposerId" />
+          </Key>
+          <Property Name="ComposerId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Dates" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="BirthLocationId" Type="Int32" />
+          <Property Name="DeathLocationId" Type="Int32" />
+          <Property Name="IsPopular" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Catalogs" Relationship="Self.FK_Catalog_Composer" FromRole="Composer" ToRole="Catalog" />
+          <NavigationProperty Name="BirthLocation" Relationship="Self.FK_Composer_Location" FromRole="Composer" ToRole="Location" />
+          <NavigationProperty Name="DeathLocation" Relationship="Self.FK_Composer_Location1" FromRole="Composer" ToRole="Location" />
+          <NavigationProperty Name="ComposerBiography" Relationship="Self.FK_ComposerBiography_Composer" FromRole="Composer" ToRole="ComposerBiography" />
+          <NavigationProperty Name="ComposerImages" Relationship="Self.FK_ComposerImage_Composer" FromRole="Composer" ToRole="ComposerImage" />
+          <NavigationProperty Name="ComposerShortBiography" Relationship="Self.FK_ComposerShortBiography_Composer" FromRole="Composer" ToRole="ComposerShortBiography" />
+          <NavigationProperty Name="Samples" Relationship="Self.FK_Sample_Composer" FromRole="Composer" ToRole="Sample" />
+          <NavigationProperty Name="Nationalities" Relationship="ClassicalMusicModel.ComposerNationality" FromRole="Composer" ToRole="Nationality" />
+          <NavigationProperty Name="Eras" Relationship="ClassicalMusicModel.ComposerEra" FromRole="Composer" ToRole="Era" />
+          <NavigationProperty Name="Influences" Relationship="ClassicalMusicModel.ComposerInfluence" FromRole="Composer" ToRole="Composer1" />
+          <NavigationProperty Name="Influenced" Relationship="ClassicalMusicModel.ComposerInfluence" FromRole="Composer1" ToRole="Composer" />
+          <NavigationProperty Name="Links" Relationship="ClassicalMusicModel.ComposerLink" FromRole="Composer" ToRole="Link" />
+          <NavigationProperty Name="CompositionCollections" Relationship="ClassicalMusicModel.CompositionCollectionComposer" FromRole="Composer" ToRole="CompositionCollection" />
+          <NavigationProperty Name="Compositions" Relationship="ClassicalMusicModel.CompositionComposer" FromRole="Composer" ToRole="Composition" />
+        </EntityType>
+        <EntityType Name="ComposerBiography">
+          <Key>
+            <PropertyRef Name="ComposerId" />
+          </Key>
+          <Property Name="ComposerId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Text" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Composer" Relationship="Self.FK_ComposerBiography_Composer" FromRole="ComposerBiography" ToRole="Composer" />
+        </EntityType>
+        <EntityType Name="ComposerImage">
+          <Key>
+            <PropertyRef Name="ComposerImageId" />
+          </Key>
+          <Property Name="ComposerImageId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ComposerId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Composer" Relationship="Self.FK_ComposerImage_Composer" FromRole="ComposerImage" ToRole="Composer" />
+        </EntityType>
+        <EntityType Name="ComposerShortBiography">
+          <Key>
+            <PropertyRef Name="ComposerId" />
+          </Key>
+          <Property Name="ComposerId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Text" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Composer" Relationship="Self.FK_ComposerShortBiography_Composer" FromRole="ComposerShortBiography" ToRole="Composer" />
+        </EntityType>
+        <EntityType Name="Composition">
+          <Key>
+            <PropertyRef Name="CompositionId" />
+          </Key>
+          <Property Name="CompositionId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Dates" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Nickname" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Premiere" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Dedication" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Occasion" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IsPopular" Type="Boolean" Nullable="false" />
+          <Property Name="Comment" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="KeyId" Type="Int32" />
+          <Property Name="GenreId" Type="Int32" />
+          <Property Name="InstrumentationId" Type="Int32" />
+          <Property Name="CompositionCollectionId" Type="Int32" />
+          <NavigationProperty Name="Key" Relationship="Self.FK_Composition_Key" FromRole="Composition" ToRole="Key" />
+          <NavigationProperty Name="CompositionCollection" Relationship="ClassicalMusicModel.FK_Composition_CompositionCollection" FromRole="Composition" ToRole="CompositionCollection" />
+          <NavigationProperty Name="Instrumentation" Relationship="ClassicalMusicModel.FK_Composition_Instrumentation" FromRole="Composition" ToRole="Instrumentation" />
+          <NavigationProperty Name="Movements" Relationship="ClassicalMusicModel.FK_Movement_Composition" FromRole="Composition" ToRole="Movement" />
+          <NavigationProperty Name="CatalogNumbers" Relationship="ClassicalMusicModel.CompositionCatalogNumber" FromRole="Composition" ToRole="CatalogNumber" />
+          <NavigationProperty Name="Composers" Relationship="ClassicalMusicModel.CompositionComposer" FromRole="Composition" ToRole="Composer" />
+          <NavigationProperty Name="Links" Relationship="ClassicalMusicModel.CompositionLink" FromRole="Composition" ToRole="Link" />
+          <NavigationProperty Name="Recordings" Relationship="ClassicalMusicModel.CompositionRecording" FromRole="Composition" ToRole="Recording" />
+        </EntityType>
+        <EntityType Name="Era">
+          <Key>
+            <PropertyRef Name="EraId" />
+          </Key>
+          <Property Name="EraId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Dates" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Composers" Relationship="ClassicalMusicModel.ComposerEra" FromRole="Era" ToRole="Composer" />
+        </EntityType>
+        <EntityType Name="Key">
+          <Key>
+            <PropertyRef Name="KeyId" />
+          </Key>
+          <Property Name="KeyId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Compositions" Relationship="Self.FK_Composition_Key" FromRole="Key" ToRole="Composition" />
+        </EntityType>
+        <EntityType Name="Link">
+          <Key>
+            <PropertyRef Name="LinkId" />
+          </Key>
+          <Property Name="LinkId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Url" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Composers" Relationship="ClassicalMusicModel.ComposerLink" FromRole="Link" ToRole="Composer" />
+          <NavigationProperty Name="Compositions" Relationship="ClassicalMusicModel.CompositionLink" FromRole="Link" ToRole="Composition" />
+        </EntityType>
+        <EntityType Name="Location">
+          <Key>
+            <PropertyRef Name="LocationId" />
+          </Key>
+          <Property Name="LocationId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Composers" Relationship="Self.FK_Composer_Location" FromRole="Location" ToRole="Composer" />
+          <NavigationProperty Name="Composers1" Relationship="Self.FK_Composer_Location1" FromRole="Location" ToRole="Composer" />
+          <NavigationProperty Name="Recordings" Relationship="ClassicalMusicModel.RecordingLocation" FromRole="Location" ToRole="Recording" />
+        </EntityType>
+        <EntityType Name="Nationality">
+          <Key>
+            <PropertyRef Name="NationalityId" />
+          </Key>
+          <Property Name="NationalityId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Composers" Relationship="ClassicalMusicModel.ComposerNationality" FromRole="Nationality" ToRole="Composer" />
+        </EntityType>
+        <EntityType Name="Sample">
+          <Key>
+            <PropertyRef Name="SampleId" />
+          </Key>
+          <Property Name="SampleId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Title" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Artists" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="ComposerID" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Composer" Relationship="Self.FK_Sample_Composer" FromRole="Sample" ToRole="Composer" />
+        </EntityType>
+        <Association Name="FK_Catalog_Composer">
+          <End Role="Composer" Type="Self.Composer" Multiplicity="1" />
+          <End Role="Catalog" Type="Self.Catalog" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Composer">
+              <PropertyRef Name="ComposerId" />
+            </Principal>
+            <Dependent Role="Catalog">
+              <PropertyRef Name="ComposerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CatalogNumber_Catalog">
+          <End Role="Catalog" Type="Self.Catalog" Multiplicity="1" />
+          <End Role="CatalogNumber" Type="Self.CatalogNumber" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Catalog">
+              <PropertyRef Name="CatalogId" />
+            </Principal>
+            <Dependent Role="CatalogNumber">
+              <PropertyRef Name="CatalogId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Composer_Location">
+          <End Role="Location" Type="Self.Location" Multiplicity="0..1" />
+          <End Role="Composer" Type="Self.Composer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Location">
+              <PropertyRef Name="LocationId" />
+            </Principal>
+            <Dependent Role="Composer">
+              <PropertyRef Name="BirthLocationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Composer_Location1">
+          <End Role="Location" Type="Self.Location" Multiplicity="0..1" />
+          <End Role="Composer" Type="Self.Composer" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Location">
+              <PropertyRef Name="LocationId" />
+            </Principal>
+            <Dependent Role="Composer">
+              <PropertyRef Name="DeathLocationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ComposerBiography_Composer">
+          <End Role="Composer" Type="Self.Composer" Multiplicity="1" />
+          <End Role="ComposerBiography" Type="Self.ComposerBiography" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Composer">
+              <PropertyRef Name="ComposerId" />
+            </Principal>
+            <Dependent Role="ComposerBiography">
+              <PropertyRef Name="ComposerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ComposerImage_Composer">
+          <End Role="Composer" Type="Self.Composer" Multiplicity="1" />
+          <End Role="ComposerImage" Type="Self.ComposerImage" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Composer">
+              <PropertyRef Name="ComposerId" />
+            </Principal>
+            <Dependent Role="ComposerImage">
+              <PropertyRef Name="ComposerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ComposerShortBiography_Composer">
+          <End Role="Composer" Type="Self.Composer" Multiplicity="1" />
+          <End Role="ComposerShortBiography" Type="Self.ComposerShortBiography" Multiplicity="0..1" />
+          <ReferentialConstraint>
+            <Principal Role="Composer">
+              <PropertyRef Name="ComposerId" />
+            </Principal>
+            <Dependent Role="ComposerShortBiography">
+              <PropertyRef Name="ComposerId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Sample_Composer">
+          <End Role="Composer" Type="Self.Composer" Multiplicity="1" />
+          <End Role="Sample" Type="Self.Sample" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Composer">
+              <PropertyRef Name="ComposerId" />
+            </Principal>
+            <Dependent Role="Sample">
+              <PropertyRef Name="ComposerID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Composition_Key">
+          <End Role="Key" Type="Self.Key" Multiplicity="0..1" />
+          <End Role="Composition" Type="Self.Composition" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Key">
+              <PropertyRef Name="KeyId" />
+            </Principal>
+            <Dependent Role="Composition">
+              <PropertyRef Name="KeyId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ClassicalMusicEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Catalogs" EntityType="Self.Catalog" />
+          <EntitySet Name="CatalogNumbers" EntityType="Self.CatalogNumber" />
+          <EntitySet Name="Composers" EntityType="Self.Composer" />
+          <EntitySet Name="ComposerBiographies" EntityType="Self.ComposerBiography" />
+          <EntitySet Name="ComposerImages" EntityType="Self.ComposerImage" />
+          <EntitySet Name="ComposerShortBiographies" EntityType="Self.ComposerShortBiography" />
+          <EntitySet Name="Compositions" EntityType="Self.Composition" />
+          <EntitySet Name="Eras" EntityType="Self.Era" />
+          <EntitySet Name="Keys" EntityType="Self.Key" />
+          <EntitySet Name="Links" EntityType="Self.Link" />
+          <EntitySet Name="Locations" EntityType="Self.Location" />
+          <EntitySet Name="Nationalities" EntityType="Self.Nationality" />
+          <EntitySet Name="Samples" EntityType="Self.Sample" />
+          <AssociationSet Name="FK_Catalog_Composer" Association="Self.FK_Catalog_Composer">
+            <End Role="Composer" EntitySet="Composers" />
+            <End Role="Catalog" EntitySet="Catalogs" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CatalogNumber_Catalog" Association="Self.FK_CatalogNumber_Catalog">
+            <End Role="Catalog" EntitySet="Catalogs" />
+            <End Role="CatalogNumber" EntitySet="CatalogNumbers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Composer_Location" Association="Self.FK_Composer_Location">
+            <End Role="Location" EntitySet="Locations" />
+            <End Role="Composer" EntitySet="Composers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Composer_Location1" Association="Self.FK_Composer_Location1">
+            <End Role="Location" EntitySet="Locations" />
+            <End Role="Composer" EntitySet="Composers" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ComposerBiography_Composer" Association="Self.FK_ComposerBiography_Composer">
+            <End Role="Composer" EntitySet="Composers" />
+            <End Role="ComposerBiography" EntitySet="ComposerBiographies" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ComposerImage_Composer" Association="Self.FK_ComposerImage_Composer">
+            <End Role="Composer" EntitySet="Composers" />
+            <End Role="ComposerImage" EntitySet="ComposerImages" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ComposerShortBiography_Composer" Association="Self.FK_ComposerShortBiography_Composer">
+            <End Role="Composer" EntitySet="Composers" />
+            <End Role="ComposerShortBiography" EntitySet="ComposerShortBiographies" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Sample_Composer" Association="Self.FK_Sample_Composer">
+            <End Role="Composer" EntitySet="Composers" />
+            <End Role="Sample" EntitySet="Samples" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Composition_Key" Association="Self.FK_Composition_Key">
+            <End Role="Key" EntitySet="Keys" />
+            <End Role="Composition" EntitySet="Compositions" />
+          </AssociationSet>
+          <AssociationSet Name="ComposerNationality" Association="ClassicalMusicModel.ComposerNationality">
+            <End Role="Composer" EntitySet="Composers" />
+            <End Role="Nationality" EntitySet="Nationalities" />
+          </AssociationSet>
+          <AssociationSet Name="ComposerEra" Association="ClassicalMusicModel.ComposerEra">
+            <End Role="Composer" EntitySet="Composers" />
+            <End Role="Era" EntitySet="Eras" />
+          </AssociationSet>
+          <EntitySet Name="Albums" EntityType="ClassicalMusicModel.Album" />
+          <EntitySet Name="CompositionCollections" EntityType="ClassicalMusicModel.CompositionCollection" />
+          <EntitySet Name="Instrumentations" EntityType="ClassicalMusicModel.Instrumentation" />
+          <EntitySet Name="Movements" EntityType="ClassicalMusicModel.Movement" />
+          <EntitySet Name="Performers" EntityType="ClassicalMusicModel.Performer" />
+          <EntitySet Name="Recordings" EntityType="ClassicalMusicModel.Recording" />
+          <EntitySet Name="Genres" EntityType="ClassicalMusicModel.Genre" />
+          <AssociationSet Name="FK_Recording_Album" Association="ClassicalMusicModel.FK_Recording_Album">
+            <End Role="Album" EntitySet="Albums" />
+            <End Role="Recording" EntitySet="Recordings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Composition_CompositionCollection" Association="ClassicalMusicModel.FK_Composition_CompositionCollection">
+            <End Role="CompositionCollection" EntitySet="CompositionCollections" />
+            <End Role="Composition" EntitySet="Compositions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Composition_Instrumentation" Association="ClassicalMusicModel.FK_Composition_Instrumentation">
+            <End Role="Instrumentation" EntitySet="Instrumentations" />
+            <End Role="Composition" EntitySet="Compositions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Movement_Composition" Association="ClassicalMusicModel.FK_Movement_Composition">
+            <End Role="Composition" EntitySet="Compositions" />
+            <End Role="Movement" EntitySet="Movements" />
+          </AssociationSet>
+          <AssociationSet Name="ComposerInfluence" Association="ClassicalMusicModel.ComposerInfluence">
+            <End Role="Composer" EntitySet="Composers" />
+            <End Role="Composer1" EntitySet="Composers" />
+          </AssociationSet>
+          <AssociationSet Name="ComposerLink" Association="ClassicalMusicModel.ComposerLink">
+            <End Role="Composer" EntitySet="Composers" />
+            <End Role="Link" EntitySet="Links" />
+          </AssociationSet>
+          <AssociationSet Name="CompositionCatalogNumber" Association="ClassicalMusicModel.CompositionCatalogNumber">
+            <End Role="CatalogNumber" EntitySet="CatalogNumbers" />
+            <End Role="Composition" EntitySet="Compositions" />
+          </AssociationSet>
+          <AssociationSet Name="CompositionCollectionCatalogNumber" Association="ClassicalMusicModel.CompositionCollectionCatalogNumber">
+            <End Role="CatalogNumber" EntitySet="CatalogNumbers" />
+            <End Role="CompositionCollection" EntitySet="CompositionCollections" />
+          </AssociationSet>
+          <AssociationSet Name="CompositionCollectionComposer" Association="ClassicalMusicModel.CompositionCollectionComposer">
+            <End Role="Composer" EntitySet="Composers" />
+            <End Role="CompositionCollection" EntitySet="CompositionCollections" />
+          </AssociationSet>
+          <AssociationSet Name="CompositionCollectionRecording" Association="ClassicalMusicModel.CompositionCollectionRecording">
+            <End Role="CompositionCollection" EntitySet="CompositionCollections" />
+            <End Role="Recording" EntitySet="Recordings" />
+          </AssociationSet>
+          <AssociationSet Name="CompositionComposer" Association="ClassicalMusicModel.CompositionComposer">
+            <End Role="Composer" EntitySet="Composers" />
+            <End Role="Composition" EntitySet="Compositions" />
+          </AssociationSet>
+          <AssociationSet Name="CompositionLink" Association="ClassicalMusicModel.CompositionLink">
+            <End Role="Composition" EntitySet="Compositions" />
+            <End Role="Link" EntitySet="Links" />
+          </AssociationSet>
+          <AssociationSet Name="CompositionRecording" Association="ClassicalMusicModel.CompositionRecording">
+            <End Role="Composition" EntitySet="Compositions" />
+            <End Role="Recording" EntitySet="Recordings" />
+          </AssociationSet>
+          <AssociationSet Name="MovementRecording" Association="ClassicalMusicModel.MovementRecording">
+            <End Role="Movement" EntitySet="Movements" />
+            <End Role="Recording" EntitySet="Recordings" />
+          </AssociationSet>
+          <AssociationSet Name="RecordingLocation" Association="ClassicalMusicModel.RecordingLocation">
+            <End Role="Location" EntitySet="Locations" />
+            <End Role="Recording" EntitySet="Recordings" />
+          </AssociationSet>
+          <AssociationSet Name="RecordingPerformer" Association="ClassicalMusicModel.RecordingPerformer">
+            <End Role="Performer" EntitySet="Performers" />
+            <End Role="Recording" EntitySet="Recordings" />
+          </AssociationSet>
+        </EntityContainer>
+        <Association Name="ComposerNationality">
+          <End Type="ClassicalMusicModel.Composer" Role="Composer" Multiplicity="*" />
+          <End Type="ClassicalMusicModel.Nationality" Role="Nationality" Multiplicity="*" />
+        </Association>
+        <Association Name="ComposerEra">
+          <End Type="ClassicalMusicModel.Composer" Role="Composer" Multiplicity="*" />
+          <End Type="ClassicalMusicModel.Era" Role="Era" Multiplicity="*" />
+        </Association>
+        <EntityType Name="Album">
+          <Key>
+            <PropertyRef Name="AlbumId" />
+          </Key>
+          <Property Name="AlbumId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Recordings" Relationship="ClassicalMusicModel.FK_Recording_Album" FromRole="Album" ToRole="Recording" />
+        </EntityType>
+        <EntityType Name="CompositionCollection">
+          <Key>
+            <PropertyRef Name="CompositionCollectionId" />
+          </Key>
+          <Property Name="CompositionCollectionId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IsPopular" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Compositions" Relationship="ClassicalMusicModel.FK_Composition_CompositionCollection" FromRole="CompositionCollection" ToRole="Composition" />
+          <NavigationProperty Name="CatalogNumbers" Relationship="ClassicalMusicModel.CompositionCollectionCatalogNumber" FromRole="CompositionCollection" ToRole="CatalogNumber" />
+          <NavigationProperty Name="Composers" Relationship="ClassicalMusicModel.CompositionCollectionComposer" FromRole="CompositionCollection" ToRole="Composer" />
+          <NavigationProperty Name="Recordings" Relationship="ClassicalMusicModel.CompositionCollectionRecording" FromRole="CompositionCollection" ToRole="Recording" />
+        </EntityType>
+        <EntityType Name="Instrumentation">
+          <Key>
+            <PropertyRef Name="InstrumentationId" />
+          </Key>
+          <Property Name="InstrumentationId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Compositions" Relationship="ClassicalMusicModel.FK_Composition_Instrumentation" FromRole="Instrumentation" ToRole="Composition" />
+        </EntityType>
+        <EntityType Name="Movement">
+          <Key>
+            <PropertyRef Name="MovementId" />
+          </Key>
+          <Property Name="MovementId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Number" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="IsPopular" Type="Boolean" Nullable="false" />
+          <Property Name="CompositionId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Composition" Relationship="ClassicalMusicModel.FK_Movement_Composition" FromRole="Movement" ToRole="Composition" />
+          <NavigationProperty Name="Recordings" Relationship="ClassicalMusicModel.MovementRecording" FromRole="Movement" ToRole="Recording" />
+        </EntityType>
+        <EntityType Name="Performer">
+          <Key>
+            <PropertyRef Name="PerformerId" />
+          </Key>
+          <Property Name="PerformerId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Recordings" Relationship="ClassicalMusicModel.RecordingPerformer" FromRole="Performer" ToRole="Recording" />
+        </EntityType>
+        <EntityType Name="Recording">
+          <Key>
+            <PropertyRef Name="RecordingId" />
+          </Key>
+          <Property Name="RecordingId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TrackNumber" Type="Int32" />
+          <Property Name="Dates" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="AlbumId" Type="Int32" />
+          <NavigationProperty Name="Album" Relationship="ClassicalMusicModel.FK_Recording_Album" FromRole="Recording" ToRole="Album" />
+          <NavigationProperty Name="CompositionCollections" Relationship="ClassicalMusicModel.CompositionCollectionRecording" FromRole="Recording" ToRole="CompositionCollection" />
+          <NavigationProperty Name="Compositions" Relationship="ClassicalMusicModel.CompositionRecording" FromRole="Recording" ToRole="Composition" />
+          <NavigationProperty Name="Movements" Relationship="ClassicalMusicModel.MovementRecording" FromRole="Recording" ToRole="Movement" />
+          <NavigationProperty Name="Locations" Relationship="ClassicalMusicModel.RecordingLocation" FromRole="Recording" ToRole="Location" />
+          <NavigationProperty Name="Performers" Relationship="ClassicalMusicModel.RecordingPerformer" FromRole="Recording" ToRole="Performer" />
+        </EntityType>
+        <EntityType Name="Genre">
+          <Key>
+            <PropertyRef Name="GenreId" />
+            <PropertyRef Name="Name" />
+          </Key>
+          <Property Name="GenreId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
+        </EntityType>
+        <Association Name="FK_Recording_Album">
+          <End Type="ClassicalMusicModel.Album" Role="Album" Multiplicity="0..1" />
+          <End Type="ClassicalMusicModel.Recording" Role="Recording" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Album">
+              <PropertyRef Name="AlbumId" />
+            </Principal>
+            <Dependent Role="Recording">
+              <PropertyRef Name="AlbumId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Composition_CompositionCollection">
+          <End Type="ClassicalMusicModel.CompositionCollection" Role="CompositionCollection" Multiplicity="0..1" />
+          <End Type="ClassicalMusicModel.Composition" Role="Composition" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CompositionCollection">
+              <PropertyRef Name="CompositionCollectionId" />
+            </Principal>
+            <Dependent Role="Composition">
+              <PropertyRef Name="CompositionCollectionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Composition_Instrumentation">
+          <End Type="ClassicalMusicModel.Instrumentation" Role="Instrumentation" Multiplicity="0..1" />
+          <End Type="ClassicalMusicModel.Composition" Role="Composition" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Instrumentation">
+              <PropertyRef Name="InstrumentationId" />
+            </Principal>
+            <Dependent Role="Composition">
+              <PropertyRef Name="InstrumentationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Movement_Composition">
+          <End Type="ClassicalMusicModel.Composition" Role="Composition" Multiplicity="1" />
+          <End Type="ClassicalMusicModel.Movement" Role="Movement" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Composition">
+              <PropertyRef Name="CompositionId" />
+            </Principal>
+            <Dependent Role="Movement">
+              <PropertyRef Name="CompositionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ComposerInfluence">
+          <End Type="ClassicalMusicModel.Composer" Role="Composer" Multiplicity="*" />
+          <End Type="ClassicalMusicModel.Composer" Role="Composer1" Multiplicity="*" />
+        </Association>
+        <Association Name="ComposerLink">
+          <End Type="ClassicalMusicModel.Composer" Role="Composer" Multiplicity="*" />
+          <End Type="ClassicalMusicModel.Link" Role="Link" Multiplicity="*" />
+        </Association>
+        <Association Name="CompositionCatalogNumber">
+          <End Type="ClassicalMusicModel.CatalogNumber" Role="CatalogNumber" Multiplicity="*" />
+          <End Type="ClassicalMusicModel.Composition" Role="Composition" Multiplicity="*" />
+        </Association>
+        <Association Name="CompositionCollectionCatalogNumber">
+          <End Type="ClassicalMusicModel.CatalogNumber" Role="CatalogNumber" Multiplicity="*" />
+          <End Type="ClassicalMusicModel.CompositionCollection" Role="CompositionCollection" Multiplicity="*" />
+        </Association>
+        <Association Name="CompositionCollectionComposer">
+          <End Type="ClassicalMusicModel.Composer" Role="Composer" Multiplicity="*" />
+          <End Type="ClassicalMusicModel.CompositionCollection" Role="CompositionCollection" Multiplicity="*" />
+        </Association>
+        <Association Name="CompositionCollectionRecording">
+          <End Type="ClassicalMusicModel.CompositionCollection" Role="CompositionCollection" Multiplicity="*" />
+          <End Type="ClassicalMusicModel.Recording" Role="Recording" Multiplicity="*" />
+        </Association>
+        <Association Name="CompositionComposer">
+          <End Type="ClassicalMusicModel.Composer" Role="Composer" Multiplicity="*" />
+          <End Type="ClassicalMusicModel.Composition" Role="Composition" Multiplicity="*" />
+        </Association>
+        <Association Name="CompositionLink">
+          <End Type="ClassicalMusicModel.Composition" Role="Composition" Multiplicity="*" />
+          <End Type="ClassicalMusicModel.Link" Role="Link" Multiplicity="*" />
+        </Association>
+        <Association Name="CompositionRecording">
+          <End Type="ClassicalMusicModel.Composition" Role="Composition" Multiplicity="*" />
+          <End Type="ClassicalMusicModel.Recording" Role="Recording" Multiplicity="*" />
+        </Association>
+        <Association Name="MovementRecording">
+          <End Type="ClassicalMusicModel.Movement" Role="Movement" Multiplicity="*" />
+          <End Type="ClassicalMusicModel.Recording" Role="Recording" Multiplicity="*" />
+        </Association>
+        <Association Name="RecordingLocation">
+          <End Type="ClassicalMusicModel.Location" Role="Location" Multiplicity="*" />
+          <End Type="ClassicalMusicModel.Recording" Role="Recording" Multiplicity="*" />
+        </Association>
+        <Association Name="RecordingPerformer">
+          <End Type="ClassicalMusicModel.Performer" Role="Performer" Multiplicity="*" />
+          <End Type="ClassicalMusicModel.Recording" Role="Recording" Multiplicity="*" />
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="ClassicalMusicModelStoreContainer" CdmEntityContainer="ClassicalMusicEntities">
+          <EntitySetMapping Name="Catalogs">
+            <EntityTypeMapping TypeName="ClassicalMusicModel.Catalog">
+              <MappingFragment StoreEntitySet="Catalog">
+                <ScalarProperty Name="CatalogId" ColumnName="CatalogId" />
+                <ScalarProperty Name="Prefix" ColumnName="Prefix" />
+                <ScalarProperty Name="ComposerId" ColumnName="ComposerId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CatalogNumbers">
+            <EntityTypeMapping TypeName="ClassicalMusicModel.CatalogNumber">
+              <MappingFragment StoreEntitySet="CatalogNumber">
+                <ScalarProperty Name="CatalogNumberId" ColumnName="CatalogNumberId" />
+                <ScalarProperty Name="Value" ColumnName="Value" />
+                <ScalarProperty Name="CatalogId" ColumnName="CatalogId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Composers">
+            <EntityTypeMapping TypeName="ClassicalMusicModel.Composer">
+              <MappingFragment StoreEntitySet="Composer">
+                <ScalarProperty Name="ComposerId" ColumnName="ComposerId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Dates" ColumnName="Dates" />
+                <ScalarProperty Name="BirthLocationId" ColumnName="BirthLocationId" />
+                <ScalarProperty Name="DeathLocationId" ColumnName="DeathLocationId" />
+                <ScalarProperty Name="IsPopular" ColumnName="IsPopular" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ComposerBiographies">
+            <EntityTypeMapping TypeName="ClassicalMusicModel.ComposerBiography">
+              <MappingFragment StoreEntitySet="ComposerBiography">
+                <ScalarProperty Name="ComposerId" ColumnName="ComposerId" />
+                <ScalarProperty Name="Text" ColumnName="Text" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ComposerImages">
+            <EntityTypeMapping TypeName="ClassicalMusicModel.ComposerImage">
+              <MappingFragment StoreEntitySet="ComposerImage">
+                <ScalarProperty Name="ComposerImageId" ColumnName="ComposerImageId" />
+                <ScalarProperty Name="ComposerId" ColumnName="ComposerId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ComposerShortBiographies">
+            <EntityTypeMapping TypeName="ClassicalMusicModel.ComposerShortBiography">
+              <MappingFragment StoreEntitySet="ComposerShortBiography">
+                <ScalarProperty Name="ComposerId" ColumnName="ComposerId" />
+                <ScalarProperty Name="Text" ColumnName="Text" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Compositions">
+            <EntityTypeMapping TypeName="ClassicalMusicModel.Composition">
+              <MappingFragment StoreEntitySet="Composition">
+                <ScalarProperty Name="CompositionId" ColumnName="CompositionId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Dates" ColumnName="Dates" />
+                <ScalarProperty Name="Nickname" ColumnName="Nickname" />
+                <ScalarProperty Name="Premiere" ColumnName="Premiere" />
+                <ScalarProperty Name="Dedication" ColumnName="Dedication" />
+                <ScalarProperty Name="Occasion" ColumnName="Occasion" />
+                <ScalarProperty Name="IsPopular" ColumnName="IsPopular" />
+                <ScalarProperty Name="Comment" ColumnName="Comment" />
+                <ScalarProperty Name="KeyId" ColumnName="KeyId" />
+                <ScalarProperty Name="GenreId" ColumnName="GenreId" />
+                <ScalarProperty Name="InstrumentationId" ColumnName="InstrumentationId" />
+                <ScalarProperty Name="CompositionCollectionId" ColumnName="CompositionCollectionId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Eras">
+            <EntityTypeMapping TypeName="ClassicalMusicModel.Era">
+              <MappingFragment StoreEntitySet="Era">
+                <ScalarProperty Name="EraId" ColumnName="EraId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Dates" ColumnName="Dates" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Keys">
+            <EntityTypeMapping TypeName="ClassicalMusicModel.Key">
+              <MappingFragment StoreEntitySet="Key">
+                <ScalarProperty Name="KeyId" ColumnName="KeyId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Links">
+            <EntityTypeMapping TypeName="ClassicalMusicModel.Link">
+              <MappingFragment StoreEntitySet="Link">
+                <ScalarProperty Name="LinkId" ColumnName="LinkId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Url" ColumnName="Url" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Locations">
+            <EntityTypeMapping TypeName="ClassicalMusicModel.Location">
+              <MappingFragment StoreEntitySet="Location">
+                <ScalarProperty Name="LocationId" ColumnName="LocationId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Nationalities">
+            <EntityTypeMapping TypeName="ClassicalMusicModel.Nationality">
+              <MappingFragment StoreEntitySet="Nationality">
+                <ScalarProperty Name="NationalityId" ColumnName="NationalityId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Samples">
+            <EntityTypeMapping TypeName="ClassicalMusicModel.Sample">
+              <MappingFragment StoreEntitySet="Sample">
+                <ScalarProperty Name="SampleId" ColumnName="SampleId" />
+                <ScalarProperty Name="Title" ColumnName="Title" />
+                <ScalarProperty Name="Artists" ColumnName="Artists" />
+                <ScalarProperty Name="ComposerID" ColumnName="ComposerID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="ComposerNationality" TypeName="ClassicalMusicModel.ComposerNationality" StoreEntitySet="ComposerNationality">
+            <EndProperty Name="Nationality">
+              <ScalarProperty Name="NationalityId" ColumnName="NationalityId" />
+            </EndProperty>
+            <EndProperty Name="Composer">
+              <ScalarProperty Name="ComposerId" ColumnName="ComposerId" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="ComposerEra" TypeName="ClassicalMusicModel.ComposerEra" StoreEntitySet="ComposerEra">
+            <EndProperty Name="Era">
+              <ScalarProperty Name="EraId" ColumnName="EraId" />
+            </EndProperty>
+            <EndProperty Name="Composer">
+              <ScalarProperty Name="ComposerId" ColumnName="ComposerId" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <EntitySetMapping Name="Albums">
+            <EntityTypeMapping TypeName="ClassicalMusicModel.Album">
+              <MappingFragment StoreEntitySet="Album">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="AlbumId" ColumnName="AlbumId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CompositionCollections">
+            <EntityTypeMapping TypeName="ClassicalMusicModel.CompositionCollection">
+              <MappingFragment StoreEntitySet="CompositionCollection">
+                <ScalarProperty Name="IsPopular" ColumnName="IsPopular" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="CompositionCollectionId" ColumnName="CompositionCollectionId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Instrumentations">
+            <EntityTypeMapping TypeName="ClassicalMusicModel.Instrumentation">
+              <MappingFragment StoreEntitySet="Instrumentation">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="InstrumentationId" ColumnName="InstrumentationId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Movements">
+            <EntityTypeMapping TypeName="ClassicalMusicModel.Movement">
+              <MappingFragment StoreEntitySet="Movement">
+                <ScalarProperty Name="CompositionId" ColumnName="CompositionId" />
+                <ScalarProperty Name="IsPopular" ColumnName="IsPopular" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Number" ColumnName="Number" />
+                <ScalarProperty Name="MovementId" ColumnName="MovementId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Performers">
+            <EntityTypeMapping TypeName="ClassicalMusicModel.Performer">
+              <MappingFragment StoreEntitySet="Performer">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="PerformerId" ColumnName="PerformerId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Recordings">
+            <EntityTypeMapping TypeName="ClassicalMusicModel.Recording">
+              <MappingFragment StoreEntitySet="Recording">
+                <ScalarProperty Name="AlbumId" ColumnName="AlbumId" />
+                <ScalarProperty Name="Dates" ColumnName="Dates" />
+                <ScalarProperty Name="TrackNumber" ColumnName="TrackNumber" />
+                <ScalarProperty Name="RecordingId" ColumnName="RecordingId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Genres">
+            <EntityTypeMapping TypeName="ClassicalMusicModel.Genre">
+              <MappingFragment StoreEntitySet="Genre">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="GenreId" ColumnName="GenreId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="ComposerInfluence" TypeName="ClassicalMusicModel.ComposerInfluence" StoreEntitySet="ComposerInfluence">
+            <EndProperty Name="Composer1">
+              <ScalarProperty Name="ComposerId" ColumnName="InfluenceId" />
+            </EndProperty>
+            <EndProperty Name="Composer">
+              <ScalarProperty Name="ComposerId" ColumnName="ComposerId" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="ComposerLink" TypeName="ClassicalMusicModel.ComposerLink" StoreEntitySet="ComposerLink">
+            <EndProperty Name="Link">
+              <ScalarProperty Name="LinkId" ColumnName="LinkId" />
+            </EndProperty>
+            <EndProperty Name="Composer">
+              <ScalarProperty Name="ComposerId" ColumnName="ComposerId" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="CompositionCatalogNumber" TypeName="ClassicalMusicModel.CompositionCatalogNumber" StoreEntitySet="CompositionCatalogNumber">
+            <EndProperty Name="Composition">
+              <ScalarProperty Name="CompositionId" ColumnName="CompositionId" />
+            </EndProperty>
+            <EndProperty Name="CatalogNumber">
+              <ScalarProperty Name="CatalogNumberId" ColumnName="CatalogNumberId" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="CompositionCollectionCatalogNumber" TypeName="ClassicalMusicModel.CompositionCollectionCatalogNumber" StoreEntitySet="CompositionCollectionCatalogNumber">
+            <EndProperty Name="CompositionCollection">
+              <ScalarProperty Name="CompositionCollectionId" ColumnName="CompositionCollectionId" />
+            </EndProperty>
+            <EndProperty Name="CatalogNumber">
+              <ScalarProperty Name="CatalogNumberId" ColumnName="CatalogNumberId" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="CompositionCollectionComposer" TypeName="ClassicalMusicModel.CompositionCollectionComposer" StoreEntitySet="CompositionCollectionComposer">
+            <EndProperty Name="CompositionCollection">
+              <ScalarProperty Name="CompositionCollectionId" ColumnName="CompositionCollectionId" />
+            </EndProperty>
+            <EndProperty Name="Composer">
+              <ScalarProperty Name="ComposerId" ColumnName="ComposerId" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="CompositionCollectionRecording" TypeName="ClassicalMusicModel.CompositionCollectionRecording" StoreEntitySet="CompositionCollectionRecording">
+            <EndProperty Name="Recording">
+              <ScalarProperty Name="RecordingId" ColumnName="RecordingId" />
+            </EndProperty>
+            <EndProperty Name="CompositionCollection">
+              <ScalarProperty Name="CompositionCollectionId" ColumnName="CompositionCollectionId" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="CompositionComposer" TypeName="ClassicalMusicModel.CompositionComposer" StoreEntitySet="CompositionComposer">
+            <EndProperty Name="Composition">
+              <ScalarProperty Name="CompositionId" ColumnName="CompositionId" />
+            </EndProperty>
+            <EndProperty Name="Composer">
+              <ScalarProperty Name="ComposerId" ColumnName="ComposerId" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="CompositionLink" TypeName="ClassicalMusicModel.CompositionLink" StoreEntitySet="CompositionLink">
+            <EndProperty Name="Link">
+              <ScalarProperty Name="LinkId" ColumnName="LinkId" />
+            </EndProperty>
+            <EndProperty Name="Composition">
+              <ScalarProperty Name="CompositionId" ColumnName="CompositionId" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="CompositionRecording" TypeName="ClassicalMusicModel.CompositionRecording" StoreEntitySet="CompositionRecording">
+            <EndProperty Name="Recording">
+              <ScalarProperty Name="RecordingId" ColumnName="RecordingId" />
+            </EndProperty>
+            <EndProperty Name="Composition">
+              <ScalarProperty Name="CompositionId" ColumnName="CompositionId" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="MovementRecording" TypeName="ClassicalMusicModel.MovementRecording" StoreEntitySet="MovementRecording">
+            <EndProperty Name="Recording">
+              <ScalarProperty Name="RecordingId" ColumnName="RecordingId" />
+            </EndProperty>
+            <EndProperty Name="Movement">
+              <ScalarProperty Name="MovementId" ColumnName="MovementId" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="RecordingLocation" TypeName="ClassicalMusicModel.RecordingLocation" StoreEntitySet="RecordingLocation">
+            <EndProperty Name="Recording">
+              <ScalarProperty Name="RecordingId" ColumnName="RecordingId" />
+            </EndProperty>
+            <EndProperty Name="Location">
+              <ScalarProperty Name="LocationId" ColumnName="LocationId" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="RecordingPerformer" TypeName="ClassicalMusicModel.RecordingPerformer" StoreEntitySet="RecordingPerformer">
+            <EndProperty Name="Recording">
+              <ScalarProperty Name="RecordingId" ColumnName="RecordingId" />
+            </EndProperty>
+            <EndProperty Name="Performer">
+              <ScalarProperty Name="PerformerId" ColumnName="PerformerId" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

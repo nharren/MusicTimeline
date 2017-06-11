@@ -17,7 +17,7 @@ namespace NathanHarrenstein.MusicTimeline.Converters
             var youTubeParser = new YouTubeParser();
             var videoId = youTubeParser.ParseVideoId(url);
 
-            return $"https://i.ytimg.com/vi/{videoId}/mqdefault.jpg";
+            return $"https://i.ytimg.com/vi/{videoId}/hqdefault.jpg";
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

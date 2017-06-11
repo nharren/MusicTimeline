@@ -4,20 +4,18 @@
       xmlns:c="clr-namespace:NathanHarrenstein.MusicTimeline.Controls"
       xmlns:cv="clr-namespace:NathanHarrenstein.MusicTimeline.Converters"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-      xmlns:db="clr-namespace:NathanHarrenstein.MusicTimeline.Data"
       xmlns:generic="clr-namespace:NathanHarrenstein.MusicTimeline.Generic"
       xmlns:l="clr-namespace:NathanHarrenstein.MusicTimeline"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:v="clr-namespace:NathanHarrenstein.MusicTimeline.Views"
+      xmlns:api="clr-namespace:MusicTimelineWebApi.Models;assembly=MusicTimelineWebApi.Models"
       Title="ComposerPage"
       d:DesignHeight="600"
       d:DesignWidth="800"
       Background="#EEEADD"
       FontFamily="Segoe UI"
-      Foreground="#FEFEFE"
       mc:Ignorable="d">
     <Page.Resources>
-        <cv:ComposerToBitmapImageConverter x:Key="ComposerToBitmapImageConverter" />
         <cv:UrlToCommandConverter x:Key="UrlToCommandConverter" />
         <cv:UrlToFaviconConverter x:Key="UrlToFaviconConverter" />
         <cv:CompositionsToSortedCompositionsConverter x:Key="CompositionsToSortedCompositionsConverter" />
@@ -86,28 +84,11 @@
                                           Height="120"
                                           Margin="0,8,0,0"
                                           FlagSeparation="20"
-                                          MouseEnter="nationalitiesPanel_MouseEnter"
-                                          MouseLeave="nationalitiesPanel_MouseLeave"
                                           UseLargeFlags="True" />
-                    <c:NationalitiesEditPanel x:Name="nationalitiesEditPanel"
-                                              Grid.Column="2"
-                                              Width="300"
-                                              Height="500"
-                                              Margin="20,8,0,0"
-                                              Cancelling="nationalitiesEditPanel_Cancelling"
-                                              Saving="nationalitiesEditPanel_Saving"
-                                              Visibility="Collapsed" />
                 </Grid>
                 <c:Mp3PlayerControl x:Name="mp3PlayerControl"
                                     Grid.Column="2"
-                                    Height="120"
-                                    MouseEnter="mp3PlayerControl_MouseEnter"
-                                    MouseLeave="mp3PlayerControl_MouseLeave" />
-                <c:SamplesEditPanel x:Name="samplesEditPanel"
-                                    Grid.Column="2"
-                                    Cancelling="samplesEditPanel_Cancelling"
-                                    Saving="samplesEditPanel_Saving"
-                                    Visibility="Collapsed" />
+                                    Height="120" />
             </Grid>
         </Border>
         <!--#endregion-->
@@ -128,16 +109,6 @@
                     <StackPanel Grid.Column="0" Margin="30">
 
                         <!--  Images  -->
-                        <!--<c:AddSaveToolbar x:Name="imagesToolbar"
-                                          Height="31"
-                                          Adding="imagesToolbar_Adding"
-                                          Background="#33555555"
-                                          BorderBrush="Black"
-                                          BorderThickness="0"
-                                          Cancelling="imagesToolbar_Cancelling"
-                                          Removing="imagesToolbar_Removing"
-                                          Saving="imagesToolbar_Saving"
-                                          Visibility="Collapsed" />-->
                         <c:ImagesPanel x:Name="imagesPanel"
                                  HorizontalAlignment="Center"
                                  VerticalAlignment="Top" />
@@ -147,36 +118,10 @@
                             <!--  Born  -->
                             <c:EditableHeaderPanel x:Name="bornHeader"
                                                    Margin="0,15,0,6"
-                                                   ButtonClick="bornHeader_ButtonClick"
-                                                   ButtonForeground="{StaticResource HeaderBrush}"
-                                                   ButtonSize="14.0"
-                                                   FontFamily="Segoe UI Light"
-                                                   FontSize="18.667"
+                                                   FontSize="14pt"
                                                    Foreground="{StaticResource HeaderBrush}"
                                                    Text="Born"
                                                    UnderlineForeground="{StaticResource UnderlineBrush}" />
-                            <StackPanel x:Name="bornEditPanel" Visibility="Collapsed">
-                                <c:SaveToolbar x:Name="bornToolbar"
-                                               Height="31"
-                                               Background="#33555555"
-                                               BorderBrush="Black"
-                                               BorderThickness="0"
-                                               Cancelling="bornToolbar_Cancelling"
-                                               DockPanel.Dock="Top"
-                                               Saving="bornToolbar_Saving" />
-                                <TextBox Name="birthDateTextBox"
-                                         Background="#33000000"
-                                         BorderThickness="0"
-                                         FontSize="11.5pt"
-                                         Foreground="{StaticResource ForegroundBrush}"
-                                         Padding="8,8,8,0" />
-                                <TextBox Name="birthLocationTextBox"
-                                         Background="#33000000"
-                                         BorderThickness="0"
-                                         FontSize="11.5pt"
-                                         Foreground="{StaticResource ForegroundBrush}"
-                                         Padding="8" />
-                            </StackPanel>
                             <TextBlock Name="bornTextBlock"
                                        FontSize="11.5pt"
                                        Foreground="{StaticResource ForegroundBrush}" />
@@ -184,36 +129,11 @@
                             <!--  Died  -->
                             <c:EditableHeaderPanel x:Name="diedHeader"
                                                    Margin="0,15,0,6"
-                                                   ButtonClick="diedHeader_ButtonClick"
-                                                   ButtonForeground="{StaticResource HeaderBrush}"
-                                                   ButtonSize="14.0"
-                                                   FontFamily="Segoe UI Light"
-                                                   FontSize="18.667"
+                                                   FontSize="14pt"
                                                    Foreground="{StaticResource HeaderBrush}"
                                                    Text="Died"
                                                    UnderlineForeground="{StaticResource UnderlineBrush}" />
-                            <StackPanel x:Name="diedEditPanel" Visibility="Collapsed">
-                                <c:SaveToolbar x:Name="diedToolbar"
-                                               Height="31"
-                                               Background="#33555555"
-                                               BorderBrush="Black"
-                                               BorderThickness="0"
-                                               Cancelling="diedToolbar_Cancelling"
-                                               DockPanel.Dock="Top"
-                                               Saving="diedToolbar_Saving" />
-                                <TextBox Name="deathDateTextBox"
-                                         Background="#33000000"
-                                         BorderThickness="0"
-                                         FontSize="11.5pt"
-                                         Foreground="{StaticResource ForegroundBrush}"
-                                         Padding="8,8,8,0" />
-                                <TextBox Name="deathLocationTextBox"
-                                         Background="#33000000"
-                                         BorderThickness="0"
-                                         FontSize="11.5pt"
-                                         Foreground="{StaticResource ForegroundBrush}"
-                                         Padding="8" />
-                            </StackPanel>
+                            
                             <TextBlock Name="diedTextBlock"
                                        FontSize="11.5pt"
                                        Foreground="{StaticResource ForegroundBrush}" />
@@ -221,40 +141,14 @@
                             <!--  Influences  -->
                             <c:EditableHeaderPanel x:Name="influencesHeader"
                                                    Margin="0,15,0,6"
-                                                   ButtonClick="influencesHeader_ButtonClick"
-                                                   ButtonForeground="{StaticResource HeaderBrush}"
-                                                   ButtonSize="14.0"
-                                                   FontFamily="Segoe UI Light"
-                                                   FontSize="18.667"
+                                                   FontSize="14pt"
                                                    Foreground="{StaticResource HeaderBrush}"
                                                    Text="Influences"
                                                    UnderlineForeground="{StaticResource UnderlineBrush}" />
-                            <StackPanel x:Name="influencesEditPanel" Visibility="Collapsed">
-                                <c:SaveToolbar x:Name="influencesToolbar"
-                                               Height="31"
-                                               Background="#33555555"
-                                               BorderBrush="Black"
-                                               BorderThickness="0"
-                                               Cancelling="influencesToolbar_Cancelling"
-                                               DockPanel.Dock="Top"
-                                               Saving="influencesToolbar_Saving" />
-                                <ListBox Name="influencesListBox"
-                                         Background="#33000000"
-                                         BorderThickness="0"
-                                         Padding="5"
-                                         SelectionMode="Multiple">
-                                    <ListBox.ItemTemplate>
-                                        <DataTemplate DataType="{x:Type db:Composer}">
-                                            <TextBlock FontSize="17.333333333333332"
-                                                       Foreground="{StaticResource ForegroundBrush}"
-                                                       Text="{Binding Name}" />
-                                        </DataTemplate>
-                                    </ListBox.ItemTemplate>
-                                </ListBox>
-                            </StackPanel>
+                            
                             <ItemsControl Name="influencesItemsControl">
                                 <ItemsControl.ItemTemplate>
-                                    <DataTemplate DataType="{x:Type db:Composer}">
+                                    <DataTemplate DataType="{x:Type api:Composer}">
                                         <Button Name="influenceButton"
                                                 Margin="0,0,0,5"
                                                 Click="influenceButton_Click"
@@ -282,43 +176,15 @@
                             <!--  Influenced  -->
                             <c:EditableHeaderPanel x:Name="influencedHeader"
                                                    Margin="0,15,0,5"
-                                                   ButtonClick="influencedHeader_ButtonClick"
-                                                   ButtonForeground="{StaticResource HeaderBrush}"
-                                                   ButtonSize="14.0"
-                                                   FontFamily="Segoe UI Light"
-                                                   FontSize="18.667"
+                                                   FontSize="14pt"
                                                    Foreground="{StaticResource HeaderBrush}"
                                                    Text="Influenced"
                                                    UnderlineForeground="{StaticResource UnderlineBrush}" />
-                            <StackPanel x:Name="influencedEditPanel" Visibility="Collapsed">
-                                <c:SaveToolbar x:Name="influencedToolbar"
-                                               Height="31"
-                                               Background="#33555555"
-                                               BorderBrush="Black"
-                                               BorderThickness="0"
-                                               Cancelling="influencedToolbar_Cancelling"
-                                               DockPanel.Dock="Top"
-                                               Saving="influencedToolbar_Saving" />
-                                <ListBox Name="influencedListBox"
-                                         Background="#33000000"
-                                         BorderThickness="0"
-                                         Padding="5"
-                                         SelectionMode="Multiple">
-                                    <ListBox.ItemTemplate>
-                                        <DataTemplate DataType="{x:Type db:Composer}">
-                                            <TextBlock FontSize="11.5pt"
-                                                       Foreground="{StaticResource ForegroundBrush}"
-                                                       Text="{Binding Name}" />
-                                        </DataTemplate>
-                                    </ListBox.ItemTemplate>
-                                </ListBox>
-                            </StackPanel>
                             <ItemsControl Name="influencedItemsControl">
                                 <ItemsControl.ItemTemplate>
-                                    <DataTemplate DataType="{x:Type db:Composer}">
+                                    <DataTemplate DataType="{x:Type api:Composer}">
                                         <Button Name="influencedButton"
                                                 Margin="0,0,0,5"
-                                                Click="influenceButton_Click"
                                                 Content="{Binding Name}"
                                                 Cursor="Hand"
                                                 FontSize="11.5pt"
@@ -340,189 +206,21 @@
                                 </ItemsControl.ItemTemplate>
                             </ItemsControl>
 
-                            <!--  Media  -->
-                            <c:EditableHeaderPanel x:Name="mediaHeader"
-                                                   Margin="0,15,0,5"
-                                                   ButtonClick="mediaHeader_ButtonClick"
-                                                   ButtonForeground="{StaticResource HeaderBrush}"
-                                                   ButtonSize="14.0"
-                                                   FontFamily="Segoe UI Light"
-                                                   FontSize="18.667"
-                                                   Foreground="{StaticResource HeaderBrush}"
-                                                   Text="Media"
-                                                   UnderlineForeground="{StaticResource UnderlineBrush}" />
-                            <StackPanel x:Name="mediaEditPanel" Visibility="Collapsed">
-                                <c:AddSaveToolbar x:Name="mediaToolbar"
-                                                  Height="31"
-                                                  Adding="mediaToolbar_Adding"
-                                                  Background="#33555555"
-                                                  BorderBrush="Black"
-                                                  BorderThickness="0"
-                                                  Cancelling="mediaToolbar_Cancelling"
-                                                  DockPanel.Dock="Top"
-                                                  Removing="mediaToolbar_Removing"
-                                                  Saving="mediaToolbar_Saving" />
-                                <ListBox Name="mediaListBox"
-                                         Background="#33000000"
-                                         BorderThickness="0"
-                                         Padding="5"
-                                         SelectionChanged="mediaListBox_SelectionChanged">
-                                    <ListBox.ItemContainerStyle>
-                                        <Style TargetType="ListBoxItem">
-                                            <Setter Property="IsSelected" Value="{Binding Content.IsSelected, Mode=TwoWay, RelativeSource={RelativeSource Self}}" />
-                                            <Setter Property="Template">
-                                                <Setter.Value>
-                                                    <ControlTemplate TargetType="ListBoxItem">
-                                                        <ContentPresenter />
-                                                    </ControlTemplate>
-                                                </Setter.Value>
-                                            </Setter>
-                                        </Style>
-                                    </ListBox.ItemContainerStyle>
-                                    <ListBox.ItemTemplateSelector>
-                                        <c:SelectionDataTemplateSelector>
-                                            <c:SelectionDataTemplateSelector.SelectedTemplate>
-                                                <DataTemplate DataType="{x:Type db:Link}">
-                                                    <TextBox Name="mediaTextBox"
-                                                             Background="#33000000"
-                                                             BorderThickness="0"
-                                                             FontSize="11.5pt"
-                                                             Foreground="{StaticResource ForegroundBrush}"
-                                                             LostFocus="linkTextBox_LostFocus"
-                                                             Padding="8"
-                                                             Text="{Binding Url}" />
-                                                </DataTemplate>
-                                            </c:SelectionDataTemplateSelector.SelectedTemplate>
-                                            <c:SelectionDataTemplateSelector.UnselectedTemplate>
-                                                <DataTemplate DataType="{x:Type db:Link}">
-                                                    <TextBlock Margin="0,0,0,5"
-                                                               FontSize="11.5pt"
-                                                               Foreground="{StaticResource ForegroundBrush}"
-                                                               Text="{Binding Name}" />
-                                                </DataTemplate>
-                                            </c:SelectionDataTemplateSelector.UnselectedTemplate>
-                                        </c:SelectionDataTemplateSelector>
-                                    </ListBox.ItemTemplateSelector>
-                                </ListBox>
-                            </StackPanel>
-                            <ItemsControl Name="mediaItemsControl"
-                                          MinWidth="16"
-                                          MinHeight="16">
-                                <ItemsControl.ItemTemplateSelector>
-                                    <c:MediaDataTemplateSelector>
-                                        <c:MediaDataTemplateSelector.YouTubeTemplate>
-                                            <DataTemplate DataType="{x:Type db:Link}">
-                                                <Button Name="youTubeButton"
-                                                        Margin="0,0,0,15"
-                                                        HorizontalContentAlignment="Stretch"
-                                                        Click="youTubeButton_Click"
-                                                        Cursor="Hand"
-                                                        Template="{StaticResource ChromelessButtonTemplate}">
-                                                    <Grid>
-                                                        <Grid.ColumnDefinitions>
-                                                            <ColumnDefinition Width="Auto" />
-                                                            <ColumnDefinition />
-                                                        </Grid.ColumnDefinitions>
-                                                        <Image Width="120"
-                                                               Height="75"
-                                                               Source="{Binding Url,
-                                                                                Converter={StaticResource YouTubeToThumbConverter}}" />
-                                                        <TextBlock x:Name="youTubeCaption"
-                                                                   Grid.Column="2"
-                                                                   Margin="8,0,0,0"
-                                                                   HorizontalAlignment="Left"
-                                                                   VerticalAlignment="Center"
-                                                                   FontSize="11.5pt"
-                                                                   Foreground="{StaticResource ForegroundBrush}"
-                                                                   Text="{Binding Name}"
-                                                                   TextWrapping="Wrap" />
-                                                    </Grid>
-                                                </Button>
-                                                <DataTemplate.Triggers>
-                                                    <Trigger Property="IsMouseOver" Value="True">
-                                                        <Setter TargetName="youTubeCaption" Property="Foreground" Value="White" />
-                                                    </Trigger>
-                                                </DataTemplate.Triggers>
-                                            </DataTemplate>
-                                        </c:MediaDataTemplateSelector.YouTubeTemplate>
-                                    </c:MediaDataTemplateSelector>
-                                </ItemsControl.ItemTemplateSelector>
-                            </ItemsControl>
-
                             <!--  Links  -->
                             <c:EditableHeaderPanel x:Name="linksHeader"
                                                    Margin="0,15,0,5"
-                                                   ButtonClick="linksHeader_ButtonClick"
-                                                   ButtonForeground="{StaticResource HeaderBrush}"
-                                                   ButtonSize="14.0"
-                                                   FontFamily="Segoe UI Light"
-                                                   FontSize="18.667"
+                                                   FontSize="14pt"
                                                    Foreground="{StaticResource HeaderBrush}"
                                                    Text="Links"
                                                    UnderlineForeground="{StaticResource UnderlineBrush}" />
-                            <StackPanel x:Name="linksEditPanel" Visibility="Collapsed">
-                                <c:AddSaveToolbar x:Name="linksToolbar"
-                                                  Height="31"
-                                                  Adding="linksToolbar_Adding"
-                                                  Background="#33555555"
-                                                  BorderBrush="Black"
-                                                  BorderThickness="0"
-                                                  Cancelling="linksToolbar_Cancelling"
-                                                  DockPanel.Dock="Top"
-                                                  Removing="linksToolbar_Removing"
-                                                  Saving="linksToolbar_Saving" />
-                                <ListBox Name="linksListBox"
-                                         Background="#33000000"
-                                         BorderThickness="0"
-                                         Padding="5"
-                                         SelectionChanged="linksListBox_SelectionChanged">
-                                    <ListBox.ItemContainerStyle>
-                                        <Style TargetType="ListBoxItem">
-                                            <Setter Property="IsSelected" Value="{Binding Content.IsSelected, Mode=TwoWay, RelativeSource={RelativeSource Self}}" />
-                                            <Setter Property="Template">
-                                                <Setter.Value>
-                                                    <ControlTemplate TargetType="ListBoxItem">
-                                                        <ContentPresenter />
-                                                    </ControlTemplate>
-                                                </Setter.Value>
-                                            </Setter>
-                                        </Style>
-                                    </ListBox.ItemContainerStyle>
-                                    <ListBox.ItemTemplateSelector>
-                                        <c:SelectionDataTemplateSelector>
-                                            <c:SelectionDataTemplateSelector.SelectedTemplate>
-                                                <DataTemplate DataType="{x:Type db:Link}">
-                                                    <TextBox Name="linkTextBox"
-                                                             Background="#33000000"
-                                                             BorderThickness="0"
-                                                             FontSize="11.5pt"
-                                                             Foreground="{StaticResource ForegroundBrush}"
-                                                             LostFocus="linkTextBox_LostFocus"
-                                                             Padding="8"
-                                                             Text="{Binding Url}" />
-                                                </DataTemplate>
-                                            </c:SelectionDataTemplateSelector.SelectedTemplate>
-                                            <c:SelectionDataTemplateSelector.UnselectedTemplate>
-                                                <DataTemplate DataType="{x:Type db:Link}">
-                                                    <TextBlock Margin="0,0,0,5"
-                                                               FontSize="11.5pt"
-                                                               Foreground="{StaticResource ForegroundBrush}"
-                                                               Text="{Binding Name}" />
-                                                </DataTemplate>
-                                            </c:SelectionDataTemplateSelector.UnselectedTemplate>
-                                        </c:SelectionDataTemplateSelector>
-                                    </ListBox.ItemTemplateSelector>
-                                </ListBox>
-                            </StackPanel>
                             <ItemsControl Name="linksItemsControl"
                                           MinWidth="16"
                                           MinHeight="16">
                                 <ItemsControl.ItemTemplate>
-                                    <DataTemplate DataType="{x:Type db:Link}">
+                                    <DataTemplate>
                                         <Button Name="linkButton"
                                                 Margin="0,0,0,5"
-                                                Command="{Binding Url,
-                                                                  Converter={StaticResource UrlToCommandConverter},
+                                                Command="{Binding Converter={StaticResource UrlToCommandConverter},
                                                                   Mode=OneWay,
                                                                   IsAsync=True}"
                                                 Cursor="Hand">
@@ -533,14 +231,13 @@
                                                                Height="16"
                                                                Margin="0,0,10,0"
                                                                SnapsToDevicePixels="True"
-                                                               Source="{Binding Url,
-                                                                                Converter={StaticResource UrlToFaviconConverter},
+                                                               Source="{Binding Converter={StaticResource UrlToFaviconConverter},
                                                                                 Mode=OneWay,
                                                                                 IsAsync=True}" />
                                                         <TextBlock Name="linkTextBlock"
                                                                    FontSize="11.5pt"
                                                                    Foreground="{StaticResource ForegroundBrush}"
-                                                                   Text="{Binding Name}" />
+                                                                   Text="{Binding}" />
                                                     </StackPanel>
                                                     <ControlTemplate.Triggers>
                                                         <Trigger Property="IsMouseOver" Value="True">
@@ -570,60 +267,11 @@
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
                         <c:EditableHeaderPanel x:Name="biographyHeader"
-                                               ButtonClick="biographyHeader_ButtonClick"
-                                               ButtonForeground="Black"
-                                               ButtonMargin="0,10,0,0"
-                                               ButtonSize="14"
-                                               FontFamily="Segoe UI Light"
-                                               FontSize="24"
-                                               Foreground="#FEFEFE"
+                                               FontSize="20pt"
+                                               Foreground="{StaticResource HeaderBrush}"
                                                Text="Biography"
                                                UnderlineForeground="#11000000"
                                                UnderlineOffset="4" />
-                        <Border BorderThickness="1" x:Name="biographyEditPanel" Visibility="Collapsed" BorderBrush="{StaticResource InputBorderBrush}" Grid.Row="1"
-                                   Margin="0,10,0,0" >
-                            
-                        
-                        <DockPanel 
-                                   LastChildFill="True"
-                                   >
-                            <c:BiographyToolbar x:Name="biographyToolbar"
-                                                Height="31"
-                                                Background="{StaticResource MenuBackgroundBrush}"
-                                                Foreground="{StaticResource MenuForegroundBrush}"
-                                                BorderThickness="0,0,0,1"
-                                                BorderBrush="{StaticResource InputBorderBrush}"
-                                                Cancelling="biographyToolbar_Cancelling"
-                                                DockPanel.Dock="Top"
-                                                RichTextBox="{Binding ElementName=biographyRichTextBox}"
-                                                Saving="biographyToolbar_Saving" />
-                            <RichTextBox x:Name="biographyRichTextBox"
-                                         AcceptsReturn="True"
-                                         AcceptsTab="True"
-                                         Background="{StaticResource InputBackgroundBrush}"
-                                         BorderThickness="0"
-                                         Padding="10"
-                                         HorizontalScrollBarVisibility="Disabled"
-                                         IsInactiveSelectionHighlightEnabled="True"
-                                         RequestBringIntoView="biographyTextBox_RequestBringIntoView"
-                                         VerticalScrollBarVisibility="Disabled">
-                                <RichTextBox.Template>
-                                    <ControlTemplate TargetType="{x:Type TextBoxBase}">
-                                        <Border x:Name="border"
-                                                Background="{TemplateBinding Background}"
-                                                BorderBrush="{TemplateBinding BorderBrush}"
-                                                BorderThickness="{TemplateBinding BorderThickness}"
-                                                SnapsToDevicePixels="True">
-                                            <ScrollViewer x:Name="PART_ContentHost"
-                                                          Focusable="False"
-                                                          HorizontalScrollBarVisibility="Hidden"
-                                                          VerticalScrollBarVisibility="Hidden" />
-                                        </Border>
-                                    </ControlTemplate>
-                                </RichTextBox.Template>
-                            </RichTextBox>
-                        </DockPanel>
-                            </Border>
                         <c:NonBlockingFlowDocumentScrollViewer x:Name="biographyScrollViewer"
                                                                Grid.Row="1"
                                                                Grid.ColumnSpan="2"
@@ -634,45 +282,91 @@
                 </Border>
                 <!--#endregion-->
 
-                <!--#region Right Column-->
                 <Border Grid.Column="2"
                         Background="Black"
                         BorderThickness="0">
                     <Grid Margin="30">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
+                            <RowDefinition Height="Auto" />
                             <RowDefinition Height="*" />
                         </Grid.RowDefinitions>
+                        
+                        <c:EditableHeaderPanel x:Name="mediaHeader"
+                                                   Margin="0,15,0,5"
+                                                   FontSize="20pt"
+                                                   Foreground="{StaticResource HeaderBrush}"
+                                                   Text="Media"
+                                                   UnderlineForeground="{StaticResource UnderlineBrush}" />
+                        <ItemsControl Name="mediaItemsControl"
+                                          MinWidth="16"
+                                          MinHeight="16">
+                                <ItemsControl.ItemTemplateSelector>
+                                    <c:MediaDataTemplateSelector>
+                                        <c:MediaDataTemplateSelector.YouTubeTemplate>
+                                            <DataTemplate>
+                                                <Button Name="youTubeButton"
+                                                        Margin="0,0,0,15"
+                                                        HorizontalContentAlignment="Stretch"
+                                                        Click="youTubeButton_Click"
+                                                        Cursor="Hand"
+                                                        Template="{StaticResource ChromelessButtonTemplate}">
+                                                    <Grid>
+                                                        <Grid.RowDefinitions>
+                                                            <RowDefinition Height="Auto" />
+                                                            <RowDefinition />
+                                                        </Grid.RowDefinitions>
+                                                        <Image Width="246"
+                                                               Height="138"
+                                                               Source="{Binding Converter={StaticResource YouTubeToThumbConverter}}" />
+                                                        <TextBlock x:Name="youTubeCaption"
+                                                                   Grid.Row="1"
+                                                                   Margin="8,0,0,0"
+                                                                   HorizontalAlignment="Left"
+                                                                   VerticalAlignment="Center"
+                                                                   FontSize="11.5pt"
+                                                                   Foreground="{StaticResource ForegroundBrush}"
+                                                                   Text="{Binding}"
+                                                                   TextWrapping="Wrap" />
+                                                    </Grid>
+                                                </Button>
+                                                <DataTemplate.Triggers>
+                                                    <Trigger Property="IsMouseOver" Value="True">
+                                                        <Setter TargetName="youTubeCaption" Property="Foreground" Value="White" />
+                                                    </Trigger>
+                                                </DataTemplate.Triggers>
+                                            </DataTemplate>
+                                        </c:MediaDataTemplateSelector.YouTubeTemplate>
+                                    </c:MediaDataTemplateSelector>
+                                </ItemsControl.ItemTemplateSelector>
+                            </ItemsControl>
                         <c:EditableHeaderPanel x:Name="compositionsHeader"
-                                               ButtonClick="compositionsHeader_ButtonClick"
-                                               ButtonForeground="Black"
-                                               ButtonMargin="0,10,0,0"
-                                               ButtonSize="14"
-                                               FontFamily="Segoe UI Light"
-                                               FontSize="24"
-                                               Foreground="#FEFEFE"
+                                               FontSize="20pt"
+                                               Foreground="{StaticResource HeaderBrush}"
                                                Text="Compositions"
                                                UnderlineForeground="#11000000"
-                                               UnderlineOffset="4" />
-                        <c:CompositionsEditPanel x:Name="compositionsEditPanel"
-                                                 Grid.Row="1"
-                                                 Margin="0,10,0,0"
-                                                 Cancelling="compositionsEditPanel_Cancelling"
-                                                 Saving="compositionsEditPanel_Saving"
-                                                 Visibility="Collapsed" />
-                        <c:CompositionsPanel x:Name="compositionsPanel" Grid.Row="1">
+                                               UnderlineOffset="4"
+                                               Grid.Row="2"/>
+                        <c:CompositionsPanel x:Name="compositionsPanel" Grid.Row="3">
                             <c:CompositionsPanel.CompositionItemStyle>
                                 <Style TargetType="TextBox">
                                     <Setter Property="Background" Value="Black" />
-                                    <Setter Property="Foreground" Value="White" />
+                                    <Setter Property="Foreground" Value="{StaticResource ForegroundBrush}" />
                                     <Setter Property="BorderThickness" Value="0" />
                                     <Setter Property="FontSize" Value="11.5pt" />
                                 </Style>
                             </c:CompositionsPanel.CompositionItemStyle>
+                            <c:CompositionsPanel.YearHeaderStyle>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="Foreground" Value="#6e6779" />
+                                    <Setter Property="FontSize" Value="14pt" />
+                                    
+                                </Style>
+                            </c:CompositionsPanel.YearHeaderStyle>
                         </c:CompositionsPanel>
                     </Grid>
                 </Border>
-                <!--#endregion-->
             </Grid>
         </ScrollViewer>
     </Grid>

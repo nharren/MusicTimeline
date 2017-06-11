@@ -7,48 +7,16 @@ namespace NathanHarrenstein.MusicTimeline.Controls
 {
     public class EditableHeaderPanel : Control
     {
-        public static readonly DependencyProperty ButtonForegroundProperty = DependencyProperty.Register("ButtonForeground", typeof(Brush), typeof(EditableHeaderPanel), new PropertyMetadata(SystemColors.ControlTextBrush));
-        public static readonly DependencyProperty ButtonSizeProperty = DependencyProperty.Register("ButtonSize", typeof(double), typeof(EditableHeaderPanel), new PropertyMetadata(SystemFonts.MessageFontSize));
-
         public static readonly DependencyProperty TextProperty = DependencyProperty.Register("Text", typeof(string), typeof(EditableHeaderPanel), new PropertyMetadata(default(string)));
         public static readonly DependencyProperty UnderlineForegroundProperty = DependencyProperty.Register("UnderlineForeground", typeof(Brush), typeof(EditableHeaderPanel), new PropertyMetadata(SystemColors.ControlLightBrush));
         public static readonly DependencyProperty UnderlineOffsetProperty = DependencyProperty.Register("UnderlineOffset", typeof(GridLength), typeof(EditableHeaderPanel), new PropertyMetadata(new GridLength(2.0)));
         public static readonly DependencyProperty UnderlineThicknessProperty = DependencyProperty.Register("UnderlineThickness", typeof(double), typeof(EditableHeaderPanel), new PropertyMetadata(1.0));
-        private Button editButton;
+    
 
         static EditableHeaderPanel()
         {
             DefaultStyleKeyProperty.OverrideMetadata(typeof(EditableHeaderPanel), new FrameworkPropertyMetadata(typeof(EditableHeaderPanel)));
         }
-
-        public event RoutedEventHandler ButtonClick;
-
-        public Brush ButtonForeground
-        {
-            get
-            {
-                return (Brush)GetValue(ButtonForegroundProperty);
-            }
-
-            set
-            {
-                SetValue(ButtonForegroundProperty, value);
-            }
-        }
-
-        public double ButtonSize
-        {
-            get
-            {
-                return (double)GetValue(ButtonSizeProperty);
-            }
-
-            set
-            {
-                SetValue(ButtonSizeProperty, value);
-            }
-        }
-
 
         public string Text
         {
@@ -62,22 +30,6 @@ namespace NathanHarrenstein.MusicTimeline.Controls
                 SetValue(TextProperty, value);
             }
         }
-
-        public Thickness ButtonMargin
-        {
-            get
-            {
-                return (Thickness)GetValue(ButtonMarginProperty);
-            }
-
-            set
-            {
-                SetValue(ButtonMarginProperty, value);
-            }
-        }
-
-        public static readonly DependencyProperty ButtonMarginProperty = DependencyProperty.Register("ButtonMargin", typeof(Thickness), typeof(EditableHeaderPanel), new PropertyMetadata(new Thickness()));
-        private bool isTemplateApplied;
 
         public Brush UnderlineForeground
         {
@@ -116,47 +68,6 @@ namespace NathanHarrenstein.MusicTimeline.Controls
             {
                 SetValue(UnderlineThicknessProperty, value);
             }
-        }
-
-        public override void OnApplyTemplate()
-        {
-            if (isTemplateApplied)
-            {
-                return;
-            }
-
-            editButton = (Button)Template.FindName("editButton", this);
-            editButton.Click += editButton_Click;
-            MouseEnter += EditableHeaderPanel_MouseEnter;
-            MouseLeave += EditableHeaderPanel_MouseLeave;
-
-            isTemplateApplied = true;
-        }
-
-        private void EditableHeaderPanel_MouseLeave(object sender, MouseEventArgs e)
-        {
-            editButton.Visibility = Visibility.Collapsed;
-        }
-
-        private void EditableHeaderPanel_MouseEnter(object sender, MouseEventArgs e)
-        {
-            if (App.HasCredential && editButton.IsEnabled)
-            {
-                editButton.Visibility = Visibility.Visible;
-            }
-        }
-
-        protected virtual void OnButtonClick(RoutedEventArgs e)
-        {
-            ButtonClick?.Invoke(this, e);
-        }
-
-
-        private void editButton_Click(object sender, RoutedEventArgs e)
-        {
-            IsEnabled = false;
-
-            OnButtonClick(e);
         }
     }
 }

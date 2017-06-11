@@ -1,6 +1,8 @@
-﻿namespace NathanHarrenstein.MusicTimeline.Audio
+﻿using System;
+
+namespace NathanHarrenstein.MusicTimeline.Audio
 {
-    public class CanPlayPreviousEventArgs
+    public class CanPlayPreviousEventArgs : EventArgs
     {
         public CanPlayPreviousEventArgs(bool canSkipBack)
         {

@@ -13,11 +13,11 @@ namespace NathanHarrenstein.Timeline
     {
         public static readonly DependencyProperty BackgroundImageProperty = DependencyProperty.Register("BackgroundImage", typeof(ImageSource), typeof(Timeline));
         public static readonly DependencyProperty DatesProperty = DependencyProperty.Register("Dates", typeof(ExtendedDateTimeInterval), typeof(Timeline));
-        public static readonly DependencyProperty ErasProperty = DependencyProperty.Register("Eras", typeof(ICollection<ITimelineEra>), typeof(Timeline));
+        public static readonly DependencyProperty ErasProperty = DependencyProperty.Register("Eras", typeof(ObservableCollection<ITimelineEra>), typeof(Timeline));
         public static readonly DependencyProperty EraTemplatesProperty = DependencyProperty.Register("EraTemplates", typeof(IList), typeof(Timeline));
         public static readonly DependencyProperty EventHeightProperty = DependencyProperty.Register("EventHeight", typeof(double), typeof(Timeline), new PropertyMetadata(26d));
         public static readonly DependencyProperty EventSpacingProperty = DependencyProperty.Register("EventSpacing", typeof(double), typeof(Timeline), new PropertyMetadata(1d));
-        public static readonly DependencyProperty EventsProperty = DependencyProperty.Register("Events", typeof(ICollection<ITimelineEvent>), typeof(Timeline));
+        public static readonly DependencyProperty EventsProperty = DependencyProperty.Register("Events", typeof(ObservableCollection<ITimelineEvent>), typeof(Timeline));
         public static readonly DependencyProperty EventTemplatesProperty = DependencyProperty.Register("EventTemplates", typeof(IList), typeof(Timeline));
         public static readonly DependencyProperty HorizontalOffsetProperty = DependencyProperty.Register("HorizontalOffset", typeof(double), typeof(Timeline));
         public static readonly DependencyProperty LineStrokeProperty = DependencyProperty.Register("LineStroke", typeof(Brush), typeof(Timeline), new PropertyMetadata(Brushes.Black));
@@ -52,7 +52,7 @@ namespace NathanHarrenstein.Timeline
         public Timeline()
         {
             Eras = new ObservableCollection<ITimelineEra>();
-            Events = new SortedSet<ITimelineEvent>(Comparer<ITimelineEvent>.Create((a,b) => a.Dates.Earliest().CompareTo(b.Dates.Earliest())));
+            Events = new ObservableCollection<ITimelineEvent>();
             EventTemplates = new List<DataTemplate>();
             EraTemplates = new List<DataTemplate>();
         }
@@ -118,11 +118,11 @@ namespace NathanHarrenstein.Timeline
             }
         }
 
-        public ICollection<ITimelineEvent> Events
+        public ObservableCollection<ITimelineEvent> Events
         {
             get
             {
-                return (ICollection<ITimelineEvent>)GetValue(EventsProperty);
+                return (ObservableCollection<ITimelineEvent>)GetValue(EventsProperty);
             }
             set
             {

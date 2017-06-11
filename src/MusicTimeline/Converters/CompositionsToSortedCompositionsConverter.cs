@@ -1,5 +1,5 @@
-﻿using NathanHarrenstein.MusicTimeline.Comparers;
-using NathanHarrenstein.MusicTimeline.Data;
+﻿using MusicTimelineWebApi.Models;
+using NathanHarrenstein.MusicTimeline.Comparers;
 using System;
 using System.Collections.Generic;
 using System.Globalization;

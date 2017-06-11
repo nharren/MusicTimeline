@@ -161,7 +161,7 @@ namespace NathanHarrenstein.Timeline
 
         protected override Size MeasureOverride(Size availableSize)
         {
-            if (_hasViewChanged && Dates != null && Eras != null && Ruler != null && availableSize != null)
+            if (_hasViewChanged && Dates != null && Eras != null && Ruler != null && availableSize != null && Eras.Count > 0)
             {
                 if (_cache == null)
                 {
@@ -185,7 +185,7 @@ namespace NathanHarrenstein.Timeline
 
                             if (template != null)
                             {
-                                var eraControl = template.LoadContent() as FrameworkElement;
+                                var eraControl = (FrameworkElement)template.LoadContent();
 
                                 if (eraControl != null)
                                 {

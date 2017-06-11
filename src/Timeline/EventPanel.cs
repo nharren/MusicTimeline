@@ -1,6 +1,7 @@
 ﻿using NathanHarrenstein.Timeline.Input;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.EDTF;
 using System.Linq;
@@ -8,6 +9,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Collections.Specialized;
 
 namespace NathanHarrenstein.Timeline
 {
@@ -16,7 +18,7 @@ namespace NathanHarrenstein.Timeline
         public static readonly DependencyProperty DatesProperty = DependencyProperty.Register("Dates", typeof(ExtendedDateTimeInterval), typeof(EventPanel));
         public static readonly DependencyProperty EventHeightProperty = DependencyProperty.Register("EventHeight", typeof(double), typeof(EventPanel));
         public static readonly DependencyProperty EventSpacingProperty = DependencyProperty.Register("EventSpacing", typeof(double), typeof(EventPanel));
-        public static readonly DependencyProperty EventsProperty = DependencyProperty.Register("Events", typeof(ICollection<ITimelineEvent>), typeof(EventPanel), new PropertyMetadata(new PropertyChangedCallback(EventPanel_EventsChanged)));
+        public static readonly DependencyProperty EventsProperty = DependencyProperty.Register("Events", typeof(ObservableCollection<ITimelineEvent>), typeof(EventPanel), new PropertyMetadata(new PropertyChangedCallback(ProcessEventsChange)));
         public static readonly DependencyProperty EventTemplatesProperty = DependencyProperty.Register("EventTemplates", typeof(List<DataTemplate>), typeof(EventPanel));
         public static readonly DependencyProperty HorizontalOffsetProperty = DependencyProperty.Register("HorizontalOffset", typeof(double), typeof(EventPanel));
         public static readonly DependencyProperty ResolutionProperty = DependencyProperty.Register("Resolution", typeof(TimeResolution), typeof(EventPanel));
@@ -39,8 +41,8 @@ namespace NathanHarrenstein.Timeline
             }
             else
             {
-                SizeChanged += EventPanel_SizeChanged;
-            }
+                SizeChanged += ProcessSizeChange;
+            }  
         }
 
         public ExtendedDateTimeInterval Dates
@@ -67,11 +69,11 @@ namespace NathanHarrenstein.Timeline
             }
         }
 
-        public ICollection<ITimelineEvent> Events
+        public ObservableCollection<ITimelineEvent> Events
         {
             get
             {
-                return (ICollection<ITimelineEvent>)GetValue(EventsProperty);
+                return (ObservableCollection<ITimelineEvent>)GetValue(EventsProperty);
             }
             set
             {
@@ -275,7 +277,7 @@ namespace NathanHarrenstein.Timeline
 
         protected override Size MeasureOverride(Size availableSize)
         {
-            if (Events == null || Dates == null || Ruler == null)
+            if (Events == null || Dates == null || Ruler == null || Events?.Count == 0)
             {
                 return availableSize;
             }
@@ -290,12 +292,12 @@ namespace NathanHarrenstein.Timeline
                 return availableSize;
             }
 
-            hasViewChanged = false;
-
             if (cache == null)
             {
-                cache = new FrameworkElement[Events.Count];
+                CreateEventCache();
             }
+
+            hasViewChanged = false;
 
             var viewportLeftTime = Dates.Earliest() + Ruler.ToTimeSpan(Math.Max(0d, HorizontalOffset - preloadingDistance));
             var viewportRightTime = viewportLeftTime + Ruler.ToTimeSpan(availableSize.Width + preloadingDistance * 2);
@@ -349,23 +351,49 @@ namespace NathanHarrenstein.Timeline
             return availableSize;
         }
 
-       
-
-        private static void EventPanel_EventsChanged(DependencyObject d, DependencyPropertyChangedEventArgs e)
+        private static void ProcessEventsChange(DependencyObject d, DependencyPropertyChangedEventArgs e)
         {
-            ((EventPanel)d).ClearCache();
+            EventPanel eventPanel = (EventPanel)d;
+            eventPanel.ClearEventCache();
+            eventPanel.CreateEventCache();
+
+            var oldEventsCollection = (ObservableCollection<ITimelineEvent>)e.OldValue;
+            var newEventsCollection = (ObservableCollection<ITimelineEvent>)e.NewValue;
+
+            if (oldEventsCollection != null)
+            {
+                oldEventsCollection.CollectionChanged -= eventPanel.ProcessEventChange; 
+            }
+
+            if (newEventsCollection != null)
+            {
+                newEventsCollection.CollectionChanged += eventPanel.ProcessEventChange; 
+            }
+
+            eventPanel.hasViewChanged = true;
         }
 
-        private void ClearCache()
+        private void ProcessEventChange(object sender, NotifyCollectionChangedEventArgs e)
+        {
+            ClearEventCache();
+            CreateEventCache();
+
+            hasViewChanged = true;
+        }
+
+        private void CreateEventCache()
+        {
+            cache = new FrameworkElement[Events.Count];
+        }
+
+        private void ClearEventCache()
         {
             cache = null;
             hasViewChanged = true;
             InvalidateMeasure();
         }
 
-
-
-        private void EventPanel_SizeChanged(object sender, SizeChangedEventArgs e)
+        private void ProcessSizeChange(object sender, SizeChangedEventArgs e)
         {
             hasViewChanged = true;
             previouslyVisibleCacheIndexes = new List<int>(visibleCacheIndexes);

@@ -52,7 +52,7 @@ namespace NathanHarrenstein.MusicTimeline.Audio
             {
                 if (index < 0 || index >= internalPlaylist.Count)
                 {
-                    throw new IndexOutOfRangeException();
+                    throw new ArgumentOutOfRangeException();
                 }
 
                 return internalPlaylist.ElementAt(index);
@@ -62,7 +62,7 @@ namespace NathanHarrenstein.MusicTimeline.Audio
             {
                 if (index < 0 || index >= internalPlaylist.Count)
                 {
-                    throw new IndexOutOfRangeException();
+                    throw new ArgumentOutOfRangeException();
                 }
 
                 Insert(index, value);

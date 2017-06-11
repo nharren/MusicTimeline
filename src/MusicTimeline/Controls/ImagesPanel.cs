@@ -1,4 +1,4 @@
-﻿using NathanHarrenstein.MusicTimeline.Data;
+﻿using MusicTimelineWebApi.Models;
 using System;
 using System.Collections;
 using System.Windows;
@@ -10,7 +10,7 @@ namespace NathanHarrenstein.MusicTimeline.Controls
 {
     public class ImagesPanel : Control
     {
-        public static readonly DependencyProperty ComposerProperty = DependencyProperty.Register("Composer", typeof(Composer), typeof(ImagesPanel), new PropertyMetadata(null, new PropertyChangedCallback(Composer_Changed)));
+        public static readonly DependencyProperty ComposerProperty = DependencyProperty.Register("Composer", typeof(ComposerDetail), typeof(ImagesPanel), new PropertyMetadata(null, new PropertyChangedCallback(Composer_Changed)));
 
         private Button editButton;
         private ListBox listBox;
@@ -23,15 +23,14 @@ namespace NathanHarrenstein.MusicTimeline.Controls
 
         public ImagesPanel()
         {
-            MouseEnter += ImagesPanel_MouseEnter;
-            MouseLeave += ImagesPanel_MouseLeave;
+
         }
 
-        public Composer Composer
+        public ComposerDetail Composer
         {
             get
             {
-                return (Composer)GetValue(ComposerProperty);
+                return (ComposerDetail)GetValue(ComposerProperty);
             }
 
             set
@@ -68,7 +67,7 @@ namespace NathanHarrenstein.MusicTimeline.Controls
 
             foreach (var composerImage in Composer.Images)
             {
-                var uri = App.ClassicalMusicContext.GetReadStreamUri(composerImage);
+                var uri = new Uri(WebApiInterface.ApiRoot + composerImage);
                 var bitmapImage = new BitmapImage(uri);
                 var image = new Image();
                 image.DataContext = composerImage;
@@ -79,26 +78,12 @@ namespace NathanHarrenstein.MusicTimeline.Controls
             }
         }
 
-        private void ImagesPanel_MouseEnter(object sender, MouseEventArgs e)
-        {
-            if (App.HasCredential && editButton.IsEnabled)
-            {
-                editButton.Visibility = Visibility.Visible;
-            }
-        }
-
-        private void ImagesPanel_MouseLeave(object sender, MouseEventArgs e)
-        {
-            editButton.Visibility = Visibility.Collapsed;
-        }
-
         private void listBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var image = listBox.SelectedItem as Image;
 
             if (image != null)
             {
-                var composerImage = (ComposerImage)image.DataContext;
                 selectedImage.Source = image.Source;
             }
         }

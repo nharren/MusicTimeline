@@ -1,15 +1,14 @@
-﻿using NathanHarrenstein.MusicTimeline.Data;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace NathanHarrenstein.MusicTimeline.Filters
 {
-    public class YouTubeFilter : IFilter<Link>
+    public class YouTubeFilter : IFilter<string>
     {
-        public IEnumerable<Link> Apply(IEnumerable<Link> inputItems, FilterMode filterMode)
+        public IEnumerable<string> Apply(IEnumerable<string> inputItems, FilterMode filterMode)
         {
             foreach (var item in inputItems)
             {
-                var lowerCaseUrl = item.Url.ToLower();
+                var lowerCaseUrl = item.ToLower();
 
                 if (lowerCaseUrl.Contains(".youtube.com/") || lowerCaseUrl.Contains("://youtube.com/") || lowerCaseUrl.Contains("://youtu.be/"))
                 {

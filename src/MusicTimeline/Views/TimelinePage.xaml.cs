@@ -1,6 +1,6 @@
-﻿using NathanHarrenstein.MusicTimeline.Controls;
+﻿using MusicTimelineWebApi.Models;
+using NathanHarrenstein.MusicTimeline.Controls;
 using NathanHarrenstein.MusicTimeline.Converters;
-using NathanHarrenstein.MusicTimeline.Data;
 using NathanHarrenstein.MusicTimeline.Input;
 using NathanHarrenstein.MusicTimeline.Utilities;
 using NathanHarrenstein.MusicTimeline.ViewModels;
@@ -38,6 +38,8 @@ namespace NathanHarrenstein.MusicTimeline.Views
         };
 
         private bool isDisposed;
+        private IEnumerable<Era> eras;
+        private IEnumerable<Composer> composers;
 
         public TimelinePage()
         {
@@ -45,94 +47,20 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
             if (!DesignerProperties.GetIsInDesignMode(this))
             {
-                var eras = new DataServiceCollection<Era>(App.ClassicalMusicContext, App.ClassicalMusicContext.Eras, TrackingMode.AutoChangeTracking, "Eras", null, null);
-
-                var composerQuery = App.ClassicalMusicContext.Composers
-                    .Expand(c => c.BirthLocation)
-                    .Expand(c => c.DeathLocation)
-                    .Expand(c => c.Nationalities)
-                    .Expand(c => c.Images)
-                    .Expand(c => c.Eras);
-
-                var composers = new DataServiceCollection<Composer>(App.ClassicalMusicContext, composerQuery, TrackingMode.AutoChangeTracking, "Composers", null, null);
-                var backgroundBrush = new SolidColorBrush((Color)ColorConverter.ConvertFromString("#44000000"));
-
-                foreach (var composer in composers)
-                {
-                    var composerEvent = new ComposerEventViewModel(
-                        NameUtility.ToFirstLast(composer.Name),
-                        ExtendedDateTimeInterval.Parse(composer.Dates),
-                        composer,
-                        backgroundBrush,
-                        Brushes.White,
-                        //composerEras,
-                        GetCommand(composer.ComposerId));
-
-                    timeline.Events.Add(composerEvent);
-                }
-
                 CloseCommand = new DelegateCommand(Exit);
                 GoToCommand = new DelegateCommand(GoToEra);
                 RebuildThumbnailCacheCommand = new DelegateCommand(RebuildThumbnailCache);
                 FullScreenCommand = new DelegateCommand(ExpandToFullScreen);
                 ChangeResolutionCommand = new DelegateCommand(ChangeResolution);
 
+                var startDate = new ExtendedDateTime(476, 1, 1);
+                var endDate = ExtendedDateTime.Now;
+
                 timeline.Ruler = new TimeRuler();
                 timeline.Ruler.TimeRulerUnit = TimeRulerUnit.Day;
                 timeline.Ruler.TimeUnitWidth = 0.04109589041;
-                timeline.Resolution = TimeResolution.Decade;
-                timeline.Dates = new ExtendedDateTimeInterval(new ExtendedDateTime(476, 1, 1), ExtendedDateTime.Now);
-
-                var gradientStops = new GradientStopCollection();
-                var totalDays = timeline.Dates.Span().TotalDays;
-
-                ComposerEraViewModel previousEraViewModel = null;
-
-                foreach (var era in eras)
-                {
-                    var musicEra = new ComposerEraViewModel(era.Name, ExtendedDateTimeInterval.Parse(era.Dates), eraBrushes[era.Name], Brushes.White);
-
-                    gradientStops.Add(new GradientStop(((SolidColorBrush)musicEra.Background).Color, ((musicEra.Dates.Earliest() - timeline.Dates.Earliest()).TotalDays + musicEra.Dates.Span().TotalDays * 0.5) / totalDays));
-
-                    if (previousEraViewModel == null)
-                    {
-                        timeline.Eras.Add(musicEra);
-
-                        previousEraViewModel = musicEra;
-
-                        continue;
-                    }
-
-                    var era1StartDate = previousEraViewModel.Dates.Earliest();
-                    var era1EndDate = previousEraViewModel.Dates.Latest();
-
-                    var era2StartDate = musicEra.Dates.Earliest();
-                    var era2EndDate = musicEra.Dates.Latest();
-
-                    if (era2StartDate < era1EndDate)
-                    {
-                        var transitionBrush = new LinearGradientBrush();
-                        transitionBrush.StartPoint = new Point(0, 0.5);
-                        transitionBrush.EndPoint = new Point(1, 0.5);
-                        transitionBrush.GradientStops.Add(new GradientStop(((SolidColorBrush)previousEraViewModel.Background).Color, 0));
-                        transitionBrush.GradientStops.Add(new GradientStop(((SolidColorBrush)musicEra.Background).Color, 1));
-
-                        var transitionEra = new ComposerEraViewModel(null, new ExtendedDateTimeInterval(era2StartDate, era1EndDate), transitionBrush, Brushes.White);
-
-                        previousEraViewModel.Dates = new ExtendedDateTimeInterval(era1StartDate, era2StartDate);
-                        musicEra.Dates = new ExtendedDateTimeInterval(era1EndDate, era2EndDate);
-
-                        timeline.Eras.Add(transitionEra);
-                    }
-
-                    timeline.Eras.Add(musicEra);
-
-                    previousEraViewModel = musicEra;
-                }
-
-                timeline.GradientStops = gradientStops;
-
-                UpdateLayout();
+                timeline.Resolution = TimeResolution.Decade;               
+                timeline.Dates = new ExtendedDateTimeInterval(startDate, endDate);
 
                 Loaded += TimelinePage_Loaded;
             }
@@ -205,6 +133,152 @@ namespace NathanHarrenstein.MusicTimeline.Views
             set
             {
                 SetValue(RebuildThumbnailCacheCommandProperty, value);
+            }
+        }
+
+        private async void TimelinePage_Loaded(object sender, RoutedEventArgs e)
+        {
+            eras = await WebApiInterface.GetErasAsync();
+            composers = await WebApiInterface.GetComposersAsync();
+
+            CreateComposerViewModels(composers);
+            CreateEraViewModels(eras);
+            ResetPosition();
+            LoadSidebarItems();
+        }
+
+        private void LoadSidebarItems()
+        {
+            var composersItemsControl = (ItemsControl)timeline.Template.FindName("composersItemsControl", timeline);
+            composersItemsControl.ItemsSource = composers.OrderBy(c => c.Name).ToList();
+        }
+
+        private void CreateComposerViewModels(IEnumerable<Composer> composers)
+        {
+            var backgroundColor = Color.FromArgb(0x44, 0x00, 0x00, 0x00);
+            var background = new SolidColorBrush(backgroundColor);
+            var foreground = Brushes.White;
+            var orderedComposers = composers.OrderBy(c => ExtendedDateTimeInterval.Parse(c.Dates).Earliest());
+
+            foreach (var composer in orderedComposers)
+            {
+                var name = NameUtility.ToFirstLast(composer.Name);
+                var dates = ExtendedDateTimeInterval.Parse(composer.Dates);
+                var clickCommand = GetClickCommand(composer.Id);
+                var thumbnail = WebApiInterface.ApiRoot + composer.Thumbnail;
+                var composerEventViewModel = new ComposerEventViewModel(name, dates, composer, background, foreground, clickCommand, thumbnail);
+
+                timeline.Events.Add(composerEventViewModel);
+            }
+        }
+
+        private DelegateCommand GetClickCommand(int composerId)
+        {
+            var navigateToComposerPage = new Action<object>(o =>
+            {
+                Application.Current.Properties["SelectedComposer"] = composerId;
+                Application.Current.Properties["HorizontalOffset"] = timeline.HorizontalOffset;
+                Application.Current.Properties["VerticalOffset"] = timeline.VerticalOffset;
+
+                var composerPageUri = new Uri("pack://application:,,,/Views/ComposerPage.xaml");
+                var navigationWindow = (NavigationWindow)Application.Current.MainWindow;
+                navigationWindow.Navigate(composerPageUri);
+            });
+
+            return new DelegateCommand(navigateToComposerPage);
+        }
+
+        private void CreateEraViewModels(IEnumerable<Era> eras)
+        {
+            var gradientStops = new GradientStopCollection();
+            var timelineTimeSpan = timeline.Dates.Span();
+            var timelineTotalDays = timelineTimeSpan.TotalDays;
+
+            ComposerEraViewModel previousEraViewModel = null;
+
+            foreach (var era in eras)
+            {
+                var name = era.Name;
+                var dates = ExtendedDateTimeInterval.Parse(era.Dates);
+                var background = eraBrushes[era.Name];
+                var foreground = Brushes.White;
+
+                var composerEraViewModel = new ComposerEraViewModel(name, dates, background, foreground);
+
+                var eraGradientStop = CreateEraGradientStop(timelineTotalDays, background, composerEraViewModel);
+                gradientStops.Add(eraGradientStop);
+
+                if (previousEraViewModel == null)
+                {
+                    timeline.Eras.Add(composerEraViewModel);
+                    previousEraViewModel = composerEraViewModel;
+                    continue;
+                }
+
+                var era1StartDate = previousEraViewModel.Dates.Earliest();
+                var era1EndDate = previousEraViewModel.Dates.Latest();
+
+                var era2StartDate = composerEraViewModel.Dates.Earliest();
+                var era2EndDate = composerEraViewModel.Dates.Latest();
+
+                // If there is an overlap between eras, create transition eras.
+                if (era2StartDate < era1EndDate)
+                {
+                    var previousEraBrush = (SolidColorBrush)previousEraViewModel.Background;
+                    var startGradientStop = new GradientStop(previousEraBrush.Color, 0);
+                    var endGradientStop = new GradientStop(background.Color, 1);
+
+                    var transitionBackground = new LinearGradientBrush();
+                    transitionBackground.StartPoint = new Point(0, 0.5);
+                    transitionBackground.EndPoint = new Point(1, 0.5);                   
+                    transitionBackground.GradientStops.Add(startGradientStop);
+                    transitionBackground.GradientStops.Add(endGradientStop);
+                    var transitionForeground = Brushes.White;
+                    var transitionDates = new ExtendedDateTimeInterval(era2StartDate, era1EndDate);
+
+                    var transitionEra = new ComposerEraViewModel(null, transitionDates, transitionBackground, transitionForeground);
+
+                    previousEraViewModel.Dates = new ExtendedDateTimeInterval(era1StartDate, era2StartDate);
+                    composerEraViewModel.Dates = new ExtendedDateTimeInterval(era1EndDate, era2EndDate);
+
+                    timeline.Eras.Add(transitionEra);
+                }
+
+                timeline.Eras.Add(composerEraViewModel);
+
+                previousEraViewModel = composerEraViewModel;
+            }
+
+            timeline.GradientStops = gradientStops;
+        }
+
+        private GradientStop CreateEraGradientStop(double timelineTotalDays, SolidColorBrush background, ComposerEraViewModel composerEraViewModel)
+        {
+            var backgroundColor = background.Color;
+            var eraTimeOffset = composerEraViewModel.Dates.Earliest() - timeline.Dates.Earliest();
+            var eraDayOffset = eraTimeOffset.TotalDays;
+            var eraTimeSpan = composerEraViewModel.Dates.Span();
+            var eraDaySpan = eraTimeSpan.TotalDays;
+            var halfEraDaySpan = eraDaySpan * 0.5;
+            var eraGradientOffset = (eraDayOffset + halfEraDaySpan) / timelineTotalDays;
+
+            return new GradientStop(backgroundColor, eraGradientOffset);   
+        }
+
+        private void ResetPosition()
+        {
+            var horizontalOffset = Application.Current.Properties["HorizontalOffset"] as double?;
+
+            if (horizontalOffset != null)
+            {
+                timeline.HorizontalOffset = horizontalOffset.Value;
+            }
+
+            var verticalOffset = Application.Current.Properties["VerticalOffset"] as double?;
+
+            if (verticalOffset != null)
+            {
+                timeline.VerticalOffset = verticalOffset.Value;
             }
         }
 
@@ -301,139 +375,8 @@ namespace NathanHarrenstein.MusicTimeline.Views
             composersEditPanel.Visibility = Visibility.Visible;
             composersScrollViewer.Visibility = Visibility.Collapsed;
 
-            composersListBox.ItemsSource = App.ClassicalMusicContext.Composers.OrderBy(c => c.Name).ToList();
-
+            composersListBox.ItemsSource = composers.OrderBy(c => c.Name).ToList();
             composersListBox.Focus();
-        }
-
-        private void composersItemsControl_Loaded(object sender, RoutedEventArgs e)
-        {
-            var composersItemsControl = (ItemsControl)sender;
-            composersItemsControl.ItemsSource = App.ClassicalMusicContext.Composers.OrderBy(c => c.Name).ToList();
-        }
-
-        private void composersListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            var composersListBox = (ListBox)sender;
-            composersListBox.Items.Refresh();
-        }
-
-        private void composersToolbar_Adding(object sender, EventArgs e)
-        {
-            var composersListBox = timeline.Template.FindName("composersListBox", timeline) as ListBox;
-
-            var composer = new Composer();
-            composer.Name = "New Composer";
-
-            App.ClassicalMusicContext.AddToComposers(composer);
-
-            var composerList = (ICollection<Composer>)composersListBox.ItemsSource;
-
-            composerList.Add(composer);
-            composersListBox.Items.Refresh();
-
-            composersListBox.SelectedItem = composer;
-
-            composersListBox.ScrollIntoView(composer);
-        }
-
-        private void composersToolbar_Cancelling(object sender, EventArgs e)
-        {
-            var composersHeader = timeline.Template.FindName("composersHeader", timeline) as EditableHeaderPanel;
-            var composersEditPanel = timeline.Template.FindName("composersEditPanel", timeline) as FrameworkElement;
-            var composersScrollViewer = timeline.Template.FindName("composersScrollViewer", timeline) as ScrollViewer;
-            var composersListBox = timeline.Template.FindName("composersListBox", timeline) as ListBox;
-
-            composersListBox.ItemsSource = null;
-
-            composersScrollViewer.Visibility = Visibility.Visible;
-            composersEditPanel.Visibility = Visibility.Collapsed;
-
-            composersHeader.IsEnabled = true;
-        }
-
-        private void composersToolbar_Removing(object sender, EventArgs e)
-        {
-            var composersListBox = timeline.Template.FindName("composersListBox", timeline) as ListBox;
-            var selectedComposer = (Composer)composersListBox.SelectedItem;
-
-            App.ClassicalMusicContext.DeleteObject(selectedComposer);
-
-            var composersList = (ICollection<Composer>)composersListBox.ItemsSource;
-
-            composersList.Remove(selectedComposer);
-            composersListBox.Items.Refresh();
-        }
-
-        private void composersToolbar_Saving(object sender, EventArgs e)
-        {
-            var composersHeader = (EditableHeaderPanel)timeline.Template.FindName("composersHeader", timeline);
-            var composersEditPanel = (FrameworkElement)timeline.Template.FindName("composersEditPanel", timeline);
-            var composersScrollViewer = (ScrollViewer)timeline.Template.FindName("composersScrollViewer", timeline);
-            var composersListBox = (ListBox)timeline.Template.FindName("composersListBox", timeline);
-            var composersItemsControl = (ItemsControl)timeline.Template.FindName("composersItemsControl", timeline);
-
-            foreach (var composer in App.ClassicalMusicContext.Composers)
-            {
-                if (string.IsNullOrWhiteSpace(composer.Name))
-                {
-                    MessageBox.Show("Could not save because a composer has an empty Name.");
-
-                    return;
-                }
-
-                try
-                {
-                    ExtendedDateTimeInterval.Parse(composer.Dates);
-                }
-                catch (Exception)
-                {
-                    MessageBox.Show("Could not save because a composer has invalid dates.");
-
-                    return;
-                }
-
-                if (ExtendedDateTimeFormatParser.Parse(composer.Dates) == null)
-                {
-                    MessageBox.Show("Could not save because a composer has invalid dates.");
-
-                    return;
-                }
-            }
-
-            App.ClassicalMusicContext.SaveChanges();
-
-            composersItemsControl.ItemsSource = App.ClassicalMusicContext.Composers.OrderBy(c => c.Name);
-
-            composersListBox.ItemsSource = null;
-
-            composersScrollViewer.Visibility = Visibility.Visible;
-            composersEditPanel.Visibility = Visibility.Collapsed;
-
-            composersHeader.IsEnabled = true;
-        }
-
-        private void composerTextBox_Loaded(object sender, RoutedEventArgs e)
-        {
-            var composerTextBox = (TextBox)sender;
-            Keyboard.Focus(composerTextBox);
-        }
-
-        private void composerTextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            var textBox = (TextBox)sender;
-            var composer = (Composer)textBox.DataContext;
-            var entityDescriptor = App.ClassicalMusicContext.GetEntityDescriptor(composer);
-
-            if (entityDescriptor.State != EntityStates.Added)
-            {
-                App.ClassicalMusicContext.ChangeState(composer, EntityStates.Modified);
-            }
-        }
-
-        private void EditMenuItem_Click(object sender, RoutedEventArgs e)
-        {
-            NavigationService.Navigate(new Uri(@"pack://application:,,,/Views/ComposersEditPage.xaml", UriKind.Absolute));
         }
 
         private void Exit(object obj)
@@ -455,33 +398,20 @@ namespace NathanHarrenstein.MusicTimeline.Views
             }
         }
 
-        private DelegateCommand GetCommand(int composerId)
-        {
-            Action<object> command = o =>
-            {
-                Application.Current.Properties["SelectedComposer"] = composerId;
-                Application.Current.Properties["HorizontalOffset"] = timeline.HorizontalOffset;
-                Application.Current.Properties["VerticalOffset"] = timeline.VerticalOffset;
-
-                ((NavigationWindow)Application.Current.MainWindow).Navigate(new Uri("pack://application:,,,/Views/ComposerPage.xaml"));
-            };
-
-            return new DelegateCommand(command);
-        }
-
         private void GoToEra(object obj)
         {
-            var eraQuery = App.ClassicalMusicContext.Eras.First(e => e.Name == (string)obj);
+            var eraQuery = eras.First(e => e.Name == (string)obj);
 
-            var composersSortedByDate = App.ClassicalMusicContext.Composers.ToArray()
+            var composersSortedByDate = composers
                 .Select(c => Tuple.Create(ExtendedDateTimeInterval.Parse(c.Dates).Earliest(), c))
-                .OrderBy(t => t.Item1);
+                .OrderBy(t => t.Item1)
+                .ToArray();
 
             var index = 0;
 
             foreach (var composer in composersSortedByDate)
             {
-                if (composer.Item2.Eras.Contains(eraQuery))
+                if (composer.Item2.Eras.Contains(eraQuery.Id))
                 {
                     timeline.HorizontalOffset = timeline.Ruler.ToPixels(timeline.Dates.Earliest(), composer.Item1);
                     timeline.VerticalOffset = index * (timeline.EventHeight + timeline.EventSpacing);
@@ -505,42 +435,27 @@ namespace NathanHarrenstein.MusicTimeline.Views
 
         private void RebuildThumbnailCache(object obj)
         {
-            var composerToBitmapImageConverter = new ComposerToBitmapImageConverter();
-            composerToBitmapImageConverter.ClearFileCache();
+            //var composerToBitmapImageConverter = new ComposerToBitmapImageConverter();
+            //composerToBitmapImageConverter.ClearFileCache();
 
-            Application.Current.Properties["HorizontalOffset"] = timeline.HorizontalOffset;
-            Application.Current.Properties["VerticalOffset"] = timeline.VerticalOffset;
+            //Application.Current.Properties["HorizontalOffset"] = timeline.HorizontalOffset;
+            //Application.Current.Properties["VerticalOffset"] = timeline.VerticalOffset;
 
-            NavigationService.Refresh();
+            //NavigationService.Refresh();
         }
 
-        private void TimelinePage_Loaded(object sender, RoutedEventArgs e)
-        {
-            var horizontalOffset = Application.Current.Properties["HorizontalOffset"] as double?;
-
-            if (horizontalOffset != null)
-            {
-                timeline.HorizontalOffset = horizontalOffset.Value;
-            }
-
-            var verticalOffset = Application.Current.Properties["VerticalOffset"] as double?;
-
-            if (verticalOffset != null)
-            {
-                timeline.VerticalOffset = verticalOffset.Value;
-            }
-        }
+        
 
         private void composerDatesTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            var textBox = (TextBox)sender;
-            var composer = (Composer)textBox.DataContext;
-            var entityDescriptor = App.ClassicalMusicContext.GetEntityDescriptor(composer);
+            //var textBox = (TextBox)sender;
+            //var composer = (Composer)textBox.DataContext;
+            //var entityDescriptor = App.ClassicalMusicContext.GetEntityDescriptor(composer);
 
-            if (entityDescriptor.State != EntityStates.Added)
-            {
-                App.ClassicalMusicContext.ChangeState(composer, EntityStates.Modified);
-            }
+            //if (entityDescriptor.State != EntityStates.Added)
+            //{
+            //    App.ClassicalMusicContext.ChangeState(composer, EntityStates.Modified);
+            //}
         }
     }
 }

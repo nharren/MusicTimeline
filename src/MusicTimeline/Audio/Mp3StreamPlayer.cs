@@ -12,7 +12,7 @@ using System.Windows.Threading;
 
 namespace NathanHarrenstein.MusicTimeline.Audio
 {
-    public class Mp3StreamPlayer : IAudioSessionEventsHandler
+    public class Mp3StreamPlayer : IAudioSessionEventsHandler, IDisposable
     {
         private AudioSessionControl audioSessionControl;
         private BufferedWaveStream bufferedWaveStream;
@@ -48,7 +48,7 @@ namespace NathanHarrenstein.MusicTimeline.Audio
         public event EventHandler<CanPlayNextEventArgs> CanPlayNextChanged;
         public event EventHandler<CanPlayPreviousEventArgs> CanPlayPreviousChanged;
         public event EventHandler<TimeSpanEventArgs> CurrentTimeChanged;
-        public event EventHandler<Exception> ExceptionOccurred;
+        public event EventHandler<ExceptionEventArgs> ExceptionOccurred;
         public event EventHandler<MuteEventArgs> IsMutedChanged;
         public event EventHandler<PlaybackStateEventArgs> PlaybackStateChanged;
         public event EventHandler<TimeSpanEventArgs> TotalTimeChanged;
@@ -290,18 +290,16 @@ namespace NathanHarrenstein.MusicTimeline.Audio
             }
         }
 
-        internal MMDevice GetMultimediaPlaybackDevice()
+        private MMDevice GetMultimediaPlaybackDevice()
         {
             try
             {
                 var multimediaDeviceEnumerator = new MMDeviceEnumerator();
                 return multimediaDeviceEnumerator.GetDefaultAudioEndpoint(DataFlow.Render, Role.Multimedia);
             }
-            catch (Exception exception)
+            catch (Exception)
             {
-                OnExceptionOccurred(exception);
-
-                throw exception;
+                throw;
             }
         }
 
@@ -337,11 +335,11 @@ namespace NathanHarrenstein.MusicTimeline.Audio
             }
         }
 
-        protected virtual void OnExceptionOccurred(Exception exception)
+        protected virtual void OnExceptionOccurred(ExceptionEventArgs e)
         {
             if (ExceptionOccurred != null)
             {
-                ExceptionOccurred(this, exception);
+                ExceptionOccurred(this, e);
             }
         }
 
@@ -420,7 +418,8 @@ namespace NathanHarrenstein.MusicTimeline.Audio
 
             if (e.Exception != null)
             {
-                OnExceptionOccurred(e.Exception);
+                var exceptionEventArgs = new ExceptionEventArgs(e.Exception);
+                OnExceptionOccurred(exceptionEventArgs);
             }
         }
 
@@ -551,11 +550,12 @@ namespace NathanHarrenstein.MusicTimeline.Audio
             {
                 response = (HttpWebResponse)request.GetResponse();
             }
-            catch (WebException e)
+            catch (WebException exception)
             {
-                if (e.Status != WebExceptionStatus.RequestCanceled)
+                if (exception.Status != WebExceptionStatus.RequestCanceled)
                 {
-                    OnExceptionOccurred(e);
+                    var exceptionEventArgs = new ExceptionEventArgs(exception);
+                    OnExceptionOccurred(exceptionEventArgs);
                 }
 
                 return;
@@ -565,78 +565,109 @@ namespace NathanHarrenstein.MusicTimeline.Audio
 
             IMp3FrameDecompressor decompressor = null;
 
-            try
+            using (var responseStream = response.GetResponseStream())
             {
-                using (var responseStream = response.GetResponseStream())
-                {
-                    var readFullyStream = new ReadFullyStream(responseStream);
+                var readFullyStream = new ReadFullyStream(responseStream);
 
-                    do
+                do
+                {
+                    if (IsBufferNearlyFull)
                     {
-                        if (IsBufferNearlyFull)
+                        Debug.WriteLine("Buffer getting full, taking a break");
+                        Thread.Sleep(500);
+                    }
+                    else
+                    {
+                        Mp3Frame frame;
+
+                        try
                         {
-                            Debug.WriteLine("Buffer getting full, taking a break");
-                            Thread.Sleep(500);
+                            frame = Mp3Frame.LoadFromStream(readFullyStream);
                         }
-                        else
+                        catch (EndOfStreamException)
                         {
-                            Mp3Frame frame;
+                            Debug.WriteLine("Download complete.");
 
-                            try
-                            {
-                                frame = Mp3Frame.LoadFromStream(readFullyStream);
-                            }
-                            catch (EndOfStreamException)
-                            {
-                                Debug.WriteLine("Download complete.");
+                            isDownloaded = true;
 
-                                isDownloaded = true;
-
-                                break;
-                            }
-                            catch (WebException)
-                            {
-                                // probably we have aborted download from the GUI thread
-                                break;
-                            }
-
-                            if (frame == null)
-                            {
-                                Debug.WriteLine("Download complete.");
-
-                                isDownloaded = true;
-
-                                break;
-                            }
-
-                            if (decompressor == null)
-                            {
-                                decompressor = CreateFrameDecompressor(frame);
-                                bufferedWaveStream = new BufferedWaveStream(decompressor.OutputFormat);
-                                bufferedWaveStream.BufferDuration = TimeSpan.FromSeconds(60);
-                            }
-
-                            int decompressed = decompressor.DecompressFrame(frame, buffer, 0);
-                            //Debug.WriteLine(String.Format("Decompressed a frame {0}", decompressed));
-                            bufferedWaveStream.AddSamples(buffer, 0, decompressed);
-
-                            totalBytes += decompressed;
+                            break;
                         }
-                    } while (playbackState != StreamingPlaybackState.Stopped);
+                        catch (WebException)
+                        {
+                            // probably we have aborted download from the GUI thread
+                            break;
+                        }
 
-                    Debug.WriteLine("Exiting");
-                    // was doing this in a finally block, but for some reason
-                    // we are hanging on response stream .Dispose so never get there
-                    decompressor.Dispose();
-                }
-            }
-            finally
-            {
-                if (decompressor != null)
-                {
-                    decompressor.Dispose();
-                }
+                        if (frame == null)
+                        {
+                            Debug.WriteLine("Download complete.");
+
+                            isDownloaded = true;
+
+                            break;
+                        }
+
+                        if (decompressor == null)
+                        {
+                            decompressor = CreateFrameDecompressor(frame);
+                            bufferedWaveStream = new BufferedWaveStream(decompressor.OutputFormat);
+                            bufferedWaveStream.BufferDuration = TimeSpan.FromSeconds(60);
+                        }
+
+                        int decompressed = decompressor.DecompressFrame(frame, buffer, 0);
+                        //Debug.WriteLine(String.Format("Decompressed a frame {0}", decompressed));
+                        bufferedWaveStream.AddSamples(buffer, 0, decompressed);
+
+                        totalBytes += decompressed;
+                    }
+                } while (playbackState != StreamingPlaybackState.Stopped);
+
+                Debug.WriteLine("Exiting");
+                // was doing this in a finally block, but for some reason
+                // we are hanging on response stream .Dispose so never get there
+                decompressor.Dispose();
             }
         }
+
+        #region IDisposable Support
+        private bool disposedValue = false; // To detect redundant calls
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (!disposedValue)
+            {
+                if (disposing)
+                {
+                    audioSessionControl.Dispose();
+                    bufferedWaveStream.Dispose();
+
+                    if (waveOut != null)
+                    {
+                        waveOut.Dispose(); 
+                    }
+                }
+
+                // TODO: free unmanaged resources (unmanaged objects) and override a finalizer below.
+                // TODO: set large fields to null.
+
+                disposedValue = true;
+            }
+        }
+
+        // TODO: override a finalizer only if Dispose(bool disposing) above has code to free unmanaged resources.
+        // ~Mp3StreamPlayer() {
+        //   // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+        //   Dispose(false);
+        // }
+
+        // This code added to correctly implement the disposable pattern.
+        public void Dispose()
+        {
+            // Do not change this code. Put cleanup code in Dispose(bool disposing) above.
+            Dispose(true);
+            // TODO: uncomment the following line if the finalizer is overridden above.
+            // GC.SuppressFinalize(this);
+        }
+        #endregion
     }
 }
