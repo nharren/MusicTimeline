@@ -20,11 +20,11 @@ namespace ClassicalMusicDbService.Models
             this.Catalogs = new HashSet<Catalog>();
             this.ComposerImages = new HashSet<ComposerImage>();
             this.Samples = new HashSet<Sample>();
-            this.Nationalities = new HashSet<Nationality>();
             this.Eras = new HashSet<Era>();
-            this.Influences = new HashSet<Composer>();
             this.Influenced = new HashSet<Composer>();
+            this.Influences = new HashSet<Composer>();
             this.Links = new HashSet<Link>();
+            this.Nationalities = new HashSet<Nationality>();
             this.CompositionCollections = new HashSet<CompositionCollection>();
             this.Compositions = new HashSet<Composition>();
         }
@@ -47,15 +47,15 @@ namespace ClassicalMusicDbService.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Sample> Samples { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Nationality> Nationalities { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Era> Eras { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Composer> Influences { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Composer> Influenced { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Composer> Influences { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Link> Links { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Nationality> Nationalities { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<CompositionCollection> CompositionCollections { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

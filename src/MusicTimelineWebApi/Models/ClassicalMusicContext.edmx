@@ -4,7 +4,7 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="ClassicalMusicModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+      <Schema Namespace="ClassicalMusicModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Album">
           <Key>
             <PropertyRef Name="AlbumId" />
@@ -984,10 +984,19 @@ warning 6002: The table/view 'ClassicalMusic.dbo.Genre' does not have a primary 
             <End Role="Sample" EntitySet="Sample" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="ClassicalMusicModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Album">
+          <Key>
+            <PropertyRef Name="AlbumId" />
+          </Key>
+          <Property Name="AlbumId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Recordings" Relationship="Self.FK_Recording_Album" FromRole="Album" ToRole="Recording" />
+        </EntityType>
         <EntityType Name="Catalog">
           <Key>
             <PropertyRef Name="CatalogId" />
@@ -1006,8 +1015,8 @@ warning 6002: The table/view 'ClassicalMusic.dbo.Genre' does not have a primary 
           <Property Name="Value" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="CatalogId" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Catalog" Relationship="Self.FK_CatalogNumber_Catalog" FromRole="CatalogNumber" ToRole="Catalog" />
-          <NavigationProperty Name="Compositions" Relationship="ClassicalMusicModel.CompositionCatalogNumber" FromRole="CatalogNumber" ToRole="Composition" />
-          <NavigationProperty Name="CompositionCollections" Relationship="ClassicalMusicModel.CompositionCollectionCatalogNumber" FromRole="CatalogNumber" ToRole="CompositionCollection" />
+          <NavigationProperty Name="Compositions" Relationship="Self.CompositionCatalogNumber" FromRole="CatalogNumber" ToRole="Composition" />
+          <NavigationProperty Name="CompositionCollections" Relationship="Self.CompositionCollectionCatalogNumber" FromRole="CatalogNumber" ToRole="CompositionCollection" />
         </EntityType>
         <EntityType Name="Composer">
           <Key>
@@ -1026,13 +1035,13 @@ warning 6002: The table/view 'ClassicalMusic.dbo.Genre' does not have a primary 
           <NavigationProperty Name="ComposerImages" Relationship="Self.FK_ComposerImage_Composer" FromRole="Composer" ToRole="ComposerImage" />
           <NavigationProperty Name="ComposerShortBiography" Relationship="Self.FK_ComposerShortBiography_Composer" FromRole="Composer" ToRole="ComposerShortBiography" />
           <NavigationProperty Name="Samples" Relationship="Self.FK_Sample_Composer" FromRole="Composer" ToRole="Sample" />
-          <NavigationProperty Name="Nationalities" Relationship="ClassicalMusicModel.ComposerNationality" FromRole="Composer" ToRole="Nationality" />
-          <NavigationProperty Name="Eras" Relationship="ClassicalMusicModel.ComposerEra" FromRole="Composer" ToRole="Era" />
-          <NavigationProperty Name="Influences" Relationship="ClassicalMusicModel.ComposerInfluence" FromRole="Composer" ToRole="Composer1" />
-          <NavigationProperty Name="Influenced" Relationship="ClassicalMusicModel.ComposerInfluence" FromRole="Composer1" ToRole="Composer" />
-          <NavigationProperty Name="Links" Relationship="ClassicalMusicModel.ComposerLink" FromRole="Composer" ToRole="Link" />
-          <NavigationProperty Name="CompositionCollections" Relationship="ClassicalMusicModel.CompositionCollectionComposer" FromRole="Composer" ToRole="CompositionCollection" />
-          <NavigationProperty Name="Compositions" Relationship="ClassicalMusicModel.CompositionComposer" FromRole="Composer" ToRole="Composition" />
+          <NavigationProperty Name="Eras" Relationship="Self.ComposerEra" FromRole="Composer" ToRole="Era" />
+          <NavigationProperty Name="Influenced" Relationship="Self.ComposerInfluence" FromRole="Composer" ToRole="Composer1" />
+          <NavigationProperty Name="Influences" Relationship="Self.ComposerInfluence" FromRole="Composer1" ToRole="Composer" />
+          <NavigationProperty Name="Links" Relationship="Self.ComposerLink" FromRole="Composer" ToRole="Link" />
+          <NavigationProperty Name="Nationalities" Relationship="Self.ComposerNationality" FromRole="Composer" ToRole="Nationality" />
+          <NavigationProperty Name="CompositionCollections" Relationship="Self.CompositionCollectionComposer" FromRole="Composer" ToRole="CompositionCollection" />
+          <NavigationProperty Name="Compositions" Relationship="Self.CompositionComposer" FromRole="Composer" ToRole="Composition" />
         </EntityType>
         <EntityType Name="ComposerBiography">
           <Key>
@@ -1075,14 +1084,26 @@ warning 6002: The table/view 'ClassicalMusic.dbo.Genre' does not have a primary 
           <Property Name="GenreId" Type="Int32" />
           <Property Name="InstrumentationId" Type="Int32" />
           <Property Name="CompositionCollectionId" Type="Int32" />
+          <NavigationProperty Name="CompositionCollection" Relationship="Self.FK_Composition_CompositionCollection" FromRole="Composition" ToRole="CompositionCollection" />
+          <NavigationProperty Name="Instrumentation" Relationship="Self.FK_Composition_Instrumentation" FromRole="Composition" ToRole="Instrumentation" />
           <NavigationProperty Name="Key" Relationship="Self.FK_Composition_Key" FromRole="Composition" ToRole="Key" />
-          <NavigationProperty Name="CompositionCollection" Relationship="ClassicalMusicModel.FK_Composition_CompositionCollection" FromRole="Composition" ToRole="CompositionCollection" />
-          <NavigationProperty Name="Instrumentation" Relationship="ClassicalMusicModel.FK_Composition_Instrumentation" FromRole="Composition" ToRole="Instrumentation" />
-          <NavigationProperty Name="Movements" Relationship="ClassicalMusicModel.FK_Movement_Composition" FromRole="Composition" ToRole="Movement" />
-          <NavigationProperty Name="CatalogNumbers" Relationship="ClassicalMusicModel.CompositionCatalogNumber" FromRole="Composition" ToRole="CatalogNumber" />
-          <NavigationProperty Name="Composers" Relationship="ClassicalMusicModel.CompositionComposer" FromRole="Composition" ToRole="Composer" />
-          <NavigationProperty Name="Links" Relationship="ClassicalMusicModel.CompositionLink" FromRole="Composition" ToRole="Link" />
-          <NavigationProperty Name="Recordings" Relationship="ClassicalMusicModel.CompositionRecording" FromRole="Composition" ToRole="Recording" />
+          <NavigationProperty Name="Movements" Relationship="Self.FK_Movement_Composition" FromRole="Composition" ToRole="Movement" />
+          <NavigationProperty Name="CatalogNumbers" Relationship="Self.CompositionCatalogNumber" FromRole="Composition" ToRole="CatalogNumber" />
+          <NavigationProperty Name="Composers" Relationship="Self.CompositionComposer" FromRole="Composition" ToRole="Composer" />
+          <NavigationProperty Name="Links" Relationship="Self.CompositionLink" FromRole="Composition" ToRole="Link" />
+          <NavigationProperty Name="Recordings" Relationship="Self.CompositionRecording" FromRole="Composition" ToRole="Recording" />
+        </EntityType>
+        <EntityType Name="CompositionCollection">
+          <Key>
+            <PropertyRef Name="CompositionCollectionId" />
+          </Key>
+          <Property Name="CompositionCollectionId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="IsPopular" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Compositions" Relationship="Self.FK_Composition_CompositionCollection" FromRole="CompositionCollection" ToRole="Composition" />
+          <NavigationProperty Name="CatalogNumbers" Relationship="Self.CompositionCollectionCatalogNumber" FromRole="CompositionCollection" ToRole="CatalogNumber" />
+          <NavigationProperty Name="Composers" Relationship="Self.CompositionCollectionComposer" FromRole="CompositionCollection" ToRole="Composer" />
+          <NavigationProperty Name="Recordings" Relationship="Self.CompositionCollectionRecording" FromRole="CompositionCollection" ToRole="Recording" />
         </EntityType>
         <EntityType Name="Era">
           <Key>
@@ -1091,7 +1112,15 @@ warning 6002: The table/view 'ClassicalMusic.dbo.Genre' does not have a primary 
           <Property Name="EraId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <Property Name="Dates" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="Composers" Relationship="ClassicalMusicModel.ComposerEra" FromRole="Era" ToRole="Composer" />
+          <NavigationProperty Name="Composers" Relationship="Self.ComposerEra" FromRole="Era" ToRole="Composer" />
+        </EntityType>
+        <EntityType Name="Instrumentation">
+          <Key>
+            <PropertyRef Name="InstrumentationId" />
+          </Key>
+          <Property Name="InstrumentationId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Compositions" Relationship="Self.FK_Composition_Instrumentation" FromRole="Instrumentation" ToRole="Composition" />
         </EntityType>
         <EntityType Name="Key">
           <Key>
@@ -1108,8 +1137,8 @@ warning 6002: The table/view 'ClassicalMusic.dbo.Genre' does not have a primary 
           <Property Name="LinkId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Url" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="Composers" Relationship="ClassicalMusicModel.ComposerLink" FromRole="Link" ToRole="Composer" />
-          <NavigationProperty Name="Compositions" Relationship="ClassicalMusicModel.CompositionLink" FromRole="Link" ToRole="Composition" />
+          <NavigationProperty Name="Composers" Relationship="Self.ComposerLink" FromRole="Link" ToRole="Composer" />
+          <NavigationProperty Name="Compositions" Relationship="Self.CompositionLink" FromRole="Link" ToRole="Composition" />
         </EntityType>
         <EntityType Name="Location">
           <Key>
@@ -1119,7 +1148,19 @@ warning 6002: The table/view 'ClassicalMusic.dbo.Genre' does not have a primary 
           <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
           <NavigationProperty Name="Composers" Relationship="Self.FK_Composer_Location" FromRole="Location" ToRole="Composer" />
           <NavigationProperty Name="Composers1" Relationship="Self.FK_Composer_Location1" FromRole="Location" ToRole="Composer" />
-          <NavigationProperty Name="Recordings" Relationship="ClassicalMusicModel.RecordingLocation" FromRole="Location" ToRole="Recording" />
+          <NavigationProperty Name="Recordings" Relationship="Self.RecordingLocation" FromRole="Location" ToRole="Recording" />
+        </EntityType>
+        <EntityType Name="Movement">
+          <Key>
+            <PropertyRef Name="MovementId" />
+          </Key>
+          <Property Name="MovementId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Number" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="IsPopular" Type="Boolean" Nullable="false" />
+          <Property Name="CompositionId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Composition" Relationship="Self.FK_Movement_Composition" FromRole="Movement" ToRole="Composition" />
+          <NavigationProperty Name="Recordings" Relationship="Self.MovementRecording" FromRole="Movement" ToRole="Recording" />
         </EntityType>
         <EntityType Name="Nationality">
           <Key>
@@ -1127,7 +1168,30 @@ warning 6002: The table/view 'ClassicalMusic.dbo.Genre' does not have a primary 
           </Key>
           <Property Name="NationalityId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="Composers" Relationship="ClassicalMusicModel.ComposerNationality" FromRole="Nationality" ToRole="Composer" />
+          <NavigationProperty Name="Composers" Relationship="Self.ComposerNationality" FromRole="Nationality" ToRole="Composer" />
+        </EntityType>
+        <EntityType Name="Performer">
+          <Key>
+            <PropertyRef Name="PerformerId" />
+          </Key>
+          <Property Name="PerformerId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Recordings" Relationship="Self.RecordingPerformer" FromRole="Performer" ToRole="Recording" />
+        </EntityType>
+        <EntityType Name="Recording">
+          <Key>
+            <PropertyRef Name="RecordingId" />
+          </Key>
+          <Property Name="RecordingId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TrackNumber" Type="Int32" />
+          <Property Name="Dates" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="AlbumId" Type="Int32" />
+          <NavigationProperty Name="Album" Relationship="Self.FK_Recording_Album" FromRole="Recording" ToRole="Album" />
+          <NavigationProperty Name="CompositionCollections" Relationship="Self.CompositionCollectionRecording" FromRole="Recording" ToRole="CompositionCollection" />
+          <NavigationProperty Name="Compositions" Relationship="Self.CompositionRecording" FromRole="Recording" ToRole="Composition" />
+          <NavigationProperty Name="Movements" Relationship="Self.MovementRecording" FromRole="Recording" ToRole="Movement" />
+          <NavigationProperty Name="Locations" Relationship="Self.RecordingLocation" FromRole="Recording" ToRole="Location" />
+          <NavigationProperty Name="Performers" Relationship="Self.RecordingPerformer" FromRole="Recording" ToRole="Performer" />
         </EntityType>
         <EntityType Name="Sample">
           <Key>
@@ -1139,6 +1203,26 @@ warning 6002: The table/view 'ClassicalMusic.dbo.Genre' does not have a primary 
           <Property Name="ComposerID" Type="Int32" Nullable="false" />
           <NavigationProperty Name="Composer" Relationship="Self.FK_Sample_Composer" FromRole="Sample" ToRole="Composer" />
         </EntityType>
+        <EntityType Name="Genre">
+          <Key>
+            <PropertyRef Name="GenreId" />
+            <PropertyRef Name="Name" />
+          </Key>
+          <Property Name="GenreId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="255" FixedLength="false" Unicode="true" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Recording_Album">
+          <End Role="Album" Type="Self.Album" Multiplicity="0..1" />
+          <End Role="Recording" Type="Self.Recording" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Album">
+              <PropertyRef Name="AlbumId" />
+            </Principal>
+            <Dependent Role="Recording">
+              <PropertyRef Name="AlbumId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Catalog_Composer">
           <End Role="Composer" Type="Self.Composer" Multiplicity="1" />
           <End Role="Catalog" Type="Self.Catalog" Multiplicity="*" />
@@ -1235,6 +1319,30 @@ warning 6002: The table/view 'ClassicalMusic.dbo.Genre' does not have a primary 
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Composition_CompositionCollection">
+          <End Role="CompositionCollection" Type="Self.CompositionCollection" Multiplicity="0..1" />
+          <End Role="Composition" Type="Self.Composition" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="CompositionCollection">
+              <PropertyRef Name="CompositionCollectionId" />
+            </Principal>
+            <Dependent Role="Composition">
+              <PropertyRef Name="CompositionCollectionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Composition_Instrumentation">
+          <End Role="Instrumentation" Type="Self.Instrumentation" Multiplicity="0..1" />
+          <End Role="Composition" Type="Self.Composition" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Instrumentation">
+              <PropertyRef Name="InstrumentationId" />
+            </Principal>
+            <Dependent Role="Composition">
+              <PropertyRef Name="InstrumentationId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Composition_Key">
           <End Role="Key" Type="Self.Key" Multiplicity="0..1" />
           <End Role="Composition" Type="Self.Composition" Multiplicity="*" />
@@ -1247,7 +1355,76 @@ warning 6002: The table/view 'ClassicalMusic.dbo.Genre' does not have a primary 
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_Movement_Composition">
+          <End Role="Composition" Type="Self.Composition" Multiplicity="1" />
+          <End Role="Movement" Type="Self.Movement" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Composition">
+              <PropertyRef Name="CompositionId" />
+            </Principal>
+            <Dependent Role="Movement">
+              <PropertyRef Name="CompositionId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="ComposerEra">
+          <End Role="Composer" Type="Self.Composer" Multiplicity="*" />
+          <End Role="Era" Type="Self.Era" Multiplicity="*" />
+        </Association>
+        <Association Name="ComposerInfluence">
+          <End Role="Composer" Type="Self.Composer" Multiplicity="*" />
+          <End Role="Composer1" Type="Self.Composer" Multiplicity="*" />
+        </Association>
+        <Association Name="ComposerLink">
+          <End Role="Composer" Type="Self.Composer" Multiplicity="*" />
+          <End Role="Link" Type="Self.Link" Multiplicity="*" />
+        </Association>
+        <Association Name="ComposerNationality">
+          <End Role="Composer" Type="Self.Composer" Multiplicity="*" />
+          <End Role="Nationality" Type="Self.Nationality" Multiplicity="*" />
+        </Association>
+        <Association Name="CompositionCatalogNumber">
+          <End Role="CatalogNumber" Type="Self.CatalogNumber" Multiplicity="*" />
+          <End Role="Composition" Type="Self.Composition" Multiplicity="*" />
+        </Association>
+        <Association Name="CompositionCollectionCatalogNumber">
+          <End Role="CatalogNumber" Type="Self.CatalogNumber" Multiplicity="*" />
+          <End Role="CompositionCollection" Type="Self.CompositionCollection" Multiplicity="*" />
+        </Association>
+        <Association Name="CompositionCollectionComposer">
+          <End Role="Composer" Type="Self.Composer" Multiplicity="*" />
+          <End Role="CompositionCollection" Type="Self.CompositionCollection" Multiplicity="*" />
+        </Association>
+        <Association Name="CompositionCollectionRecording">
+          <End Role="CompositionCollection" Type="Self.CompositionCollection" Multiplicity="*" />
+          <End Role="Recording" Type="Self.Recording" Multiplicity="*" />
+        </Association>
+        <Association Name="CompositionComposer">
+          <End Role="Composer" Type="Self.Composer" Multiplicity="*" />
+          <End Role="Composition" Type="Self.Composition" Multiplicity="*" />
+        </Association>
+        <Association Name="CompositionLink">
+          <End Role="Composition" Type="Self.Composition" Multiplicity="*" />
+          <End Role="Link" Type="Self.Link" Multiplicity="*" />
+        </Association>
+        <Association Name="CompositionRecording">
+          <End Role="Composition" Type="Self.Composition" Multiplicity="*" />
+          <End Role="Recording" Type="Self.Recording" Multiplicity="*" />
+        </Association>
+        <Association Name="MovementRecording">
+          <End Role="Movement" Type="Self.Movement" Multiplicity="*" />
+          <End Role="Recording" Type="Self.Recording" Multiplicity="*" />
+        </Association>
+        <Association Name="RecordingLocation">
+          <End Role="Location" Type="Self.Location" Multiplicity="*" />
+          <End Role="Recording" Type="Self.Recording" Multiplicity="*" />
+        </Association>
+        <Association Name="RecordingPerformer">
+          <End Role="Performer" Type="Self.Performer" Multiplicity="*" />
+          <End Role="Recording" Type="Self.Recording" Multiplicity="*" />
+        </Association>
         <EntityContainer Name="ClassicalMusicEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Albums" EntityType="Self.Album" />
           <EntitySet Name="Catalogs" EntityType="Self.Catalog" />
           <EntitySet Name="CatalogNumbers" EntityType="Self.CatalogNumber" />
           <EntitySet Name="Composers" EntityType="Self.Composer" />
@@ -1255,12 +1432,22 @@ warning 6002: The table/view 'ClassicalMusic.dbo.Genre' does not have a primary 
           <EntitySet Name="ComposerImages" EntityType="Self.ComposerImage" />
           <EntitySet Name="ComposerShortBiographies" EntityType="Self.ComposerShortBiography" />
           <EntitySet Name="Compositions" EntityType="Self.Composition" />
+          <EntitySet Name="CompositionCollections" EntityType="Self.CompositionCollection" />
           <EntitySet Name="Eras" EntityType="Self.Era" />
+          <EntitySet Name="Instrumentations" EntityType="Self.Instrumentation" />
           <EntitySet Name="Keys" EntityType="Self.Key" />
           <EntitySet Name="Links" EntityType="Self.Link" />
           <EntitySet Name="Locations" EntityType="Self.Location" />
+          <EntitySet Name="Movements" EntityType="Self.Movement" />
           <EntitySet Name="Nationalities" EntityType="Self.Nationality" />
+          <EntitySet Name="Performers" EntityType="Self.Performer" />
+          <EntitySet Name="Recordings" EntityType="Self.Recording" />
           <EntitySet Name="Samples" EntityType="Self.Sample" />
+          <EntitySet Name="Genres" EntityType="Self.Genre" />
+          <AssociationSet Name="FK_Recording_Album" Association="Self.FK_Recording_Album">
+            <End Role="Album" EntitySet="Albums" />
+            <End Role="Recording" EntitySet="Recordings" />
+          </AssociationSet>
           <AssociationSet Name="FK_Catalog_Composer" Association="Self.FK_Catalog_Composer">
             <End Role="Composer" EntitySet="Composers" />
             <End Role="Catalog" EntitySet="Catalogs" />
@@ -1293,271 +1480,93 @@ warning 6002: The table/view 'ClassicalMusic.dbo.Genre' does not have a primary 
             <End Role="Composer" EntitySet="Composers" />
             <End Role="Sample" EntitySet="Samples" />
           </AssociationSet>
+          <AssociationSet Name="FK_Composition_CompositionCollection" Association="Self.FK_Composition_CompositionCollection">
+            <End Role="CompositionCollection" EntitySet="CompositionCollections" />
+            <End Role="Composition" EntitySet="Compositions" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Composition_Instrumentation" Association="Self.FK_Composition_Instrumentation">
+            <End Role="Instrumentation" EntitySet="Instrumentations" />
+            <End Role="Composition" EntitySet="Compositions" />
+          </AssociationSet>
           <AssociationSet Name="FK_Composition_Key" Association="Self.FK_Composition_Key">
             <End Role="Key" EntitySet="Keys" />
             <End Role="Composition" EntitySet="Compositions" />
           </AssociationSet>
-          <AssociationSet Name="ComposerNationality" Association="ClassicalMusicModel.ComposerNationality">
-            <End Role="Composer" EntitySet="Composers" />
-            <End Role="Nationality" EntitySet="Nationalities" />
+          <AssociationSet Name="FK_Movement_Composition" Association="Self.FK_Movement_Composition">
+            <End Role="Composition" EntitySet="Compositions" />
+            <End Role="Movement" EntitySet="Movements" />
           </AssociationSet>
-          <AssociationSet Name="ComposerEra" Association="ClassicalMusicModel.ComposerEra">
+          <AssociationSet Name="ComposerEra" Association="Self.ComposerEra">
             <End Role="Composer" EntitySet="Composers" />
             <End Role="Era" EntitySet="Eras" />
           </AssociationSet>
-          <EntitySet Name="Albums" EntityType="ClassicalMusicModel.Album" />
-          <EntitySet Name="CompositionCollections" EntityType="ClassicalMusicModel.CompositionCollection" />
-          <EntitySet Name="Instrumentations" EntityType="ClassicalMusicModel.Instrumentation" />
-          <EntitySet Name="Movements" EntityType="ClassicalMusicModel.Movement" />
-          <EntitySet Name="Performers" EntityType="ClassicalMusicModel.Performer" />
-          <EntitySet Name="Recordings" EntityType="ClassicalMusicModel.Recording" />
-          <EntitySet Name="Genres" EntityType="ClassicalMusicModel.Genre" />
-          <AssociationSet Name="FK_Recording_Album" Association="ClassicalMusicModel.FK_Recording_Album">
-            <End Role="Album" EntitySet="Albums" />
-            <End Role="Recording" EntitySet="Recordings" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Composition_CompositionCollection" Association="ClassicalMusicModel.FK_Composition_CompositionCollection">
-            <End Role="CompositionCollection" EntitySet="CompositionCollections" />
-            <End Role="Composition" EntitySet="Compositions" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Composition_Instrumentation" Association="ClassicalMusicModel.FK_Composition_Instrumentation">
-            <End Role="Instrumentation" EntitySet="Instrumentations" />
-            <End Role="Composition" EntitySet="Compositions" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Movement_Composition" Association="ClassicalMusicModel.FK_Movement_Composition">
-            <End Role="Composition" EntitySet="Compositions" />
-            <End Role="Movement" EntitySet="Movements" />
-          </AssociationSet>
-          <AssociationSet Name="ComposerInfluence" Association="ClassicalMusicModel.ComposerInfluence">
+          <AssociationSet Name="ComposerInfluence" Association="Self.ComposerInfluence">
             <End Role="Composer" EntitySet="Composers" />
             <End Role="Composer1" EntitySet="Composers" />
           </AssociationSet>
-          <AssociationSet Name="ComposerLink" Association="ClassicalMusicModel.ComposerLink">
+          <AssociationSet Name="ComposerLink" Association="Self.ComposerLink">
             <End Role="Composer" EntitySet="Composers" />
             <End Role="Link" EntitySet="Links" />
           </AssociationSet>
-          <AssociationSet Name="CompositionCatalogNumber" Association="ClassicalMusicModel.CompositionCatalogNumber">
+          <AssociationSet Name="ComposerNationality" Association="Self.ComposerNationality">
+            <End Role="Composer" EntitySet="Composers" />
+            <End Role="Nationality" EntitySet="Nationalities" />
+          </AssociationSet>
+          <AssociationSet Name="CompositionCatalogNumber" Association="Self.CompositionCatalogNumber">
             <End Role="CatalogNumber" EntitySet="CatalogNumbers" />
             <End Role="Composition" EntitySet="Compositions" />
           </AssociationSet>
-          <AssociationSet Name="CompositionCollectionCatalogNumber" Association="ClassicalMusicModel.CompositionCollectionCatalogNumber">
+          <AssociationSet Name="CompositionCollectionCatalogNumber" Association="Self.CompositionCollectionCatalogNumber">
             <End Role="CatalogNumber" EntitySet="CatalogNumbers" />
             <End Role="CompositionCollection" EntitySet="CompositionCollections" />
           </AssociationSet>
-          <AssociationSet Name="CompositionCollectionComposer" Association="ClassicalMusicModel.CompositionCollectionComposer">
+          <AssociationSet Name="CompositionCollectionComposer" Association="Self.CompositionCollectionComposer">
             <End Role="Composer" EntitySet="Composers" />
             <End Role="CompositionCollection" EntitySet="CompositionCollections" />
           </AssociationSet>
-          <AssociationSet Name="CompositionCollectionRecording" Association="ClassicalMusicModel.CompositionCollectionRecording">
+          <AssociationSet Name="CompositionCollectionRecording" Association="Self.CompositionCollectionRecording">
             <End Role="CompositionCollection" EntitySet="CompositionCollections" />
             <End Role="Recording" EntitySet="Recordings" />
           </AssociationSet>
-          <AssociationSet Name="CompositionComposer" Association="ClassicalMusicModel.CompositionComposer">
+          <AssociationSet Name="CompositionComposer" Association="Self.CompositionComposer">
             <End Role="Composer" EntitySet="Composers" />
             <End Role="Composition" EntitySet="Compositions" />
           </AssociationSet>
-          <AssociationSet Name="CompositionLink" Association="ClassicalMusicModel.CompositionLink">
+          <AssociationSet Name="CompositionLink" Association="Self.CompositionLink">
             <End Role="Composition" EntitySet="Compositions" />
             <End Role="Link" EntitySet="Links" />
           </AssociationSet>
-          <AssociationSet Name="CompositionRecording" Association="ClassicalMusicModel.CompositionRecording">
+          <AssociationSet Name="CompositionRecording" Association="Self.CompositionRecording">
             <End Role="Composition" EntitySet="Compositions" />
             <End Role="Recording" EntitySet="Recordings" />
           </AssociationSet>
-          <AssociationSet Name="MovementRecording" Association="ClassicalMusicModel.MovementRecording">
+          <AssociationSet Name="MovementRecording" Association="Self.MovementRecording">
             <End Role="Movement" EntitySet="Movements" />
             <End Role="Recording" EntitySet="Recordings" />
           </AssociationSet>
-          <AssociationSet Name="RecordingLocation" Association="ClassicalMusicModel.RecordingLocation">
+          <AssociationSet Name="RecordingLocation" Association="Self.RecordingLocation">
             <End Role="Location" EntitySet="Locations" />
             <End Role="Recording" EntitySet="Recordings" />
           </AssociationSet>
-          <AssociationSet Name="RecordingPerformer" Association="ClassicalMusicModel.RecordingPerformer">
+          <AssociationSet Name="RecordingPerformer" Association="Self.RecordingPerformer">
             <End Role="Performer" EntitySet="Performers" />
             <End Role="Recording" EntitySet="Recordings" />
           </AssociationSet>
         </EntityContainer>
-        <Association Name="ComposerNationality">
-          <End Type="ClassicalMusicModel.Composer" Role="Composer" Multiplicity="*" />
-          <End Type="ClassicalMusicModel.Nationality" Role="Nationality" Multiplicity="*" />
-        </Association>
-        <Association Name="ComposerEra">
-          <End Type="ClassicalMusicModel.Composer" Role="Composer" Multiplicity="*" />
-          <End Type="ClassicalMusicModel.Era" Role="Era" Multiplicity="*" />
-        </Association>
-        <EntityType Name="Album">
-          <Key>
-            <PropertyRef Name="AlbumId" />
-          </Key>
-          <Property Name="AlbumId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Recordings" Relationship="ClassicalMusicModel.FK_Recording_Album" FromRole="Album" ToRole="Recording" />
-        </EntityType>
-        <EntityType Name="CompositionCollection">
-          <Key>
-            <PropertyRef Name="CompositionCollectionId" />
-          </Key>
-          <Property Name="CompositionCollectionId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="IsPopular" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="Compositions" Relationship="ClassicalMusicModel.FK_Composition_CompositionCollection" FromRole="CompositionCollection" ToRole="Composition" />
-          <NavigationProperty Name="CatalogNumbers" Relationship="ClassicalMusicModel.CompositionCollectionCatalogNumber" FromRole="CompositionCollection" ToRole="CatalogNumber" />
-          <NavigationProperty Name="Composers" Relationship="ClassicalMusicModel.CompositionCollectionComposer" FromRole="CompositionCollection" ToRole="Composer" />
-          <NavigationProperty Name="Recordings" Relationship="ClassicalMusicModel.CompositionCollectionRecording" FromRole="CompositionCollection" ToRole="Recording" />
-        </EntityType>
-        <EntityType Name="Instrumentation">
-          <Key>
-            <PropertyRef Name="InstrumentationId" />
-          </Key>
-          <Property Name="InstrumentationId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Compositions" Relationship="ClassicalMusicModel.FK_Composition_Instrumentation" FromRole="Instrumentation" ToRole="Composition" />
-        </EntityType>
-        <EntityType Name="Movement">
-          <Key>
-            <PropertyRef Name="MovementId" />
-          </Key>
-          <Property Name="MovementId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Number" Type="Int32" Nullable="false" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="IsPopular" Type="Boolean" Nullable="false" />
-          <Property Name="CompositionId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Composition" Relationship="ClassicalMusicModel.FK_Movement_Composition" FromRole="Movement" ToRole="Composition" />
-          <NavigationProperty Name="Recordings" Relationship="ClassicalMusicModel.MovementRecording" FromRole="Movement" ToRole="Recording" />
-        </EntityType>
-        <EntityType Name="Performer">
-          <Key>
-            <PropertyRef Name="PerformerId" />
-          </Key>
-          <Property Name="PerformerId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Recordings" Relationship="ClassicalMusicModel.RecordingPerformer" FromRole="Performer" ToRole="Recording" />
-        </EntityType>
-        <EntityType Name="Recording">
-          <Key>
-            <PropertyRef Name="RecordingId" />
-          </Key>
-          <Property Name="RecordingId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="TrackNumber" Type="Int32" />
-          <Property Name="Dates" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
-          <Property Name="AlbumId" Type="Int32" />
-          <NavigationProperty Name="Album" Relationship="ClassicalMusicModel.FK_Recording_Album" FromRole="Recording" ToRole="Album" />
-          <NavigationProperty Name="CompositionCollections" Relationship="ClassicalMusicModel.CompositionCollectionRecording" FromRole="Recording" ToRole="CompositionCollection" />
-          <NavigationProperty Name="Compositions" Relationship="ClassicalMusicModel.CompositionRecording" FromRole="Recording" ToRole="Composition" />
-          <NavigationProperty Name="Movements" Relationship="ClassicalMusicModel.MovementRecording" FromRole="Recording" ToRole="Movement" />
-          <NavigationProperty Name="Locations" Relationship="ClassicalMusicModel.RecordingLocation" FromRole="Recording" ToRole="Location" />
-          <NavigationProperty Name="Performers" Relationship="ClassicalMusicModel.RecordingPerformer" FromRole="Recording" ToRole="Performer" />
-        </EntityType>
-        <EntityType Name="Genre">
-          <Key>
-            <PropertyRef Name="GenreId" />
-            <PropertyRef Name="Name" />
-          </Key>
-          <Property Name="GenreId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" Nullable="false" MaxLength="255" FixedLength="false" Unicode="true" />
-        </EntityType>
-        <Association Name="FK_Recording_Album">
-          <End Type="ClassicalMusicModel.Album" Role="Album" Multiplicity="0..1" />
-          <End Type="ClassicalMusicModel.Recording" Role="Recording" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Album">
-              <PropertyRef Name="AlbumId" />
-            </Principal>
-            <Dependent Role="Recording">
-              <PropertyRef Name="AlbumId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Composition_CompositionCollection">
-          <End Type="ClassicalMusicModel.CompositionCollection" Role="CompositionCollection" Multiplicity="0..1" />
-          <End Type="ClassicalMusicModel.Composition" Role="Composition" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="CompositionCollection">
-              <PropertyRef Name="CompositionCollectionId" />
-            </Principal>
-            <Dependent Role="Composition">
-              <PropertyRef Name="CompositionCollectionId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Composition_Instrumentation">
-          <End Type="ClassicalMusicModel.Instrumentation" Role="Instrumentation" Multiplicity="0..1" />
-          <End Type="ClassicalMusicModel.Composition" Role="Composition" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Instrumentation">
-              <PropertyRef Name="InstrumentationId" />
-            </Principal>
-            <Dependent Role="Composition">
-              <PropertyRef Name="InstrumentationId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Movement_Composition">
-          <End Type="ClassicalMusicModel.Composition" Role="Composition" Multiplicity="1" />
-          <End Type="ClassicalMusicModel.Movement" Role="Movement" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Composition">
-              <PropertyRef Name="CompositionId" />
-            </Principal>
-            <Dependent Role="Movement">
-              <PropertyRef Name="CompositionId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="ComposerInfluence">
-          <End Type="ClassicalMusicModel.Composer" Role="Composer" Multiplicity="*" />
-          <End Type="ClassicalMusicModel.Composer" Role="Composer1" Multiplicity="*" />
-        </Association>
-        <Association Name="ComposerLink">
-          <End Type="ClassicalMusicModel.Composer" Role="Composer" Multiplicity="*" />
-          <End Type="ClassicalMusicModel.Link" Role="Link" Multiplicity="*" />
-        </Association>
-        <Association Name="CompositionCatalogNumber">
-          <End Type="ClassicalMusicModel.CatalogNumber" Role="CatalogNumber" Multiplicity="*" />
-          <End Type="ClassicalMusicModel.Composition" Role="Composition" Multiplicity="*" />
-        </Association>
-        <Association Name="CompositionCollectionCatalogNumber">
-          <End Type="ClassicalMusicModel.CatalogNumber" Role="CatalogNumber" Multiplicity="*" />
-          <End Type="ClassicalMusicModel.CompositionCollection" Role="CompositionCollection" Multiplicity="*" />
-        </Association>
-        <Association Name="CompositionCollectionComposer">
-          <End Type="ClassicalMusicModel.Composer" Role="Composer" Multiplicity="*" />
-          <End Type="ClassicalMusicModel.CompositionCollection" Role="CompositionCollection" Multiplicity="*" />
-        </Association>
-        <Association Name="CompositionCollectionRecording">
-          <End Type="ClassicalMusicModel.CompositionCollection" Role="CompositionCollection" Multiplicity="*" />
-          <End Type="ClassicalMusicModel.Recording" Role="Recording" Multiplicity="*" />
-        </Association>
-        <Association Name="CompositionComposer">
-          <End Type="ClassicalMusicModel.Composer" Role="Composer" Multiplicity="*" />
-          <End Type="ClassicalMusicModel.Composition" Role="Composition" Multiplicity="*" />
-        </Association>
-        <Association Name="CompositionLink">
-          <End Type="ClassicalMusicModel.Composition" Role="Composition" Multiplicity="*" />
-          <End Type="ClassicalMusicModel.Link" Role="Link" Multiplicity="*" />
-        </Association>
-        <Association Name="CompositionRecording">
-          <End Type="ClassicalMusicModel.Composition" Role="Composition" Multiplicity="*" />
-          <End Type="ClassicalMusicModel.Recording" Role="Recording" Multiplicity="*" />
-        </Association>
-        <Association Name="MovementRecording">
-          <End Type="ClassicalMusicModel.Movement" Role="Movement" Multiplicity="*" />
-          <End Type="ClassicalMusicModel.Recording" Role="Recording" Multiplicity="*" />
-        </Association>
-        <Association Name="RecordingLocation">
-          <End Type="ClassicalMusicModel.Location" Role="Location" Multiplicity="*" />
-          <End Type="ClassicalMusicModel.Recording" Role="Recording" Multiplicity="*" />
-        </Association>
-        <Association Name="RecordingPerformer">
-          <End Type="ClassicalMusicModel.Performer" Role="Performer" Multiplicity="*" />
-          <End Type="ClassicalMusicModel.Recording" Role="Recording" Multiplicity="*" />
-        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
         <EntityContainerMapping StorageEntityContainer="ClassicalMusicModelStoreContainer" CdmEntityContainer="ClassicalMusicEntities">
+          <EntitySetMapping Name="Albums">
+            <EntityTypeMapping TypeName="ClassicalMusicModel.Album">
+              <MappingFragment StoreEntitySet="Album">
+                <ScalarProperty Name="AlbumId" ColumnName="AlbumId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Catalogs">
             <EntityTypeMapping TypeName="ClassicalMusicModel.Catalog">
               <MappingFragment StoreEntitySet="Catalog">
@@ -1631,12 +1640,29 @@ warning 6002: The table/view 'ClassicalMusic.dbo.Genre' does not have a primary 
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="CompositionCollections">
+            <EntityTypeMapping TypeName="ClassicalMusicModel.CompositionCollection">
+              <MappingFragment StoreEntitySet="CompositionCollection">
+                <ScalarProperty Name="CompositionCollectionId" ColumnName="CompositionCollectionId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="IsPopular" ColumnName="IsPopular" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Eras">
             <EntityTypeMapping TypeName="ClassicalMusicModel.Era">
               <MappingFragment StoreEntitySet="Era">
                 <ScalarProperty Name="EraId" ColumnName="EraId" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Dates" ColumnName="Dates" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Instrumentations">
+            <EntityTypeMapping TypeName="ClassicalMusicModel.Instrumentation">
+              <MappingFragment StoreEntitySet="Instrumentation">
+                <ScalarProperty Name="InstrumentationId" ColumnName="InstrumentationId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1665,11 +1691,40 @@ warning 6002: The table/view 'ClassicalMusic.dbo.Genre' does not have a primary 
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="Movements">
+            <EntityTypeMapping TypeName="ClassicalMusicModel.Movement">
+              <MappingFragment StoreEntitySet="Movement">
+                <ScalarProperty Name="MovementId" ColumnName="MovementId" />
+                <ScalarProperty Name="Number" ColumnName="Number" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="IsPopular" ColumnName="IsPopular" />
+                <ScalarProperty Name="CompositionId" ColumnName="CompositionId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Nationalities">
             <EntityTypeMapping TypeName="ClassicalMusicModel.Nationality">
               <MappingFragment StoreEntitySet="Nationality">
                 <ScalarProperty Name="NationalityId" ColumnName="NationalityId" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Performers">
+            <EntityTypeMapping TypeName="ClassicalMusicModel.Performer">
+              <MappingFragment StoreEntitySet="Performer">
+                <ScalarProperty Name="PerformerId" ColumnName="PerformerId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Recordings">
+            <EntityTypeMapping TypeName="ClassicalMusicModel.Recording">
+              <MappingFragment StoreEntitySet="Recording">
+                <ScalarProperty Name="RecordingId" ColumnName="RecordingId" />
+                <ScalarProperty Name="TrackNumber" ColumnName="TrackNumber" />
+                <ScalarProperty Name="Dates" ColumnName="Dates" />
+                <ScalarProperty Name="AlbumId" ColumnName="AlbumId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -1683,178 +1738,124 @@ warning 6002: The table/view 'ClassicalMusic.dbo.Genre' does not have a primary 
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <AssociationSetMapping Name="ComposerNationality" TypeName="ClassicalMusicModel.ComposerNationality" StoreEntitySet="ComposerNationality">
-            <EndProperty Name="Nationality">
-              <ScalarProperty Name="NationalityId" ColumnName="NationalityId" />
-            </EndProperty>
-            <EndProperty Name="Composer">
-              <ScalarProperty Name="ComposerId" ColumnName="ComposerId" />
-            </EndProperty>
-          </AssociationSetMapping>
-          <AssociationSetMapping Name="ComposerEra" TypeName="ClassicalMusicModel.ComposerEra" StoreEntitySet="ComposerEra">
-            <EndProperty Name="Era">
-              <ScalarProperty Name="EraId" ColumnName="EraId" />
-            </EndProperty>
-            <EndProperty Name="Composer">
-              <ScalarProperty Name="ComposerId" ColumnName="ComposerId" />
-            </EndProperty>
-          </AssociationSetMapping>
-          <EntitySetMapping Name="Albums">
-            <EntityTypeMapping TypeName="ClassicalMusicModel.Album">
-              <MappingFragment StoreEntitySet="Album">
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="AlbumId" ColumnName="AlbumId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="CompositionCollections">
-            <EntityTypeMapping TypeName="ClassicalMusicModel.CompositionCollection">
-              <MappingFragment StoreEntitySet="CompositionCollection">
-                <ScalarProperty Name="IsPopular" ColumnName="IsPopular" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="CompositionCollectionId" ColumnName="CompositionCollectionId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Instrumentations">
-            <EntityTypeMapping TypeName="ClassicalMusicModel.Instrumentation">
-              <MappingFragment StoreEntitySet="Instrumentation">
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="InstrumentationId" ColumnName="InstrumentationId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Movements">
-            <EntityTypeMapping TypeName="ClassicalMusicModel.Movement">
-              <MappingFragment StoreEntitySet="Movement">
-                <ScalarProperty Name="CompositionId" ColumnName="CompositionId" />
-                <ScalarProperty Name="IsPopular" ColumnName="IsPopular" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Number" ColumnName="Number" />
-                <ScalarProperty Name="MovementId" ColumnName="MovementId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Performers">
-            <EntityTypeMapping TypeName="ClassicalMusicModel.Performer">
-              <MappingFragment StoreEntitySet="Performer">
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="PerformerId" ColumnName="PerformerId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Recordings">
-            <EntityTypeMapping TypeName="ClassicalMusicModel.Recording">
-              <MappingFragment StoreEntitySet="Recording">
-                <ScalarProperty Name="AlbumId" ColumnName="AlbumId" />
-                <ScalarProperty Name="Dates" ColumnName="Dates" />
-                <ScalarProperty Name="TrackNumber" ColumnName="TrackNumber" />
-                <ScalarProperty Name="RecordingId" ColumnName="RecordingId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Genres">
             <EntityTypeMapping TypeName="ClassicalMusicModel.Genre">
               <MappingFragment StoreEntitySet="Genre">
-                <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="GenreId" ColumnName="GenreId" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <AssociationSetMapping Name="ComposerEra" TypeName="ClassicalMusicModel.ComposerEra" StoreEntitySet="ComposerEra">
+            <EndProperty Name="Composer">
+              <ScalarProperty Name="ComposerId" ColumnName="ComposerId" />
+            </EndProperty>
+            <EndProperty Name="Era">
+              <ScalarProperty Name="EraId" ColumnName="EraId" />
+            </EndProperty>
+          </AssociationSetMapping>
           <AssociationSetMapping Name="ComposerInfluence" TypeName="ClassicalMusicModel.ComposerInfluence" StoreEntitySet="ComposerInfluence">
+            <EndProperty Name="Composer">
+              <ScalarProperty Name="ComposerId" ColumnName="ComposerId" />
+            </EndProperty>
             <EndProperty Name="Composer1">
               <ScalarProperty Name="ComposerId" ColumnName="InfluenceId" />
             </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="ComposerLink" TypeName="ClassicalMusicModel.ComposerLink" StoreEntitySet="ComposerLink">
             <EndProperty Name="Composer">
               <ScalarProperty Name="ComposerId" ColumnName="ComposerId" />
             </EndProperty>
-          </AssociationSetMapping>
-          <AssociationSetMapping Name="ComposerLink" TypeName="ClassicalMusicModel.ComposerLink" StoreEntitySet="ComposerLink">
             <EndProperty Name="Link">
               <ScalarProperty Name="LinkId" ColumnName="LinkId" />
             </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="ComposerNationality" TypeName="ClassicalMusicModel.ComposerNationality" StoreEntitySet="ComposerNationality">
             <EndProperty Name="Composer">
               <ScalarProperty Name="ComposerId" ColumnName="ComposerId" />
+            </EndProperty>
+            <EndProperty Name="Nationality">
+              <ScalarProperty Name="NationalityId" ColumnName="NationalityId" />
             </EndProperty>
           </AssociationSetMapping>
           <AssociationSetMapping Name="CompositionCatalogNumber" TypeName="ClassicalMusicModel.CompositionCatalogNumber" StoreEntitySet="CompositionCatalogNumber">
-            <EndProperty Name="Composition">
-              <ScalarProperty Name="CompositionId" ColumnName="CompositionId" />
-            </EndProperty>
             <EndProperty Name="CatalogNumber">
               <ScalarProperty Name="CatalogNumberId" ColumnName="CatalogNumberId" />
+            </EndProperty>
+            <EndProperty Name="Composition">
+              <ScalarProperty Name="CompositionId" ColumnName="CompositionId" />
             </EndProperty>
           </AssociationSetMapping>
           <AssociationSetMapping Name="CompositionCollectionCatalogNumber" TypeName="ClassicalMusicModel.CompositionCollectionCatalogNumber" StoreEntitySet="CompositionCollectionCatalogNumber">
-            <EndProperty Name="CompositionCollection">
-              <ScalarProperty Name="CompositionCollectionId" ColumnName="CompositionCollectionId" />
-            </EndProperty>
             <EndProperty Name="CatalogNumber">
               <ScalarProperty Name="CatalogNumberId" ColumnName="CatalogNumberId" />
             </EndProperty>
-          </AssociationSetMapping>
-          <AssociationSetMapping Name="CompositionCollectionComposer" TypeName="ClassicalMusicModel.CompositionCollectionComposer" StoreEntitySet="CompositionCollectionComposer">
             <EndProperty Name="CompositionCollection">
               <ScalarProperty Name="CompositionCollectionId" ColumnName="CompositionCollectionId" />
             </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="CompositionCollectionComposer" TypeName="ClassicalMusicModel.CompositionCollectionComposer" StoreEntitySet="CompositionCollectionComposer">
             <EndProperty Name="Composer">
               <ScalarProperty Name="ComposerId" ColumnName="ComposerId" />
+            </EndProperty>
+            <EndProperty Name="CompositionCollection">
+              <ScalarProperty Name="CompositionCollectionId" ColumnName="CompositionCollectionId" />
             </EndProperty>
           </AssociationSetMapping>
           <AssociationSetMapping Name="CompositionCollectionRecording" TypeName="ClassicalMusicModel.CompositionCollectionRecording" StoreEntitySet="CompositionCollectionRecording">
-            <EndProperty Name="Recording">
-              <ScalarProperty Name="RecordingId" ColumnName="RecordingId" />
-            </EndProperty>
             <EndProperty Name="CompositionCollection">
               <ScalarProperty Name="CompositionCollectionId" ColumnName="CompositionCollectionId" />
             </EndProperty>
+            <EndProperty Name="Recording">
+              <ScalarProperty Name="RecordingId" ColumnName="RecordingId" />
+            </EndProperty>
           </AssociationSetMapping>
           <AssociationSetMapping Name="CompositionComposer" TypeName="ClassicalMusicModel.CompositionComposer" StoreEntitySet="CompositionComposer">
-            <EndProperty Name="Composition">
-              <ScalarProperty Name="CompositionId" ColumnName="CompositionId" />
-            </EndProperty>
             <EndProperty Name="Composer">
               <ScalarProperty Name="ComposerId" ColumnName="ComposerId" />
             </EndProperty>
+            <EndProperty Name="Composition">
+              <ScalarProperty Name="CompositionId" ColumnName="CompositionId" />
+            </EndProperty>
           </AssociationSetMapping>
           <AssociationSetMapping Name="CompositionLink" TypeName="ClassicalMusicModel.CompositionLink" StoreEntitySet="CompositionLink">
+            <EndProperty Name="Composition">
+              <ScalarProperty Name="CompositionId" ColumnName="CompositionId" />
+            </EndProperty>
             <EndProperty Name="Link">
               <ScalarProperty Name="LinkId" ColumnName="LinkId" />
             </EndProperty>
-            <EndProperty Name="Composition">
-              <ScalarProperty Name="CompositionId" ColumnName="CompositionId" />
-            </EndProperty>
           </AssociationSetMapping>
           <AssociationSetMapping Name="CompositionRecording" TypeName="ClassicalMusicModel.CompositionRecording" StoreEntitySet="CompositionRecording">
-            <EndProperty Name="Recording">
-              <ScalarProperty Name="RecordingId" ColumnName="RecordingId" />
-            </EndProperty>
             <EndProperty Name="Composition">
               <ScalarProperty Name="CompositionId" ColumnName="CompositionId" />
+            </EndProperty>
+            <EndProperty Name="Recording">
+              <ScalarProperty Name="RecordingId" ColumnName="RecordingId" />
             </EndProperty>
           </AssociationSetMapping>
           <AssociationSetMapping Name="MovementRecording" TypeName="ClassicalMusicModel.MovementRecording" StoreEntitySet="MovementRecording">
-            <EndProperty Name="Recording">
-              <ScalarProperty Name="RecordingId" ColumnName="RecordingId" />
-            </EndProperty>
             <EndProperty Name="Movement">
               <ScalarProperty Name="MovementId" ColumnName="MovementId" />
             </EndProperty>
-          </AssociationSetMapping>
-          <AssociationSetMapping Name="RecordingLocation" TypeName="ClassicalMusicModel.RecordingLocation" StoreEntitySet="RecordingLocation">
             <EndProperty Name="Recording">
               <ScalarProperty Name="RecordingId" ColumnName="RecordingId" />
             </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="RecordingLocation" TypeName="ClassicalMusicModel.RecordingLocation" StoreEntitySet="RecordingLocation">
             <EndProperty Name="Location">
               <ScalarProperty Name="LocationId" ColumnName="LocationId" />
             </EndProperty>
-          </AssociationSetMapping>
-          <AssociationSetMapping Name="RecordingPerformer" TypeName="ClassicalMusicModel.RecordingPerformer" StoreEntitySet="RecordingPerformer">
             <EndProperty Name="Recording">
               <ScalarProperty Name="RecordingId" ColumnName="RecordingId" />
             </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="RecordingPerformer" TypeName="ClassicalMusicModel.RecordingPerformer" StoreEntitySet="RecordingPerformer">
             <EndProperty Name="Performer">
               <ScalarProperty Name="PerformerId" ColumnName="PerformerId" />
+            </EndProperty>
+            <EndProperty Name="Recording">
+              <ScalarProperty Name="RecordingId" ColumnName="RecordingId" />
             </EndProperty>
           </AssociationSetMapping>
         </EntityContainerMapping>

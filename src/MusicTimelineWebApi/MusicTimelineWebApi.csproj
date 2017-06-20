@@ -307,6 +307,16 @@
     <Content Include="Images\98.thumb.jpg" />
     <Content Include="Images\99.jpg" />
     <Content Include="Images\99.thumb.jpg" />
+    <Content Include="Models\ClassicalMusicContext.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ClassicalMusicContext.edmx</DependentUpon>
+      <LastGenOutput>ClassicalMusicContext.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\ClassicalMusicContext.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>ClassicalMusicContext.edmx</DependentUpon>
+      <LastGenOutput>ClassicalMusicContext.cs</LastGenOutput>
+    </Content>
     <Content Include="Samples\1.mp3" />
     <Content Include="Samples\10.mp3" />
     <Content Include="Samples\11.mp3" />
@@ -370,16 +380,6 @@
     <Content Include="Samples\8.mp3" />
     <Content Include="Samples\9.mp3" />
     <Content Include="Global.asax" />
-    <Content Include="Models\ClassicalMusicContext.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>ClassicalMusicContext.edmx</DependentUpon>
-      <LastGenOutput>ClassicalMusicContext.Context.cs</LastGenOutput>
-    </Content>
-    <Content Include="Models\ClassicalMusicContext.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>ClassicalMusicContext.edmx</DependentUpon>
-      <LastGenOutput>ClassicalMusicContext.cs</LastGenOutput>
-    </Content>
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>

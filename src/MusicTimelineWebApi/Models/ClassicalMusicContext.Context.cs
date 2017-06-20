@@ -25,6 +25,7 @@ namespace ClassicalMusicDbService.Models
             throw new UnintentionalCodeFirstException();
         }
     
+        public virtual DbSet<Album> Albums { get; set; }
         public virtual DbSet<Catalog> Catalogs { get; set; }
         public virtual DbSet<CatalogNumber> CatalogNumbers { get; set; }
         public virtual DbSet<Composer> Composers { get; set; }
@@ -32,18 +33,17 @@ namespace ClassicalMusicDbService.Models
         public virtual DbSet<ComposerImage> ComposerImages { get; set; }
         public virtual DbSet<ComposerShortBiography> ComposerShortBiographies { get; set; }
         public virtual DbSet<Composition> Compositions { get; set; }
+        public virtual DbSet<CompositionCollection> CompositionCollections { get; set; }
         public virtual DbSet<Era> Eras { get; set; }
+        public virtual DbSet<Instrumentation> Instrumentations { get; set; }
         public virtual DbSet<Key> Keys { get; set; }
         public virtual DbSet<Link> Links { get; set; }
         public virtual DbSet<Location> Locations { get; set; }
-        public virtual DbSet<Nationality> Nationalities { get; set; }
-        public virtual DbSet<Sample> Samples { get; set; }
-        public virtual DbSet<Album> Albums { get; set; }
-        public virtual DbSet<CompositionCollection> CompositionCollections { get; set; }
-        public virtual DbSet<Instrumentation> Instrumentations { get; set; }
         public virtual DbSet<Movement> Movements { get; set; }
+        public virtual DbSet<Nationality> Nationalities { get; set; }
         public virtual DbSet<Performer> Performers { get; set; }
         public virtual DbSet<Recording> Recordings { get; set; }
+        public virtual DbSet<Sample> Samples { get; set; }
         public virtual DbSet<Genre> Genres { get; set; }
     }
 }

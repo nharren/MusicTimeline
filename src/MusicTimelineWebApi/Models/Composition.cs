@@ -38,9 +38,9 @@ namespace ClassicalMusicDbService.Models
         public Nullable<int> InstrumentationId { get; set; }
         public Nullable<int> CompositionCollectionId { get; set; }
     
-        public virtual Key Key { get; set; }
         public virtual CompositionCollection CompositionCollection { get; set; }
         public virtual Instrumentation Instrumentation { get; set; }
+        public virtual Key Key { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Movement> Movements { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
